@@ -251,8 +251,20 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 }
 @media(prefers-reduced-motion:reduce){.conf{display:none}}
 /* şimşək seriyası */
-.bolt .zz,.bolt.off .spark{display:none}.bolt.off .zz{display:inline}
-.bolt.off .body{fill:#ece7dc;stroke:#cfc7b6}.bolt.off .face circle[fill="#ff7a59"]{opacity:.15}
+.pill.stk{background:linear-gradient(#fffbe0,#fff1b8);border-color:#ffd84d;color:#b45309}.pill.stk.dim{background:var(--card);border-color:var(--line);color:var(--mut)}
+#streak{background:linear-gradient(#ffd84d,#ff9500 55%,#e86a00);-webkit-background-clip:text;background-clip:text;color:transparent}
+.bolt .face{display:none}.bolt.m-happy .f-happy,.bolt.m-sleep .f-sleep,.bolt.m-worried .f-worried,.bolt.m-angry .f-angry,.bolt.m-sad .f-sad{display:inline}
+.bolt .zz{display:none}.bolt.m-sleep .zz{display:inline}.bolt:not(.m-happy) .spark{display:none}
+.bolt.m-sleep .body,.bolt.m-sad .body{fill:#ece7dc;stroke:#cfc7b6}.bolt.m-worried .body{fill:#ffe39a;stroke:#e0a100}.bolt.m-angry .body{fill:url(#bgA);stroke:#b91c1c}
+.mood-hint{font-weight:800}.mood-angry{color:#c2410c}.mood-sad{color:#6b7280}.mood-worried{color:#b45309}
+@media(prefers-reduced-motion:no-preference){
+ .bolt.m-angry .body{transform-origin:64px 64px;animation:rage .45s ease-in-out infinite}@keyframes rage{0%,100%{transform:none}25%{transform:translate(-1.5px,0) rotate(-1.2deg)}75%{transform:translate(1.5px,0) rotate(1.2deg)}}
+ .bolt.m-angry .steam path{animation:steam 1.4s ease-out infinite}.bolt.m-angry .steam path+path{animation-delay:.7s}@keyframes steam{0%{opacity:0;transform:translateY(6px)}40%{opacity:1}100%{opacity:0;transform:translateY(-10px)}}
+ .bolt.m-worried .drop{animation:drip 2s ease-in infinite}@keyframes drip{0%,40%{transform:none;opacity:1}100%{transform:translateY(14px);opacity:0}}
+ .bolt.m-sad .tear{animation:drip 2.6s ease-in infinite}
+ .bolt.m-sad{animation:droop 4s ease-in-out infinite;transform-origin:50% 100%}@keyframes droop{50%{transform:rotate(-3deg) translateY(2px)}}
+}
+
 .strike{position:fixed;inset:0;z-index:60;display:none;place-items:center;background:radial-gradient(circle at 50% 40%,#2b2f6b 0,#14163a 70%);overflow:hidden;cursor:pointer}
 .strike.on{display:grid}.strike .flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
 .strike .bolt-path{position:absolute;left:0;top:0;width:100%;height:58%;pointer-events:none}
@@ -263,9 +275,9 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 .strike .btn{max-width:280px;margin:0 auto}
 .strike .zap{position:absolute;width:40px;height:40px;pointer-events:none}
 @media(prefers-reduced-motion:no-preference){
- .bolt:not(.off) .spark{animation:flick 1.6s steps(2) infinite}@keyframes flick{0%,40%{opacity:1}50%{opacity:.15}70%{opacity:1}}
- .bolt:not(.off) .body{transform-origin:64px 64px;animation:buzz 3.2s ease-in-out infinite}@keyframes buzz{0%,86%,100%{transform:none}88%{transform:translate(-1.5px,1px) rotate(-1.5deg)}90%{transform:translate(1.5px,-1px) rotate(1.5deg)}92%{transform:none}}
- .bolt.off .zz text{animation:zz 2.4s ease-in-out infinite}@keyframes zz{50%{transform:translateY(-4px);opacity:.4}}
+ .bolt.m-happy .spark{animation:flick 1.6s steps(2) infinite}@keyframes flick{0%,40%{opacity:1}50%{opacity:.15}70%{opacity:1}}
+ .bolt.m-happy .body{transform-origin:64px 64px;animation:buzz 3.2s ease-in-out infinite}@keyframes buzz{0%,86%,100%{transform:none}88%{transform:translate(-1.5px,1px) rotate(-1.5deg)}90%{transform:translate(1.5px,-1px) rotate(1.5deg)}92%{transform:none}}
+ .bolt.m-sleep .zz text{animation:zz 2.4s ease-in-out infinite}@keyframes zz{50%{transform:translateY(-4px);opacity:.4}}
  .strike.on .flash{animation:flash .9s ease-out both}@keyframes flash{0%{opacity:0}8%{opacity:.95}18%{opacity:.1}30%{opacity:.85}55%,100%{opacity:0}}
  .strike.on .bolt-path path{stroke-dasharray:1400;stroke-dashoffset:1400;animation:draw .28s ease-in forwards,fadeb 1.2s .9s forwards}@keyframes draw{to{stroke-dashoffset:0}}@keyframes fadeb{to{opacity:.25}}
  .strike.on .stkcard{animation:shake .5s .25s both}@keyframes shake{0%{transform:scale(.6);opacity:0}30%{transform:scale(1.08) translate(-6px,3px);opacity:1}45%{transform:translate(6px,-3px)}60%{transform:translate(-4px,2px)}75%{transform:translate(3px,-1px)}100%{transform:none}}
@@ -296,9 +308,9 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 <div class="shell">
 <div class="app">
 <header class="top">
-  <div class="logo"><svg width="30" height="30" viewBox="0 0 64 64"><use href="#sunI"/></svg><span>Ad<b>dım</b></span></div>
+  <div class="logo"><svg width="30" height="30" viewBox="0 0 64 64"><use href="#boltI"/></svg><span>Ad<b>dım</b></span></div>
   <div class="pills">
-    <div class="pill" title="Günlük seriya"><svg viewBox="0 0 64 64"><use href="#boltI" id="stIco"/></svg><span id="stPill">0</span></div>
+    <div class="pill stk" title="Günlük seriya"><svg viewBox="0 0 64 64"><use href="#boltI" id="stIco"/></svg><span id="stPill">0</span></div>
     <div class="pill" title="Bu həftə qazanılan ulduzlar (XP)"><svg viewBox="0 0 24 24"><use href="#starI"/></svg><span id="xpTot">0</span></div>
     <a class="hdav" href="#profile" id="hdAv" aria-label="Profil"></a>
   </div>
@@ -314,7 +326,11 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
         <g class="spark" stroke="#ffb703" stroke-width="4" stroke-linecap="round" fill="none"><path d="M14 30l9 4-5 6 9 3"/><path d="M110 22l-8 6 6 4-8 6"/><path d="M112 96l-9-2 3 7-9-1"/><path d="M18 100l8-5 1 7 8-5"/></g>
         <path class="body" d="M76 6L26 72h32l-10 50 54-70H68z" fill="url(#bg1)" stroke="#d97706" stroke-width="5" stroke-linejoin="round"/>
         <path d="M68 18L42 56" stroke="#fff6c4" stroke-width="5" stroke-linecap="round" opacity=".75"/>
-        <g class="face"><circle cx="58" cy="66" r="4.5" fill="#5a3300"/><circle cx="74" cy="66" r="4.5" fill="#5a3300"/><circle cx="59.5" cy="64.5" r="1.5" fill="#fff"/><circle cx="75.5" cy="64.5" r="1.5" fill="#fff"/><path d="M58 76q8 7 16 0" stroke="#5a3300" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="51" cy="74" r="4" fill="#ff7a59" opacity=".45"/><circle cx="81" cy="74" r="4" fill="#ff7a59" opacity=".45"/></g>
+        <g class="face f-happy"><circle cx="58" cy="66" r="4.5" fill="#5a3300"/><circle cx="74" cy="66" r="4.5" fill="#5a3300"/><circle cx="59.5" cy="64.5" r="1.5" fill="#fff"/><circle cx="75.5" cy="64.5" r="1.5" fill="#fff"/><path d="M58 76q8 7 16 0" stroke="#5a3300" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="51" cy="74" r="4" fill="#ff7a59" opacity=".45"/><circle cx="81" cy="74" r="4" fill="#ff7a59" opacity=".45"/></g>
+        <g class="face f-sleep" stroke="#8a8172" stroke-width="3.5" fill="none" stroke-linecap="round"><path d="M54 67q4 3 8 0M70 67q4 3 8 0"/><path d="M62 78h8"/></g>
+        <g class="face f-worried"><path d="M52 58l9-3M80 58l-9-3" stroke="#5a3300" stroke-width="3.5" stroke-linecap="round"/><circle cx="58" cy="66" r="4.5" fill="#5a3300"/><circle cx="74" cy="66" r="4.5" fill="#5a3300"/><circle cx="59.5" cy="64.5" r="1.5" fill="#fff"/><circle cx="75.5" cy="64.5" r="1.5" fill="#fff"/><path d="M58 79q2.7-3 5.3 0t5.3 0t5.3 0" stroke="#5a3300" stroke-width="3.5" fill="none" stroke-linecap="round"/><path class="drop" d="M90 52q4 7 0 9q-4-2 0-9z" fill="#7cc8ff"/></g>
+        <g class="face f-angry"><path d="M51 56l11 5M81 56l-11 5" stroke="#4a1d00" stroke-width="4.5" stroke-linecap="round"/><circle cx="58" cy="67" r="4.5" fill="#4a1d00"/><circle cx="74" cy="67" r="4.5" fill="#4a1d00"/><path d="M57 81q9-7 18 0" stroke="#4a1d00" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="50" cy="75" r="5" fill="#ef4444" opacity=".5"/><circle cx="82" cy="75" r="5" fill="#ef4444" opacity=".5"/><g class="steam" stroke="#9aa5b1" stroke-width="3" fill="none" stroke-linecap="round"><path d="M100 30q-4-5 0-10t0-10"/><path d="M110 38q-4-5 0-10t0-10"/></g></g>
+        <g class="face f-sad"><path d="M52 61l9 2M80 61l-9 2" stroke="#6b6253" stroke-width="3" stroke-linecap="round"/><path d="M54 68q4-3 8 0M70 68q4-3 8 0" stroke="#6b6253" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="M58 82q8-7 16 0" stroke="#6b6253" stroke-width="3.5" fill="none" stroke-linecap="round"/><path class="tear" d="M55 72q3 6 0 8q-3-2 0-8z" fill="#7cc8ff"/></g>
         <g class="zz" fill="#9aa5b1" font-weight="900" font-family="sans-serif"><text x="92" y="40" font-size="16">z</text><text x="102" y="26" font-size="12">z</text></g>
       </svg>
       <div><div class="big" id="streak">0</div><div class="sub">günlük seriya</div><div class="hint" id="best"></div></div>
@@ -427,6 +443,7 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="sunI" viewBox="0 0 64 64"><g fill="#ffc94a"><path d="M32 2l5 12h-10zM32 62l-5-12h10zM2 32l12-5v10zM62 32l-12 5V27zM10.8 10.8l11.9 5-7 7zM53.2 53.2l-11.9-5 7-7zM10.8 53.2l5-11.9 7 7zM53.2 10.8l-5 11.9-7-7z"/></g><circle cx="32" cy="32" r="15" fill="#ff9f1c"/><circle cx="29" cy="29" r="9" fill="#ffc233"/></symbol>
   <linearGradient id="bg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe46b"/><stop offset=".55" stop-color="#ffc21a"/><stop offset="1" stop-color="#ff8a00"/></linearGradient>
+  <linearGradient id="bgA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffb36b"/><stop offset=".6" stop-color="#ff7a1a"/><stop offset="1" stop-color="#e2420f"/></linearGradient>
   <symbol id="boltI" viewBox="0 0 64 64"><path d="M38 3L12 37h17l-5 24 28-36H35z" fill="url(#bg1)" stroke="#d97706" stroke-width="3" stroke-linejoin="round"/><path d="M33 10L19 31" stroke="#fff6c4" stroke-width="3" stroke-linecap="round" opacity=".8"/></symbol>
   <symbol id="boltOff" viewBox="0 0 64 64"><path d="M38 3L12 37h17l-5 24 28-36H35z" fill="#e6e1d6" stroke="#c9c2b3" stroke-width="3" stroke-linejoin="round"/></symbol>
   <symbol id="boltIce" viewBox="0 0 64 64"><path d="M38 3L12 37h17l-5 24 28-36H35z" fill="#cfe9ff" stroke="#7cc0f5" stroke-width="3" stroke-linejoin="round"/><path d="M30 26l8 6M38 26l-8 6" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></symbol>
@@ -476,6 +493,9 @@ const LOCKI='<svg viewBox="0 0 24 24" fill="none" stroke="#c98a00" stroke-width=
 const active=k=>S.days[k]>0||S.frozen[k];
 function applyFreeze(){const t=today(),y=shiftDay(t,-1),yy=shiftDay(t,-2);
   if(!active(y)&&active(yy)&&S.freeze>0){S.freeze--;S.frozen[y]=1;save();sheet('Seriyan qorundu!','<p>Dünən dərs keçmədin, amma <b>seriya qoruyucusu</b> şimşəyini söndürməyə qoymadı. Bu gün bir dərs keç ki, seriya davam etsin.</p>')}}
+function lostCheck(){const t=today(),y=shiftDay(t,-1),yy=shiftDay(t,-2);if(active(t)||active(y)||!active(yy)||S.lostSeen===t)return;
+  let k=yy,n=0;while(active(k)){if(S.days[k]>0)n++;k=shiftDay(k,-1)}if(n<2)return;S.lostSeen=t;save();
+  setTimeout(()=>{play('sad');sheet('Şimşəyin söndü…','<div style="text-align:center"><svg width="110" height="110" viewBox="0 0 64 64"><use href="#boltOff"/></svg></div><p><b>'+n+' günlük seriyan</b> bitdi. Şimşək çox qəmgindir — amma hər şey bir dərslə yenidən başlayır.</p><p class="note">Məsləhət: 7 günlük seriyada <b>seriya qoruyucusu</b> qazanırsan — o, bir buraxılmış günü bağışlayır.</p>','<button class="btn sun" id="lostGo">Yenidən çaxdır ⚡</button>');$('lostGo').onclick=()=>{closeSheet();const n2=nextLesson();if(n2)startLesson(n2.x.id)}},700)}
 const streak=()=>{let k=today(),n=0;if(!active(k))k=shiftDay(k,-1);while(active(k)){if(S.days[k]>0)n++;k=shiftDay(k,-1)}return n};
 const weekXP=()=>{const ws=weekStart(today());let s=0;for(const k in S.days)if(k>=ws)s+=S.days[k];return s};
 function addXP(n,skill,el){
@@ -510,8 +530,11 @@ const WD=['B','B.e','Ç.a','Ç','C.a','C','Ş'];
 function renderHome(){
   const t=today(),xp=S.days[t]||0,st=streak();
   $('streak').textContent=st;$('stPill').textContent=st;
-  const lit=xp>0;$('bigBolt').classList.toggle('off',!lit);$('stIco').setAttribute('href',st||lit?'#boltI':'#boltOff');
-  $('best').textContent=xp>=GOAL?'Bugünkü hədəf tamamlandı':xp>0?'Hədəfə '+(GOAL-xp)+' XP qalıb':st?'Bu gün dərs keç ki, seriya sönməsin':'İlk dərsini keç və şimşəyi çaxdır';
+  const lit=xp>0,hr=+new Intl.DateTimeFormat('en-GB',{hour:'numeric',hourCycle:'h23',timeZone:'Asia/Baku'}).format(new Date()),ever=Object.keys(S.days).some(k=>S.days[k]>0);
+  const mood=lit?'happy':st>0?(hr>=18?'angry':'worried'):ever?'sad':'sleep';
+  $('bigBolt').setAttribute('class','bigsun bolt m-'+mood);$('stIco').setAttribute('href',st||lit?'#boltI':'#boltOff');$('stPill').parentElement.classList.toggle('dim',!(st||lit));
+  const MH={worried:'Şimşəyin narahatdır — bu gün hələ dərs keçməmisən.',angry:'Şimşək əsəbiləşib! Gün bitmədən bir dərs keç, yoxsa seriya sönəcək.',sad:'Şimşəyin söndü… Bir dərs keç — yenidən çaxsın.',sleep:'İlk dərsini keç və şimşəyi çaxdır'};
+  $('best').textContent=xp>=GOAL?'Bugünkü hədəf tamamlandı':xp>0?'Hədəfə '+(GOAL-xp)+' XP qalıb':MH[mood];$('best').className='hint '+(xp>0?'':'mood-hint mood-'+mood);
   $('xpTot').textContent=weekXP();
   $('goalTxt').textContent=Math.min(xp,GOAL)+' / '+GOAL+' XP';
   $('goalBar').style.width=Math.min(100,xp/GOAL*100)+'%';
@@ -696,6 +719,7 @@ const SFX={
   done:()=>{[523,659,784,1047].forEach((f,i)=>tone(f,.25,{vol:.12,at:i*.12}));tone(1568,.5,{type:'triangle',vol:.06,at:.5})},
   rank:()=>{[392,523,659,784,1047,1319].forEach((f,i)=>tone(f,.18,{type:'triangle',vol:.1,at:i*.09}));[1047,1319,1568].forEach(f=>tone(f,.7,{vol:.06,at:.6}))},
   down:()=>{tone(440,.18,{type:'triangle',vol:.07,to:330})},
+  sad:()=>{[392,349,330,262].forEach((f,i)=>tone(f,.38,{type:'triangle',vol:.08,at:i*.3,to:i===3?220:null}))},
   thunder:()=>{const a=ac();if(!a)return;const t=a.currentTime,sr=a.sampleRate,len=Math.floor(sr*2.6),buf=a.createBuffer(1,len,sr),d=buf.getChannelData(0);
     let last=0;for(let i=0;i<len;i++){const w=Math.random()*2-1;last=(last+0.02*w)/1.02;d[i]=i<sr*.12?w:last*3.5}
     const src=a.createBufferSource();src.buffer=buf;
@@ -977,7 +1001,7 @@ function route(){stopSpeech();let v=location.hash.slice(1);if(STRIKE&&v!=='lesso
   if(v==='league')sync();window.scrollTo(0,0)}
 addEventListener('hashchange',route);
 const h=new Date().getHours();$('greet').textContent=(h<12?'Sabahın xeyir!':h<18?'Salam!':'Axşamın xeyir!')+' Bu gün də bir addım at.';
-load();if(!S.uid){S.uid=S.me?S.me.id:newId();save()}if(S.me&&S.me.id!==S.uid)S.me.id=S.uid;drawSnd();drawHeader();fetchPrem();if(S.trk!==today()){S.trk=today();save();track('open')}applyFreeze();renderHome();renderVideo($('vidHome'));if(!S.onboarded&&!location.hash)location.hash='welcome';route();sync();
+load();if(!S.uid){S.uid=S.me?S.me.id:newId();save()}if(S.me&&S.me.id!==S.uid)S.me.id=S.uid;drawSnd();drawHeader();fetchPrem();if(S.trk!==today()){S.trk=today();save();track('open')}applyFreeze();lostCheck();renderHome();renderVideo($('vidHome'));if(!S.onboarded&&!location.hash)location.hash='welcome';route();sync();
 
 /* ---------- PWA ---------- */
 if('serviceWorker' in navigator&&location.protocol==='https:')addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));

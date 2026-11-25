@@ -135,7 +135,7 @@ with sync_playwright() as p:
         m.wait_for_timeout(600)
         check(f'{kind}: tamamlama ekranı görünür', m.locator('#epEnd .res').count() == 1)
         check(f'{kind}: «Növbəti» düyməsi var', m.locator('#epNext').count() == 1)
-        close_overlays(m); m.click('#epNext'); m.wait_for_timeout(300)
+        m.wait_for_timeout(900); close_overlays(m); m.click('#epNext'); m.wait_for_timeout(300)
         check(f'{kind}: növbəti epizod açıldı', m.locator(f'{box} h2').first.inner_text() != first)
         close_overlays(m); m.click('#epBack'); m.wait_for_timeout(200)
         check(f'{kind}: keçilən epizod işarələnib', m.locator(f'{box} .ep.done').count() == 1)
