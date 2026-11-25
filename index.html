@@ -35,6 +35,7 @@ header.top{display:flex;align-items:center;justify-content:space-between;padding
 .pills{display:flex;gap:8px}
 .pill{display:flex;gap:6px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 12px;font-weight:900;white-space:nowrap;font-size:15px}
 .pill svg{width:20px;height:20px;flex:none}
+button.pill{cursor:pointer;min-height:40px}
 .hero{margin:0 12px;border-radius:28px;padding:22px 20px 20px;background:linear-gradient(160deg,#dff0ff 0%,#fff6dc 70%,#ffe9c9 100%);position:relative;overflow:hidden;border:1px solid #f0e6cf}
 .hero h1{font-size:30px;line-height:1.08;margin:0 0 4px;font-weight:900;text-wrap:balance}
 .hero p{margin:0;color:var(--mut)}
@@ -132,6 +133,31 @@ nav.tabs div{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:10
 nav.tabs a{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0;min-height:60px;color:var(--mut);text-decoration:none;font-size:12px;font-weight:800}
 nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 .res{text-align:center;padding:24px 8px}
+/* video, welcome, celebration */
+.vid{display:block;background:var(--card);border:1px solid var(--line);border-radius:22px;overflow:hidden;margin-top:12px;text-align:left}
+.vid .th{position:relative;aspect-ratio:16/9;background:#e9eef2;cursor:pointer;border:0;padding:0;width:100%;display:block}
+.vid .th img{width:100%;height:100%;object-fit:cover;display:block}
+.vid .th span{position:absolute;inset:0;display:grid;place-items:center}
+.vid .th span i{width:68px;height:48px;border-radius:14px;background:#ff3b30;display:grid;place-items:center;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+.vid iframe{width:100%;aspect-ratio:16/9;border:0;display:block}
+.vid .vb{padding:12px 14px}.vid small{color:var(--mut);font-weight:800;display:block}.vid b{display:block;line-height:1.25}
+.vid a{color:var(--blue);font-weight:800;font-size:14px}
+.wel{text-align:center;padding-top:10px}
+.wel h1{font-size:30px;line-height:1.1;margin:10px 0 8px;font-weight:900;text-wrap:balance}
+.lvpick{display:grid;gap:10px;margin-top:14px}
+.lvopt{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:18px;border:2px solid var(--line);background:var(--card);cursor:pointer;text-align:left;box-shadow:0 3px 0 var(--line)}
+.lvopt .tg{width:48px;height:48px;border-radius:14px;color:#fff;font-weight:900;display:grid;place-items:center;flex:none}
+.lvopt b{display:block}.lvopt span{color:var(--mut);font-size:14px}
+.lvopt.rec{border-color:var(--sun);box-shadow:0 3px 0 #f3c27a;background:#fff8ea}
+.rectag{margin-left:auto;font-size:12px;font-weight:900;background:var(--sun);color:#fff;border-radius:99px;padding:3px 10px;white-space:nowrap}
+.cel{position:fixed;inset:0;z-index:60;display:none;place-items:center;background:radial-gradient(circle at 50% 40%,#fff8df,#e3f1ff);padding:24px;text-align:center}
+.cel.on{display:grid}
+.cel h2{font-size:30px;line-height:1.1;margin:10px 0}
+.cel p{font-size:18px;max-width:420px;margin:0 auto 6px}
+.cel .rk{font-size:64px;font-weight:900;color:var(--sun);line-height:1}
+.cel .mtn{width:220px;height:150px;margin:0 auto}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:90px;background:var(--ink);color:#fff;padding:12px 18px;border-radius:16px;font-weight:800;z-index:55;max-width:90vw;text-align:center}
+@media(prefers-reduced-motion:no-preference){.cel.on .climb{animation:climb 1.2s cubic-bezier(.2,.9,.3,1.3) both}@keyframes climb{from{transform:translate(-70px,70px) scale(.6);opacity:0}}.cel.on .rk{animation:pop .6s .5s both}}
 /* course path */
 .next{display:flex;align-items:center;gap:14px;background:var(--wrb);border:2px solid #b8e6cf;border-radius:22px;padding:16px 18px;text-decoration:none;color:var(--ink);margin-bottom:12px;box-shadow:0 4px 0 #a5dcc0}
 .next .lv{width:52px;height:52px;border-radius:16px;background:var(--wr);color:#fff;display:grid;place-items:center;font-weight:900;font-size:18px;flex:none}
@@ -200,6 +226,7 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 <header class="top">
   <div class="logo"><svg width="30" height="30" viewBox="0 0 64 64"><use href="#sunI"/></svg><span>Ad<b>dım</b></span></div>
   <div class="pills">
+    <button class="pill" id="sndBtn" aria-label="Səs effektləri" title="Səs effektləri"></button>
     <div class="pill" title="Günlük seriya"><svg viewBox="0 0 64 64"><use href="#sunI"/></svg><span id="stPill">0</span></div>
     <div class="pill" title="Bu həftə qazanılan ulduzlar (XP)"><svg viewBox="0 0 24 24"><use href="#starI"/></svg><span id="xpTot">0</span></div>
   </div>
@@ -230,16 +257,20 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
     <button class="daily" id="startQuiz"><svg width="46" height="46" viewBox="0 0 24 24"><use href="#starI"/></svg>
       <span><strong>Günün quizi</strong><span id="quizState">8 sual · hər düzgün cavab +10 XP</span></span><span class="go">›</span></button>
     <a class="nudge tab-league" href="#league" id="nudgeM"></a>
+    <div id="vidHome"></div>
   </section>
   <section class="band" style="padding-top:0">
     <p class="note" id="freezeNote" style="margin-top:0"></p>
   </section>
 </main>
 
+<!-- WELCOME / PLACEMENT -->
+<main class="view" id="v-welcome"><section class="band"><div id="wBox"></div></section></main>
+
 <!-- COURSE -->
 <main class="view" id="v-course"><section class="band">
-  <h2>Kurs</h2>
-  <div class="lvls" id="lvls"></div>
+  <div class="lhead" style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap"><h2 style="margin:0">Kurs</h2><a class="w" href="#welcome" style="font-weight:800;text-decoration:none">Səviyyə testi</a></div>
+  <div class="lvls" id="lvls" style="margin-top:12px"></div>
   <div id="units"></div>
 </section></main>
 
@@ -325,6 +356,7 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 <aside class="side" aria-label="Həftəlik liqa"><div class="league" id="boardD"></div></aside>
 </div>
 
+<div class="cel" id="cel" role="dialog" aria-modal="true" aria-live="assertive"><div id="celBox"></div></div>
 <nav class="tabs" aria-label="Bölmələr"><div id="tabs"></div></nav>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -358,7 +390,7 @@ const COLORS=['#2f7de1','#7b56d6','#e0662f','#16956a','#d6336c','#0e9aa7'];
 
 /* ---------- state ---------- */
 const GOAL=50;let S;
-const blank=()=>({days:{},freeze:0,frozen:{},skills:{reading:0,listening:0,speaking:0,writing:0},quiz:{},goalDone:{},me:null,course:{},lvl:'a1'});
+const blank=()=>({days:{},freeze:0,frozen:{},skills:{reading:0,listening:0,speaking:0,writing:0},quiz:{},goalDone:{},me:null,course:{},lvl:'a1',onboarded:0,placed:null,sound:1,lastRank:{}});
 const load=()=>{try{S=JSON.parse(localStorage.getItem('addim2')||'null')}catch(e){S=null}if(!S)S=blank();for(const k in blank())if(S[k]===undefined)S[k]=blank()[k]};
 const save=()=>{try{localStorage.setItem('addim2',JSON.stringify(S))}catch(e){}};
 const active=k=>S.days[k]>0||S.frozen[k];
@@ -374,8 +406,8 @@ function addXP(n,skill,el){
   if(was<GOAL&&S.days[t]>=GOAL&&!S.goalDone[t]){S.goalDone[t]=1;confetti();}
   save();renderHome();if(el)floatXP(el,n);syncSoon();
 }
-function floatXP(el,n){const r=el.getBoundingClientRect(),f=document.createElement('div');f.className='float';f.textContent='+'+n+' XP';f.style.left=(r.left+r.width/2-30)+'px';f.style.top=(r.top-10)+'px';document.body.appendChild(f);setTimeout(()=>f.remove(),1100);const p=$('xpTot').parentElement;p.classList.remove('pop');void p.offsetWidth;p.classList.add('pop')}
-function confetti(){const c=['#ffc83d','#ff9f1c','#2f7de1','#7b56d6','#16956a','#ef5d5d'];for(let i=0;i<60;i++){const d=document.createElement('div');d.className='conf';d.style.left=Math.random()*100+'vw';d.style.background=c[i%c.length];d.style.setProperty('--x',(Math.random()*160-80)+'px');d.style.setProperty('--r',(Math.random()*720)+'deg');d.style.setProperty('--d',(1.6+Math.random()*1.4)+'s');document.body.appendChild(d);setTimeout(()=>d.remove(),3200)}
+function floatXP(el,n){setTimeout(()=>play('xp'),160);const r=el.getBoundingClientRect(),f=document.createElement('div');f.className='float';f.textContent='+'+n+' XP';f.style.left=(r.left+r.width/2-30)+'px';f.style.top=(r.top-10)+'px';document.body.appendChild(f);setTimeout(()=>f.remove(),1100);const p=$('xpTot').parentElement;p.classList.remove('pop');void p.offsetWidth;p.classList.add('pop')}
+function confetti(){play('rank');const c=['#ffc83d','#ff9f1c','#2f7de1','#7b56d6','#16956a','#ef5d5d'];for(let i=0;i<60;i++){const d=document.createElement('div');d.className='conf';d.style.left=Math.random()*100+'vw';d.style.background=c[i%c.length];d.style.setProperty('--x',(Math.random()*160-80)+'px');d.style.setProperty('--r',(Math.random()*720)+'deg');d.style.setProperty('--d',(1.6+Math.random()*1.4)+'s');document.body.appendChild(d);setTimeout(()=>d.remove(),3200)}
   setTimeout(()=>sheet('Günlük hədəf tamamlandı!','<p>Bu gün <b>50 XP</b> topladın. Günəşin parlayır — sabah da qayıt ki, seriyan böyüsün.</p>'),700)}
 
 /* ---------- home ---------- */
@@ -423,7 +455,7 @@ function showQ(){
   const it=QZ[qi];
   $('quizBox').innerHTML=`<div class="note" style="margin:0 0 6px">Sual ${qi+1} / ${QZ.length}${qStreak>=2?' · <b style="color:var(--sun)">'+qStreak+' ardıcıl düzgün!</b>':''}</div><p class="q">${esc(it.q)}</p><div class="opts">${it.o.map((o,i)=>`<button class="opt" data-i="${i}">${esc(o)}</button>`).join('')}</div><div id="qEx"></div>`;
   $('quizBox').querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
-    const ok=it.o[+b.dataset.i]===it.a;if(ok){qok++;qStreak++;addXP(10,null,b)}else qStreak=0;
+    const ok=it.o[+b.dataset.i]===it.a;play(ok?'ok':'no');if(ok){qok++;qStreak++;addXP(10,null,b)}else qStreak=0;
     $('quizBox').querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(it.o[+x.dataset.i]===it.a)x.classList.add('right')});
     if(!ok)b.classList.add('wrong');
     $('qEx').innerHTML=`<div class="expl"><b style="color:${ok?'var(--ok)':'var(--coral)'}">${ok?['Düzgündür!','Əla!','Bravo!','Tam doğru!'][qi%4]+' +10 XP':'Düzgün cavab: '+esc(it.a)}</b>${esc(it.e)}</div><button class="btn" id="qNext">${qi+1<QZ.length?'Davam et':'Nəticəni gör'}</button>`;
@@ -437,7 +469,7 @@ function mcq(box,qs,skill){
   box.innerHTML=qs.map((q,n)=>`<div class="card" style="margin-bottom:12px"><p class="q" style="font-size:18px">${n+1}. ${esc(q[0])}</p><div class="opts" data-n="${n}">${shuffle(q[1]).map(o=>`<button class="opt" data-v="${esc(o)}">${esc(o)}</button>`).join('')}</div><div class="ex"></div></div>`).join('');
   box.querySelectorAll('.opts').forEach(g=>{const q=qs[+g.dataset.n];g.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
     const ok=b.dataset.v===q[1][0];g.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(x.dataset.v===q[1][0])x.classList.add('right')});
-    if(!ok)b.classList.add('wrong');else addXP(5,skill,b);
+    play(ok?'ok':'no');if(!ok)b.classList.add('wrong');else addXP(5,skill,b);
     g.nextElementSibling.innerHTML=`<div class="expl"><b style="color:${ok?'var(--ok)':'var(--coral)'}">${ok?'Düzgün! +5 XP':'Diqqət:'}</b>${esc(q[2])}</div>`})})
 }
 
@@ -512,11 +544,61 @@ $('wCheck').onclick=async()=>{
   $('wCheck').disabled=false;
 };
 
+/* ---------- sound effects (WebAudio, no files) ---------- */
+let AC=null;
+const ac=()=>{if(!AC){const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;AC=new C()}if(AC.state==='suspended')AC.resume();return AC};
+function tone(f,d,{type='sine',vol=.12,at=0,to=null}={}){const a=ac();if(!a)return;const t=a.currentTime+at,o=a.createOscillator(),g=a.createGain();o.type=type;o.frequency.setValueAtTime(f,t);if(to)o.frequency.exponentialRampToValueAtTime(to,t+d);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(a.destination);o.start(t);o.stop(t+d+.02)}
+const SFX={
+  tap:()=>tone(520,.05,{type:'triangle',vol:.05}),
+  ok:()=>{tone(784,.12,{vol:.12});tone(1175,.22,{vol:.12,at:.09})},
+  no:()=>{tone(220,.22,{type:'square',vol:.05,to:150})},
+  xp:()=>{[1319,1568,2093].forEach((f,i)=>tone(f,.09,{type:'triangle',vol:.06,at:i*.05}))},
+  done:()=>{[523,659,784,1047].forEach((f,i)=>tone(f,.25,{vol:.12,at:i*.12}));tone(1568,.5,{type:'triangle',vol:.06,at:.5})},
+  rank:()=>{[392,523,659,784,1047,1319].forEach((f,i)=>tone(f,.18,{type:'triangle',vol:.1,at:i*.09}));[1047,1319,1568].forEach(f=>tone(f,.7,{vol:.06,at:.6}))},
+  down:()=>{tone(440,.18,{type:'triangle',vol:.07,to:330})}
+};
+const play=k=>{if(S&&S.sound&&SFX[k])try{SFX[k]()}catch(e){}};
+document.addEventListener('pointerdown',e=>{if(e.target.closest('button,a.skill,a.next,.daily,.chip'))play('tap')},true);
+const SND_ON='<svg viewBox="0 0 24 24" fill="#2f7de1"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 8a5 5 0 0 1 0 8" stroke="#2f7de1" stroke-width="2" fill="none" stroke-linecap="round"/></svg>',SND_OFF='<svg viewBox="0 0 24 24" fill="#9aa5b1"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 9l5 6M21 9l-5 6" stroke="#9aa5b1" stroke-width="2" stroke-linecap="round"/></svg>';
+const drawSnd=()=>{$('sndBtn').innerHTML=S.sound?SND_ON:SND_OFF;$('sndBtn').setAttribute('aria-pressed',S.sound?'true':'false')};
+$('sndBtn').onclick=()=>{S.sound=S.sound?0:1;save();drawSnd();if(S.sound)play('ok')};
+
+/* ---------- daily video ---------- */
+function renderVideo(el,title){const V=window.VIDEOS||{},list=V[S.lvl]||V.a1;if(!list||!list.length||!el)return;
+  const day=Math.floor(Date.parse(today()+'T00:00:00Z')/864e5),v=list[day%list.length],url='https://www.youtube.com/watch?v='+v[0];
+  el.innerHTML=`<div class="vid"><button class="th" aria-label="Videonu burada aç"><img src="https://i.ytimg.com/vi/${esc(v[0])}/hqdefault.jpg" alt="" loading="lazy"><span><i><svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></i></span></button><div class="vb"><small>${esc(title||'Günün videosu')} · ${esc(S.lvl.toUpperCase())}</small><b>${esc(v[1])}</b><small style="font-weight:600">${esc(v[2])}</small><a href="${url}" target="_blank" rel="noopener">YouTube-da aç ›</a></div></div>`;
+  el.querySelector('.th').onclick=function(){this.outerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(v[0])}?autoplay=1" title="${esc(v[1])}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`}}
+
+/* ---------- welcome & placement test ---------- */
+const LVINFO={a1:['Başlanğıc','Sıfırdan və ya çox az bilirəm'],a2:['Elementar','Sadə söhbət edə bilirəm'],b1:['Orta','Gündəlik mövzularda rahat danışıram'],b2:['Orta-yuxarı','Mürəkkəb mövzuları anlayıram']};
+const LVCOL={a1:'#16956a',a2:'#2f7de1',b1:'#7b56d6',b2:'#e0662f'};
+let PT=null;
+function welcome(){const w=$('wBox');
+  w.innerHTML=`<div class="wel"><svg width="110" height="110" viewBox="0 0 64 64"><use href="#sunI"/></svg><h1>Addıma xoş gəldin!</h1><p style="margin:0 auto;max-width:420px;color:var(--mut)">İngilis dilini hansı səviyyədən başlamaq sənin üçün daha uyğundur? Qısa testlə yoxla — 12 sual, təxminən 3 dəqiqə.</p><button class="btn sun" id="ptGo">Səviyyə testinə başla</button><button class="btn ghost" id="ptA1">Testsiz, sıfırdan başla (A1)</button><button class="w" id="ptPick" style="margin-top:14px;font-weight:800">Səviyyəmi özüm seçəcəm</button></div>`;
+  $('ptGo').onclick=()=>{PT={i:0,score:{a1:0,a2:0,b1:0,b2:0},items:(window.PLACEMENT||[]).map(q=>({...q,sh:shuffle(q.o)}))};ptStep()};
+  $('ptA1').onclick=()=>chooseLevel('a1');
+  $('ptPick').onclick=()=>levelPicker(null)}
+function ptStep(){const w=$('wBox'),n=PT.items.length;
+  if(PT.i>=n){const order=['a1','a2','b1','b2'];let rec='a1';for(const l of order){if(PT.score[l]>=2)rec=l;else break}const total=Object.values(PT.score).reduce((a,b)=>a+b,0);play('done');return levelPicker(rec,total,n)}
+  const it=PT.items[PT.i];
+  w.innerHTML=`<div class="prog"><i style="width:${PT.i/n*100}%"></i></div><div class="note" style="margin:0 0 6px">Sual ${PT.i+1} / ${n}</div><p class="q">${esc(it.q)}</p><div class="opts">${it.sh.map((o,k)=>`<button class="opt" data-k="${k}">${esc(o)}</button>`).join('')}</div><button class="btn ghost" id="ptIdk">Bilmirəm</button>`;
+  const next=ok=>{if(ok)PT.score[it.lv]++;PT.i++;setTimeout(ptStep,180)};
+  w.querySelectorAll('.opt').forEach(b=>b.onclick=()=>next(it.sh[+b.dataset.k]===it.o[0]));$('ptIdk').onclick=()=>next(false)}
+function levelPicker(rec,score,n){const w=$('wBox');
+  w.innerHTML=`<div class="wel">${rec?`<h1>Nəticən: ${score} / ${n}</h1><p style="margin:0 auto;max-width:440px">Sənə <b>${rec.toUpperCase()} · ${LVINFO[rec][0]}</b> səviyyəsindən başlamağı tövsiyə edirik. Amma seçim sənindir — istədiyin səviyyəni seç.</p>`:`<h1>Səviyyəni seç</h1><p style="margin:0;color:var(--mut)">Sonra Kurs bölməsindən istənilən vaxt dəyişə bilərsən.</p>`}</div>
+  <div class="lvpick">${['a1','a2','b1','b2'].map(l=>`<button class="lvopt ${l===rec?'rec':''}" data-l="${l}"><span class="tg" style="background:${LVCOL[l]}">${l.toUpperCase()}</span><span><b>${LVINFO[l][0]}</b><span>${LVINFO[l][1]}</span></span>${l===rec?'<span class="rectag">Tövsiyə</span>':''}</button>`).join('')}</div><p class="note">Testin nəticəsi təxminidir, rəsmi CEFR qiymətləndirməsi deyil.</p>`;
+  w.querySelectorAll('.lvopt').forEach(b=>b.onclick=()=>chooseLevel(b.dataset.l,rec))}
+function chooseLevel(l,rec){S.lvl=l;S.placed=l;S.onboarded=1;save();BOARD=null;renderHome();sync();
+  const has=(window.COURSE||[]).find(c=>c.id===l)?.units.some(u=>u.lessons);
+  location.hash='course';
+  if(!has)setTimeout(()=>sheet(l.toUpperCase()+' səviyyəsi seçildi',`<p>Bu səviyyənin dərsləri hazırlanır və tezliklə əlavə olunacaq. Hələlik A1 dərslərini təkrar kimi keçə bilərsən — hamısı sənin üçün açıqdır. Liqada isə <b>${l.toUpperCase()} liqasında</b> yarışırsan.</p>`),400)}
+
 /* ---------- course ---------- */
 const LOCK='<svg viewBox="0 0 24 24" fill="none" stroke="#9aa59a" stroke-width="2.4" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
 const ALL=(window.COURSE||[]).flatMap(l=>l.units.flatMap((u,ui)=>(u.lessons||[]).map((x,xi)=>({lv:l,u,ui,x,xi}))));
 const isDone=id=>S.course[id]!=null;
-const unlocked=id=>{const seq=ALL.filter(a=>a.lv.id===ALL.find(b=>b.x.id===id).lv.id),i=seq.findIndex(a=>a.x.id===id);return i===0||isDone(id)||isDone(seq[i-1].x.id)};
+const LVORD=['a1','a2','b1','b2'];
+const unlocked=id=>{const lvid=ALL.find(b=>b.x.id===id).lv.id;if(S.placed&&LVORD.indexOf(lvid)<LVORD.indexOf(S.placed))return true;const seq=ALL.filter(a=>a.lv.id===ALL.find(b=>b.x.id===id).lv.id),i=seq.findIndex(a=>a.x.id===id);return i===0||isDone(id)||isDone(seq[i-1].x.id)};
 const nextLesson=()=>ALL.find(a=>!isDone(a.x.id))||null;
 const norm2=s=>String(s).toLowerCase().replace(/[’`]/g,"'").replace(/[^a-z0-9' ]/g,' ').replace(/\s+/g,' ').trim();
 const toks=s=>s.split(' ').map(w=>w.replace(/[.,!?]/g,'')).filter(Boolean);
@@ -527,7 +609,7 @@ function renderNext(){const n=nextLesson(),el=$('nextCard');
 function renderCourse(){
   const C=window.COURSE||[],lv=C.find(l=>l.id===S.lvl)||C[0];if(!lv)return;
   $('lvls').innerHTML=C.map(l=>`<button class="lvl" data-l="${l.id}" aria-pressed="${l.id===lv.id}" style="${l.id===lv.id?'background:'+l.color:''}">${esc(l.name)} · ${esc(l.title)}</button>`).join('');
-  $('lvls').querySelectorAll('.lvl').forEach(b=>b.onclick=()=>{S.lvl=b.dataset.l;save();renderCourse()});
+  $('lvls').querySelectorAll('.lvl').forEach(b=>b.onclick=()=>{S.lvl=b.dataset.l;save();renderCourse();BOARD=null;renderBoards();sync();renderVideo($('vidHome'))});
   const nx=nextLesson(),off=[0,70,-70,40,-40];
   $('units').innerHTML=lv.units.map((u,ui)=>{
     const head=`<div class="uhead" style="background:${u.lessons?lv.color:'#9aa8b6'}"><small>${esc(lv.name)} · Bölmə ${ui+1}</small><b>${esc(u.title)}</b><span>${esc(u.grammar)}</span></div>`;
@@ -543,6 +625,7 @@ function startLesson(id){const a=ALL.find(z=>z.x.id===id);if(!a)return;
 function fbBox(ok,title,body){return `<div class="fb ${ok?'ok':'no'}"><b>${esc(title)}</b>${body?'<div>'+esc(body)+'</div>':''}<button class="btn ${ok?'':'sun'}" id="lNext">Davam et</button></div>`}
 function answered(ok,right,e,el){const it=LS.items[LS.i];
   if(!it.re){LS.scored++;if(ok)LS.ok++}
+  play(ok?'ok':'no');
   if(ok){addXP(5,null,el);LS.xp+=5}else if(!it.re)LS.items.push({...it,re:1});
   const f=document.createElement('div');f.innerHTML=fbBox(ok,ok?['Əla!','Düzgündür!','Bravo!','Tam doğru!'][LS.i%4]:'Düzgün cavab: '+right,ok?'':e||'');$('lBox').appendChild(f.firstElementChild);
   $('lNext').onclick=()=>{LS.i++;renderStep()};$('lNext').focus({preventScroll:true});$('lNext').scrollIntoView({block:'nearest'})}
@@ -576,7 +659,8 @@ function finishLesson(){const a=LS.a,first=!isDone(a.x.id),acc=LS.scored?Math.ro
   S.course[a.x.id]=Math.max(S.course[a.x.id]||0,acc);save();addXP(bonus,null,null);LS.xp+=bonus;
   const nx=nextLesson();
   $('lBox').innerHTML=`<div class="res"><svg width="120" height="120" viewBox="0 0 64 64"><use href="#sunI"/></svg><h2 style="margin-top:8px">Dərs tamamlandı!</h2><p style="margin:0">${esc(a.x.title)}</p><div class="row" style="justify-content:center;gap:28px;margin:18px 0"><div><div class="score">${acc}%</div><div class="hint">düzgün</div></div><div><div class="score" style="color:var(--star)">+${LS.xp}</div><div class="hint">XP</div></div></div>${nx?`<button class="btn" id="lGoNext">Növbəti dərs: ${esc(nx.x.title)}</button>`:''}<a class="btn ghost" href="#course">Kursa qayıt</a></div>`;
-  $('lBar').style.width='100%';if(nx)$('lGoNext').onclick=()=>startLesson(nx.x.id);LS=null;renderNext();
+  $('lBox').insertAdjacentHTML('beforeend','<div id="vidLesson" style="margin-top:8px"></div>');renderVideo($('vidLesson'),'Dərsdən sonra bax');
+  play('done');$('lBar').style.width='100%';if(nx)$('lGoNext').onclick=()=>startLesson(nx.x.id);LS=null;renderNext();
 }
 $('lQuit').onclick=()=>sheet('Dərsdən çıxırsan?','<p>Bu dərsdəki proqresin yadda qalmayacaq. Qazandığın XP isə səndə qalır.</p>','<button class="btn" id="qStay">Davam et</button><button class="btn ghost" id="qLeave">Çıx</button>')||($('qStay').onclick=closeSheet,$('qLeave').onclick=()=>{closeSheet();LS=null;location.hash='course'});
 
@@ -585,8 +669,8 @@ let BOARD=null,boardErr=false,syncT=null;
 const daysLeft=()=>{const d=new Date(today()+'T12:00:00Z').getUTCDay();return d===0?0:7-d};
 const avatar=(name,ci,me)=>`<div class="av" style="background:${COLORS[ci%COLORS.length]||COLORS[0]}">${esc((name||'?').trim().charAt(0).toUpperCase())}</div>`;
 function renderBoard(el){
-  const left=daysLeft(),head=`<div class="lhead"><h2>Həftəlik liqa</h2><span>${left?left+' gün qalıb':'bu gün bitir'}</span></div>`;
-  if(!S.me){el.innerHTML=head+`<p style="margin:12px 0 0">Bu həftə ən çox XP toplayanlar burada görünür. Qoşul və adını cədvəldə gör!</p><button class="btn sun" data-join>Liqaya qoşul</button><p class="note">Hər bazar ertəsi liqa sıfırlanır — hər kəs yenidən başlayır.</p>`;el.querySelector('[data-join]').onclick=askName;return}
+  const left=daysLeft(),head=`<div class="lhead"><h2>${esc(S.lvl.toUpperCase())} liqası</h2><span>${left?left+' gün qalıb':'bu gün bitir'}</span></div>`;
+  if(!S.me){el.innerHTML=head+`<p style="margin:12px 0 0">Hər səviyyənin öz liqası var — sən öz səviyyəndəki öyrənənlərlə yarışırsan. Bu həftə ən çox XP toplayanlar burada görünür.</p><button class="btn sun" data-join>Liqaya qoşul</button><p class="note">Hər bazar ertəsi liqa sıfırlanır — hər kəs yenidən başlayır.</p>`;el.querySelector('[data-join]').onclick=askName;return}
   if(!BOARD){el.innerHTML=head+`<p class="note">${boardErr?'Liqaya qoşulmaq üçün internet lazımdır. Bir az sonra yenidən yoxla.':'Yüklənir…'}</p>`;return}
   const top=BOARD.top||[],pod=[top[1],top[0],top[2]],cls=['p2','p1','p3'],num=[2,1,3];
   const podium=top.length?`<div class="podium">${pod.map((p,i)=>p?`<div class="pod ${cls[i]}">${avatar(p.name,p.color)}<div class="nm">${esc(p.name)}${p.me?' (sən)':''}</div><div class="xp">${p.xp} XP</div><div class="blk">${num[i]}</div></div>`:'<div></div>').join('')}</div>`:'';
@@ -604,10 +688,21 @@ function renderBoards(){renderBoard($('boardD'));renderBoard($('boardM'));
   const n=$('nudgeM');if(!S.me){n.innerHTML=`${IC.league}<span><b>Həftəlik liqaya qoşul</b> — digər öyrənənlərlə yarış</span>`}else if(BOARD&&BOARD.me){n.innerHTML=`${IC.league}<span>Liqada <b>${ord(BOARD.me.rank)} yerdəsən</b> · ${BOARD.me.xp} XP</span>`}else n.innerHTML=`${IC.league}<span>Həftəlik liqa</span>`}
 async function sync(){
   if(!S.me)return renderBoards();
-  try{const r=await fetch('/api/board',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({id:S.me.id,name:S.me.name,color:S.me.color,xp:weekXP()})});
-    if(!r.ok)throw 0;BOARD=await r.json();boardErr=false}catch(e){boardErr=true}
+  try{const r=await fetch('/api/board',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({id:S.me.id,name:S.me.name,color:S.me.color,xp:weekXP(),league:S.lvl})});
+    if(!r.ok)throw 0;BOARD=await r.json();boardErr=false;rankCheck()}catch(e){boardErr=true}
   renderBoards();
 }
+function rankCheck(){if(!BOARD||!BOARD.me||!BOARD.me.xp)return;const key=BOARD.league+'|'+BOARD.week,prev=S.lastRank[key],now=BOARD.me.rank;S.lastRank={[key]:now};save();
+  if(prev==null)return;if(now<prev)celebrate(prev,now);else if(now>prev){play('down');toast('Kimsə səni ötdü! '+ord(now)+' yerdəsən — geri qaytarmaq üçün bir dərs keç.')}}
+const FUN={top:['Zirvədən baxmaq nə gözəldir! Aşağıdakılar buradan qarışqa kimi görünür.','Liqanın kralı / kraliçası sənsən! Tacı düz tut, düşməsin.','Zirvədəsən! Buradan hamı kiçik görünür… haha.'],
+  pod:['Pyedestaldasan! Medal boynunda çox yaxşı görünür.','Top-3! Artıq səni hamı tanıyır.','Pyedestala çıxdın — zirvə bir addım uzaqdadır!'],
+  up:['Hey, aşağıdakılar! Haradasınız? Buradan görünmürsünüz, haha!','Raket kimi qalxırsan! Ehtiyatlı ol, buludlara dəyməyəsən.','Arxada qalanlara əl yellə — onsuz da görmürlər!','{n} nəfəri ötdün. Onlar hələ də «What?» deyirlər.']};
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+function celebrate(prev,now){const n=prev-now,msg=(now===1?pick(FUN.top):now<=3?pick(FUN.pod):pick(FUN.up)).replace('{n}',n);play('rank');
+  $('celBox').innerHTML=`<svg class="mtn" viewBox="0 0 220 150" aria-hidden="true"><path d="M10 145L85 40l30 38 25-30 70 97z" fill="#cfe6d6"/><path d="M85 40l-14 20 14-6 10 10 8-6z" fill="#fff"/><path d="M140 48l-10 14 10-4 8 7z" fill="#fff"/><g class="climb"><path d="M85 40V8" stroke="#1f2a37" stroke-width="3"/><path d="M86 9h26l-7 7 7 7H86z" fill="#ff9f1c"/></g></svg><div class="rk">${ord(now)} yer</div><h2>${n} pillə yuxarı!</h2><p>${esc(msg)}</p><button class="btn sun" id="celOk" style="max-width:320px;margin:16px auto 0">Davam et</button>`;
+  $('cel').classList.add('on');$('celOk').onclick=()=>$('cel').classList.remove('on');$('celOk').focus({preventScroll:true});confettiOnly()}
+function confettiOnly(){const c=['#ffc83d','#ff9f1c','#2f7de1','#7b56d6','#16956a','#ef5d5d'];for(let i=0;i<50;i++){const d=document.createElement('div');d.className='conf';d.style.left=Math.random()*100+'vw';d.style.background=c[i%c.length];d.style.setProperty('--x',(Math.random()*160-80)+'px');d.style.setProperty('--r',(Math.random()*720)+'deg');d.style.setProperty('--d',(1.6+Math.random()*1.4)+'s');document.body.appendChild(d);setTimeout(()=>d.remove(),3200)}}
+let toastT;function toast(t){let el=$('toastEl');if(!el){el=document.createElement('div');el.id='toastEl';el.className='toast';el.setAttribute('role','status');document.body.appendChild(el)}el.textContent=t;el.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>el.hidden=true,4200)}
 const syncSoon=()=>{clearTimeout(syncT);syncT=setTimeout(sync,1200)};
 function askName(){
   let col=S.me?S.me.color:Math.floor(Math.random()*COLORS.length);
@@ -626,18 +721,19 @@ $('sheet').onclick=e=>{if(e.target.id==='sheet')closeSheet()};
 addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet()});
 
 /* ---------- routing ---------- */
-const VIEWS=['home','course','league','practice','quiz','lesson','reading','listening','speaking','writing'];
+const VIEWS=['welcome','home','course','league','practice','quiz','lesson','reading','listening','speaking','writing'];
 $('tabs').innerHTML=[['home','Bu gün'],['course','Kurs'],['league','Liqa'],['practice','Məşq']].map(([k,n])=>`<a href="#${k}" data-k="${k}">${IC[k]}<span>${n}</span></a>`).join('');
 function route(){let v=location.hash.slice(1);if(!VIEWS.includes(v))v='home';if(v==='quiz'&&!QZ.length){startQuiz();return}
   if(v==='lesson'&&!LS){location.hash='course';return}
   if(v==='course')renderCourse();
+  if(v==='welcome'){PT=null;welcome()}
   if(v==='league'&&matchMedia('(min-width:1000px)').matches)v='home';
   VIEWS.forEach(k=>$('v-'+k).classList.toggle('on',k===v));
   document.querySelectorAll('#tabs a').forEach(a=>a.classList.toggle('on',a.dataset.k===v||(v==='quiz'&&a.dataset.k==='home')||(v==='lesson'&&a.dataset.k==='course')||(['reading','listening','speaking','writing'].includes(v)&&a.dataset.k==='practice')));
   if(v==='league')sync();window.scrollTo(0,0)}
 addEventListener('hashchange',route);
 const h=new Date().getHours();$('greet').textContent=(h<12?'Sabahın xeyir!':h<18?'Salam!':'Axşamın xeyir!')+' Bu gün də bir addım at.';
-load();applyFreeze();renderHome();route();sync();
+load();drawSnd();applyFreeze();renderHome();renderVideo($('vidHome'));if(!S.onboarded&&!location.hash)location.hash='welcome';route();sync();
 
 /* ---------- PWA ---------- */
 if('serviceWorker' in navigator&&location.protocol==='https:')addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));

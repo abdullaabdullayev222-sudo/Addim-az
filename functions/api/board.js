@@ -1,12 +1,14 @@
 // Addım — həftəlik liqa API (Cloudflare Pages Function + D1)
-// GET  /api/board?id=...          -> cədvəl
-// POST /api/board {id,name,color,xp} -> balı yenilə və cədvəli qaytar
+// Hər səviyyənin (A1, A2, B1, B2) öz liqası var.
+// GET  /api/board?id=...&league=a1          -> cədvəl
+// POST /api/board {id,name,color,xp,league} -> balı yenilə və cədvəli qaytar
 // D1 binding adı: DB
 
-const SCHEMA = `CREATE TABLE IF NOT EXISTS scores (
-  id TEXT NOT NULL, week TEXT NOT NULL, name TEXT NOT NULL,
+const SCHEMA = `CREATE TABLE IF NOT EXISTS scores_v2 (
+  id TEXT NOT NULL, week TEXT NOT NULL, league TEXT NOT NULL DEFAULT 'a1', name TEXT NOT NULL,
   color INTEGER NOT NULL DEFAULT 0, xp INTEGER NOT NULL DEFAULT 0,
   updated INTEGER NOT NULL, PRIMARY KEY (id, week))`;
+const LEAGUES = ['a1', 'a2', 'b1', 'b2'];
 const MAX_WEEK_XP = 3000; // real istifadə üçün kifayət, saxta böyük rəqəmlərin qarşısını alır
 
 const json = (data, status = 200) =>
@@ -27,7 +29,9 @@ export async function onRequest({ request, env }) {
   if (!['GET', 'POST'].includes(request.method)) return json({ error: 'method' }, 405);
   await env.DB.prepare(SCHEMA).run();
   const week = weekKey();
-  let id = new URL(request.url).searchParams.get('id') || '';
+  const q = new URL(request.url).searchParams;
+  let id = q.get('id') || '';
+  let league = LEAGUES.includes(q.get('league')) ? q.get('league') : 'a1';
 
   if (request.method === 'POST') {
     let b;
@@ -37,30 +41,31 @@ export async function onRequest({ request, env }) {
     const color = Math.max(0, Math.min(9, Math.floor(Number(b.color) || 0)));
     if (!validId(b.id) || name.length < 2) return json({ error: 'invalid' }, 400);
     id = b.id;
+    if (LEAGUES.includes(b.league)) league = b.league;
     await env.DB.prepare(
-      `INSERT INTO scores (id, week, name, color, xp, updated) VALUES (?1, ?2, ?3, ?4, ?5, ?6)
-       ON CONFLICT(id, week) DO UPDATE SET name = excluded.name, color = excluded.color,
-       xp = MAX(scores.xp, excluded.xp), updated = CASE WHEN excluded.xp > scores.xp THEN excluded.updated ELSE scores.updated END`
-    ).bind(id, week, name, color, xp, Date.now()).run();
+      `INSERT INTO scores_v2 (id, week, league, name, color, xp, updated) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)
+       ON CONFLICT(id, week) DO UPDATE SET league = excluded.league, name = excluded.name, color = excluded.color,
+       xp = MAX(scores_v2.xp, excluded.xp), updated = CASE WHEN excluded.xp > scores_v2.xp THEN excluded.updated ELSE scores_v2.updated END`
+    ).bind(id, week, league, name, color, xp, Date.now()).run();
   }
 
   const top = (await env.DB.prepare(
-    'SELECT id, name, color, xp FROM scores WHERE week = ?1 AND xp > 0 ORDER BY xp DESC, updated ASC LIMIT 30'
-  ).bind(week).all()).results.map(r => ({ name: r.name, color: r.color, xp: r.xp, me: validId(id) && r.id === id }));
+    'SELECT id, name, color, xp FROM scores_v2 WHERE week = ?1 AND league = ?2 AND xp > 0 ORDER BY xp DESC, updated ASC LIMIT 30'
+  ).bind(week, league).all()).results.map(r => ({ name: r.name, color: r.color, xp: r.xp, me: validId(id) && r.id === id }));
 
-  const total = (await env.DB.prepare('SELECT COUNT(*) AS n FROM scores WHERE week = ?1').bind(week).first()).n;
+  const total = (await env.DB.prepare('SELECT COUNT(*) AS n FROM scores_v2 WHERE week = ?1 AND league = ?2').bind(week, league).first()).n;
 
   let me = null, above = null;
   if (validId(id)) {
-    const row = await env.DB.prepare('SELECT xp, updated FROM scores WHERE id = ?1 AND week = ?2').bind(id, week).first();
+    const row = await env.DB.prepare('SELECT xp, updated FROM scores_v2 WHERE id = ?1 AND week = ?2 AND league = ?3').bind(id, week, league).first();
     if (row) {
       const better = (await env.DB.prepare(
-        'SELECT COUNT(*) AS n FROM scores WHERE week = ?1 AND (xp > ?2 OR (xp = ?2 AND updated < ?3 AND ?2 > 0))'
-      ).bind(week, row.xp, row.updated).first()).n;
+        'SELECT COUNT(*) AS n FROM scores_v2 WHERE week = ?1 AND league = ?4 AND (xp > ?2 OR (xp = ?2 AND updated < ?3 AND ?2 > 0))'
+      ).bind(week, row.xp, row.updated, league).first()).n;
       me = { rank: better + 1, xp: row.xp };
-      const a = await env.DB.prepare('SELECT xp FROM scores WHERE week = ?1 AND xp > ?2 ORDER BY xp ASC LIMIT 1').bind(week, row.xp).first();
+      const a = await env.DB.prepare('SELECT xp FROM scores_v2 WHERE week = ?1 AND league = ?3 AND xp > ?2 ORDER BY xp ASC LIMIT 1').bind(week, row.xp, league).first();
       if (a) above = { xp: a.xp };
     }
   }
-  return json({ week, total, top, me, above });
+  return json({ week, league, total, top, me, above });
 }

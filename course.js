@@ -160,3 +160,54 @@ window.COURSE = [
   { id:'b2-u8', title:'Təqdimat bacarıqları', grammar:'Təqdimat dili, keçid ifadələri' }
 ]}
 ];
+
+// Gündəlik video tövsiyələri (səviyyəyə görə, hər gün növbəti video).
+// Hamısı YouTube-da mövcud olduğu yoxlanılmış videolardır: [videoId, başlıq, kanal / mənbə]
+window.VIDEOS = {
+  a1: [
+    ['DjShiTl2hlo', 'Basic Greetings and Introductions', 'Learning English for Beginners'],
+    ['v1ZWFsz0V5U', 'How to introduce yourself in British English (A1)', 'Beginner English lesson'],
+    ['Umpq_QBGs24', "How to use 'to be' and 'to have' in Present Simple", 'Beginner English lesson'],
+    ['PoqgDtIsZ8o', 'English Conversation for Beginners', 'Greetings, introductions'],
+    ['hYX1MQO-8gQ', 'Beginner Listening Practice — Daily Routine', 'A1 listening'],
+    ['xsRZMu9nQlc', 'Beginner Listening Practice — Family', 'A1 listening'],
+    ['v6hxS7RyQZA', 'A1 English Listening Practice for Beginners', 'A1 listening test']
+  ],
+  a2: [
+    ['xFsYrTIndhI', 'Present Simple and Present Continuous — 6 Minute Grammar', 'BBC Learning English'],
+    ['OsW5sV3GMDM', 'The Grammar Gameshow — Episode 1', 'BBC Learning English'],
+    ['8_nhtAwI0dA', "Present perfect with 'just', 'already' and 'yet'", 'BBC Learning English'],
+    ['W-eJIgTrBTo', 'A1/A2 Listening Practice — Travel and Holidays', 'A2 listening'],
+    ['UnEmEbWytI8', 'Introductions — graded video', 'Natural English']
+  ],
+  b1: [
+    ['jwmKjgwlMk8', 'Present perfect and past simple — 6 Minute Grammar', 'BBC Learning English'],
+    ['nI5zaB6QL-o', 'Present and past passives — 6 Minute Grammar', 'BBC Learning English'],
+    ['WDJlTaihMsY', 'Lower-intermediate course — Unit 1', 'BBC Learning English'],
+    ['0OHtQKOxeJY', 'English at Work — The Interview', 'BBC Learning English'],
+    ['b5DOQ7iOzO4', "6 Minute English — 'Lifestyle' box set", 'BBC Learning English']
+  ],
+  b2: [
+    ['pvoqkQHb3lo', 'Present perfect simple or continuous?', 'BBC Learning English'],
+    ['Q_xHxFZTTaA', 'English at Work — The Interruption', 'BBC Learning English'],
+    ['fcN0BXzK8bg', "6 Minute English — 'Language' box set", 'BBC Learning English'],
+    ['rnBQXmO_StE', '6 Minute English — Internet and Technology', 'BBC Learning English'],
+    ['WMokf0EgTcA', "6 Minute English — 'Wellbeing' box set", 'BBC Learning English']
+  ]
+};
+
+// Səviyyə testi: hər səviyyədən 3 sual, asandan çətinə. o[0] düzgündür.
+window.PLACEMENT = [
+  {lv:'a1', q:'She ___ a doctor.', o:['is','are','am','be']},
+  {lv:'a1', q:'«Mənim iki qardaşım var» düzgün tərcümə:', o:['I have two brothers.','I has two brothers.','I am two brothers.','Me have two brothers.']},
+  {lv:'a1', q:'___ you like coffee?', o:['Do','Does','Are','Is']},
+  {lv:'a2', q:'Yesterday I ___ to the cinema.', o:['went','go','have gone','goes']},
+  {lv:'a2', q:'This book is ___ than that one.', o:['more interesting','interestinger','most interesting','more interestinger']},
+  {lv:'a2', q:'Have you ever ___ to London?', o:['been','went','go','was']},
+  {lv:'b1', q:'If I ___ more money, I would travel the world.', o:['had','have','will have','would have']},
+  {lv:'b1', q:'This museum ___ in 1950.', o:['was built','built','is building','has built']},
+  {lv:'b1', q:'She asked me where I ___.', o:['lived','do live','did live','am live']},
+  {lv:'b2', q:'If I had studied harder, I ___ the exam.', o:['would have passed','would pass','passed','will pass']},
+  {lv:'b2', q:"He ___ be at home — his car isn't outside.", o:["can't","mustn't","shouldn't","needn't"]},
+  {lv:'b2', q:'___ the rain, we went for a walk.', o:['Despite','Although','However','Even']}
+];
