@@ -1,6 +1,6 @@
 // Addım — sənin dəyişə biləcəyin parametrlər
 window.ADDIM_CONFIG = {
-  price: '9,9 AZN',          // Premium qiyməti
+  price: '5,9 AZN',          // Premium qiyməti
   period: 'ay',              // ödəniş dövrü
   freeLessonsPerDay: 3,      // pulsuz istifadəçi gündə neçə YENİ dərs keçə bilər
   premiumXpBonus: 0.5,       // Premium-da dərs XP bonusu (0.5 = +50%)

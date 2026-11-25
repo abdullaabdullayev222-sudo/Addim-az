@@ -476,14 +476,238 @@ window.COURSE = [
   ]}
 ]},
 { id:'b1', name:'B1', title:'Orta', color:'#7b56d6', units:[
-  { id:'b1-u1', title:'Həyat təcrübəsi', grammar:'Present Perfect və Past Simple · for / since' },
-  { id:'b1-u2', title:'Gələcək', grammar:'will və going to · proqnozlar' },
-  { id:'b1-u3', title:'Şərt cümlələri', grammar:'First və Second Conditional' },
-  { id:'b1-u4', title:'Media və xəbərlər', grammar:'Passive voice (indiki və keçmiş)' },
-  { id:'b1-u5', title:'İş və karyera', grammar:'Gerund və infinitive' },
-  { id:'b1-u6', title:'Söhbəti ötürmək', grammar:'Reported speech' },
-  { id:'b1-u7', title:'Münasibətlər', grammar:'Relative clauses: who / which / that' },
-  { id:'b1-u8', title:'Keçmiş vərdişlər', grammar:'used to / would' }
+  { id:'b1-u1', title:'Həyat təcrübəsi', grammar:'Present Perfect · for / since · Present Perfect Continuous', lessons:[
+    { id:'b1-u1-l1', title:'for və since', items:[
+      {t:'learn', title:'İndiyə qədər davam edən vəziyyət', body:'Azərbaycan dilində «5 ildir burada yaşayıram» deyirik — indiki zamanla. İngiliscədə isə bu, Present Perfect ilə deyilir: I have lived here for 5 years. «I live here for 5 years» — azərbaycanlıların ən çox etdiyi səhvlərdəndir. FOR + müddət (for 5 years), SINCE + başlanğıc nöqtəsi (since 2020).', ex:[["I've lived here for five years.",'Beş ildir burada yaşayıram.'],["She has worked here since 2020.",'O, 2020-dən burada işləyir.'],['How long have you known him?','Onu nə vaxtdan tanıyırsan?'],['for two weeks / since Monday','iki həftədir / bazar ertəsindən']]},
+      {t:'mc', q:'I ___ in Baku since 2018.', o:['have lived','live','am living','lived'], e:'2018-dən indiyə qədər davam edir: Present Perfect.'},
+      {t:'mc', q:'She has worked here ___ three years.', o:['for','since','during','from'], e:'Müddət: for three years.'},
+      {t:'mc', q:'We have known each other ___ school.', o:['since','for','from','during'], e:'Başlanğıc nöqtəsi: since school.'},
+      {t:'mc', q:'«İki ildir ingilis dili öyrənirəm» — düzgün tərcümə:', o:['I have been learning English for two years.','I learn English for two years.','I am learning English since two years.','I learned English for two years ago.'], e:'Hələ davam edir: have been learning + for.'},
+      {t:'order', az:'Sən nə vaxtdan burada işləyirsən?', en:['How long have you worked here?','How long have you been working here?'], extra:['since','do']},
+      {t:'listen', en:"I've had this phone for six months.", o:["I've had this phone for six months.",'I had this phone for six months.',"I've had this phone since March."]}
+    ]},
+    { id:'b1-u1-l2', title:'Present Perfect Continuous', items:[
+      {t:'learn', title:'have been + -ing', body:'Müddəti və prosesi vurğulayanda: I\'ve been running (ona görə yorğunam). Neçə dəfə və ya nə qədər bitirdiyini deyəndə isə Present Perfect Simple: I\'ve written three emails.', ex:[["I'm tired — I've been working all day.",'Yorğunam — bütün günü işləmişəm.'],["It has been raining since morning.",'Səhərdən yağış yağır.'],['How long have you been waiting?','Nə vaxtdan gözləyirsən?'],["She's read three books this month.",'Bu ay üç kitab oxuyub.']]},
+      {t:'mc', q:"I'm tired because I ___ all day.", o:['have been working','have worked','worked','am working'], e:'Proses və nəticə (yorğunluq): have been working.'},
+      {t:'mc', q:'She ___ three books this month.', o:['has read','has been reading','read','reads'], e:'Say (three books) → Present Perfect Simple.'},
+      {t:'mc', q:'How long ___ you been waiting?', o:['have','did','are','were'], e:'How long have you been…?'},
+      {t:'mc', q:'It ___ raining since morning.', o:['has been','is','was','have been'], e:'It ilə: has been.'},
+      {t:'order', az:'Biz bir saatdır səni gözləyirik.', en:['We have been waiting for you for an hour.',"We've been waiting for you for an hour."], extra:['since','are']},
+      {t:'listen', en:'What have you been doing lately?', o:['What have you been doing lately?','What have you done lately?','What were you doing lately?']}
+    ]},
+    { id:'b1-u1-l3', title:'Təcrübəni təqdim et', items:[
+      {t:'learn', title:'CV və müsahibədə təcrübə', body:'Hələ davam edən və ya vaxtı vacib olmayan təcrübə üçün Present Perfect, konkret tarixli fakt üçün Past Simple işlət. «So far» — indiyə qədər.', ex:[["I have worked as a volunteer for two years.",'İki ildir könüllü kimi çalışıram.'],["I've been responsible for social media.",'Sosial mediaya mən cavabdeh olmuşam.'],['So far I have completed three projects.','İndiyə qədər üç layihə bitirmişəm.'],['I graduated in 2023.','2023-də məzun oldum.']]},
+      {t:'mc', q:'«So far» nə deməkdir?', o:['indiyə qədər','uzaqda','o qədər','tezliklə'], e:'So far = until now.'},
+      {t:'mc', q:'Müsahibədə: «I ___ as a volunteer for two years.»', o:['have worked','have been work','work','am working'], e:'İndiyə qədər davam edən təcrübə: have worked.'},
+      {t:'mc', q:'Have you ___ been abroad?', o:['ever','yet','already','since'], e:'Həyat təcrübəsi sualı: ever.'},
+      {t:'mc', q:'Hansı cümlədə konkret keçmiş vaxt var (Past Simple lazımdır)?', o:['I graduated in 2023.','I have already graduated.','I have just graduated.','I have recently graduated.'], e:'In 2023 — konkret vaxt.'},
+      {t:'order', az:'Mən indiyə qədər üç layihə bitirmişəm.', en:['I have finished three projects so far.','So far I have finished three projects.'], extra:['finish','since']},
+      {t:'listen', en:"I've recently started a new job.", o:["I've recently started a new job.",'I recently started a new course.',"I've just started a new job."]}
+    ]}
+  ]},
+  { id:'b1-u2', title:'Gələcək', grammar:'will və going to · when / as soon as', lessons:[
+    { id:'b1-u2-l1', title:'will', items:[
+      {t:'learn', title:'will: qərar, təklif, söz, fikir', body:'WILL — danışarkən verdiyin ani qərar, təklif, söz və şəxsi proqnoz (I think…). İnkar: won\'t (will not).', ex:[["The phone's ringing. — I'll get it!",'Telefon zəng çalır. — Mən götürərəm!'],["I'll carry your bag.",'Çantanı mən daşıyaram.'],["I promise I won't be late.",'Söz verirəm, gecikməyəcəyəm.'],["I think it will be a great year.",'Məncə, möhtəşəm il olacaq.']]},
+      {t:'mc', q:'The phone is ringing. — I ___ answer it!', o:["'ll",'am going to','will to','am'], e:'Ani qərar: I\'ll.'},
+      {t:'mc', q:'I promise I ___ tell anyone.', o:["won't","don't","am not","willn't"], e:'Söz vermək: won\'t.'},
+      {t:'mc', q:'I think our team ___ win the match.', o:['will','is winning','wins','going to'], e:'Şəxsi fikir / proqnoz: I think … will.'},
+      {t:'mc', q:'«I\'ll carry your bag» — bu nədir?', o:['təklif','qadağa','keçmiş hadisə','vərdiş'], e:'Kömək təklifi will ilə.'},
+      {t:'order', az:'Narahat olma, sənə kömək edəcəyəm.', en:["Don't worry, I will help you.","Don't worry, I'll help you."], extra:['going','helps']},
+      {t:'listen', en:"I'll call you when I arrive.", o:["I'll call you when I arrive.","I'll call you when I leave.",'I called you when I arrived.']}
+    ]},
+    { id:'b1-u2-l2', title:'will yoxsa going to?', items:[
+      {t:'learn', title:'Fərq nədir?', body:'GOING TO — əvvəlcədən qərar verilmiş plan və ya gözlə görünən əlamət. WILL — elə indi verilən qərar və ya şəxsi fikir.', ex:[["I've bought tickets — we're going to see a concert.",'Bilet almışam — konsertə gedəcəyik.'],["We have no milk? I'll get some.",'Süd yoxdur? Mən alaram.'],["Look at that car! It's going to crash!",'O maşına bax! Toqquşacaq!'],['Robots will do many jobs.','Robotlar çox işi görəcək.']]},
+      {t:'mc', q:"I've bought the tickets. We ___ see the concert on Friday.", o:['are going to','will','shall','go to'], e:'Əvvəlcədən plan: going to.'},
+      {t:'mc', q:'— We have no milk. — Really? I ___ get some.', o:["'ll",'am going to','go','am getting'], e:'Elə indi qərar: I\'ll.'},
+      {t:'mc', q:'Look at that car! It ___ crash!', o:['is going to','will','crashes','shall'], e:'Görünən əlamət: is going to.'},
+      {t:'mc', q:'In my opinion, robots ___ do many jobs in the future.', o:['will','are going','do','shall to'], e:'Şəxsi fikir: will.'},
+      {t:'order', az:'Gələn il magistraturaya müraciət edəcəyəm (artıq qərarlıyam).', en:["I am going to apply for a master's next year.","I'm going to apply for a master's next year."], extra:['will','applying']},
+      {t:'listen', en:'I think prices will go up.', o:['I think prices will go up.','I think prices went up.','I think prices will go down.']}
+    ]},
+    { id:'b1-u2-l3', title:'when, as soon as, until', items:[
+      {t:'learn', title:'Gələcək haqqında, amma indiki zamanla', body:'When, as soon as, before, after, until-dən sonra gələcək mənada INDIKI zaman işlənir: I\'ll call you when I get home (when I will get — səhv). Azərbaycan dilindəki «evə çatanda» kimi.', ex:[["I'll text you when I get home.",'Evə çatanda yazacağam.'],["As soon as she gets the results, she'll tell us.",'Nəticəni alan kimi bizə deyəcək.'],["We won't start until everyone arrives.",'Hamı gələnə qədər başlamayacağıq.'],['Close the window before you leave.','Çıxmazdan əvvəl pəncərəni bağla.']]},
+      {t:'mc', q:"I'll text you when I ___ home.", o:['get','will get','got','am going to get'], e:'When-dən sonra indiki zaman.'},
+      {t:'mc', q:'As soon as she ___ the results, she will tell us.', o:['gets','will get','got','get'], e:'As soon as + Present Simple.'},
+      {t:'mc', q:"We won't start ___ everyone arrives.", o:['until','when','if','as'], e:'Until — -ana qədər.'},
+      {t:'mc', q:'Hansı düzgündür?', o:['Before you leave, close the window.','Before you will leave, close the window.','Before you left, close the window.','Before leave you, close the window.'], e:'Before + Present Simple.'},
+      {t:'order', az:'İşi bitirən kimi sənə zəng edəcəyəm.', en:['I will call you as soon as I finish work.',"I'll call you as soon as I finish work."], extra:['finished','when']},
+      {t:'listen', en:'Let me know when you are ready.', o:['Let me know when you are ready.','Let me know if you are ready.','Let me know when you were ready.']}
+    ]}
+  ]},
+  { id:'b1-u3', title:'Şərt cümlələri', grammar:'First və Second Conditional', lessons:[
+    { id:'b1-u3-l1', title:'First Conditional', items:[
+      {t:'learn', title:'Real ehtimal: If + indiki, will', body:'Real mümkün olan şərt: IF + Present Simple, WILL + fel. If-li hissədə «will» işlənmir. UNLESS = if not (-mazsa).', ex:[["If it rains, we'll stay at home.",'Yağış yağsa, evdə qalacağıq.'],['If you study hard, you will pass.','Yaxşı oxusan, keçəcəksən.'],["You'll be late unless you hurry.",'Tələsməsən, gecikəcəksən.']]},
+      {t:'mc', q:'If you study hard, you ___ pass.', o:['will','would','are','passed'], e:'First conditional: will.'},
+      {t:'mc', q:"If it ___ tomorrow, we'll cancel the trip.", o:['rains','will rain','rained','raining'], e:'If-dən sonra Present Simple.'},
+      {t:'mc', q:"You'll miss the bus ___ you hurry.", o:['unless','if','when','until'], e:'Unless = if not: tələsməsən.'},
+      {t:'mc', q:'Hansı düzgündür?', o:["If I see him, I'll tell him.",'If I will see him, I tell him.',"If I saw him, I'll tell him.",'If I see him, I told him.'], e:'If + indiki, will + fel.'},
+      {t:'order', az:'Tələssən, qatara çatacaqsan.', en:['If you hurry, you will catch the train.',"If you hurry, you'll catch the train.",'You will catch the train if you hurry.'], extra:['would','hurried']},
+      {t:'listen', en:"If I get the job, I'll move to Baku.", o:["If I get the job, I'll move to Baku.","If I got the job, I'd move to Baku.","If I get the job, I'll stay in Baku."]}
+    ]},
+    { id:'b1-u3-l2', title:'Second Conditional', items:[
+      {t:'learn', title:'Xəyali vəziyyət: If + keçmiş, would', body:'İndiki zamanda real olmayan, xəyali vəziyyət: IF + Past Simple, WOULD + fel. Forma keçmişdir, məna isə indiki. «If I were you» — məsləhət vermək üçün klassik ifadə (I was yox, were).', ex:[['If I had more money, I would travel.','Daha çox pulum olsaydı, səyahət edərdim.'],["If I were you, I'd apply.",'Sənin yerində olsaydım, müraciət edərdim.'],['What would you do if you won the lottery?','Lotereya udsaydın, nə edərdin?']]},
+      {t:'mc', q:'If I ___ rich, I would buy a house by the sea.', o:['were','am','will be','would be'], e:'Xəyali: If I were…'},
+      {t:'mc', q:'If she had more time, she ___ learn Spanish.', o:['would','will','can','does'], e:'Second conditional: would.'},
+      {t:'mc', q:'If I were you, I ___ apply for that scholarship.', o:['would','will','am','did'], e:'Məsləhət: If I were you, I would…'},
+      {t:'mc', q:'«If I won the lottery…» nə deməkdir?', o:['Lotereya udsaydım… (real deyil)','Lotereya udanda…','Lotereya udmuşam…','Lotereya udacağam…'], e:'Second conditional — xəyal.'},
+      {t:'order', az:'Sənin yerində olsaydım, ona zəng edərdim.', en:['If I were you, I would call her.',"If I were you, I'd call her.",'I would call her if I were you.'], extra:['will','am']},
+      {t:'listen', en:'What would you do if you lost your phone?', o:['What would you do if you lost your phone?','What will you do if you lose your phone?','What would you do if you found a phone?']}
+    ]},
+    { id:'b1-u3-l3', title:'Real yoxsa xəyali?', items:[
+      {t:'learn', title:'First və Second müqayisəsi', body:'Özünə sual ver: bu, real ola bilərmi? Real ehtimal → If + indiki, will. Xəyali / ehtimalı çox az → If + keçmiş, would.', ex:[["If it's sunny tomorrow, we'll go to the beach.",'Sabah günəşli olsa, çimərliyə gedəcəyik.'],["If I were a bird, I'd fly over the Caspian.",'Quş olsaydım, Xəzərin üzərində uçardım.'],["If you give me your number, I'll send the file.",'Nömrəni versən, faylı göndərəcəyəm.']]},
+      {t:'mc', q:'If it ___ sunny tomorrow, we will go to the beach.', o:['is','were','would be','was'], e:'Real ehtimal: If it is…'},
+      {t:'mc', q:'If I ___ a bird, I would fly over the Caspian.', o:['were','am','will be','be'], e:'Xəyali: If I were…'},
+      {t:'mc', q:'I would buy that car if it ___ cheaper.', o:['were','is','will be','would be'], e:'Would ilə: if it were.'},
+      {t:'mc', q:"If you ___ me your number, I'll send you the file.", o:['give','gave','would give','will give'], e:'Will ilə: if you give.'},
+      {t:'order', az:'Vaxtım olsaydı, sənə kömək edərdim.', en:['If I had time, I would help you.',"If I had time, I'd help you.",'I would help you if I had time.'], extra:['have','will']},
+      {t:'listen', en:"I'd be happier if I lived near the sea.", o:["I'd be happier if I lived near the sea.","I'll be happier if I live near the sea.","I'd be happier if I lived near the park."]}
+    ]}
+  ]},
+  { id:'b1-u4', title:'Media və xəbərlər', grammar:'Passive voice (indiki və keçmiş)', lessons:[
+    { id:'b1-u4-l1', title:'Passiv: indiki zaman', items:[
+      {t:'learn', title:'is / are + 3-cü forma', body:'Kimin etdiyi vacib olmayanda və ya məlum olmayanda passiv işlənir: English is spoken in many countries. Edəni göstərmək üçün BY: by thousands of people. Azərbaycan dilindəki «-ılır, -ilir» kimi.', ex:[['English is spoken in many countries.','İngilis dili çox ölkədə danışılır.'],['These phones are made in China.','Bu telefonlar Çində istehsal olunur.'],['The news is updated every hour.','Xəbərlər hər saat yenilənir.']]},
+      {t:'mc', q:'English ___ in many countries.', o:['is spoken','speaks','is speaking','spoken'], e:'Passiv: is + spoken.'},
+      {t:'mc', q:'These phones ___ in China.', o:['are made','is made','make','are making'], e:'Cəm: are made.'},
+      {t:'mc', q:'The news ___ every hour.', o:['is updated','updates','is updating','updated'], e:'Xəbəri kimsə yeniləyir: is updated.'},
+      {t:'mc', q:'Hansı cümlə passivdir?', o:['The letters are delivered every morning.','The postman delivers the letters.','They deliver letters.','The postman is delivering letters.'], e:'Are delivered — passiv.'},
+      {t:'order', az:'Bu sayt hər gün minlərlə insan tərəfindən oxunur.', en:'This website is read by thousands of people every day.', extra:['reads','from']},
+      {t:'listen', en:'Breakfast is served from seven to ten.', o:['Breakfast is served from seven to ten.','Breakfast is served from eight to ten.','Dinner is served from seven to ten.']}
+    ]},
+    { id:'b1-u4-l2', title:'Passiv: keçmiş zaman', items:[
+      {t:'learn', title:'was / were + 3-cü forma', body:'Keçmişdə passiv: was / were + 3-cü forma. The tower was built centuries ago.', ex:[['The Maiden Tower was built many centuries ago.','Qız qalası əsrlər əvvəl tikilib.'],['The winners were announced yesterday.','Qaliblər dünən elan olundu.'],['My bike was stolen last night.','Velosipedim dünən gecə oğurlandı.'],['The film was directed by a young director.','Filmi gənc rejissor çəkib.']]},
+      {t:'mc', q:'The Maiden Tower ___ many centuries ago.', o:['was built','built','is built','has build'], e:'Keçmiş passiv: was built.'},
+      {t:'mc', q:'The winners ___ yesterday.', o:['were announced','was announced','announced','are announcing'], e:'Cəm + keçmiş: were announced.'},
+      {t:'mc', q:'My bike ___ last night!', o:['was stolen','stole','was stealing','is stolen'], e:'Steal → stolen.'},
+      {t:'mc', q:'The film was directed ___ a young director.', o:['by','from','with','of'], e:'Edən: by.'},
+      {t:'order', az:'İmtahan nəticələri dünən elan olundu.', en:'The exam results were announced yesterday.', extra:['was','announce']},
+      {t:'listen', en:'The meeting was cancelled because of the snow.', o:['The meeting was cancelled because of the snow.','The meeting was moved because of the snow.','The match was cancelled because of the snow.']}
+    ]},
+    { id:'b1-u4-l3', title:'Xəbər dili', items:[
+      {t:'learn', title:'Xəbər və hesabat ifadələri', body:'Xəbərlərdə passiv və mənbəyə istinad çox işlənir. Məlumatı paylaşmazdan əvvəl mənbəyini yoxla: reliable source — etibarlı mənbə, fake news — saxta xəbər.', ex:[['According to the report…','Hesabata görə…'],['It is reported that…','Bildirilir ki…'],['headline','xəbər başlığı'],['reliable source','etibarlı mənbə'],['increase / decrease','artmaq / azalmaq']]},
+      {t:'mc', q:'«According to» nə deməkdir?', o:['-a görə','-a qarşı','-dan sonra','-a baxmayaraq'], e:'According to the news — xəbərlərə görə.'},
+      {t:'mc', q:'«Reliable source» nə deməkdir?', o:['etibarlı mənbə','köhnə mənbə','gizli mənbə','rəsmi xəbər'], e:'Reliable — etibarlı.'},
+      {t:'mc', q:'Prices ___ by 10% last year.', o:['increased','increasing','increase','have increase'], e:'Last year: Past Simple — increased.'},
+      {t:'mc', q:'«Headline» nə deməkdir?', o:['xəbər başlığı','baş redaktor','əsas xəbər kanalı','son dəqiqə'], e:'Qəzet və saytda xəbərin başlığı.'},
+      {t:'order', az:'Hesabata görə, işsizlik azalıb.', en:'According to the report, unemployment has decreased.', extra:['increased','for']},
+      {t:'listen', en:'It is reported that the airport will open next year.', o:['It is reported that the airport will open next year.','It is reported that the airport will close next year.','It was reported that the airport opened last year.']}
+    ]}
+  ]},
+  { id:'b1-u5', title:'İş və karyera', grammar:'Gerund və infinitive · motivasiya məktubu · müsahibə', lessons:[
+    { id:'b1-u5-l1', title:'-ing yoxsa to?', items:[
+      {t:'learn', title:'Gerund (-ing) və infinitive (to)', body:'Bəzi fellərdən sonra -ING: enjoy, finish, avoid, mind, suggest, keep. Bəzilərindən sonra TO: want, decide, plan, hope, need, agree. Önlükdən (in, at, about, to) sonra həmişə -ING: interested in working, good at managing, look forward to hearing.', ex:[['I enjoy working with people.','İnsanlarla işləməyi xoşlayıram.'],['She decided to apply.','O, müraciət etməyə qərar verdi.'],["I'm interested in studying abroad.",'Xaricdə oxumaqla maraqlanıram.'],["I look forward to hearing from you.",'Cavabınızı gözləyirəm.']]},
+      {t:'mc', q:'I enjoy ___ with people.', o:['working','to work','work','worked'], e:'Enjoy + -ing.'},
+      {t:'mc', q:'She decided ___ for the job.', o:['to apply','applying','apply','applied'], e:'Decide + to.'},
+      {t:'mc', q:"I'm interested in ___ abroad.", o:['studying','to study','study','studied'], e:'Önlükdən sonra -ing.'},
+      {t:'mc', q:'He avoided ___ the question.', o:['answering','to answer','answer','answered'], e:'Avoid + -ing.'},
+      {t:'order', az:'Mən marketinq sahəsində işləmək istəyirəm.', en:'I want to work in marketing.', extra:['working','at']},
+      {t:'listen', en:"I'm looking forward to hearing from you.", o:["I'm looking forward to hearing from you.","I'm looking forward to hear from you.","I'm looking forward to meeting you."]}
+    ]},
+    { id:'b1-u5-l2', title:'Motivasiya məktubu', items:[
+      {t:'learn', title:'Rəsmi məktubun əsas ifadələri', body:'Motivasiya (cover) məktubu qısa, konkret və nəzakətli olmalıdır: niyə yazırsan, nə təklif edirsən, sonda təşəkkür. «Write me soon» kimi qeyri-rəsmi ifadələr işlətmə.', ex:[['I am writing to apply for the position of…','… vəzifəsinə müraciət etmək üçün yazıram.'],['I have experience in organising events.','Tədbir təşkilində təcrübəm var.'],['I am confident that I can contribute to…','Əminəm ki, … töhfə verə bilərəm.'],['Thank you for considering my application.','Müraciətimi nəzərə aldığınız üçün təşəkkür edirəm.'],['I look forward to hearing from you.','Cavabınızı gözləyirəm.']]},
+      {t:'mc', q:'Məktubun əvvəli: «I am writing ___ for the position of…»', o:['to apply','applying','for apply','apply'], e:'Məqsəd: I am writing to apply…'},
+      {t:'mc', q:'I have experience ___ organising events.', o:['in','on','at','with'], e:'Experience in + -ing.'},
+      {t:'mc', q:'Rəsmi məktubun ən uyğun sonu:', o:['I look forward to hearing from you.','Write me soon!','Bye, see you!','Waiting your answer.'], e:'Standart rəsmi bitiriş.'},
+      {t:'mc', q:'«I am confident that…» nə deməkdir?', o:['Əminəm ki…','Utanıram ki…','Qorxuram ki…','Gizli saxlayıram ki…'], e:'Confident — əmin, özünəinamlı.'},
+      {t:'order', az:'Müraciətimi nəzərə aldığınız üçün təşəkkür edirəm.', en:'Thank you for considering my application.', extra:['consider','to']},
+      {t:'listen', en:'I would welcome the opportunity to discuss my application.', o:['I would welcome the opportunity to discuss my application.','I would welcome the opportunity to discuss my salary.','I will welcome the opportunity to discuss my application.']}
+    ]},
+    { id:'b1-u5-l3', title:'Müsahibədə özünü təqdim et', items:[
+      {t:'learn', title:'Müsahibənin əsas sualları', body:'«Tell me about yourself» sualına doğum tarixindən yox, peşəkar profilindən başla: təhsil + təcrübə + nəyi yaxşı bacarırsan + niyə bu iş. Zəif tərəfi deyəndə onun üzərində necə işlədiyini də əlavə et.', ex:[["I'm a final-year economics student.",'İqtisadiyyat üzrə son kurs tələbəsiyəm.'],['One of my strengths is solving problems.','Güclü tərəflərimdən biri problem həll etməkdir.'],["I'm working on my public speaking.",'Çıxış bacarığım üzərində işləyirəm.'],['Where do you see yourself in five years?','Beş ildən sonra özünü harada görürsən?']]},
+      {t:'mc', q:'«Tell me about yourself» sualına ən yaxşı başlanğıc:', o:["I'm a final-year economics student with experience in data analysis.",'I was born in 2001 and I like pizza.',"I don't know what to say.",'I need this job because I need money.'], e:'Peşəkar profil ilə başla.'},
+      {t:'mc', q:'One of my strengths is ___ problems.', o:['solving','to solve','solve','solved'], e:'«is» + -ing (isim kimi): solving problems.'},
+      {t:'mc', q:'Zəif tərəfini peşəkar şəkildə necə deyərsən?', o:["I sometimes spend too long on details, so I'm learning to manage my time better.",'I have no weaknesses.',"I'm lazy.",'I hate working in teams.'], e:'Zəif tərəf + onu necə düzəltdiyin.'},
+      {t:'mc', q:'«Where do you see yourself in five years?» nə deməkdir?', o:['Beş ildən sonra özünü harada görürsən?','Beş il əvvəl harada idin?','Beş ildir harada işləyirsən?','Beş il ərzində nə öyrəndin?'], e:'Gələcək planlarını soruşur.'},
+      {t:'order', az:'Mən komandada işləməyi xoşlayıram.', en:['I enjoy working in a team.','I like working in a team.'], extra:['to','work']},
+      {t:'listen', en:'Why do you want to work for our company?', o:['Why do you want to work for our company?','Why did you leave your last company?','Why do you want to work for a big company?']}
+    ]}
+  ]},
+  { id:'b1-u6', title:'Söhbəti ötürmək', grammar:'Reported speech', lessons:[
+    { id:'b1-u6-l1', title:'Dediklərini ötür', items:[
+      {t:'learn', title:'say və tell, zamanın bir addım geri çəkilməsi', body:'Kiminsə sözünü ötürəndə zaman adətən bir addım keçmişə gedir: "I am tired" → She said she was tired. SAY (that)… / TELL somebody (that)… «Said me» demək səhvdir.', ex:[['"I am tired." → She said she was tired.','«Yorğunam.» → Yorğun olduğunu dedi.'],['"I like it." → He said he liked it.','«Xoşuma gəlir.» → Xoşuna gəldiyini dedi.'],['She told me that she was leaving.','Mənə getdiyini dedi.']]},
+      {t:'mc', q:'"I am busy," she said. → She said she ___ busy.', o:['was','is','has been','were'], e:'Am → was.'},
+      {t:'mc', q:'"I work in a bank." → He said he ___ in a bank.', o:['worked','works','working','has work'], e:'Work → worked.'},
+      {t:'mc', q:'She ___ me that she was leaving.', o:['told','said','spoke','talked'], e:'Tell + kimə: told me.'},
+      {t:'mc', q:'He ___ that he was hungry.', o:['said','told','told to','said me'], e:'Kimə deyildiyi göstərilmir: said.'},
+      {t:'order', az:'O dedi ki, yorğundur.', en:['She said that she was tired.','She said she was tired.'], extra:['told','is']},
+      {t:'listen', en:'He told me he would call later.', o:['He told me he would call later.','He told me he called later.','He said me he would call later.']}
+    ]},
+    { id:'b1-u6-l2', title:'Zamanların dəyişməsi', items:[
+      {t:'learn', title:'will → would, can → could…', body:'will → would, can → could, have done → had done, did → had done. Vaxt sözləri də dəyişir: today → that day, tomorrow → the next day, yesterday → the day before.', ex:[['"I will help you." → She said she would help me.','Kömək edəcəyini dedi.'],['"I can swim." → He said he could swim.','Üzə bildiyini dedi.'],['"I have finished." → She said she had finished.','Bitirdiyini dedi.'],['"…tomorrow" → "…the next day"','sabah → ertəsi gün']]},
+      {t:'mc', q:'"I will help you." → She said she ___ help me.', o:['would','will','can','helps'], e:'Will → would.'},
+      {t:'mc', q:'"I can swim." → He said he ___ swim.', o:['could','can','cans','would can'], e:'Can → could.'},
+      {t:'mc', q:'"I have finished." → She said she ___ finished.', o:['had','has','have','was'], e:'Have finished → had finished.'},
+      {t:'mc', q:'"I\'ll see you tomorrow." → He said he would see me ___.', o:['the next day','tomorrow','yesterday','the day before'], e:'Tomorrow → the next day.'},
+      {t:'order', az:'O dedi ki, həmin gün gələ bilməz.', en:["He said that he couldn't come that day.","He said he couldn't come that day."], extra:["can't",'today']},
+      {t:'listen', en:'She said she had already seen the film.', o:['She said she had already seen the film.','She said she has already seen the film.','She said she had already seen the play.']}
+    ]},
+    { id:'b1-u6-l3', title:'Sualları ötürmək', items:[
+      {t:'learn', title:'asked + if / sual sözü', body:'Bəli/xeyr sualı → asked IF (və ya whether). Sual sözlü sual → asked + where / what… Diqqət: söz sırası adi cümlə kimidir: She asked where I lived (where did I live — səhv).', ex:[['"Do you like coffee?" → He asked if I liked coffee.','Qəhvə sevib-sevmədiyimi soruşdu.'],['"Where do you live?" → She asked where I lived.','Harada yaşadığımı soruşdu.'],['"What is your name?" → He asked what my name was.','Adımın nə olduğunu soruşdu.']]},
+      {t:'mc', q:'"Do you like coffee?" → He asked ___ I liked coffee.', o:['if','that','do','what'], e:'Bəli/xeyr sualı: if.'},
+      {t:'mc', q:'"Where do you live?" → She asked me where I ___.', o:['lived','did live','do live','live'], e:'Söz sırası adi: where I lived.'},
+      {t:'mc', q:'Hansı düzgündür?', o:['He asked me what my name was.','He asked me what was my name?','He asked me what is my name.','He asked to me what my name was.'], e:'Sual sırası yox, adi cümlə sırası.'},
+      {t:'mc', q:'The interviewer asked me why I ___ this job.', o:['wanted','did I want','do I want','want I'], e:'Why I wanted…'},
+      {t:'order', az:'O, məndən saatın neçə olduğunu soruşdu.', en:'She asked me what time it was.', extra:['is','did']},
+      {t:'listen', en:'They asked whether we needed help.', o:['They asked whether we needed help.','They asked whether we wanted help.','They asked why we needed help.']}
+    ]}
+  ]},
+  { id:'b1-u7', title:'Münasibətlər', grammar:'Relative clauses: who / which / that / where / whose', lessons:[
+    { id:'b1-u7-l1', title:'who, which, that', items:[
+      {t:'learn', title:'Təyin budaq cümlələri', body:'Kimi və ya nəyi nəzərdə tutduğunu dəqiqləşdirmək üçün: WHO — insanlar, WHICH — əşyalar, THAT — hər ikisi. Azərbaycan dilindəki «Bakıda yaşayan dost» ingiliscədə «the friend who lives in Baku» olur — söz sırası tərsinədir.', ex:[['the man who lives next door','qonşuluqda yaşayan kişi'],['the book which / that I read','oxuduğum kitab'],['a friend who speaks five languages','beş dil bilən dost']]},
+      {t:'mc', q:"She's the teacher ___ helped me.", o:['who','which','where','what'], e:'İnsan: who.'},
+      {t:'mc', q:'This is the phone ___ I bought yesterday.', o:['which','who','where','whose'], e:'Əşya: which (və ya that).'},
+      {t:'mc', q:'I have a friend ___ speaks five languages.', o:['who','which','what',"whom's"], e:'İnsan: who.'},
+      {t:'mc', q:'Hansı düzgündür?', o:['The movie that we watched was great.','The movie who we watched was great.','The movie what we watched was great.','The movie where we watched was great.'], e:'Əşya: that / which. «What» burada işlənmir.'},
+      {t:'order', az:'Bu, Bakıda yaşayan dostumdur.', en:['This is my friend who lives in Baku.','This is my friend that lives in Baku.'], extra:['which','living']},
+      {t:'listen', en:'The woman who called you is my manager.', o:['The woman who called you is my manager.','The woman who called you is my mother.','The man who called you is my manager.']}
+    ]},
+    { id:'b1-u7-l2', title:'where, whose, when', items:[
+      {t:'learn', title:'Yer, yiyəlik, zaman', body:'WHERE — yer, WHOSE — kimin (yiyəlik), WHEN — zaman. Whose ≠ who\'s (who is).', ex:[['the café where we first met','ilk dəfə görüşdüyümüz kafe'],['a girl whose brother is a pilot','qardaşı pilot olan qız'],['the year when everything changed','hər şeyin dəyişdiyi il']]},
+      {t:'mc', q:'This is the café ___ we first met.', o:['where','which','who','when'], e:'Yer: where.'},
+      {t:'mc', q:'I know a girl ___ brother is a pilot.', o:['whose',"who",'who\'s','which'], e:'Yiyəlik: whose brother.'},
+      {t:'mc', q:'2020 was the year ___ everything changed.', o:['when','which','where','who'], e:'Zaman: when.'},
+      {t:'mc', q:"That's the man ___ car was stolen.", o:['whose','who','which',"that's"], e:'Onun maşını: whose car.'},
+      {t:'order', az:'Bu, mənim doğulduğum şəhərdir.', en:['This is the city where I was born.'], extra:['which','when']},
+      {t:'listen', en:"She's the student whose essay won the prize.", o:["She's the student whose essay won the prize.","She's the student who wrote the essay.","He's the student whose essay won the prize."]}
+    ]},
+    { id:'b1-u7-l3', title:'Münasibətlər lüğəti', items:[
+      {t:'learn', title:'İnsanlarla münasibətlər', body:'Bu ifadələr həm gündəlik həyatda, həm də iş mühitində çox işlənir.', ex:[['get on well with','yaxşı yola getmək'],['fall out with','küsmək, aranı vurmaq'],['make up','barışmaq'],['rely on','etibar etmək, arxalanmaq'],['acquaintance','tanış'],['colleague','iş yoldaşı, həmkar']]},
+      {t:'mc', q:'«Get on well with someone» nə deməkdir?', o:['biri ilə yaxşı yola getmək','biri ilə mübahisə etmək','birinə minmək','birini gözləmək'], e:'I get on well with my colleagues.'},
+      {t:'mc', q:'«Acquaintance» nə deməkdir?', o:['tanış','yaxın dost','qohum','həmkar'], e:'Yaxın olmayan tanış.'},
+      {t:'mc', q:'We had an argument, but we ___ the next day.', o:['made up','made out','fell out','got on'], e:'Make up — barışmaq.'},
+      {t:'mc', q:'You can always rely ___ me.', o:['on','at','to','in'], e:'Rely on — arxalanmaq.'},
+      {t:'order', az:'O, iş yoldaşları ilə yaxşı yola gedir.', en:'She gets on well with her colleagues.', extra:['get','to']},
+      {t:'listen', en:'A good friend is someone you can trust.', o:['A good friend is someone you can trust.','A good friend is someone you can call.','A good friend is someone who can trust.']}
+    ]}
+  ]},
+  { id:'b1-u8', title:'Keçmiş vərdişlər', grammar:'used to / be used to / would', lessons:[
+    { id:'b1-u8-l1', title:'used to', items:[
+      {t:'learn', title:'Əvvəllər belə idi, indi yox', body:'USED TO + fel — keçmişdəki vərdiş və ya vəziyyət, indi artıq doğru deyil. İnkar və sualda «use to»: I didn\'t use to… Did you use to…?', ex:[['I used to live in Ganja.','Əvvəllər Gəncədə yaşayırdım.'],["She didn't use to like vegetables.",'Əvvəllər tərəvəz sevmirdi.'],['Did you use to have long hair?','Əvvəllər saçın uzun idi?']]},
+      {t:'mc', q:'I ___ play football every day when I was a child.', o:['used to','use to','was used to','using to'], e:'Keçmiş vərdiş: used to.'},
+      {t:'mc', q:"She didn't ___ like vegetables.", o:['use to','used to','uses to','using'], e:'Didn\'t + use to.'},
+      {t:'mc', q:'___ you use to have long hair?', o:['Did','Do','Were','Have'], e:'Sual: Did you use to…?'},
+      {t:'mc', q:'«I used to smoke» nə deməkdir?', o:['Əvvəllər siqaret çəkirdim (indi yox).','İndi siqaret çəkirəm.','Siqaretə öyrəşmişəm.','Siqaret çəkməyə başlayıram.'], e:'Used to = əvvəllər (indi yox).'},
+      {t:'order', az:'Mən əvvəllər Gəncədə yaşayırdım.', en:'I used to live in Ganja.', extra:['use','was']},
+      {t:'listen', en:'We used to go to the village every summer.', o:['We used to go to the village every summer.','We used to go to the sea every summer.','We go to the village every summer.']}
+    ]},
+    { id:'b1-u8-l2', title:'used to və be used to', items:[
+      {t:'learn', title:'Öyrəşmək: be / get used to + -ing', body:'BE USED TO + -ing / isim — bir şeyə öyrəşmiş olmaq. GET USED TO — öyrəşmək (proses). Bunu «used to + fel» (əvvəllər) ilə qarışdırma!', ex:[["I'm used to getting up early.",'Tez durmağa öyrəşmişəm.'],["I'm not used to the cold.",'Soyuğa öyrəşməmişəm.'],["You'll soon get used to it.",'Tezliklə öyrəşəcəksən.'],['I used to read comics.','Əvvəllər komiks oxuyurdum.']]},
+      {t:'mc', q:"I'm used to ___ up early.", o:['getting','get','got','to get'], e:'Be used to + -ing.'},
+      {t:'mc', q:'«I\'m not used to the cold» nə deməkdir?', o:['Soyuğa öyrəşməmişəm.','Əvvəllər soyuq yox idi.','Soyuğu sevmirəm.','Soyuqda istifadə etmirəm.'], e:'Be used to — öyrəşmiş olmaq.'},
+      {t:'mc', q:'It took me a month to ___ used to my new job.', o:['get','be','use','make'], e:'Get used to — öyrəşmək (proses).'},
+      {t:'mc', q:'When I was young, I ___ read comics. (keçmiş vərdiş)', o:['used to','am used to','got used to','use'], e:'Keçmiş vərdiş: used to + fel.'},
+      {t:'order', az:'Mən böyük şəhərdə yaşamağa öyrəşmişəm.', en:['I am used to living in a big city.',"I'm used to living in a big city."], extra:['live','use']},
+      {t:'listen', en:"You'll soon get used to the new system.", o:["You'll soon get used to the new system.",'You used to use the new system.',"You'll soon get used to the new city."]}
+    ]},
+    { id:'b1-u8-l3', title:'Xatirələr: would', items:[
+      {t:'learn', title:'would — keçmişdə təkrarlanan hərəkət', body:'Xatirə danışanda təkrarlanan HƏRƏKƏT üçün WOULD da işlənir: Every summer we would visit grandma. Amma VƏZİYYƏT felləri (have, live, like, be) ilə yalnız used to: I used to have a dog (I would have a dog — səhv).', ex:[['Every evening my grandfather would tell us stories.','Hər axşam babam bizə nağıl danışardı.'],['We would play outside until dark.','Qaranlıq düşənə qədər çöldə oynayardıq.'],['I used to have a dog.','Əvvəllər itim var idi.']]},
+      {t:'mc', q:'Every evening my grandfather ___ tell us stories.', o:['would','will','is','has'], e:'Təkrarlanan hərəkət: would tell.'},
+      {t:'mc', q:'Hansı cümlə SƏHVDİR?', o:['I would have a dog when I was a child.','I used to have a dog when I was a child.','We would play outside every day.','We used to play outside every day.'], e:'Have (vəziyyət) would ilə işlənmir — used to lazımdır.'},
+      {t:'mc', q:'Keçmiş vərdiş mənasında «would» hansı fellərlə işlənmir?', o:['vəziyyət felləri (have, live, like)','hərəkət felləri (play, visit)','hər ikisi','heç biri'], e:'Vəziyyət üçün used to.'},
+      {t:'mc', q:'When we were students, we ___ study in the library until late.', o:['would','will','are','did used'], e:'Təkrarlanan hərəkət: would study.'},
+      {t:'order', az:'Hər yay dənizə gedərdik.', en:['Every summer we would go to the sea.','We would go to the sea every summer.'], extra:['will','used']},
+      {t:'listen', en:'My mother would always sing in the kitchen.', o:['My mother would always sing in the kitchen.','My mother will always sing in the kitchen.','My sister would always sing in the kitchen.']}
+    ]}
+  ]}
 ]},
 { id:'b2', name:'B2', title:'Orta-yuxarı', color:'#e0662f', units:[
   { id:'b2-u1', title:'Peşmançılıq və arzular', grammar:'Third Conditional · I wish / If only' },
