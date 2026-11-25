@@ -6,8 +6,8 @@ window.ADDIM_CONFIG = {
   premiumXpBonus: 0.5,       // Premium-da dərs XP bonusu (0.5 = +50%)
 
   // Kartla ödəniş məlumatı — boş qalarsa, tətbiq "tezliklə" yazır
-  card: '',                  // məs: '4169 7388 0000 0000'
-  cardHolder: '',            // məs: 'A. Abdullayev'
+  card: '4098 5844 7384 5319',
+  cardHolder: 'Abdulla Abdullayev',
   whatsapp: '',              // məs: '994501234567' (yalnız rəqəmlər)
-  instagram: ''              // məs: 'addim.az'
+  instagram: 'career.m_'
 };
