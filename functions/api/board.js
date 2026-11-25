@@ -11,8 +11,7 @@ const SCHEMA = `CREATE TABLE IF NOT EXISTS scores_v2 (
 const LEAGUES = ['a1', 'a2', 'b1', 'b2'];
 const MAX_WEEK_XP = 3000; // real istifadə üçün kifayət, saxta böyük rəqəmlərin qarşısını alır
 
-const json = (data, status = 200) =>
-  new Response(JSON.stringify(data), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
+import { json, ensureSchema, premiumUntil, cleanCosmetics } from '../_shared.js';
 
 // Həftə bazar ertəsi Bakı vaxtı ilə (UTC+4) başlayır
 function weekKey() {
@@ -28,6 +27,8 @@ export async function onRequest({ request, env }) {
   if (!env.DB) return json({ error: 'db_not_bound' }, 503);
   if (!['GET', 'POST'].includes(request.method)) return json({ error: 'method' }, 405);
   await env.DB.prepare(SCHEMA).run();
+  await ensureSchema(env.DB);
+  const now = Date.now();
   const week = weekKey();
   const q = new URL(request.url).searchParams;
   let id = q.get('id') || '';
@@ -47,11 +48,23 @@ export async function onRequest({ request, env }) {
        ON CONFLICT(id, week) DO UPDATE SET league = excluded.league, name = excluded.name, color = excluded.color,
        xp = MAX(scores_v2.xp, excluded.xp), updated = CASE WHEN excluded.xp > scores_v2.xp THEN excluded.updated ELSE scores_v2.updated END`
     ).bind(id, week, league, name, color, xp, Date.now()).run();
+    // Kosmetika: Premium olmayanların yalnız pulsuz seçimləri saxlanılır
+    const prem = (await premiumUntil(env.DB, id)) > now;
+    const c = cleanCosmetics(b.look, prem);
+    await env.DB.prepare(`INSERT INTO profiles (id, avatar, ncolor, nstyle, frame) VALUES (?1, ?2, ?3, ?4, ?5)
+      ON CONFLICT(id) DO UPDATE SET avatar = excluded.avatar, ncolor = excluded.ncolor, nstyle = excluded.nstyle, frame = excluded.frame`)
+      .bind(id, c.avatar, c.ncolor, c.nstyle, c.frame).run();
   }
 
   const top = (await env.DB.prepare(
-    'SELECT id, name, color, xp FROM scores_v2 WHERE week = ?1 AND league = ?2 AND xp > 0 ORDER BY xp DESC, updated ASC LIMIT 30'
-  ).bind(week, league).all()).results.map(r => ({ name: r.name, color: r.color, xp: r.xp, me: validId(id) && r.id === id }));
+    `SELECT s.id, s.name, s.color, s.xp, p.avatar, p.ncolor, p.nstyle, p.frame, COALESCE(pr.until, 0) AS until
+     FROM scores_v2 s LEFT JOIN profiles p ON p.id = s.id LEFT JOIN premium pr ON pr.id = s.id
+     WHERE s.week = ?1 AND s.league = ?2 AND s.xp > 0 ORDER BY s.xp DESC, s.updated ASC LIMIT 30`
+  ).bind(week, league).all()).results.map(r => {
+    const prem = r.until > now;
+    return { name: r.name, color: r.color, xp: r.xp, me: validId(id) && r.id === id, prem,
+      look: cleanCosmetics({ avatar: r.avatar, ncolor: r.ncolor, nstyle: r.nstyle, frame: r.frame }, prem) };
+  });
 
   const total = (await env.DB.prepare('SELECT COUNT(*) AS n FROM scores_v2 WHERE week = ?1 AND league = ?2').bind(week, league).first()).n;
 

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Addım — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;800;900&display=swap" rel="stylesheet">
+<style>
+/* VOICE: plain, calm control panel for one person
+   IDEA: a cashier's code book — enter key, print codes, see which were used
+   PICTURE: the freshly generated codes, large and copyable
+   COLOUR and TYPE: Addım mint-cream ground, white cards, sun-orange action; Nunito
+   LAYOUT: one narrow column: key, generator, results, history table */
+:root{color-scheme:light;--bg:#f4f8f2;--ink:#1f2a37;--mut:#5b6676;--line:#e3e9e1;--sun:#ff9f1c;--ok:#1f9d6b}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Nunito,system-ui,sans-serif}
+main{max-width:720px;margin:0 auto;padding:24px 16px 60px}
+h1{font-size:30px;margin:0 0 4px}h2{font-size:20px;margin:0 0 10px}
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px;margin-top:16px}
+label{display:block;font-weight:800;margin:10px 0 4px}
+input,select{width:100%;min-height:46px;border-radius:14px;border:2px solid var(--line);font:16px Nunito,sans-serif;padding:8px 12px;background:#fbfdfb}
+input:focus,select:focus{outline:3px solid #2f7de1;outline-offset:1px}
+.row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media(max-width:560px){.row{grid-template-columns:1fr}}
+button{font:inherit;font-weight:900;min-height:48px;border:0;border-radius:14px;background:var(--sun);color:#fff;padding:10px 18px;cursor:pointer;margin-top:12px;box-shadow:0 3px 0 #d27a00}
+button.ghost{background:#fff;color:#2f7de1;border:2px solid var(--line);box-shadow:0 3px 0 var(--line)}
+.codes{display:grid;gap:8px;margin-top:12px}
+.code{display:flex;flex-wrap:wrap;align-items:center;gap:10px;justify-content:space-between;background:#fff4d6;border:1px solid #f3d49a;border-radius:14px;padding:10px 14px}
+.code b{font-size:clamp(16px,4.6vw,20px);letter-spacing:.05em;white-space:nowrap}
+.code button{margin:0;min-height:40px;padding:6px 12px}
+.msg{color:var(--mut);font-size:14px;margin-top:8px}
+table{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}
+td.c{font-weight:800;white-space:nowrap}
+.used{color:var(--ok);font-weight:800}.free{color:#b4540a;font-weight:800}
+.stat{font-size:15px;font-weight:800}
+</style>
+</head>
+<body>
+<main>
+  <h1>Addım — Admin</h1>
+  <p style="margin:0;color:var(--mut)">Ödəniş edənlər üçün Premium aktivasiya kodu yarat.</p>
+
+  <div class="card">
+    <h2>Admin açarı</h2>
+    <input type="password" id="key" placeholder="Cloudflare-də yazdığın ADMIN_KEY" autocomplete="current-password">
+    <p class="msg">Açar yalnız bu brauzer tabında yadda qalır.</p>
+  </div>
+
+  <div class="card">
+    <h2>Yeni kod</h2>
+    <div class="row">
+      <div><label for="days">Müddət</label><select id="days"><option value="30">30 gün (1 ay)</option><option value="90">90 gün (3 ay)</option><option value="365">365 gün (1 il)</option><option value="7">7 gün (sınaq)</option></select></div>
+      <div><label for="count">Sayı</label><input type="number" id="count" value="1" min="1" max="50"></div>
+      <div><label for="note">Qeyd</label><input type="text" id="note" maxlength="80" placeholder="məs: Nigar, 25.11"></div>
+    </div>
+    <button id="gen">Kod yarat</button>
+    <div class="codes" id="out"></div>
+    <p class="msg" id="gmsg"></p>
+  </div>
+
+  <div class="card">
+    <h2>Kodlar</h2>
+    <div class="stat" id="stat"></div>
+    <button class="ghost" id="load">Siyahını yenilə</button>
+    <div style="overflow-x:auto"><table><thead><tr><th>Kod</th><th>Gün</th><th>Qeyd</th><th>Yaradılıb</th><th>Status</th></tr></thead><tbody id="list"></tbody></table></div>
+  </div>
+</main>
+<script>
+{
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+try{$('key').value=sessionStorage.getItem('addim-admin')||''}catch(e){}
+$('key').oninput=()=>{try{sessionStorage.setItem('addim-admin',$('key').value)}catch(e){}};
+const fmt=t=>t?new Date(t).toLocaleString('az-AZ',{dateStyle:'short',timeStyle:'short'}):'';
+const ERR={forbidden:'Açar səhvdir.',admin_key_not_set:'Cloudflare-də ADMIN_KEY hələ əlavə olunmayıb (ən azı 12 simvol).',db_not_bound:'Baza qoşulmayıb.'};
+async function api(body){const r=await fetch('/api/admin',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({key:$('key').value.trim(),...body})});const d=await r.json().catch(()=>({error:'bad'}));if(d.error)throw new Error(ERR[d.error]||'Xəta: '+d.error);return d}
+function copy(t,btn){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>{btn.textContent='Kopyalandı';setTimeout(()=>btn.textContent='Kopyala',1500)}).catch(()=>{btn.textContent='Əl ilə kopyala'})}
+$('gen').onclick=async()=>{$('gmsg').textContent='';$('gen').disabled=true;
+  try{const d=await api({action:'create',days:$('days').value,count:$('count').value,note:$('note').value});
+    $('out').innerHTML=d.codes.map(c=>`<div class="code"><b>${esc(c)}</b><button data-c="${esc(c)}">Kopyala</button></div>`).join('');
+    $('out').querySelectorAll('button').forEach(b=>b.onclick=()=>copy(b.dataset.c,b));
+    $('gmsg').textContent=`${d.codes.length} kod yaradıldı (${d.days} gün). Kodu ödəniş edən şəxsə göndər.`;load()}
+  catch(e){$('gmsg').textContent=e.message}
+  $('gen').disabled=false};
+async function load(){try{const d=await api({action:'list'});
+  $('stat').textContent=`Aktiv Premium istifadəçi: ${d.premiumUsers} · Son ${d.codes.length} kod`;
+  $('list').innerHTML=d.codes.map(c=>`<tr><td class="c">${esc(c.code)}</td><td>${esc(c.days)}</td><td>${esc(c.note||'')}</td><td>${esc(fmt(c.created))}</td><td>${c.redeemed_by?`<span class="used">İstifadə olunub</span><br><span style="color:var(--mut)">${esc(fmt(c.redeemed_at))}</span>`:'<span class="free">Gözləyir</span>'}</td></tr>`).join('')||'<tr><td colspan="5">Hələ kod yoxdur.</td></tr>'}
+  catch(e){$('stat').textContent=e.message}}
+$('load').onclick=load;
+}
+</script>
+</body>
+</html>
