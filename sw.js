@@ -1,5 +1,5 @@
 // Addım service worker: tətbiqi oflayn işlədir
-const CACHE = 'addim-v18';
+const CACHE = 'addim-v19';
 const AUDIO = 'addim-audio-v2';
 const FILES = ['./', './index.html', './course.js', './course-extra.js', './practice.js', './avatars.js', './config.js', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png'];
 
@@ -30,4 +30,23 @@ self.addEventListener('fetch', e => {
       return r;
     }).catch(() => caches.match(e.request).then(m => m || caches.match('./index.html')))
   );
+});
+
+// Bildirişlər: gündəlik xatırlatma
+self.addEventListener('push', e => {
+  let d = {};
+  try { d = e.data ? e.data.json() : {}; } catch (x) { d = { body: e.data && e.data.text() }; }
+  e.waitUntil(self.registration.showNotification(d.title || '⚡ Addım', {
+    body: d.body || 'Bu gün bir dərs keç — şimşəyin sönməsin.',
+    icon: './icon-192.png', badge: './icon-192.png', tag: d.tag || 'daily', renotify: true,
+    data: { url: d.url || './#home' }
+  }));
+});
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  const url = new URL((e.notification.data && e.notification.data.url) || './#home', self.location.href).href;
+  e.waitUntil(clients.matchAll({ type: 'window', includeUncontrolled: true }).then(list => {
+    for (const c of list) if (c.url.startsWith(self.location.origin)) { c.navigate ? c.navigate(url) : 0; return c.focus(); }
+    return clients.openWindow(url);
+  }));
 });

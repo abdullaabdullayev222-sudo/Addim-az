@@ -2,7 +2,7 @@ import http from 'node:http'; import fs from 'node:fs'; import path from 'node:p
 import { DatabaseSync } from 'node:sqlite';
 const root = process.argv[2];
 const routes = {};
-for (const n of ['board','premium','admin','track','tts','ttscheck']) routes[n] = (await import(path.join(root, 'functions/api/'+n+'.js'))).onRequest;
+for (const n of ['board','premium','admin','track','tts','ttscheck','push','push-run']) routes[n] = (await import(path.join(root, 'functions/api/'+n+'.js'))).onRequest;
 const onRequest = routes.board;
 const db = new DatabaseSync(':memory:');
 // Workers AI təqlidi: 1.5 saniyəlik səssiz WAV qaytarır, çağırışları sayır
@@ -15,6 +15,11 @@ const AI = { async run(model, input, opt) { aiCalls++; if (aiFail) throw new Err
   if (model.includes('whisper')) return { text: aiGarble ? 'Dice to meet you.' : lastSay };
   lastModel = model + ':' + input.speaker; lastSay = input.text; return new Response(aiMp3 ? mp3() : wav(), { headers: { 'content-type': 'audio/mpeg' } }); } };
 let lastModel = '', aiMp3 = false, aiGarble = false, lastSay = '';
+// Bildiriş serverinin təqlidi: https://push.test/<ad> ünvanına gələn sorğuları yadda saxla; «gone» ilə bitən ünvan 410 qaytarır
+const pushLog = []; const realFetch = globalThis.fetch;
+globalThis.fetch = async (url, o) => { if (String(url).startsWith('https://push.test/')) { pushLog.push({ url: String(url), auth: o.headers.Authorization, enc: o.headers['Content-Encoding'], len: o.body.length }); return { status: String(url).endsWith('gone') ? 410 : 201 }; } return realFetch(url, o); };
+async function fakeSub(name) { const kp = await crypto.subtle.generateKey({ name: 'ECDH', namedCurve: 'P-256' }, true, ['deriveBits']); const raw = new Uint8Array(await crypto.subtle.exportKey('raw', kp.publicKey));
+  const b = u => Buffer.from(u).toString('base64url'); return { endpoint: 'https://push.test/' + name, keys: { p256dh: b(raw), auth: b(crypto.getRandomValues(new Uint8Array(16))) } }; }
 const D1 = { prepare(sql) { let args = []; const st = { bind(...a) { args = a; return st; },
   async run() { const r = db.prepare(sql).run(...args); return { meta: { changes: r.changes } }; }, async all() { return { results: db.prepare(sql).all(...args) }; }, async first() { return db.prepare(sql).get(...args) ?? null; } }; return st; } };
 // seed two other players
@@ -33,11 +38,13 @@ await onRequest({ request: new Request('http://x/api/board', { method: 'POST', b
     if (k % 3 === 0) db.prepare('INSERT INTO events VALUES (?,?,?,?,?)').run(day(d), uid, 'limit_hit', null, Date.now()); } } }
 http.createServer(async (req, res) => {
   const u = new URL(req.url, 'http://localhost');
+  if (u.pathname === '/__test/pushsub') { res.writeHead(200, { 'content-type': 'application/json' }); res.end(JSON.stringify(await fakeSub(u.searchParams.get('n') || 'x'))); return; }
+  if (u.pathname === '/__test/pushlog') { res.writeHead(200, { 'content-type': 'application/json' }); res.end(JSON.stringify(pushLog)); return; }
   if (u.pathname === '/__test/ai') { if (u.searchParams.has('fail')) aiFail = u.searchParams.get('fail') === '1'; if (u.searchParams.has('mp3')) aiMp3 = u.searchParams.get('mp3') === '1'; if (u.searchParams.has('garble')) aiGarble = u.searchParams.get('garble') === '1'; res.writeHead(200, { 'content-type': 'application/json' }); res.end(JSON.stringify({ aiCalls, aiFail, lastModel })); return; }
-  const m = u.pathname.match(/^\/api\/(board|premium|admin|track|ttscheck|tts)$/);
+  const m = u.pathname.match(/^\/api\/(board|premium|admin|track|ttscheck|tts|push|push-run)$/);
   if (m) {
     let body = ''; for await (const c of req) body += c;
-    const r = await routes[m[1]]({ request: new Request('http://x' + req.url, { method: req.method, body: req.method === 'POST' ? body : undefined, headers: req.headers }), env: { DB: D1, AI, ADMIN_KEY: 'test-admin-key-123' } });
+    const r = await routes[m[1]]({ request: new Request('http://x' + req.url, { method: req.method, body: req.method === 'POST' ? body : undefined, headers: req.headers }), env: { DB: D1, AI, ADMIN_KEY: 'test-admin-key-123', PUSH_TEST: 1 } });
     res.writeHead(r.status, Object.fromEntries(r.headers)); res.end(Buffer.from(await r.arrayBuffer())); return;
   }
   let f = path.join(root, u.pathname === '/' ? 'index.html' : u.pathname);

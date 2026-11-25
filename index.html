@@ -250,6 +250,8 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
  .pop{animation:pop .4s}@keyframes pop{50%{transform:scale(1.18)}}
 }
 @media(prefers-reduced-motion:reduce){.conf{display:none}}
+
+.tgl{flex:none;width:54px;height:32px;border-radius:99px;border:0;background:#cfd6de;position:relative;cursor:pointer;transition:background .2s}.tgl i{position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:0 1px 3px #0003;transition:transform .2s}.tgl.on{background:#f59e0b}.tgl.on i{transform:translateX(22px)}
 /* şimşək seriyası */
 .pill.stk{background:linear-gradient(#fffbe0,#fff1b8);border-color:#ffd84d;color:#b45309}.pill.stk.dim{background:var(--card);border-color:var(--line);color:var(--mut)}
 #streak{background:linear-gradient(#ffd84d,#ff9500 55%,#e86a00);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -354,7 +356,7 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 
 <!-- PROFILE STUDIO -->
 <main class="view" id="v-profile"><section class="band studio" id="pBox"></section>
-  <section class="band" style="padding-top:0"><div class="card" id="pInstallCard" style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px"><span><b>Tətbiqi telefona yüklə</b><span class="lim">Ana ekrandan bir toxunuşla aç</span></span><button class="btn sun" id="pInstall" style="width:auto;margin:0">Yüklə</button></div><div class="card" id="voiceCard" style="margin-bottom:12px"></div><div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:12px"><span><b>Səs effektləri</b><span class="lim">Toxunuş, düzgün cavab, XP səsləri</span></span><button class="pill" id="sndBtn" aria-label="Səs effektləri"></button></div><p class="note">Tətbiqi yaxşılaşdırmaq üçün anonim istifadə statistikası toplanır: neçə dərs keçildiyi, hansı səviyyə seçildiyi. Adın, e-poçtun və ya şəxsi məlumatın toplanmır.</p></section>
+  <section class="band" style="padding-top:0"><div class="card" id="pInstallCard" style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px"><span><b>Tətbiqi telefona yüklə</b><span class="lim">Ana ekrandan bir toxunuşla aç</span></span><button class="btn sun" id="pInstall" style="width:auto;margin:0">Yüklə</button></div><div class="card" id="notifCard" style="margin-bottom:12px"></div><div class="card" id="voiceCard" style="margin-bottom:12px"></div><div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:12px"><span><b>Səs effektləri</b><span class="lim">Toxunuş, düzgün cavab, XP səsləri</span></span><button class="pill" id="sndBtn" aria-label="Səs effektləri"></button></div><p class="note">Tətbiqi yaxşılaşdırmaq üçün anonim istifadə statistikası toplanır: neçə dərs keçildiyi, hansı səviyyə seçildiyi. Adın, e-poçtun və ya şəxsi məlumatın toplanmır.</p></section>
 </main>
 
 <!-- PREMIUM -->
@@ -480,7 +482,7 @@ const COLORS=['#2f7de1','#7b56d6','#e0662f','#16956a','#d6336c','#0e9aa7'];
 
 /* ---------- state ---------- */
 const GOAL=50;let S;
-const blank=()=>({days:{},freeze:0,frozen:{},skills:{reading:0,listening:0,speaking:0,writing:0},quiz:{},goalDone:{},me:null,course:{},lvl:'a1',onboarded:0,placed:null,sound:1,lastRank:{},uid:'',look:{avatar:'',ncolor:0,nstyle:0,frame:0},prem:{until:0},lday:{},prac:{},mist:[]});
+const blank=()=>({days:{},freeze:0,frozen:{},skills:{reading:0,listening:0,speaking:0,writing:0},quiz:{},goalDone:{},me:null,course:{},lvl:'a1',onboarded:0,placed:null,sound:1,lastRank:{},uid:'',look:{avatar:'',ncolor:0,nstyle:0,frame:0},prem:{until:0},lday:{},prac:{},mist:[],notif:1,nHour:20});
 const load=()=>{try{S=JSON.parse(localStorage.getItem('addim2')||'null')}catch(e){S=null}if(!S)S=blank();for(const k in blank())if(S[k]===undefined)S[k]=blank()[k]};
 const save=()=>{try{localStorage.setItem('addim2',JSON.stringify(S))}catch(e){}};window.save=save;
 const newId=()=>crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,12);
@@ -499,7 +501,7 @@ function lostCheck(){const t=today(),y=shiftDay(t,-1),yy=shiftDay(t,-2);if(activ
 const streak=()=>{let k=today(),n=0;if(!active(k))k=shiftDay(k,-1);while(active(k)){if(S.days[k]>0)n++;k=shiftDay(k,-1)}return n};
 const weekXP=()=>{const ws=weekStart(today());let s=0;for(const k in S.days)if(k>=ws)s+=S.days[k];return s};
 function addXP(n,skill,el){
-  const t=today(),before=streak(),was=S.days[t]||0;S.days[t]=was+n;
+  const t=today(),before=streak(),was=S.days[t]||0;S.days[t]=was+n;if(!was)setTimeout(pushDone,300);
   if(skill)S.skills[skill]=Math.min(100,(S.skills[skill]||0)+n);
   const st=streak();
   if(st>before){let gift=false;if(st%7===0&&S.freeze<2){S.freeze++;gift=true}STRIKE={n:st,gift};strikeSoon()}
@@ -510,6 +512,32 @@ function floatXP(el,n){setTimeout(()=>play('xp'),160);const r=el.getBoundingClie
 function confetti(){play('rank');const c=['#ffc83d','#ff9f1c','#2f7de1','#7b56d6','#16956a','#ef5d5d'];for(let i=0;i<60;i++){const d=document.createElement('div');d.className='conf';d.style.left=Math.random()*100+'vw';d.style.background=c[i%c.length];d.style.setProperty('--x',(Math.random()*160-80)+'px');d.style.setProperty('--r',(Math.random()*720)+'deg');d.style.setProperty('--d',(1.6+Math.random()*1.4)+'s');document.body.appendChild(d);setTimeout(()=>d.remove(),3200)}
   setTimeout(()=>sheet('Günlük hədəf tamamlandı!','<p>Bu gün <b>50 XP</b> topladın. Enerjin tam doludur — sabah da qayıt ki, seriyan böyüsün.</p>'),700)}
 
+
+
+/* ---------- bildirişlər (gündəlik xatırlatma) ---------- */
+const PUSH_OK=()=>'serviceWorker' in navigator&&'PushManager' in window&&'Notification' in window;
+const notifOn=()=>S.notif!==0;
+const b64uToU8=s=>{s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return Uint8Array.from(atob(s),c=>c.charCodeAt(0))};
+async function pushSubscribe(){try{if(!PUSH_OK()||Notification.permission!=='granted'||!notifOn())return false;
+  const reg=await navigator.serviceWorker.ready;let sub=await reg.pushManager.getSubscription();
+  if(!sub){const {key}=await (await fetch('/api/push')).json();sub=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64uToU8(key)})}
+  const r=await fetch('/api/push',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({action:'subscribe',uid:S.uid,sub:sub.toJSON(),hour:S.nHour||20,streak:streak(),doneToday:(S.days[today()]||0)>0})});
+  if(r.ok){S.pushDay=today();save();return true}}catch(e){}return false}
+async function pushOff(){try{if(PUSH_OK()){const reg=await navigator.serviceWorker.ready,sub=await reg.pushManager.getSubscription();if(sub)await sub.unsubscribe()}}catch(e){}
+  fetch('/api/push',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({action:'unsubscribe',uid:S.uid})}).catch(()=>{})}
+// İcazəni yalnız istifadəçi bir düyməyə toxunanda istəmək olar — bunu ilk şimşək ekranında «Davam et» ilə edirik
+function askNotif(){if(!notifOn()||!PUSH_OK()||Notification.permission!=='default')return;
+  try{Notification.requestPermission().then(p=>{track('notif',p);if(p==='granted')pushSubscribe().then(()=>{if(location.hash==='#profile')drawNotif()})})}catch(e){}}
+function pushDone(){if(notifOn()&&PUSH_OK()&&Notification.permission==='granted')fetch('/api/push',{method:'POST',headers:{'content-type':'application/json'},keepalive:true,body:JSON.stringify({action:'done',uid:S.uid,streak:streak()})}).catch(()=>{})}
+function drawNotif(){const c=$('notifCard');if(!c)return;const sup=PUSH_OK(),perm=sup?Notification.permission:'na',on=notifOn();
+  const iosTab=/iphone|ipad|ipod/i.test(navigator.userAgent)&&!(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true);
+  const st=!on?'Söndürülüb.':iosTab?'iPhone-da bildirişlər yalnız ana ekrana əlavə olunmuş tətbiqdə işləyir.':!sup?'Bu brauzer bildirişləri dəstəkləmir.':perm==='denied'?'Brauzer bildirişləri bloklayıb — telefonun / brauzerin ayarlarından bu sayta icazə ver.':perm==='granted'?`Hər gün saat ${S.nHour||20}:00-da, o gün dərs keçməmisənsə, şimşək səni xatırladacaq.`:'Aktivləşdirmək üçün «İcazə ver» düyməsinə toxun.';
+  c.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><span><b>Gündəlik xatırlatma</b><span class="lim" id="nState">${esc(st)}</span></span><button class="tgl ${on?'on':''}" id="nTgl" role="switch" aria-checked="${on}" aria-label="Gündəlik xatırlatma"><i></i></button></div>
+   ${on?`<div class="chipsx" id="nHours" style="margin-top:10px">${[18,19,20,21,22].map(h=>`<button class="chipx" data-h="${h}" aria-pressed="${(S.nHour||20)===h}">${h}:00</button>`).join('')}</div>`:''}
+   ${on&&sup&&!iosTab&&perm==='default'?'<button class="btn sun" id="nAsk" style="margin-top:10px">İcazə ver</button>':''}${on&&iosTab?'<button class="btn ghost" id="nInst" style="margin-top:10px">Tətbiqi yüklə</button>':''}`;
+  $('nTgl').onclick=()=>{S.notif=on?0:1;save();if(S.notif){askNotif();pushSubscribe()}else pushOff();drawNotif()};
+  c.querySelectorAll('#nHours .chipx').forEach(b=>b.onclick=()=>{S.nHour=+b.dataset.h;save();pushSubscribe();drawNotif()});
+  if($('nAsk'))$('nAsk').onclick=()=>{askNotif()};if($('nInst'))$('nInst').onclick=()=>showInstall()}
 
 /* ---------- şimşək: gündəlik seriya animasiyası ---------- */
 let STRIKE=null;
@@ -522,7 +550,7 @@ function showStrike(){if(!STRIKE)return;const {n,gift}=STRIKE;STRIKE=null;const 
   el.querySelectorAll('.zap').forEach(z=>z.remove());
   if(!matchMedia('(prefers-reduced-motion: reduce)').matches)for(let i=0;i<9;i++)setTimeout(()=>{if(!el.classList.contains('on'))return;const z=document.createElementNS('http://www.w3.org/2000/svg','svg');z.setAttribute('viewBox','0 0 64 64');z.setAttribute('class','zap');z.innerHTML='<use href="#boltI"/>';z.style.left=(10+Math.random()*80)+'vw';z.style.top=(25+Math.random()*55)+'vh';el.appendChild(z);setTimeout(()=>z.remove(),600)},250+i*140);
   const p=$('stPill').parentElement;p.classList.remove('zing');void p.offsetWidth;p.classList.add('zing');
-  const close=()=>{el.classList.remove('on')};$('stkGo').onclick=e=>{e.stopPropagation();close()};el.onclick=close;$('stkGo').focus({preventScroll:true})}
+  const close=()=>{el.classList.remove('on')};$('stkGo').onclick=e=>{e.stopPropagation();close();askNotif()};el.onclick=()=>{close();askNotif()};$('stkGo').focus({preventScroll:true})}
 
 /* ---------- home ---------- */
 const SK=[['reading','Reading','Oxu və anla','--rd','--rdb'],['listening','Listening','Dinlə və anla','--ls','--lsb'],['speaking','Speaking','Danış, tələffüzü yoxla','--sp','--spb'],['writing','Writing','Yaz, rəy al','--wr','--wrb']];
@@ -887,7 +915,7 @@ function drawVoice(){const c=$('voiceCard');if(!c)return;
   <div class="row" style="margin-top:10px"><select id="vSel" style="flex:1 1 200px;min-height:46px;border-radius:14px;border:2px solid var(--line);font:16px Nunito,sans-serif;padding:8px 10px;background:#fbfdfb">${VOICES.map(v=>`<option value="${esc(v.name)}" ${cur&&v.name===cur.name?'selected':''}>${esc(v.name.replace(/Microsoft |Google /,''))} · ${esc(v.lang)}${rankVoice(v)>=10?' ★':''}</option>`).join('')}</select></div>`+rateRow+`
   <p class="note">★ — daha təbii səslər. iPhone-da «Enhanced / Premium» səsləri Parametrlər → Əlçatanlıq → Danışıq məzmunu → Səslər bölməsindən pulsuz yükləmək olar.</p>`;
   $('vSel').onchange=e=>{S.voice=e.target.value;save()};wire()}
-function renderProfile(){drawVoice();const P=isPrem(),L=S.look,b=$('pBox'),nm=S.me?S.me.name:'',AV=window.AVATARS||[],FREE=window.FREE_AVATARS||6;
+function renderProfile(){drawVoice();drawNotif();const P=isPrem(),L=S.look,b=$('pBox'),nm=S.me?S.me.name:'',AV=window.AVATARS||[],FREE=window.FREE_AVATARS||6;
   b.innerHTML=`<h2>Profilim ${P?CROWN:''}</h2>
   <div class="preview">${avatar(nm||'?',S.me?S.me.color:0,L)}<div style="min-width:0;flex:1"><div class="nm">${nm?nameHTML(nm,L,P):'<span style="color:var(--mut)">Adın burada görünəcək</span>'}</div><span class="lim">Liqada belə görünəcəksən</span></div></div>
   <div class="row" style="margin-top:12px"><input type="text" id="pName" maxlength="20" placeholder="Adın və ya ləqəbin" value="${esc(nm)}" style="flex:1 1 180px"><button class="btn" id="pSave" style="flex:0 0 auto;width:auto;margin:0">Yadda saxla</button></div>
@@ -1001,7 +1029,7 @@ function route(){stopSpeech();let v=location.hash.slice(1);if(STRIKE&&v!=='lesso
   if(v==='league')sync();window.scrollTo(0,0)}
 addEventListener('hashchange',route);
 const h=new Date().getHours();$('greet').textContent=(h<12?'Sabahın xeyir!':h<18?'Salam!':'Axşamın xeyir!')+' Bu gün də bir addım at.';
-load();if(!S.uid){S.uid=S.me?S.me.id:newId();save()}if(S.me&&S.me.id!==S.uid)S.me.id=S.uid;drawSnd();drawHeader();fetchPrem();if(S.trk!==today()){S.trk=today();save();track('open')}applyFreeze();lostCheck();renderHome();renderVideo($('vidHome'));if(!S.onboarded&&!location.hash)location.hash='welcome';route();sync();
+load();if(!S.uid){S.uid=S.me?S.me.id:newId();save()}if(S.me&&S.me.id!==S.uid)S.me.id=S.uid;drawSnd();drawHeader();fetchPrem();if(S.trk!==today()){S.trk=today();save();track('open')}applyFreeze();lostCheck();renderHome();if(S.pushDay!==today())setTimeout(pushSubscribe,2500);renderVideo($('vidHome'));if(!S.onboarded&&!location.hash)location.hash='welcome';route();sync();
 
 /* ---------- PWA ---------- */
 if('serviceWorker' in navigator&&location.protocol==='https:')addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
