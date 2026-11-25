@@ -17,6 +17,8 @@ export const SAY = [
   [/\bmanats\b/gi, 'mah-nahts'],
   [/\bmanat\b/gi, 'mah-naht'],
   [/\bLeyla\b/g, 'Layla'],
+  [/\bMurad\b/g, 'Moorad'],
+  [/^Look! /, 'Look. '],
 ];
 export const spoken = t => SAY.reduce((s, [re, to]) => s.replace(re, to), t);
 // Sınaq üçün icazə verilən Aura-2 səsləri

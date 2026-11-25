@@ -41,7 +41,7 @@ export async function onRequest({ request, env }) {
       let heard = '', score = 1;
       try { heard = await hear(env, buf); score = similarity(text, heard); } catch (e) { heard = '?'; score = 0.99; }
       if (!best || score > best.score) best = { buf, heard, score };
-      if (score >= 0.85) break;
+      if (score >= 0.9) break;
     }
     await env.DB.prepare('INSERT OR REPLACE INTO tts (k, audio, created) VALUES (?1, ?2, ?3)').bind(k, best.buf, Date.now()).run();
     await env.DB.prepare('CREATE TABLE IF NOT EXISTS ttscheck (k TEXT PRIMARY KEY, heard TEXT NOT NULL, created INTEGER NOT NULL)').run();
