@@ -1,7 +1,7 @@
 // Addım service worker: tətbiqi oflayn işlədir
-const CACHE = 'addim-v15';
+const CACHE = 'addim-v16';
 const AUDIO = 'addim-audio-v1';
-const FILES = ['./', './index.html', './course.js', './avatars.js', './config.js', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png'];
+const FILES = ['./', './index.html', './course.js', './course-extra.js', './practice.js', './avatars.js', './config.js', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));

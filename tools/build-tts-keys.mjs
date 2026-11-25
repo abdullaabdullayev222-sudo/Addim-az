@@ -4,20 +4,22 @@
 import fs from 'node:fs'; import path from 'node:path'; import crypto from 'node:crypto'; import vm from 'node:vm';
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const ctx = { window: {} }; vm.createContext(ctx);
-vm.runInContext(fs.readFileSync(path.join(root, 'course.js'), 'utf8'), ctx);
+for (const f of ['course.js', 'course-extra.js', 'practice.js']) vm.runInContext(fs.readFileSync(path.join(root, f), 'utf8'), ctx);
 const texts = new Set();
 for (const l of ctx.window.COURSE) for (const u of l.units) for (const x of (u.lessons || [])) for (const it of x.items) {
   if (it.t === 'learn') it.ex.forEach(r => texts.add(r[0].replace(/ \/ /g, ', ')));
   if (it.t === 'listen' || it.t === 'speak') texts.add(it.en);
   if (it.t === 'dict' || it.t === 'order') texts.add([].concat(it.en)[0]);
 }
-// index.html-dəki dialoq (DLG), danışıq məşqi (SP) və səs sınağı cümlələri
+// Dinləmə epizodları (practice.js)
+for (const e of ctx.window.PRAC.listening) e.lines.forEach(l => texts.add(l[1]));
+// index.html-dəki danışıq məşqi (SP) və səs sınağı cümlələri
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
-for (const name of ['DLG', 'SP']) {
+for (const name of ['SP']) {
   const m = html.match(new RegExp('const ' + name + '=(\\[\\[.*?\\]\\]);', 's'));
   if (!m) throw new Error(name + ' tapılmadı');
   const arr = vm.runInNewContext(m[1]);
-  arr.forEach(r => texts.add(name === 'DLG' ? r[1] : r[0]));
+  arr.forEach(r => texts.add(r[0]));
 }
 const VT = html.match(/VOICE_TEST="([^"]+)"/); if (!VT) throw new Error('VOICE_TEST tapılmadı'); texts.add(VT[1]);
 const keys = [...texts].map(t => crypto.createHash('sha256').update(t).digest('hex').slice(0, 16)).sort();

@@ -65,7 +65,9 @@ h2{font-size:22px;font-weight:900;margin:0 0 12px;line-height:1.15}
 .mini{height:8px;background:#ffffffb8;border-radius:99px;margin-top:10px;overflow:hidden}.mini i{display:block;height:100%;border-radius:99px}
 .card{background:var(--card);border-radius:22px;padding:18px;border:1px solid var(--line)}
 .view{display:none}.view.on{display:block}
-.back{display:inline-flex;align-items:center;gap:6px;color:var(--mut);font-weight:800;text-decoration:none;min-height:44px}
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--mut);font-weight:800;text-decoration:none;min-height:44px;background:none;border:0;padding:0;font:inherit;font-weight:800;cursor:pointer}
+.eplist{display:grid;gap:10px;margin-top:14px}.ep{display:flex;align-items:center;gap:14px;text-align:left;background:var(--card);border:2px solid var(--line);border-radius:18px;padding:12px 14px;font:inherit;color:inherit;cursor:pointer;min-height:64px}
+.ep .n{flex:0 0 46px;height:46px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:18px}.ep>span:nth-child(2){flex:1;display:flex;flex-direction:column}.ep small{color:var(--mut);font-size:14px}.ep .go{font-size:26px;color:var(--mut)}.ep.done{border-color:#ffd66b}
 .prog{height:14px;background:#e6ece4;border-radius:99px;overflow:hidden;margin:6px 0 18px}.prog i{display:block;height:100%;background:linear-gradient(90deg,#7bd389,var(--ok));transition:width .35s}
 .q{font-size:22px;font-weight:900;line-height:1.25;margin:0 0 16px}
 .opts{display:grid;gap:10px}
@@ -331,6 +333,7 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 <main class="view" id="v-practice"><section class="band">
   <h2>Məşq</h2>
   <p class="note" style="margin-top:-6px">Bacarıqları ayrıca məşq et — hər düzgün cavab XP qazandırır.</p>
+  <div id="mistCard"></div>
   <div class="grid" id="skills"></div>
 </section></main>
 
@@ -352,28 +355,12 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 
 <!-- READING -->
 <main class="view" id="v-reading"><section class="band">
-  <a class="back" href="#practice">‹ Geri</a>
-  <h2>Reading · A2</h2>
-  <p class="note" style="margin-top:-6px">Tanış olmayan sözün üzərinə toxun — tərcüməsi görünəcək.</p>
-  <div class="card" style="background:var(--rdb);border-color:#cfe2fb"><h3 style="margin:0 0 8px;font-size:20px">My first week at university</h3><div class="text" id="rText"></div></div>
-  <div class="tip" id="tip"></div>
-  <h2 style="margin-top:22px">Suallar</h2>
-  <div id="rQs"></div>
+  <div id="rdBox"></div>
 </section></main>
 
 <!-- LISTENING -->
 <main class="view" id="v-listening"><section class="band">
-  <a class="back" href="#practice">‹ Geri</a>
-  <h2>Listening · Kafedə</h2>
-  <div class="card" style="background:var(--lsb);border-color:#e0d4fb">
-    <p style="margin:0">Dialoqu dinlə, sonra sualları cavabla. Əvvəlcə mətnə baxmadan dinləməyə çalış.</p>
-    <div class="row"><button class="btn" id="play">▶ Dinlə</button><button class="btn ghost" id="slow">Yavaş</button></div>
-    <button class="btn ghost" id="showTr">Transkripti göstər</button>
-    <div id="tr" hidden style="margin-top:12px"></div>
-    <p class="note" id="lNote"></p>
-  </div>
-  <h2 style="margin-top:22px">Suallar</h2>
-  <div id="lQs"></div>
+  <div id="lsBox"></div>
 </section></main>
 
 <!-- SPEAKING -->
@@ -420,6 +407,8 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 </svg>
 
 <script src="course.js"></script>
+<script src="course-extra.js"></script>
+<script src="practice.js"></script>
 <script src="avatars.js"></script>
 <script src="config.js"></script>
 <script>
@@ -445,9 +434,9 @@ const COLORS=['#2f7de1','#7b56d6','#e0662f','#16956a','#d6336c','#0e9aa7'];
 
 /* ---------- state ---------- */
 const GOAL=50;let S;
-const blank=()=>({days:{},freeze:0,frozen:{},skills:{reading:0,listening:0,speaking:0,writing:0},quiz:{},goalDone:{},me:null,course:{},lvl:'a1',onboarded:0,placed:null,sound:1,lastRank:{},uid:'',look:{avatar:'',ncolor:0,nstyle:0,frame:0},prem:{until:0},lday:{}});
+const blank=()=>({days:{},freeze:0,frozen:{},skills:{reading:0,listening:0,speaking:0,writing:0},quiz:{},goalDone:{},me:null,course:{},lvl:'a1',onboarded:0,placed:null,sound:1,lastRank:{},uid:'',look:{avatar:'',ncolor:0,nstyle:0,frame:0},prem:{until:0},lday:{},prac:{},mist:[]});
 const load=()=>{try{S=JSON.parse(localStorage.getItem('addim2')||'null')}catch(e){S=null}if(!S)S=blank();for(const k in blank())if(S[k]===undefined)S[k]=blank()[k]};
-const save=()=>{try{localStorage.setItem('addim2',JSON.stringify(S))}catch(e){}};
+const save=()=>{try{localStorage.setItem('addim2',JSON.stringify(S))}catch(e){}};window.save=save;
 const newId=()=>crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,12);
 const CFG=window.ADDIM_CONFIG||{};
 const track=(ev,data)=>{try{if(!S||!S.uid)return;fetch('/api/track',{method:'POST',headers:{'content-type':'application/json'},keepalive:true,body:JSON.stringify({uid:S.uid,ev,data:data||undefined,lvl:S.lvl,standalone:matchMedia('(display-mode: standalone)').matches||navigator.standalone===true})}).catch(()=>{})}catch(e){}};
@@ -527,28 +516,46 @@ function showQ(){
 $('startQuiz').onclick=startQuiz;
 
 /* ---------- shared MCQ ---------- */
-function mcq(box,qs,skill){
+function mcq(box,qs,skill,onDone){let cnt=0,good=0;
   box.innerHTML=qs.map((q,n)=>`<div class="card" style="margin-bottom:12px"><p class="q" style="font-size:18px">${n+1}. ${esc(q[0])}</p><div class="opts" data-n="${n}">${shuffle(q[1]).map(o=>`<button class="opt" data-v="${esc(o)}">${esc(o)}</button>`).join('')}</div><div class="ex"></div></div>`).join('');
   box.querySelectorAll('.opts').forEach(g=>{const q=qs[+g.dataset.n];g.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
     const ok=b.dataset.v===q[1][0];g.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(x.dataset.v===q[1][0])x.classList.add('right')});
     play(ok?'ok':'no');if(!ok)b.classList.add('wrong');else addXP(5,skill,b);
-    g.nextElementSibling.innerHTML=`<div class="expl"><b style="color:${ok?'var(--ok)':'var(--coral)'}">${ok?'Düzgün! +5 XP':'Diqqət:'}</b>${esc(q[2])}</div>`})})
+    g.nextElementSibling.innerHTML=`<div class="expl"><b style="color:${ok?'var(--ok)':'var(--coral)'}">${ok?'Düzgün! +5 XP':'Diqqət:'}</b>${esc(q[2])}</div>`;
+    cnt++;if(ok)good++;if(cnt===qs.length&&onDone)setTimeout(()=>onDone(good),350)})})
 }
 
-/* ---------- reading ---------- */
-const GL={busy:'məşğul',groupmates:'qrup yoldaşları',friendly:'mehriban',"couldn't":'bacarmadım (can-ın keçmişi, inkar)',asked:'soruşdum, xahiş etdim',library:'kitabxana',quiet:'sakit',join:'qoşulmaq',confidently:'inamla, özünəinamla',met:'tanış oldum (meet → met)',together:'birlikdə',because:'çünki'};
-const RT="My name is Nigar. I am from Ganja, but now I study in Baku. My first week at university was busy. On Monday, I met my groupmates. They were friendly and we had lunch together. On Wednesday, I couldn't find my classroom, so I asked a teacher for help. Every evening I study for two hours in the library. It is quiet there. Next week I want to join the English club because I want to speak more confidently.";
-$('rText').innerHTML=RT.split(/(\s+)/).map(w=>{const k=w.replace(/[.,]/g,'').toLowerCase();return GL[k]?`<button class="w" data-k="${esc(k)}">${esc(w)}</button>`:esc(w)}).join('');
-let tipT;$('rText').querySelectorAll('.w').forEach(b=>b.onclick=()=>{const t=$('tip');t.textContent=b.dataset.k+' — '+GL[b.dataset.k];t.style.display='block';clearTimeout(tipT);tipT=setTimeout(()=>t.style.display='none',3500)});
-mcq($('rQs'),[
-["Where is Nigar from?",["Ganja","Baku","Sheki","London"],"Mətndə: «I am from Ganja, but now I study in Baku» — Gəncədəndir, Bakıda oxuyur."],
-["What happened on Wednesday?",["She couldn't find her classroom","She met her groupmates","She joined a club","She had an exam"],"«On Wednesday, I couldn't find my classroom» — sinif otağını tapa bilmədi."],
-["Why does she want to join the English club?",["To speak more confidently","To meet a teacher","Because it is quiet","To study in the library"],"«…because I want to speak more confidently» — daha inamla danışmaq üçün."]],'reading');
+/* ---------- practice packs: reading + listening ---------- */
+const PRAC=window.PRAC||{listening:[],reading:[]};
+const PK={listening:{box:'lsBox',name:'Listening',noun:'dinləmə',col:'--lsb',bd:'#e0d4fb'},reading:{box:'rdBox',name:'Reading',noun:'oxu mətni',col:'--rdb',bd:'#cfe2fb'}};
+let PCUR={listening:null,reading:null},PLV={listening:null,reading:null};
+const pDone=id=>S.prac&&S.prac[id]!=null;
+function packList(kind){const lv=PLV[kind]||S.lvl||'a1',all=PRAC[kind],eps=all.filter(e=>e.lvl===lv),k=PK[kind],box=$(k.box),dn=eps.filter(e=>pDone(e.id)).length;
+  box.innerHTML=`<a class="back" href="#practice">‹ Geri</a><h2>${k.name}</h2><p class="note" style="margin-top:-6px">${kind==='listening'?'Dialoqu dinlə, sonra sualları cavabla.':'Mətni oxu — tanış olmayan sözə toxun, tərcüməsi görünəcək.'} ${dn} / ${eps.length} tamamlandı.</p>
+  <div class="lvls">${LVORD.map(l=>`<button class="lvl" data-l="${l}" aria-pressed="${l===lv}" style="${l===lv?'background:'+LVCOL[l]:''}">${l.toUpperCase()}</button>`).join('')}</div>
+  <div class="eplist">${eps.map((e,i)=>{const d=pDone(e.id);return `<button class="ep ${d?'done':''}" data-id="${e.id}"><span class="n" style="background:${d?'#fff4d6':'var('+k.col+')'}">${d?'<svg viewBox="0 0 64 64" width="26" height="26"><use href="#sunI"/></svg>':i+1}</span><span><b>${esc(e.title)}</b><small>${d?S.prac[e.id]+'% düzgün · yenidən keç':(kind==='listening'?e.lines.length+' replika':Math.round(e.text.split(' ').length)+' söz')+' · '+e.qs.length+' sual'}</small></span><span class="go">›</span></button>`}).join('')}</div>`;
+  box.querySelectorAll('.lvl').forEach(b=>b.onclick=()=>{PLV[kind]=b.dataset.l;packList(kind)});
+  box.querySelectorAll('.ep').forEach(b=>b.onclick=()=>openEp(kind,b.dataset.id))}
+let tipT;
+function openEp(kind,id){stopSpeech();const e=PRAC[kind].find(x=>x.id===id);if(!e)return packList(kind);PCUR[kind]=id;const k=PK[kind],box=$(k.box),eps=PRAC[kind].filter(x=>x.lvl===e.lvl),n=eps.indexOf(e);
+  const lines=kind==='listening'?e.lines.map(l=>({text:l[1],voice:l[2]})):null;
+  box.innerHTML=`<button class="back" id="epBack">‹ Siyahı</button><h2>${k.name} · ${esc(e.title)}</h2><div class="note" style="margin:-6px 0 10px">${e.lvl.toUpperCase()} · ${n+1} / ${eps.length}</div>`+(kind==='listening'?
+   `<div class="card" style="background:var(--lsb);border-color:${k.bd}"><p style="margin:0">Əvvəlcə mətnə baxmadan dinlə. Çətin olsa, yavaş dinlə və ya transkripti aç.</p><div class="row"><button class="btn" id="play">▶ Dinlə</button><button class="btn ghost" id="slow">Yavaş</button></div><button class="btn ghost" id="showTr">Transkripti göstər</button><div id="tr" hidden style="margin-top:12px">${e.lines.map(l=>`<div class="line"><b>${esc(l[0])}</b><span>${esc(l[1])}</span></div>`).join('')}</div></div>`:
+   `<div class="card" style="background:var(--rdb);border-color:${k.bd}"><div class="text" id="rText">${e.text.split(/(\s+)/).map(w=>{const kk=w.replace(/[.,()!?:;]/g,'').toLowerCase();return e.gl[kk]?`<button class="w" data-k="${esc(kk)}">${esc(w)}</button>`:esc(w)}).join('')}</div></div><div class="tip" id="tip"></div>`)+
+   `<h2 style="margin-top:22px">Suallar</h2><div id="epQs"></div><div id="epEnd"></div>`;
+  $('epBack').onclick=()=>{stopSpeech();PCUR[kind]=null;packList(kind);window.scrollTo(0,0)};
+  if(lines){$('play').onclick=()=>playBtn($('play'),lines,1);$('slow').onclick=()=>playBtn($('slow'),lines,0.75);
+    $('showTr').onclick=()=>{$('tr').hidden=!$('tr').hidden;$('showTr').textContent=$('tr').hidden?'Transkripti göstər':'Transkripti gizlət'}}
+  else $('rText').querySelectorAll('.w').forEach(b=>b.onclick=()=>{const t=$('tip');t.textContent=b.dataset.k+' — '+e.gl[b.dataset.k];t.style.display='block';clearTimeout(tipT);tipT=setTimeout(()=>t.style.display='none',3500)});
+  mcq($('epQs'),e.qs,kind,ok=>{const pct=Math.round(ok/e.qs.length*100),first=!pDone(e.id);S.prac=S.prac||{};S.prac[e.id]=Math.max(S.prac[e.id]||0,pct);save();
+    const g=first?bonusXP(10):0;if(g)addXP(g,kind,null);track('practice',e.id);
+    const nx=eps.slice(n+1).find(x=>!pDone(x.id))||eps.find(x=>!pDone(x.id)&&x!==e)||eps[n+1];
+    play('done');$('epEnd').innerHTML=`<div class="res" style="margin-top:6px"><svg width="96" height="96" viewBox="0 0 64 64"><use href="#sunI"/></svg><h2 style="margin-top:6px">${kind==='listening'?'Dinləmə':'Oxu'} tamamlandı!</h2><div class="row" style="justify-content:center;gap:28px;margin:12px 0 16px"><div><div class="score">${ok}/${e.qs.length}</div><div class="hint">düzgün</div></div>${g?`<div><div class="score" style="color:var(--star)">+${g}</div><div class="hint">bonus XP</div></div>`:''}</div>${nx?`<button class="btn" id="epNext">Növbəti ${k.noun}: ${esc(nx.title)}</button>`:`<p class="note">Bu səviyyənin bütün ${kind==='listening'?'dinləmələrini':'mətnlərini'} keçdin! Yuxarıdan başqa səviyyə seç.</p>`}<button class="btn ghost" id="epList">Siyahıya qayıt</button></div>`;
+    if(nx)$('epNext').onclick=()=>{openEp(kind,nx.id);window.scrollTo(0,0)};$('epList').onclick=()=>{PCUR[kind]=null;packList(kind);window.scrollTo(0,0)};
+    $('epEnd').scrollIntoView({behavior:'smooth',block:'start'})})}
+function renderPack(kind){PCUR[kind]?openEp(kind,PCUR[kind]):packList(kind)}
 
-/* ---------- listening ---------- */
-const DLG=[["Customer","Hi! Can I have a coffee, please?","airy"],["Barista","Sure. Small or large?","rounded"],["Customer","Large, please. How much is it?","airy"],["Barista","It's four manats.","rounded"],["Customer","Here you are. Thank you!","airy"]];
-$('tr').innerHTML=DLG.map(l=>`<div class="line"><b>${esc(l[0])}</b><span>${esc(l[1])}</span></div>`).join('');
-$('showTr').onclick=()=>{$('tr').hidden=!$('tr').hidden;$('showTr').textContent=$('tr').hidden?'Transkripti göstər':'Transkripti gizlət'};
+/* ---------- listening voice ---------- */
 let TTS=null;
 /* ---- natural voice selection + play/stop ---- */
 let VOICES=[],SPK_BTN=null,SPEAKING=false;
@@ -567,7 +574,7 @@ const speakNative=(lines,rate)=>new Promise(res=>{const ss=window.speechSynthesi
    iOS üçün bir Audio elementi təkrar istifadə olunur (ilk toxunuşdan sonra icazəli qalır). */
 const VOICE_TEST="Hi! I'm your English voice. How does this sound?";
 let AEL=null,SPEAK_TOKEN=0,AI_DOWN_UNTIL=0;
-Object.defineProperty(window,'AEL',{get:()=>AEL||{paused:true},configurable:true});Object.defineProperty(window,'AI_DOWN_UNTIL',{get:()=>AI_DOWN_UNTIL,configurable:true});
+Object.defineProperty(window,'S',{get:()=>S,configurable:true});Object.defineProperty(window,'LS',{get:()=>LS,set:v=>{LS=v},configurable:true});Object.defineProperty(window,'AEL',{get:()=>AEL||{paused:true},configurable:true});Object.defineProperty(window,'AI_DOWN_UNTIL',{get:()=>AI_DOWN_UNTIL,configurable:true});
 const aiOn=()=>S.voiceSrc!=='device'&&location.protocol==='https:'||S.voiceSrc!=='device'&&/^(localhost|127\.)/.test(location.hostname);
 function playOne(url,rate,tok){return new Promise((res,rej)=>{if(!AEL){AEL=new Audio();AEL.preload='auto'}const a=AEL;let started=false;
   const done=()=>{clearTimeout(t);a.onended=a.onerror=a.onplaying=null;a._stop=null};
@@ -590,13 +597,6 @@ function markBtn(b,on){if(!b||!b.isConnected)return;if(b.dataset.l0===undefined)
 function stopSpeech(){SPEAK_TOKEN++;if(AEL){try{AEL.pause();const st=AEL._stop;st&&st()}catch(e){}}try{TTS&&TTS.stop()}catch(e){}try{window.speechSynthesis&&speechSynthesis.cancel()}catch(e){}const b=SPK_BTN;SPK_BTN=null;SPEAKING=false;markBtn(b,false)}
 function playBtn(btn,lines,rate=1){if(SPEAKING&&SPK_BTN===btn){stopSpeech();return}stopSpeech();SPK_BTN=btn;SPEAKING=true;markBtn(btn,true);
   speak(lines,rate).catch(()=>{}).finally(()=>{if(SPK_BTN===btn){SPEAKING=false;SPK_BTN=null;markBtn(btn,false)}})}
-$('play').onclick=()=>playBtn($('play'),DLG.map(l=>({text:l[1],voice:l[2]})),1);
-$('slow').onclick=()=>playBtn($('slow'),DLG.map(l=>({text:l[1],voice:l[2]})),0.75);
-mcq($('lQs'),[
-["What does the customer order?",["A large coffee","A small coffee","A large tea","Two coffees"],"«Large, please» — böyük qəhvə."],
-["How much is it?",["Four manats","Two manats","Fourteen manats","Forty manats"],"«It's four manats.» Diqqət: four (4) və fourteen (14) tez qarışdırılır."],
-["What does «Here you are» mean?",["Buyurun (bir şey verəndə)","Siz buradasınız","Mən buradayam","Burada gözləyin"],"«Here you are» — bir şeyi kiməsə uzadanda deyilir: buyurun."]],'listening');
-
 /* ---------- speaking ---------- */
 const SP=[["Nice to meet you.","Tanış olmağıma şadam.","«Meet» sözündə uzun «i:» səsi var — «mit» yox, «mii:t»."],
 ["I study economics at university.","Universitetdə iqtisadiyyat oxuyuram.","«University» — «yu-ni-VÖR-si-ti». Vurğu üçüncü hecaya düşür."],
@@ -711,22 +711,32 @@ function renderCourse(){
     const head=`<div class="uhead" style="background:${u.lessons?lv.color:'#9aa8b6'}"><small>${esc(lv.name)} · Bölmə ${ui+1}</small><b>${esc(u.title)}</b><span>${esc(u.grammar)}</span></div>`;
     if(!u.lessons)return `<div class="unit">${head}<div class="soon">Tezliklə əlavə olunacaq</div></div>`;
     const nodes=u.lessons.map((x,i)=>{const d=isDone(x.id),op=unlocked(x.id),cur=nx&&nx.x.id===x.id;
-      return `<button class="node ${op?'':'lock'} ${cur?'cur':''}" data-id="${x.id}" style="transform:translateX(${off[i%off.length]}px)" ${op?'':'disabled'}><span class="c" style="background:${d?'#fff4d6':cur?lv.color:'#fff'};border:3px solid ${d?'#ffd66b':lv.color}">${d?'<svg viewBox="0 0 64 64"><use href="#sunI"/></svg>':op?'<svg viewBox="0 0 24 24"><use href="#starI"/></svg>':LOCK}</span><span class="t">${esc(x.title)}</span>${cur?'<span class="badge">Başla</span>':d?`<span class="hint">${S.course[x.id]}% düzgün</span>`:''}</button>`}).join('');
+      return `<button class="node ${op?'':'lock'} ${cur?'cur':''}" data-id="${x.id}" style="transform:translateX(${off[i%off.length]}px)" ${op?'':'disabled'}><span class="c" style="background:${d?'#fff4d6':cur?lv.color:'#fff'};border:3px solid ${d?'#ffd66b':lv.color}">${d?'<svg viewBox="0 0 64 64"><use href="#sunI"/></svg>':op?(x.review?'<svg viewBox="0 0 24 24" fill="none" stroke="'+(cur?'#fff':lv.color)+'" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg>':'<svg viewBox="0 0 24 24"><use href="#starI"/></svg>'):LOCK}</span><span class="t">${esc(x.title)}${x.review?'<small class="hint" style="display:block">qarışıq tapşırıqlar</small>':''}</span>${cur?'<span class="badge">Başla</span>':d?`<span class="hint">${S.course[x.id]}% düzgün</span>`:''}</button>`}).join('');
     return `<div class="unit">${head}<div class="path">${nodes}</div></div>`}).join('');
   $('units').querySelectorAll('.node:not(.lock)').forEach(b=>b.onclick=()=>startLesson(b.dataset.id));
 }
 let LS=null;
 const lessonsLeft=()=>Math.max(0,(CFG.freeLessonsPerDay||3)-(S.lday[today()]||0));
+const itemsOf=x=>x.items.map((it,k)=>({...it,src:x.id+'#'+k}));
+function itemBySrc(src){const [lid,k]=src.split('#'),a=ALL.find(z=>z.x.id===lid);return a&&a.x.items[+k]?{...a.x.items[+k],src}:null}
+function reviewItems(a){const pool=shuffle(a.u.lessons.filter(l=>!l.review&&(isDone(l.id)||l===a.u.lessons[0])).flatMap(itemsOf).filter(i=>i.t!=='learn'));
+  const pick=[],seen=new Set();for(const it of pool){const k=it.t+(it.q||[].concat(it.en)[0]);if(seen.has(k))continue;seen.add(k);pick.push(it);if(pick.length>=12)break}return pick}
+function startMistakes(){const items=shuffle((S.mist||[]).map(itemBySrc).filter(Boolean)).slice(0,12);if(!items.length)return;
+  LS={a:{x:{id:'__mist',title:'Səhvlərin üzərində iş'},mist:1},items:items.map(i=>({...i,fix:1})),i:0,ok:0,scored:0,xp:0};track('review','mist');location.hash='lesson';if(location.hash==='#lesson')route();renderStep()}
+function renderMist(){const el=$('mistCard');if(!el)return;const n=(S.mist||[]).filter(itemBySrc).length;
+  el.innerHTML=n?`<button class="ep" id="mistGo" style="width:100%;margin-bottom:14px;border-color:#fbd8c5;background:#fff7f2"><span class="n" style="background:#ffe3d3;color:#c2410c">${n}</span><span><b>Səhvlərin üzərində iş</b><small>Səhv cavab verdiyin tapşırıqları təkrarla — düzgün cavab verdikcə siyahıdan silinir.</small></span><span class="go">›</span></button>`:'';
+  if(n)$('mistGo').onclick=startMistakes}
 function startLesson(id){const a=ALL.find(z=>z.x.id===id);if(!a)return;
-  if(!isPrem()&&!isDone(id)&&lessonsLeft()<=0){play('down');track('limit_hit');return sheet('Bugünlük pulsuz dərslər bitdi',`<p>Bu gün ${CFG.freeLessonsPerDay||3} yeni dərs keçdin — əla iş! Sabah yenə ${CFG.freeLessonsPerDay||3} dərs açılacaq. Keçdiyin dərsləri təkrarlamaq, günün quizi və məşqlər isə limitsizdir.</p><p><b>Premium</b> ilə istədiyin qədər dərs keç və hər dərsdə +50% XP qazan.</p>`,'<a class="btn sun" href="#premium" id="goPrem">Premium-a bax</a><button class="btn ghost" id="shClose">Sabah davam edərəm</button>')||($('shClose').onclick=closeSheet,$('goPrem').onclick=closeSheet)}
-  const items=a.x.items.map(it=>({...it}));
-  if(!items.some(i=>i.t==='speak')){const o=items.find(i=>i.t==='order');if(o)items.splice(items.length-1,0,{t:'speak',en:[].concat(o.en)[0],az:o.az})}
+  if(!a.x.review&&!isPrem()&&!isDone(id)&&lessonsLeft()<=0){play('down');track('limit_hit');return sheet('Bugünlük pulsuz dərslər bitdi',`<p>Bu gün ${CFG.freeLessonsPerDay||3} yeni dərs keçdin — əla iş! Sabah yenə ${CFG.freeLessonsPerDay||3} dərs açılacaq. Keçdiyin dərsləri təkrarlamaq, günün quizi və məşqlər isə limitsizdir.</p><p><b>Premium</b> ilə istədiyin qədər dərs keç və hər dərsdə +50% XP qazan.</p>`,'<a class="btn sun" href="#premium" id="goPrem">Premium-a bax</a><button class="btn ghost" id="shClose">Sabah davam edərəm</button>')||($('shClose').onclick=closeSheet,$('goPrem').onclick=closeSheet)}
+  const items=a.x.review?reviewItems(a):itemsOf(a.x);if(a.x.review)track('review',a.x.id);
+  if(!a.x.review&&!items.some(i=>i.t==='speak')){const o=items.find(i=>i.t==='order');if(o)items.splice(items.length-1,0,{t:'speak',en:[].concat(o.en)[0],az:o.az})}
   LS={a,items,i:0,ok:0,scored:0,xp:0};location.hash='lesson';if(location.hash==='#lesson')route();renderStep()}
 function fbBox(ok,title,body){return `<div class="fb ${ok?'ok':'no'}"><b>${esc(title)}</b>${body?'<div>'+esc(body)+'</div>':''}<button class="btn ${ok?'':'sun'}" id="lNext">Davam et</button></div>`}
 function answered(ok,right,e,el){const it=LS.items[LS.i];
   if(!it.re){LS.scored++;if(ok)LS.ok++}
   play(ok?'ok':'no');
-  if(ok){const g=bonusXP(5);addXP(g,null,el);LS.xp+=g}else if(!it.re)LS.items.push({...it,re:1});
+  if(ok){const g=bonusXP(5);addXP(g,null,el);LS.xp+=g;if(it.fix&&it.src){S.mist=(S.mist||[]).filter(x=>x!==it.src);save()}}
+  else{if(!it.re)LS.items.push({...it,re:1});if(it.src&&!it.fix){S.mist=[it.src].concat((S.mist||[]).filter(x=>x!==it.src)).slice(0,40);save()}}
   const f=document.createElement('div');f.innerHTML=fbBox(ok,ok?['Əla!','Düzgündür!','Bravo!','Tam doğru!'][LS.i%4]:'Düzgün cavab: '+right,ok?'':e||'');$('lBox').appendChild(f.firstElementChild);
   $('lNext').onclick=()=>{LS.i++;renderStep()};$('lNext').focus({preventScroll:true});$('lNext').scrollIntoView({block:'nearest'})}
 function renderStep(){
@@ -774,10 +784,10 @@ function renderStep(){
     return}
   LS.i++;renderStep();
 }
-function finishLesson(){const a=LS.a,first=!isDone(a.x.id),acc=LS.scored?Math.round(LS.ok/LS.scored*100):100,bonus=bonusXP(first?15:5);if(first){const t=today();S.lday={[t]:(S.lday[t]||0)+1};track('lesson',a.x.id)}
-  S.course[a.x.id]=Math.max(S.course[a.x.id]||0,acc);save();addXP(bonus,null,null);LS.xp+=bonus;
+function finishLesson(){const a=LS.a,first=!a.mist&&!isDone(a.x.id),acc=LS.scored?Math.round(LS.ok/LS.scored*100):100,bonus=bonusXP(first?15:5);if(first&&!a.x.review){const t=today();S.lday={[t]:(S.lday[t]||0)+1};track('lesson',a.x.id)}
+  if(!a.mist)S.course[a.x.id]=Math.max(S.course[a.x.id]||0,acc);save();renderMist();addXP(bonus,null,null);LS.xp+=bonus;
   const nx=nextLesson();
-  $('lBox').innerHTML=`<div class="res"><svg width="120" height="120" viewBox="0 0 64 64"><use href="#sunI"/></svg><h2 style="margin-top:8px">Dərs tamamlandı!</h2><p style="margin:0">${esc(a.x.title)}</p><div class="row" style="justify-content:center;gap:28px;margin:18px 0"><div><div class="score">${acc}%</div><div class="hint">düzgün</div></div><div><div class="score" style="color:var(--star)">+${LS.xp}</div><div class="hint">XP</div></div></div>${nx?`<button class="btn" id="lGoNext">Növbəti dərs: ${esc(nx.x.title)}</button>`:''}<a class="btn ghost" href="#course">Kursa qayıt</a></div>`;
+  $('lBox').innerHTML=`<div class="res"><svg width="120" height="120" viewBox="0 0 64 64"><use href="#sunI"/></svg><h2 style="margin-top:8px">${a.mist?'Səhvlər təkrarlandı!':a.x.review?'Təkrar tamamlandı!':'Dərs tamamlandı!'}</h2><p style="margin:0">${esc(a.x.title)}</p><div class="row" style="justify-content:center;gap:28px;margin:18px 0"><div><div class="score">${acc}%</div><div class="hint">düzgün</div></div><div><div class="score" style="color:var(--star)">+${LS.xp}</div><div class="hint">XP</div></div></div>${nx?`<button class="btn" id="lGoNext">Növbəti dərs: ${esc(nx.x.title)}</button>`:''}<a class="btn ghost" href="#course">Kursa qayıt</a></div>`;
   $('lBox').insertAdjacentHTML('beforeend','<div id="vidLesson" style="margin-top:8px"></div>');renderVideo($('vidLesson'),'Dərsdən sonra bax');
   play('done');$('lBar').style.width='100%';if(nx)$('lGoNext').onclick=()=>startLesson(nx.x.id);LS=null;renderNext();
 }
@@ -906,6 +916,8 @@ function route(){stopSpeech();let v=location.hash.slice(1);if(!VIEWS.includes(v)
   if(v==='welcome'){PT=null;welcome()}
   if(v==='profile')renderProfile();
   if(v==='premium')renderPremium();
+  if(v==='reading'||v==='listening')renderPack(v);
+  if(v==='practice')renderMist();
   if(v==='league'&&matchMedia('(min-width:1000px)').matches)v='home';
   VIEWS.forEach(k=>$('v-'+k).classList.toggle('on',k===v));
   document.querySelectorAll('#tabs a').forEach(a=>a.classList.toggle('on',a.dataset.k===v||(v==='quiz'&&a.dataset.k==='home')||(v==='lesson'&&a.dataset.k==='course')||(['reading','listening','speaking','writing'].includes(v)&&a.dataset.k==='practice')));
