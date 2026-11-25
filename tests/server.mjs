@@ -1,0 +1,36 @@
+import http from 'node:http'; import fs from 'node:fs'; import path from 'node:path';
+import { DatabaseSync } from 'node:sqlite';
+const root = process.argv[2];
+const routes = {};
+for (const n of ['board','premium','admin','track']) routes[n] = (await import(path.join(root, 'functions/api/'+n+'.js'))).onRequest;
+const onRequest = routes.board;
+const db = new DatabaseSync(':memory:');
+const D1 = { prepare(sql) { let args = []; const st = { bind(...a) { args = a; return st; },
+  async run() { const r = db.prepare(sql).run(...args); return { meta: { changes: r.changes } }; }, async all() { return { results: db.prepare(sql).all(...args) }; }, async first() { return db.prepare(sql).get(...args) ?? null; } }; return st; } };
+// seed two other players
+await onRequest({ request: new Request('http://x/api/board', { method: 'POST', body: JSON.stringify({ id: 'test-user-aaaa', name: 'Leyla', color: 1, xp: 120 }) }), env: { DB: D1 } });
+await onRequest({ request: new Request('http://x/api/board', { method: 'POST', body: JSON.stringify({ id: 'test-user-bbbb', name: 'Murad', color: 2, xp: 15 }) }), env: { DB: D1 } });
+// fake analytics history for the dashboard test
+{ const sh = await import(path.join(root, 'functions/_shared.js')); await sh.ensureSchema(D1);
+  const day = n => sh.bakuDay(Date.now() - n*864e5); let k = 0;
+  for (let d = 13; d >= 0; d--) { const fresh = 2 + (d % 4); for (let i = 0; i < fresh; i++) { const uid = 'fake-user-' + (k++).toString().padStart(4,'0');
+    db.prepare('INSERT INTO users VALUES (?,?,?,?,?)').run(uid, day(d), day(Math.max(0,d-2)), ['a1','a1','a2','b1'][k%4], k%3===0?1:0);
+    for (let a = d; a >= Math.max(0, d - (k % 5)); a--) db.prepare('INSERT OR IGNORE INTO daily VALUES (?,?)').run(day(a), uid);
+    const ls = ['a1-u1-l1','a1-u1-l2','a1-u1-l3','a1-u2-l1','a1-u2-l2'].slice(0, 1 + (k % 5));
+    for (const l of ls) db.prepare('INSERT INTO events VALUES (?,?,?,?,?)').run(day(d), uid, 'lesson', l, Date.now());
+    if (k % 2) db.prepare('INSERT INTO events VALUES (?,?,?,?,?)').run(day(d), uid, 'placement', ['a1','a2','b1'][k%3], Date.now());
+    if (k % 4 === 0) db.prepare('INSERT INTO events VALUES (?,?,?,?,?)').run(day(d), uid, 'premium_view', null, Date.now());
+    if (k % 3 === 0) db.prepare('INSERT INTO events VALUES (?,?,?,?,?)').run(day(d), uid, 'limit_hit', null, Date.now()); } } }
+http.createServer(async (req, res) => {
+  const u = new URL(req.url, 'http://localhost');
+  const m = u.pathname.match(/^\/api\/(board|premium|admin|track)/);
+  if (m) {
+    let body = ''; for await (const c of req) body += c;
+    const r = await routes[m[1]]({ request: new Request('http://x' + req.url, { method: req.method, body: req.method === 'POST' ? body : undefined, headers: req.headers }), env: { DB: D1, ADMIN_KEY: 'test-admin-key-123' } });
+    res.writeHead(r.status, { 'content-type': 'application/json' }); res.end(await r.text()); return;
+  }
+  let f = path.join(root, u.pathname === '/' ? 'index.html' : u.pathname);
+  if (!fs.existsSync(f)) { res.writeHead(404); res.end(); return; }
+  const ext = path.extname(f); res.writeHead(200, { 'content-type': { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.png': 'image/png', '.webmanifest': 'application/manifest+json' }[ext] || 'application/octet-stream' });
+  fs.createReadStream(f).pipe(res);
+}).listen(8790, () => console.log('up'));

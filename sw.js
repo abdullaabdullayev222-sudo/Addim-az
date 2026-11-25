@@ -1,5 +1,5 @@
 // Addım service worker: tətbiqi oflayn işlədir
-const CACHE = 'addim-v11';
+const CACHE = 'addim-v12';
 const FILES = ['./', './index.html', './course.js', './avatars.js', './config.js', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
