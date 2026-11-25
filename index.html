@@ -550,7 +550,7 @@ let VOICES=[],SPK_BTN=null,SPEAKING=false;
 const FEMALE=/female|samantha|ava|aria|jenny|karen|serena|libby|sonia|allison|susan|zira|victoria|moira|tessa|fiona|kate|emma|olivia|natasha|joanna/i;
 const BADV=/compact|eloquence|novelty|whisper|bells|boing|bubbles|cellos|zarvox|trinoids|organ|albert|fred|junior|ralph|jester|superstar|wobble|bahh|hysterical|deranged|good news|bad news|pipe/i;
 function rankVoice(v){let s=0;if(/natural|neural|enhanced|premium|online/i.test(v.name))s+=10;if(/Google US English|Google UK English|Samantha|Ava|Allison|Susan|Karen|Daniel|Serena|Aria|Jenny|Guy|Libby|Sonia|Ryan|Arthur|Martha/i.test(v.name))s+=5;if(/en[-_]US/i.test(v.lang))s+=2;else if(/en[-_]GB/i.test(v.lang))s+=1;if(BADV.test(v.name))s-=30;return s}
-function loadVoices(){try{VOICES=speechSynthesis.getVoices().filter(v=>/^en([-_]|$)/i.test(v.lang)&&!BADV.test(v.name)).sort((a,b)=>rankVoice(b)-rankVoice(a))}catch(e){VOICES=[]}if(location.hash==='#profile'&&typeof drawVoice==='function')drawVoice()}
+function loadVoices(){try{VOICES=speechSynthesis.getVoices().filter(v=>/^en([-_]|$)/i.test(v.lang)&&!BADV.test(v.name)).sort((a,b)=>rankVoice(b)-rankVoice(a))}catch(e){VOICES=[]}if(S&&location.hash==='#profile'&&typeof drawVoice==='function')drawVoice()}
 if(window.speechSynthesis){loadVoices();try{speechSynthesis.addEventListener('voiceschanged',loadVoices)}catch(e){speechSynthesis.onvoiceschanged=loadVoices}}
 function voicePair(){const first=(S.voice&&VOICES.find(v=>v.name===S.voice))||VOICES[0]||null;
   const second=VOICES.find(v=>v!==first&&first&&FEMALE.test(v.name)!==FEMALE.test(first.name))||VOICES.find(v=>v!==first)||first;return [first,second]}
@@ -558,8 +558,23 @@ const speakNative=(lines,rate)=>new Promise(res=>{const ss=window.speechSynthesi
   lines.forEach((l,i)=>{const u=new SpeechSynthesisUtterance(l.text),v=l.voice==='rounded'?v2:v1;u.lang=v?v.lang:'en-US';if(v)try{u.voice=v}catch(e){}u.rate=Math.max(.5,Math.min(1.5,rate*(S.rate||1)*0.95));u.pitch=1;
     if(i===lines.length-1){u.onend=()=>res(true);u.onerror=()=>res(true)}ss.speak(u)});
   setTimeout(()=>{if(ss.paused)ss.resume()},250)});
-async function speak(lines,rate=1){
+/* Təbii səs: serverdə süni intellektlə yaradılmış və keşlənmiş mp3 (Deepgram Aura).
+   iOS üçün bir Audio elementi təkrar istifadə olunur (ilk toxunuşdan sonra icazəli qalır). */
+const VOICE_TEST="Hi! I'm your English voice. How does this sound?";
+let AEL=null,SPEAK_TOKEN=0,AI_DOWN_UNTIL=0;
+Object.defineProperty(window,'AEL',{get:()=>AEL||{paused:true},configurable:true});Object.defineProperty(window,'AI_DOWN_UNTIL',{get:()=>AI_DOWN_UNTIL,configurable:true});
+const aiOn=()=>S.voiceSrc!=='device'&&location.protocol==='https:'||S.voiceSrc!=='device'&&/^(localhost|127\.)/.test(location.hostname);
+function playOne(url,rate,tok){return new Promise((res,rej)=>{if(!AEL){AEL=new Audio();AEL.preload='auto'}const a=AEL;let started=false;
+  const done=()=>{clearTimeout(t);a.onended=a.onerror=a.onplaying=null;a._stop=null};
+  const t=setTimeout(()=>{if(!started){done();rej(new Error('timeout'))}},9000);
+  a._stop=()=>{done();res()};a.onplaying=()=>{started=true};a.onended=()=>{done();res()};a.onerror=()=>{done();rej(new Error('audio'))};
+  a.src=url;try{a.playbackRate=Math.max(.5,Math.min(1.5,rate*(S.rate||1)));a.preservesPitch=true}catch(e){}
+  const p=a.play();if(p&&p.catch)p.catch(e=>{done();rej(e)})})}
+async function speakAI(lines,rate,tok){for(const l of lines){if(tok!==SPEAK_TOKEN)return;
+  await playOne('/api/tts?v='+(l.voice==='rounded'?'orion':'asteria')+'&t='+encodeURIComponent(l.text),rate,tok)}}
+async function speak(lines,rate=1){const tok=++SPEAK_TOKEN;
   if(TTS){try{await TTS.speak(lines.map(l=>({text:l.text,voice:l.voice||'buttery',language:'en',rate:rate*(S.rate||1)})));return}catch(e){if(e&&e.code==='busy')return}}
+  if(aiOn()&&Date.now()>AI_DOWN_UNTIL){try{await speakAI(lines,rate,tok);return}catch(e){if(tok!==SPEAK_TOKEN)return;AI_DOWN_UNTIL=Date.now()+10*60e3}}
   if(!window.speechSynthesis){toast('Bu brauzerdə səsləndirmə işləmir — mətni oxu.');return}
   await speakNative(lines,rate);
 }
@@ -567,7 +582,7 @@ const STOP_SVG='<svg viewBox="0 0 24 24" fill="currentColor" style="width:44%;he
 function markBtn(b,on){if(!b||!b.isConnected)return;if(b.dataset.l0===undefined)b.dataset.l0=b.innerHTML;
   b.classList.toggle('playing',on);b.setAttribute('aria-pressed',on?'true':'false');
   b.innerHTML=on?(b.classList.contains('bigplay')||b.classList.contains('spk')?STOP_SVG:'■ Dayandır'):b.dataset.l0}
-function stopSpeech(){try{TTS&&TTS.stop()}catch(e){}try{window.speechSynthesis&&speechSynthesis.cancel()}catch(e){}const b=SPK_BTN;SPK_BTN=null;SPEAKING=false;markBtn(b,false)}
+function stopSpeech(){SPEAK_TOKEN++;if(AEL){try{AEL.pause();const st=AEL._stop;st&&st()}catch(e){}}try{TTS&&TTS.stop()}catch(e){}try{window.speechSynthesis&&speechSynthesis.cancel()}catch(e){}const b=SPK_BTN;SPK_BTN=null;SPEAKING=false;markBtn(b,false)}
 function playBtn(btn,lines,rate=1){if(SPEAKING&&SPK_BTN===btn){stopSpeech();return}stopSpeech();SPK_BTN=btn;SPEAKING=true;markBtn(btn,true);
   speak(lines,rate).catch(()=>{}).finally(()=>{if(SPK_BTN===btn){SPEAKING=false;SPK_BTN=null;markBtn(btn,false)}})}
 $('play').onclick=()=>playBtn($('play'),DLG.map(l=>({text:l[1],voice:l[2]})),1);
@@ -769,15 +784,17 @@ function drawHeader(){$('hdAv').innerHTML=avatar(S.me?S.me.name:'?',S.me?S.me.co
 function lockedTap(){play('down');location.hash='premium'}
 const RATES=[['Yavaş',0.8],['Normal',1],['Sürətli',1.15]];
 function drawVoice(){const c=$('voiceCard');if(!c)return;
-  if(!window.speechSynthesis||!VOICES.length){c.innerHTML='<b>Səsləndirmə səsi</b><p class="note" style="margin:6px 0 0">Bu cihazda ingilis səsi tapılmadı. Telefonun parametrlərində (Əlçatanlıq → Danışıq məzmunu → Səslər) ingilis səsi yükləsən, dinləmə daha təbii olacaq.</p>';return}
+  const src=S.voiceSrc==='device'?'device':'ai';
+  const head=`<b>Səsləndirmə</b><span class="lim">Dinləmə tapşırıqlarında hansı səs oxusun</span><div class="chipsx" id="vSrc" style="margin-top:10px"><button class="chipx" data-s="ai" aria-pressed="${src==='ai'}">Təbii səs (süni intellekt) ★</button><button class="chipx" data-s="device" aria-pressed="${src==='device'}">Cihazın səsi</button></div>`;
+  const wire=()=>{c.querySelectorAll('#vSrc .chipx').forEach(b=>b.onclick=()=>{S.voiceSrc=b.dataset.s;AI_DOWN_UNTIL=0;save();drawVoice()});const t=$('vTest');if(t)t.onclick=()=>playBtn(t,[{text:VOICE_TEST}],1);c.querySelectorAll('#vRate .chipx').forEach(b=>b.onclick=()=>{S.rate=+b.dataset.r;save();drawVoice()})};
+  const rateRow=`<div class="row" style="margin-top:10px;align-items:center"><div class="chipsx" id="vRate" style="flex:1 1 auto">${RATES.map(r=>`<button class="chipx" data-r="${r[1]}" aria-pressed="${(S.rate||1)===r[1]}">${r[0]}</button>`).join('')}</div><button class="btn ghost" id="vTest" style="flex:0 0 auto;width:auto;margin:0">▶ Dinlə</button></div>`;
+  if(src==='ai'){c.innerHTML=head+rateRow+'<p class="note">Təbii səs internet tələb edir. Əlçatmaz olanda tətbiq avtomatik cihazın səsinə keçir.</p>';wire();return}
+  if(!window.speechSynthesis||!VOICES.length){c.innerHTML=head+'<p class="note" style="margin:6px 0 0">Bu cihazda ingilis səsi tapılmadı. Telefonun parametrlərində (Əlçatanlıq → Danışıq məzmunu → Səslər) ingilis səsi yükləsən, dinləmə daha təbii olacaq.</p>';return}
   const cur=voicePair()[0];
-  c.innerHTML=`<b>Səsləndirmə səsi</b><span class="lim">Dinləmə tapşırıqlarında hansı səs oxusun</span>
-  <div class="row" style="margin-top:10px"><select id="vSel" style="flex:1 1 200px;min-height:46px;border-radius:14px;border:2px solid var(--line);font:16px Nunito,sans-serif;padding:8px 10px;background:#fbfdfb">${VOICES.map(v=>`<option value="${esc(v.name)}" ${cur&&v.name===cur.name?'selected':''}>${esc(v.name.replace(/Microsoft |Google /,''))} · ${esc(v.lang)}${rankVoice(v)>=10?' ★':''}</option>`).join('')}</select><button class="btn ghost" id="vTest" style="flex:0 0 auto;width:auto;margin:0">▶ Dinlə</button></div>
-  <div class="chipsx" id="vRate" style="margin-top:10px">${RATES.map(r=>`<button class="chipx" data-r="${r[1]}" aria-pressed="${(S.rate||1)===r[1]}">${r[0]}</button>`).join('')}</div>
+  c.innerHTML=head+`
+  <div class="row" style="margin-top:10px"><select id="vSel" style="flex:1 1 200px;min-height:46px;border-radius:14px;border:2px solid var(--line);font:16px Nunito,sans-serif;padding:8px 10px;background:#fbfdfb">${VOICES.map(v=>`<option value="${esc(v.name)}" ${cur&&v.name===cur.name?'selected':''}>${esc(v.name.replace(/Microsoft |Google /,''))} · ${esc(v.lang)}${rankVoice(v)>=10?' ★':''}</option>`).join('')}</select></div>`+rateRow+`
   <p class="note">★ — daha təbii səslər. iPhone-da «Enhanced / Premium» səsləri Parametrlər → Əlçatanlıq → Danışıq məzmunu → Səslər bölməsindən pulsuz yükləmək olar.</p>`;
-  $('vSel').onchange=e=>{S.voice=e.target.value;save()};
-  $('vTest').onclick=()=>playBtn($('vTest'),[{text:"Hi! I'm your English voice. How does this sound?"}],1);
-  c.querySelectorAll('#vRate .chipx').forEach(b=>b.onclick=()=>{S.rate=+b.dataset.r;save();drawVoice()})}
+  $('vSel').onchange=e=>{S.voice=e.target.value;save()};wire()}
 function renderProfile(){drawVoice();const P=isPrem(),L=S.look,b=$('pBox'),nm=S.me?S.me.name:'',AV=window.AVATARS||[],FREE=window.FREE_AVATARS||6;
   b.innerHTML=`<h2>Profilim ${P?CROWN:''}</h2>
   <div class="preview">${avatar(nm||'?',S.me?S.me.color:0,L)}<div style="min-width:0;flex:1"><div class="nm">${nm?nameHTML(nm,L,P):'<span style="color:var(--mut)">Adın burada görünəcək</span>'}</div><span class="lim">Liqada belə görünəcəksən</span></div></div>

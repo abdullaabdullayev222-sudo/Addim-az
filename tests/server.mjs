@@ -2,9 +2,14 @@ import http from 'node:http'; import fs from 'node:fs'; import path from 'node:p
 import { DatabaseSync } from 'node:sqlite';
 const root = process.argv[2];
 const routes = {};
-for (const n of ['board','premium','admin','track']) routes[n] = (await import(path.join(root, 'functions/api/'+n+'.js'))).onRequest;
+for (const n of ['board','premium','admin','track','tts']) routes[n] = (await import(path.join(root, 'functions/api/'+n+'.js'))).onRequest;
 const onRequest = routes.board;
 const db = new DatabaseSync(':memory:');
+// Workers AI təqlidi: 1.5 saniyəlik səssiz WAV qaytarır, çağırışları sayır
+let aiCalls = 0, aiFail = false;
+function wav(sec = 1.5, rate = 8000) { const n = Math.floor(sec * rate), b = Buffer.alloc(44 + n); b.write('RIFF', 0); b.writeUInt32LE(36 + n, 4); b.write('WAVE', 8); b.write('fmt ', 12);
+  b.writeUInt32LE(16, 16); b.writeUInt16LE(1, 20); b.writeUInt16LE(1, 22); b.writeUInt32LE(rate, 24); b.writeUInt32LE(rate, 28); b.writeUInt16LE(1, 32); b.writeUInt16LE(8, 34); b.write('data', 36); b.writeUInt32LE(n, 40); b.fill(128, 44); return b; }
+const AI = { async run(model, input, opt) { aiCalls++; if (aiFail) throw new Error('quota'); return new Response(wav(), { headers: { 'content-type': 'audio/mpeg' } }); } };
 const D1 = { prepare(sql) { let args = []; const st = { bind(...a) { args = a; return st; },
   async run() { const r = db.prepare(sql).run(...args); return { meta: { changes: r.changes } }; }, async all() { return { results: db.prepare(sql).all(...args) }; }, async first() { return db.prepare(sql).get(...args) ?? null; } }; return st; } };
 // seed two other players
@@ -23,11 +28,12 @@ await onRequest({ request: new Request('http://x/api/board', { method: 'POST', b
     if (k % 3 === 0) db.prepare('INSERT INTO events VALUES (?,?,?,?,?)').run(day(d), uid, 'limit_hit', null, Date.now()); } } }
 http.createServer(async (req, res) => {
   const u = new URL(req.url, 'http://localhost');
-  const m = u.pathname.match(/^\/api\/(board|premium|admin|track)/);
+  if (u.pathname === '/__test/ai') { if (u.searchParams.has('fail')) aiFail = u.searchParams.get('fail') === '1'; res.writeHead(200, { 'content-type': 'application/json' }); res.end(JSON.stringify({ aiCalls, aiFail })); return; }
+  const m = u.pathname.match(/^\/api\/(board|premium|admin|track|tts)/);
   if (m) {
     let body = ''; for await (const c of req) body += c;
-    const r = await routes[m[1]]({ request: new Request('http://x' + req.url, { method: req.method, body: req.method === 'POST' ? body : undefined, headers: req.headers }), env: { DB: D1, ADMIN_KEY: 'test-admin-key-123' } });
-    res.writeHead(r.status, { 'content-type': 'application/json' }); res.end(await r.text()); return;
+    const r = await routes[m[1]]({ request: new Request('http://x' + req.url, { method: req.method, body: req.method === 'POST' ? body : undefined, headers: req.headers }), env: { DB: D1, AI, ADMIN_KEY: 'test-admin-key-123' } });
+    res.writeHead(r.status, Object.fromEntries(r.headers)); res.end(Buffer.from(await r.arrayBuffer())); return;
   }
   let f = path.join(root, u.pathname === '/' ? 'index.html' : u.pathname);
   if (!fs.existsSync(f)) { res.writeHead(404); res.end(); return; }

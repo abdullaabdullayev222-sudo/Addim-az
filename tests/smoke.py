@@ -116,6 +116,8 @@ with sync_playwright() as p:
     m = page('android_chrome'); m.add_init_script(FAKE_TTS)
     m.goto(BASE + '/'); m.wait_for_timeout(500)
     if m.locator('#ptA1').count(): m.click('#ptA1'); m.wait_for_timeout(400)
+    # bu bölmə cihazın öz səsini yoxlayır
+    m.evaluate("()=>{const s=JSON.parse(localStorage.getItem('addim2'));s.voiceSrc='device';localStorage.setItem('addim2',JSON.stringify(s))}"); m.reload(); m.wait_for_timeout(500)
     m.evaluate("location.hash='listening'"); m.wait_for_timeout(300)
     m.click('#play'); m.wait_for_timeout(150)
     check('dinləmə başlayanda düymə «Dayandır» olur', 'Dayandır' in m.locator('#play').inner_text())
@@ -126,7 +128,7 @@ with sync_playwright() as p:
     m.evaluate("location.hash='home'"); m.wait_for_timeout(200)
     check('səhifə dəyişəndə səs dayanır', m.evaluate("document.querySelectorAll('.playing').length") == 0)
     m.evaluate("location.hash='profile'"); m.wait_for_timeout(300)
-    check('profildə səs bölməsi var', 'Səsləndirmə səsi' in m.locator('#voiceCard').inner_text())
+    check('profildə səs bölməsi var', 'Səsləndirmə' in m.locator('#voiceCard').inner_text())
     check('ən təbii səs ilk seçilib (★)', 'Samantha' in m.locator('#vSel').input_value())
     m.evaluate("location.hash='course'"); m.wait_for_timeout(200); m.click('#units .node:not(.lock) >> nth=0'); m.wait_for_timeout(200)
     for _ in range(12):
@@ -139,7 +141,46 @@ with sync_playwright() as p:
     m.click('#lPlay'); m.wait_for_timeout(100)
     check('dərsdə dinləməni dayandırmaq olur', m.locator('#lPlay.playing').count() == 0)
 
-    print('7. JS xətaları')
+    print('7. Təbii səs (süni intellekt)')
+    import urllib.parse
+    def get(path):
+        try:
+            r = urllib.request.urlopen(BASE + path); return r.status, r.headers.get('x-tts'), len(r.read())
+        except urllib.error.HTTPError as e: return e.code, None, 0
+    def ai(q=''): return json.load(urllib.request.urlopen(BASE + '/__test/ai' + q))
+    get('/__test/ai?fail=0')
+    st, src, n = get('/api/tts?v=orion&t=' + urllib.parse.quote('Turn left.'))
+    check('kurs cümləsi təbii səslə yaradılır', st == 200 and src == 'new' and n > 500, f'{st} {src} {n}')
+    c1 = ai()['aiCalls']
+    st2, src2, _ = get('/api/tts?v=orion&t=' + urllib.parse.quote('Turn left.'))
+    check('ikinci dəfə bazadan gəlir (AI yenidən çağırılmır)', st2 == 200 and src2 == 'cache' and ai()['aiCalls'] == c1)
+    st3, _, _ = get('/api/tts?v=asteria&t=' + urllib.parse.quote('Say something random that is not in the course'))
+    check('kursda olmayan mətn rədd olunur', st3 == 403)
+    get('/__test/ai?fail=1')
+    st4, _, _ = get('/api/tts?v=orion&t=' + urllib.parse.quote('Sure. Small or large?'))
+    check('limit bitəndə 503 qaytarır', st4 == 503)
+    m2 = page('android_chrome'); m2.goto(BASE + '/'); m2.wait_for_timeout(500)
+    if m2.locator('#ptA1').count(): m2.click('#ptA1'); m2.wait_for_timeout(300)
+    m2.evaluate("location.hash='listening'"); m2.wait_for_timeout(300)
+    m2.click('#play'); m2.wait_for_timeout(1500)
+    check('AI əlçatmaz olanda cihaz səsinə keçir (10 dəq. AI yoxlanılmır)', m2.evaluate('AI_DOWN_UNTIL>Date.now()'))
+    get('/__test/ai?fail=0')
+    reqs = []
+    m3 = page('android_chrome'); m3.on('request', lambda r: reqs.append(r.url) if '/api/tts' in r.url else None)
+    m3.goto(BASE + '/'); m3.wait_for_timeout(500)
+    if m3.locator('#ptA1').count(): m3.click('#ptA1'); m3.wait_for_timeout(300)
+    m3.evaluate("location.hash='listening'"); m3.wait_for_timeout(300)
+    m3.click('#play'); m3.wait_for_timeout(600)
+    check('dinlə təbii səs faylını istəyir', any('t=Hi' in u for u in reqs), str(reqs[:2]))
+    check('AI səsi çalarkən «Dayandır» görünür', 'Dayandır' in m3.locator('#play').inner_text())
+    m3.click('#play'); m3.wait_for_timeout(200)
+    check('AI səsini dayandırmaq olur', 'Dayandır' not in m3.locator('#play').inner_text() and m3.evaluate('AEL.paused'))
+    m3.evaluate("location.hash='profile'"); m3.wait_for_timeout(300)
+    check('profildə «Təbii səs» seçimi var', 'Təbii səs' in m3.locator('#voiceCard').inner_text())
+    m3.click('#vSrc .chipx[data-s=device]'); m3.wait_for_timeout(100)
+    check('cihaz səsinə keçmək olur', m3.locator('#vSrc .chipx[data-s=device][aria-pressed=true]').count() == 1)
+
+    print('8. JS xətaları')
     check('heç bir JavaScript xətası yoxdur', not errs, '; '.join(errs[:3]))
     b.close()
 

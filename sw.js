@@ -1,5 +1,6 @@
 // Addım service worker: tətbiqi oflayn işlədir
-const CACHE = 'addim-v13';
+const CACHE = 'addim-v14';
+const AUDIO = 'addim-audio-v1';
 const FILES = ['./', './index.html', './course.js', './avatars.js', './config.js', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
@@ -7,13 +8,19 @@ self.addEventListener('install', e => {
 });
 
 self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
+  e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE && k !== AUDIO).map(k => caches.delete(k)))).then(() => self.clients.claim()));
 });
 
 // Əvvəl şəbəkə (yeni versiya üçün), alınmasa yaddaşdakı nüsxə. Liqa API-si heç vaxt keşlənmir.
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
-  if (e.request.method !== 'GET' || url.pathname.startsWith('/api/')) return;
+  if (e.request.method !== 'GET') return;
+  // Təbii səs faylları: əvvəl yaddaş (dəyişmir), yoxdursa şəbəkə — internetsiz də işləsin
+  if (url.pathname === '/api/tts') {
+    e.respondWith(caches.open(AUDIO).then(c => c.match(e.request).then(m => m || fetch(e.request).then(r => { if (r.ok) c.put(e.request, r.clone()); return r; }))));
+    return;
+  }
+  if (url.pathname.startsWith('/api/')) return;
   e.respondWith(
     fetch(e.request).then(r => {
       if (r.ok && url.origin === location.origin) {
