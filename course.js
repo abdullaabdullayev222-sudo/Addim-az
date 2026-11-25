@@ -124,10 +124,122 @@ window.COURSE = [
       {t:'listen', en:'How many people are there?', o:['How many people are there?','How much money is there?','How many people are here?']}
     ]}
   ]},
-  { id:'a1-u5', title:'Ev və şəhər', grammar:'there is / there are · in, on, under, next to' },
-  { id:'a1-u6', title:'Vaxt və tarix', grammar:'saat, günlər, aylar · in / on / at' },
-  { id:'a1-u7', title:'Bacarıqlar', grammar:'can / can\'t' },
-  { id:'a1-u8', title:'İndi nə edirsən?', grammar:'Present Continuous' }
+  { id:'a1-u5', title:'Ev və şəhər', grammar:'there is / there are · in, on, under, next to', lessons:[
+    { id:'a1-u5-l1', title:'Mənim evim', items:[
+      {t:'learn', title:'there is / there are = «var»', body:'Bir şeyin harada OLDUĞUNU deyəndə: tək isimlə THERE IS, cəm isimlə THERE ARE. İnkar: there isn\'t / there aren\'t. Sual: Is there…? Are there…?', ex:[['There is a sofa in the living room.','Qonaq otağında divan var.'],['There are two bedrooms.','İki yataq otağı var.'],["Is there a garden? — No, there isn't.",'Bağ var? — Xeyr, yoxdur.'],['kitchen / bathroom','mətbəx / hamam otağı']]},
+      {t:'mc', q:'«Mətbəx» ingiliscə necədir?', o:['kitchen','chicken','kitten','bathroom'], e:'Kitchen — mətbəx. Chicken (toyuq) və kitten (pişik balası) ilə qarışdırma.'},
+      {t:'mc', q:'There ___ two windows in my room.', o:['are','is','be','am'], e:'Windows cəmdir: there are.'},
+      {t:'mc', q:'___ there a bathroom upstairs?', o:['Is','Are','Do','Does'], e:'Tək isim (a bathroom) ilə sual: Is there…?'},
+      {t:'order', az:'Mənim otağımda bir çarpayı var.', en:'There is a bed in my room.', extra:['are','on']},
+      {t:'listen', en:'There are three chairs in the kitchen.', o:['There are three chairs in the kitchen.','There are two chairs in the kitchen.','There is a chair in the kitchen.']},
+      {t:'order', az:'Bağ yoxdur.', en:["There isn't a garden.",'There is no garden.'], extra:["aren't",'any']}
+    ]},
+    { id:'a1-u5-l2', title:'Harada?', items:[
+      {t:'learn', title:'Yer bildirən sözlər', body:'Azərbaycan dilində yer şəkilçi ilə bildirilir (masanın üstündə), ingiliscədə isə sözdən ƏVVƏL gələn kiçik sözlə: on the table.', ex:[['in the box','qutunun içində'],['on the table','masanın üstündə'],['under the bed','çarpayının altında'],['next to the door','qapının yanında'],['between A and B','A ilə B arasında'],['behind / in front of','arxasında / qarşısında']]},
+      {t:'mc', q:'The cat is ___ the table. (masanın altında)', o:['under','on','in','behind'], e:'Under — altında.'},
+      {t:'mc', q:'«Next to» nə deməkdir?', o:['yanında','arxasında','qarşısında','içində'], e:'Next to the window — pəncərənin yanında.'},
+      {t:'mc', q:'The keys are ___ my bag. (çantanın içində)', o:['in','on','at','under'], e:'İçində — in.'},
+      {t:'mc', q:'The bank is ___ the café and the school.', o:['between','next','behind of','among of'], e:'İki şeyin arasında: between A and B.'},
+      {t:'order', az:'Telefonum masanın üstündədir.', en:'My phone is on the table.', extra:['in','are']},
+      {t:'listen', en:'The park is behind the hospital.', o:['The park is behind the hospital.','The park is next to the hospital.','The bank is behind the hospital.']}
+    ]},
+    { id:'a1-u5-l3', title:'Şəhərdə', items:[
+      {t:'learn', title:'Yol soruşmaq', body:'Yad adamdan nəsə soruşanda «Excuse me» (Bağışlayın) ilə başla. Cavabda: Go straight (düz get), Turn left / right (sola / sağa dön), It\'s on the left (solda).', ex:[['Excuse me, where is the bank?','Bağışlayın, bank haradadır?'],['Go straight.','Düz gedin.'],['Turn left.','Sola dönün.'],["It's on the right.",'Sağ tərəfdədir.'],['pharmacy','aptek'],['bus stop','avtobus dayanacağı']]},
+      {t:'mc', q:'«Aptek» ingiliscə necədir?', o:['pharmacy','farmer','bakery','library'], e:'Pharmacy — aptek (Britaniyada chemist\'s da deyilir). Library — kitabxana.'},
+      {t:'mc', q:'«Turn left» nə deməkdir?', o:['sola dön','sağa dön','düz get','geri qayıt'], e:'Left — sol, right — sağ.'},
+      {t:'mc', q:'Excuse me, ___ is the bus stop?', o:['where','what','who','when'], e:'Yer soruşanda: where (harada).'},
+      {t:'order', az:'Bağışlayın, metro haradadır?', en:'Excuse me, where is the metro?', extra:['what','are']},
+      {t:'listen', en:'Go straight and turn right.', o:['Go straight and turn right.','Go straight and turn left.','Turn right at the bank.']},
+      {t:'mc', q:"It's ___ the left.", o:['on','in','at','to'], e:'Sabit ifadə: on the left / on the right.'}
+    ]}
+  ]},
+  { id:'a1-u6', title:'Vaxt və tarix', grammar:'saat, günlər, aylar · in / on / at', lessons:[
+    { id:'a1-u6-l1', title:'Saat neçədir?', items:[
+      {t:'learn', title:'Saatı demək', body:'PAST — «keçib», TO — «qalıb». Diqqət: Azərbaycan dilində 3:30 «dördün yarısı» deyilir, ingiliscədə isə «half past three» — yəni üçdən yarım keçib. Bu, çox edilən səhvdir.', ex:[['What time is it?','Saat neçədir?'],["It's seven o'clock. (7:00)",'Saat yeddidir.'],["It's half past three. (3:30)",'Dördün yarısıdır.'],["It's quarter past five. (5:15)",'Beşi on beş dəqiqə keçir.'],["It's quarter to nine. (8:45)",'Doqquza on beş dəqiqə qalır.']]},
+      {t:'mc', q:'3:30 ingiliscə necə deyilir?', o:['half past three','half past four','half to four','three and half past'], e:'Half past three — üçdən yarım keçib (Azərbaycan dilində: dördün yarısı).'},
+      {t:'mc', q:'8:45 ingiliscə necə deyilir?', o:['quarter to nine','quarter past eight','quarter to eight','nine to quarter'], e:'Doqquza 15 dəqiqə qalıb: quarter to nine.'},
+      {t:'mc', q:'«What time is it?» nə deməkdir?', o:['Saat neçədir?','Nə vaxtdır?','Vaxtın var?','Neçə saatdır?'], e:'«Neçə saatdır?» (müddət) — How long…?'},
+      {t:'order', az:'Saat yeddidir.', en:["It's seven o'clock.","It is seven o'clock."], extra:['at','hours']},
+      {t:'listen', en:"It's quarter past ten.", o:["It's quarter past ten.","It's quarter to ten.","It's half past ten."]},
+      {t:'mc', q:'The film starts ___ 8 pm.', o:['at','in','on','to'], e:'Saatla: at 8 pm.'}
+    ]},
+    { id:'a1-u6-l2', title:'Günlər və aylar', items:[
+      {t:'learn', title:'Həftənin günləri', body:'İngiliscədə gün və ay adları HƏMİŞƏ böyük hərflə yazılır: Monday, May.', ex:[['Monday','bazar ertəsi'],['Tuesday','çərşənbə axşamı'],['Wednesday','çərşənbə'],['Thursday','cümə axşamı'],['Friday','cümə'],['Saturday / Sunday','şənbə / bazar']]},
+      {t:'mc', q:'«Çərşənbə» ingiliscə necədir?', o:['Wednesday','Tuesday','Thursday','Saturday'], e:'Wednesday — «Wenzdey» kimi oxunur, «d» səslənmir.'},
+      {t:'mc', q:'«Cümə axşamı» ingiliscə necədir?', o:['Thursday','Tuesday','Friday','Wednesday'], e:'Tuesday — çərşənbə axşamı, Thursday — cümə axşamı. Tez qarışdırılır!'},
+      {t:'mc', q:'Hansı düzgün yazılıb?', o:['I was born in May.','I was born in may.','i was born in May.','I was born on may.'], e:'Ay adı və «I» həmişə böyük hərflə.'},
+      {t:'mc', q:'«Sunday» hansı gündür?', o:['bazar','şənbə','bazar ertəsi','cümə'], e:'Sunday — bazar, Saturday — şənbə.'},
+      {t:'order', az:'Bazar ertələri işə gedirəm.', en:['I go to work on Mondays.','On Mondays I go to work.'], extra:['in','at']},
+      {t:'listen', en:'My birthday is in July.', o:['My birthday is in July.','My birthday is in June.','My birthday is on Monday.']}
+    ]},
+    { id:'a1-u6-l3', title:'in / on / at', items:[
+      {t:'learn', title:'Zaman bildirən in / on / at', body:'AT — dəqiq saat: at 7 o\'clock, at night. ON — günlər və tarixlər: on Monday, on 5 May. IN — aylar, illər, fəsillər, günün hissələri: in June, in 2025, in summer, in the morning. İstisna: in the evening, amma at night.', ex:[['at 7 o\'clock','saat yeddidə'],['on Friday','cümə günü'],['in March','martda'],['in 2001','2001-ci ildə'],['in the morning','səhər'],['at night','gecə']]},
+      {t:'mc', q:'I was born ___ 2001.', o:['in','on','at','to'], e:'İllərlə: in.'},
+      {t:'mc', q:'The meeting is ___ Friday.', o:['on','in','at','to'], e:'Günlərlə: on.'},
+      {t:'mc', q:'I wake up ___ 6:30.', o:['at','in','on','to'], e:'Saatla: at.'},
+      {t:'mc', q:'We go to the sea ___ summer.', o:['in','on','at','to'], e:'Fəsillərlə: in.'},
+      {t:'mc', q:'She studies ___ the evening.', o:['in','on','at','to'], e:'In the morning / afternoon / evening. Amma: at night.'},
+      {t:'order', az:'Mənim ad günüm mayın beşindədir.', en:'My birthday is on the fifth of May.', extra:['in','at']}
+    ]}
+  ]},
+  { id:'a1-u7', title:'Bacarıqlar', grammar:'can / can\'t', lessons:[
+    { id:'a1-u7-l1', title:'Nə edə bilirsən?', items:[
+      {t:'learn', title:'can = bacarmaq', body:'CAN bütün şəxslər üçün eynidir və ondan sonra fel əsas formada gəlir: she can swim (cans və ya can to swim yox). İnkar: can\'t (cannot).', ex:[['I can speak English.','İngiliscə danışa bilirəm.'],["She can't drive.",'O, maşın sürə bilmir.'],['Can you cook? — Yes, I can.','Yemək bişirə bilirsən? — Bəli.'],["Can he swim? — No, he can't.",'O, üzə bilir? — Xeyr.']]},
+      {t:'mc', q:'She ___ play the guitar.', o:['can','cans','can to','is can'], e:'Can heç vaxt dəyişmir və «to» ilə işlənmir.'},
+      {t:'mc', q:'Hansı düzgündür?', o:['He can swim.','He can swims.','He cans swim.','He can to swim.'], e:'Can + felin əsas forması.'},
+      {t:'mc', q:'Can you drive? — No, I ___.', o:["can't","don't",'am not','not can'], e:'Can sualına qısa cavab: Yes, I can. / No, I can\'t.'},
+      {t:'order', az:'Mən üzə bilirəm.', en:'I can swim.', extra:['swims','to']},
+      {t:'order', az:'O (qadın) maşın sürə bilmir.', en:["She can't drive.",'She cannot drive.'], extra:['drives',"don't"]},
+      {t:'listen', en:'Can you speak Russian?', o:['Can you speak Russian?','Can you speak English?','Can she speak Russian?']}
+    ]},
+    { id:'a1-u7-l2', title:'Xahiş və icazə', items:[
+      {t:'learn', title:'Can I…? / Could you…?', body:'CAN I…? — icazə istəmək. CAN YOU…? — xahiş etmək. COULD YOU…? — daha nəzakətli xahiş (müəllimə, müştəriyə, rəhbərə). «Please» əlavə etmək ingilis dilində çox vacibdir.', ex:[['Can I open the window?','Pəncərəni aça bilərəm?'],['Can you help me?','Mənə kömək edə bilərsən?'],['Could you repeat that, please?','Zəhmət olmasa, təkrar edə bilərsiniz?'],['Sure! / Of course.','Əlbəttə!']]},
+      {t:'mc', q:'Müəllimdən icazə istə: «___ I go out, please?»', o:['Can','Do','Am','Does'], e:'İcazə: Can I…? (daha nəzakətli: May I…?)'},
+      {t:'mc', q:'Hansı ən nəzakətli xahişdir?', o:['Could you help me, please?','Help me!','You help me.','Can help me?'], e:'Could you… please? — ən nəzakətli forma.'},
+      {t:'mc', q:'«Of course» nə deməkdir?', o:['Əlbəttə','Bəlkə','Heç vaxt','Bilmirəm'], e:'Of course / Sure — əlbəttə.'},
+      {t:'order', az:'Mənə kömək edə bilərsən?', en:['Can you help me?','Could you help me?'], extra:['do','helps']},
+      {t:'order', az:'Pəncərəni aça bilərəm?', en:'Can I open the window?', extra:['opens','do']},
+      {t:'listen', en:'Could you repeat that, please?', o:['Could you repeat that, please?','Could you read that, please?','Can you repeat it, please?']}
+    ]},
+    { id:'a1-u7-l3', title:'Bacarıqlarını de', items:[
+      {t:'learn', title:'Bacarıqlar haqqında danışmaq', body:'Müsahibədə və CV-də bacarıqlarını sadə cümlələrlə de: I can… Bir işi yaxşı bacarırsansa: I\'m good at + isim / -ing: I\'m good at maths. I\'m good at solving problems.', ex:[['I can use Excel.','Excel-dən istifadə edə bilirəm.'],['I can work in a team.','Komandada işləyə bilirəm.'],['I can speak three languages.','Üç dildə danışa bilirəm.'],["I'm good at solving problems.",'Problem həll etməyi bacarıram.']]},
+      {t:'mc', q:'«Work in a team» nə deməkdir?', o:['komandada işləmək','tək işləmək','iş axtarmaq','işə getmək'], e:'Team — komanda. Teamwork — komanda işi.'},
+      {t:'mc', q:"I'm good ___ drawing.", o:['at','in','on','for'], e:'Sabit birləşmə: good at.'},
+      {t:'mc', q:'«Mən üç dil bilirəm» — təbii tərcümə:', o:['I can speak three languages.','I know three language.','I can three languages speak.','I am speak three languages.'], e:'Dil «bilmək» çox vaxt «can speak» ilə deyilir. Languages — cəm.'},
+      {t:'order', az:'Mən Excel-dən istifadə edə bilirəm.', en:'I can use Excel.', extra:['using','to']},
+      {t:'listen', en:"I'm good at solving problems.", o:["I'm good at solving problems.","I'm good at solving puzzles.","I'm not good at problems."]},
+      {t:'mc', q:'«What can you do?» sualına uyğun cavab:', o:['I can cook and drive.','Yes, I can.',"I'm fine.",'I do my homework.'], e:'What can you do? — Nə edə bilirsən? Cavab: I can…'}
+    ]}
+  ]},
+  { id:'a1-u8', title:'İndi nə edirsən?', grammar:'Present Continuous', lessons:[
+    { id:'a1-u8-l1', title:'Bu an', items:[
+      {t:'learn', title:'Present Continuous: indi baş verən', body:'Danışdığımız anda baş verən hərəkət: am / is / are + fel-ING. Azərbaycan dilindəki «oxuyuram, işləyir» kimi.', ex:[["I'm reading a book now.",'İndi kitab oxuyuram.'],['She is working.','O, işləyir.'],['They are playing football.','Onlar futbol oynayırlar.'],["Look! It's raining.",'Bax! Yağış yağır.']]},
+      {t:'mc', q:'Look! It ___ raining.', o:['is','are','am','does'], e:'It ilə «is»: It is raining.'},
+      {t:'mc', q:'I ___ watching TV now.', o:['am','is','are','do'], e:'I ilə «am».'},
+      {t:'mc', q:'They ___ playing football at the moment.', o:['are','is','am','do'], e:'They ilə «are».'},
+      {t:'order', az:'Mən indi kitab oxuyuram.', en:['I am reading a book now.',"I'm reading a book now."], extra:['read','is']},
+      {t:'listen', en:'She is cooking dinner.', o:['She is cooking dinner.','She is cooking lunch.','He is cooking dinner.']},
+      {t:'mc', q:'«At the moment» nə deməkdir?', o:['hazırda','bir anlığa','tezliklə','həmişə'], e:'At the moment = now (hazırda).'}
+    ]},
+    { id:'a1-u8-l2', title:'-ing yazılışı', items:[
+      {t:'learn', title:'-ing necə əlavə olunur?', body:'Çox vaxt sadəcə -ing: play → playing. Sonu «e» ilə bitirsə, «e» düşür: write → writing. Qısa felin sonu sait + samitdirsə, samit qoşalaşır: swim → swimming, run → running, sit → sitting.', ex:[['play → playing','oynamaq'],['write → writing','yazmaq'],['make → making','etmək, düzəltmək'],['swim → swimming','üzmək'],['run → running','qaçmaq'],['study → studying','oxumaq, öyrənmək']]},
+      {t:'mc', q:'make + ing = ?', o:['making','makeing','makking','maked'], e:'Sondakı «e» düşür: making.'},
+      {t:'mc', q:'swim + ing = ?', o:['swimming','swiming','swimeing','swimmming'], e:'Samit qoşalaşır: swimming.'},
+      {t:'mc', q:'He is ___ a letter.', o:['writing','writeing','writting','write'], e:'Write → writing (bir «t»).'},
+      {t:'mc', q:'The children are ___ in the park.', o:['running','runing','runs','run'], e:'Run → running.'},
+      {t:'order', az:'O (kişi) indi oturur.', en:['He is sitting now.',"He's sitting now."], extra:['sits','siting']},
+      {t:'order', az:'Biz ingilis dilini öyrənirik.', en:['We are studying English.',"We're studying English."], extra:['studing','is']}
+    ]},
+    { id:'a1-u8-l3', title:'Simple yoxsa Continuous?', items:[
+      {t:'learn', title:'Present Simple və Present Continuous', body:'SIMPLE — vərdiş, həmişə olan: I work in a bank. CONTINUOUS — indi, bu günlərdə: Today I am working from home. Siqnal sözlər: every day, usually, always → Simple; now, at the moment, Look!, Listen! → Continuous. Like, love, know, want, understand kimi fellər adətən Continuous-da işlənmir: I know (I am knowing yox).', ex:[['I usually go by bus.','Adətən avtobusla gedirəm.'],["Today I'm walking.",'Bu gün piyada gedirəm.'],['Listen! Someone is singing.','Qulaq as! Kimsə oxuyur.'],['I understand you.','Səni başa düşürəm.']]},
+      {t:'mc', q:'I usually ___ to work by bus.', o:['go','am going','goes','going'], e:'Usually — vərdiş: Present Simple.'},
+      {t:'mc', q:'Listen! Someone ___ the piano.', o:['is playing','plays','play','playing'], e:'Listen! — bu an: Present Continuous.'},
+      {t:'mc', q:'I ___ the answer.', o:['know','am knowing','knowing','knows'], e:'Know Continuous-da işlənmir.'},
+      {t:'mc', q:'She ___ coffee every morning.', o:['drinks','is drinking','drink','drinking'], e:'Every morning — vərdiş: drinks.'},
+      {t:'order', az:'Bu gün evdən işləyirəm.', en:['Today I am working from home.','I am working from home today.',"I'm working from home today."], extra:['work','at']},
+      {t:'listen', en:'What are you doing now?', o:['What are you doing now?','What do you do?','Where are you going now?']}
+    ]}
+  ]}
 ]},
 { id:'a2', name:'A2', title:'Elementar', color:'#2f7de1', units:[
   { id:'a2-u1', title:'Keçən həftə', grammar:'Past Simple (qaydalı fellər)' },
