@@ -104,10 +104,10 @@ with sync_playwright() as p:
     check('B2 dərsləri görünür', nodes >= 1, str(nodes))
 
     lc = m.evaluate("(()=>{const c=window.COURSE;return c.map(l=>l.units.reduce((a,u)=>a+u.lessons.length,0))})()")
-    check('hər səviyyədə 48 dərs (5 dərs + təkrar × 8 bölmə)', lc == [48, 48, 48, 48], str(lc))
+    check('A1: 16 bölmə, 136 dərs (120 məzmun dərsi); digər səviyyələr 48', lc == [136, 48, 48, 48], str(lc))
     # Səhv cavab → «Səhvlərim»; bölmə təkrarı
     m.evaluate("location.hash='course'"); m.wait_for_timeout(200); m.click('.lvl[data-l="a1"]'); m.wait_for_timeout(200)
-    m.evaluate("S.course['a1-u1-l1']=90;S.course['a1-u1-l2']=90;S.course['a1-u1-l3']=90;S.course['a1-u1-l4']=90;S.course['a1-u1-l5']=90;save();renderCourse()")
+    m.evaluate("COURSE[0].units[0].lessons.filter(l=>!l.review).forEach(l=>S.course[l.id]=90);save();renderCourse()")
     m.click('#units .node[data-id="a1-u1-rev"]'); m.wait_for_timeout(300)
     check('bölmə təkrarı açılır (qarışıq tapşırıqlar)', m.evaluate('LS&&LS.a.x.review===1&&LS.items.length>=8&&!LS.items.some(i=>i.t==="learn")'))
     wrong = m.evaluate("(()=>{const it=LS.items.find(i=>i.t==='mc');return it?it.src:null})()")

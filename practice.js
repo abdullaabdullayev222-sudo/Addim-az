@@ -29,6 +29,32 @@ listening: [
   qs:[["What is Nigar's father's job?",["A doctor","A teacher","A driver","An engineer"],"«He is a doctor.»"],
       ["How old is Lala?",["Twelve","Twenty","Two","Eleven"],"«She is twelve.» Diqqət: twelve (12) və twenty (20)."],
       ["Has Nigar got a brother?",["No, she hasn't","Yes, one brother","Yes, two brothers","We don't know"],"«No, I haven't. But I have two cousins.» — qardaşı yox, iki əmisi/dayısı uşağı var."]]},
+// ---------- A1 (əlavə) ----------
+{ id:'ls-a1-6', lvl:'a1', title:'Ünvan soruşmaq', lines:[
+  ['Tourist','Excuse me, is there a pharmacy near here?','airy'],['Man','Yes, there is. Go straight on and turn right at the bank.','rounded'],['Tourist','Is it far?','airy'],['Man',"No, it's about five minutes on foot. It's opposite the park.",'rounded'],['Tourist','Thank you very much!','airy'],['Man',"You're welcome.",'rounded']],
+  qs:[["What is the tourist looking for?",["A pharmacy","A bank","A park","A hotel"],"«Is there a pharmacy near here?»"],
+      ["Where should she turn right?",["At the bank","At the park","At the pharmacy","At the traffic lights"],"«turn right at the bank»."],
+      ["Where is the pharmacy?",["Opposite the park","Next to the bank","Behind the park","Far from here"],"«It's opposite the park» — parkın qarşısında."]]},
+{ id:'ls-a1-7', lvl:'a1', title:'Hava proqnozu', lines:[
+  ['Presenter',"Good morning! Here is today's weather.",'airy'],['Presenter',"In Baku it's sunny and windy. The temperature is twenty degrees.",'airy'],['Presenter',"In Sheki it's cloudy, and in the evening it's going to rain.",'airy'],['Presenter',"Tomorrow it's going to be cold everywhere. Wear a jacket!",'airy']],
+  qs:[["What's the weather like in Baku?",["Sunny and windy","Cloudy and rainy","Cold and snowy","Hot and cloudy"],"«In Baku it's sunny and windy.»"],
+      ["What is going to happen in Sheki in the evening?",["It's going to rain","It's going to snow","It's going to be sunny","Nothing"],"«in the evening it's going to rain»."],
+      ["What does she suggest for tomorrow?",["Wear a jacket","Take sunglasses","Go to the beach","Stay at home"],"«Wear a jacket!» — soyuq olacaq."]]},
+{ id:'ls-a1-8', lvl:'a1', title:'Restoranda', lines:[
+  ['Waiter','Good evening. Are you ready to order?','rounded'],['Customer',"Yes, I'd like the chicken soup, please.",'airy'],['Waiter','And to drink?','rounded'],['Customer','A glass of orange juice, please.','airy'],['Waiter','Anything else?','rounded'],['Customer','No, thank you. Can I have the bill later?','airy']],
+  qs:[["What does the customer order to eat?",["Chicken soup","Fish soup","A chicken salad","Rice"],"«I'd like the chicken soup.»"],
+      ["What does she drink?",["Orange juice","Apple juice","Water","Tea"],"«A glass of orange juice.»"],
+      ["«Anything else?» means:",["Başqa bir şey?","Hər şey yaxşıdır?","Hamısı budur?","Nə vaxt?"],"Ofisiant əlavə sifariş olub-olmadığını soruşur."]]},
+{ id:'ls-a1-9', lvl:'a1', title:'Dünən harada idin?', lines:[
+  ['Kamal','Hi, Nigar! Where were you yesterday?','rounded'],['Nigar','I was at home. I was ill.','airy'],['Kamal','Oh no! Are you OK now?','rounded'],['Nigar',"Yes, I'm fine now, thanks. Was the lesson interesting?",'airy'],['Kamal','Yes, it was. Our homework is on page twenty.','rounded']],
+  qs:[["Where was Nigar yesterday?",["At home","At school","At the cinema","At work"],"«I was at home.»"],
+      ["Why was she at home?",["She was ill","She was tired","She was busy","It was Sunday"],"«I was ill.» — xəstə idi."],
+      ["Where is the homework?",["On page twenty","On page twelve","On page two","On the board"],"«on page twenty» — iyirminci səhifədə."]]},
+{ id:'ls-a1-10', lvl:'a1', title:'Həftəsonu planı', lines:[
+  ['Aysel',"What are you going to do this weekend?",'airy'],['Tural',"I'm going to visit my grandparents in Guba.",'rounded'],['Aysel','That sounds nice! How are you going to get there?','airy'],['Tural',"By bus. It takes about three hours. And you?",'rounded'],['Aysel',"I'm going to stay at home and study for my exam.",'airy']],
+  qs:[["Where is Tural going?",["To Guba","To Ganja","To Sheki","To Baku"],"«visit my grandparents in Guba»."],
+      ["How is he going to travel?",["By bus","By car","By train","By plane"],"«By bus.»"],
+      ["What is Aysel going to do?",["Study for her exam","Visit Guba","Go to a party","Work"],"«stay at home and study for my exam»."]]},
 // ---------- A2 ----------
 { id:'ls-a2-1', lvl:'a2', title:'Həftəsonu necə keçdi?', lines:[
   ['Kamran','Hi, Ayan! How was your weekend?','rounded'],['Ayan','It was great, thanks. I went to Sheki with my friends.','airy'],['Kamran','Really? How did you get there?','rounded'],['Ayan','We took the bus. It took about five hours.','airy'],['Kamran','What did you do there?','rounded'],['Ayan','We visited the Khan\'s Palace and ate piti. It was delicious!','airy'],['Kamran','Sounds amazing. I stayed at home and studied.','rounded']],
@@ -129,6 +155,22 @@ reading: [
   qs:[["Where is Sabina now?",["At the library","At the café","At home","In class"],"«I'm at the library now.»"],
       ["What does she need?",["Her English book","Her bag","Her phone","Some money"],"«I can't find my English book.»"],
       ["When and where do they meet?",["At the café at four","At the library at four","At the café at two","At school at four"],"«bring it to the café at four o'clock»."]]},
+// ---------- A1 (əlavə) ----------
+{ id:'rd-a1-4', lvl:'a1', title:'My best friend', text:"My best friend is Murad. He is twenty years old and he is a student. He studies engineering. Murad is tall and he has short black hair. He is very funny and kind. We meet every Saturday. We play football in the park or watch films. Murad can play the guitar very well. I like him because he always helps me.",
+  gl:{engineering:'mühəndislik',tall:'hündür',funny:'zarafatcıl',kind:'mehriban',meet:'görüşürük',guitar:'gitara',always:'həmişə',helps:'kömək edir'},
+  qs:[["What does Murad study?",["Engineering","Medicine","English","Music"],"«He studies engineering.»"],
+      ["What do they do on Saturdays?",["Play football or watch films","Study together","Go shopping","Cook dinner"],"«We play football in the park or watch films.»"],
+      ["Why does the writer like Murad?",["He always helps","He is tall","He has a car","He is rich"],"«because he always helps me»."]]},
+{ id:'rd-a1-5', lvl:'a1', title:'A postcard from Gabala', text:"Hi Leyla! I'm on holiday in Gabala with my family. The weather is sunny but cold in the evening. Our hotel is near the mountains and the view is beautiful. Yesterday we were at the lake. Today we are going to take the cable car. The food is great too! See you next week. Love, Sabina",
+  gl:{holiday:'tətil',weather:'hava',near:'yaxınlığında',mountains:'dağlar',view:'mənzərə',beautiful:'gözəl',lake:'göl',cable:'kanat (cable car — kanat yolu)'},
+  qs:[["Who is Sabina with?",["Her family","Her friends","Leyla","Her classmates"],"«with my family»."],
+      ["Where were they yesterday?",["At the lake","In the mountains","At the hotel","In Baku"],"«Yesterday we were at the lake.»"],
+      ["What are they going to do today?",["Take the cable car","Go swimming","Go home","Visit a museum"],"«Today we are going to take the cable car.»"]]},
+{ id:'rd-a1-6', lvl:'a1', title:'Notice: English club', text:"Do you want to speak English better? Come to our English club! We meet every Wednesday at five o'clock in Room 204. We play games, watch short videos and talk about different topics. The club is free for all students. Please bring a notebook and a pen. For more information, write to englishclub@uni.az.",
+  gl:{better:'daha yaxşı',club:'klub',every:'hər',games:'oyunlar',videos:'videolar',topics:'mövzular',free:'pulsuz',bring:'gətirin',notebook:'dəftər',information:'məlumat'},
+  qs:[["When does the club meet?",["Every Wednesday at five","Every Friday at five","Every day at four","On Saturdays"],"«every Wednesday at five o'clock»."],
+      ["How much does it cost?",["Nothing, it's free","Five manats","Ten manats","It isn't written"],"«The club is free for all students.»"],
+      ["What should students bring?",["A notebook and a pen","A laptop","A dictionary","Money"],"«Please bring a notebook and a pen.»"]]},
 // ---------- A2 ----------
 { id:'rd-a2-1', lvl:'a2', title:'My first week at university', text:"My name is Nigar. I am from Ganja, but now I study in Baku. My first week at university was busy. On Monday, I met my groupmates. They were friendly and we had lunch together. On Wednesday, I couldn't find my classroom, so I asked a teacher for help. Every evening I study for two hours in the library. It is quiet there. Next week I want to join the English club because I want to speak more confidently.",
   gl:{busy:'məşğul',groupmates:'qrup yoldaşları',friendly:'mehriban',"couldn't":'bacarmadım (can-ın keçmişi, inkar)',asked:'soruşdum, xahiş etdim',library:'kitabxana',quiet:'sakit',join:'qoşulmaq',confidently:'inamla, özünəinamla',met:'tanış oldum (meet → met)',together:'birlikdə',because:'çünki'},
