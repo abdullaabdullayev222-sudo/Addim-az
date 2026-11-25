@@ -1006,16 +1006,32 @@ window.VIDEOS = {
 
 // Səviyyə testi: hər səviyyədən 3 sual, asandan çətinə. o[0] düzgündür.
 window.PLACEMENT = [
+  // A1 (6)
   {lv:'a1', q:'She ___ a doctor.', o:['is','are','am','be']},
   {lv:'a1', q:'«Mənim iki qardaşım var» düzgün tərcümə:', o:['I have two brothers.','I has two brothers.','I am two brothers.','Me have two brothers.']},
   {lv:'a1', q:'___ you like coffee?', o:['Do','Does','Are','Is']},
+  {lv:'a1', q:'There ___ three chairs in the room.', o:['are','is','be','am']},
+  {lv:'a1', q:'My brother ___ football every Sunday.', o:['plays','play','playing','is play']},
+  {lv:'a1', q:'Look! The children ___ in the garden.', o:['are playing','play','plays','is playing']},
+  // A2 (6)
   {lv:'a2', q:'Yesterday I ___ to the cinema.', o:['went','go','have gone','goes']},
   {lv:'a2', q:'This book is ___ than that one.', o:['more interesting','interestinger','most interesting','more interestinger']},
   {lv:'a2', q:'Have you ever ___ to London?', o:['been','went','go','was']},
+  {lv:'a2', q:"I'm tired. I ___ go to bed early tonight.", o:['should','must to','have','would to']},
+  {lv:'a2', q:'I was reading when the phone ___.', o:['rang','was ringing','rings','has rung']},
+  {lv:'a2', q:'We ___ visit my aunt next weekend — we have already bought the tickets.', o:['are going to','will to','go to','going']},
+  // B1 (6)
   {lv:'b1', q:'If I ___ more money, I would travel the world.', o:['had','have','will have','would have']},
   {lv:'b1', q:'This museum ___ in 1950.', o:['was built','built','is building','has built']},
   {lv:'b1', q:'She asked me where I ___.', o:['lived','do live','did live','am live']},
+  {lv:'b1', q:"I've been working here ___ 2021.", o:['since','for','from','during']},
+  {lv:'b1', q:'The woman ___ lives next door is a pilot.', o:['who','which','whose','where']},
+  {lv:'b1', q:'I used to ___ shy, but now I love speaking in public.', o:['be','being','been','was']},
+  // B2 (6)
   {lv:'b2', q:'If I had studied harder, I ___ the exam.', o:['would have passed','would pass','passed','will pass']},
   {lv:'b2', q:"He ___ be at home — his car isn't outside.", o:["can't","mustn't","shouldn't","needn't"]},
-  {lv:'b2', q:'___ the rain, we went for a walk.', o:['Despite','Although','However','Even']}
+  {lv:'b2', q:'___ the rain, we went for a walk.', o:['Despite','Although','However','Even']},
+  {lv:'b2', q:"I wish I ___ so much yesterday. Now I can't sleep.", o:["hadn't eaten","didn't eat","wouldn't eat","haven't eaten"]},
+  {lv:'b2', q:'She had her car ___ last week.', o:['repaired','repair','to repair','repairing']},
+  {lv:'b2', q:'The meeting has been ___ until Friday because the manager is ill.', o:['put off','put up','put on','put out']}
 ];

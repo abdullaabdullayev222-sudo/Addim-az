@@ -81,7 +81,12 @@ with sync_playwright() as p:
     m = page('android_chrome'); m.goto(BASE + '/'); m.wait_for_timeout(700)
     check('ilk girişdə xoş gəldin ekranı', m.locator('#ptGo').is_visible())
     m.click('#ptGo')
-    for _ in range(12): m.click('#wBox .opt >> nth=0'); m.wait_for_timeout(230)
+    asked = 0
+    for _ in range(24):
+        if not m.locator('#wBox .opt').count(): break
+        m.click('#wBox .opt >> nth=0'); m.wait_for_timeout(230); asked += 1
+    check('adaptiv test: səhvlər çox olanda tez bitir və ya 24 sual', 6 <= asked <= 24, str(asked))
+    check('nəticədə səviyyə qrafiki göstərilir', m.locator('.ptbars .ptb').count() == 4)
     check('test nəticəsi və tövsiyə', m.locator('.lvopt.rec').count() == 1)
     m.click('.lvopt[data-l="a1"]'); m.wait_for_timeout(500)
     check('kurs səhifəsi açıldı', m.evaluate('location.hash') == '#course')
@@ -123,6 +128,23 @@ with sync_playwright() as p:
     check('düzgün cavab verəndə səhv siyahıdan silinir', not m.evaluate(f"S.mist.includes({wrong!r})"))
     m.evaluate("LS=null;location.hash='practice'"); m.wait_for_timeout(200)
 
+    print('3c. Şimşəklə oyun, səviyyə testi, medallar')
+    m.evaluate("location.hash='home'"); m.wait_for_timeout(200)
+    m.evaluate("(()=>{const t=today();S.days[t]=0;save();renderHome()})()"); m.click('#boltBtn'); m.wait_for_timeout(150)
+    check('dərs keçilməyib: şimşək əsəbiləşir («dərsini et»)', m.locator('#boltSay.on.mad').count() == 1 and 'm-grr' in m.get_attribute('#bigBolt','class'))
+    for _ in range(2): m.click('#boltBtn'); m.wait_for_timeout(80)
+    check('çox toxunanda daha çox əsəbiləşir', 'm-angry' in m.get_attribute('#bigBolt','class'))
+    m.wait_for_timeout(4100)
+    m.evaluate("(()=>{S.days[today()]=60;save();renderHome()})()"); m.click('#boltBtn'); m.wait_for_timeout(150)
+    cls = m.get_attribute('#bigBolt','class')
+    check('XP yığılıb: şirin reaksiya (sevgi / gülüş / göz vurma)', any(x in cls for x in ['m-love','m-laugh','m-wink']) and m.locator('#boltSay.mad').count() == 0, cls)
+    m.wait_for_timeout(1800)
+    n_pl = m.evaluate('PLACEMENT.length')
+    check('səviyyə testində 24 sual (hər səviyyədə 6)', n_pl == 24 and m.evaluate("['a1','a2','b1','b2'].every(l=>PLACEMENT.filter(q=>q.lv===l).length===6)"))
+    recs = m.evaluate("""(()=>{const r=[];for(const sc of [{a1:1,a2:0,b1:0,b2:0},{a1:6,a2:2,b1:0,b2:0},{a1:6,a2:5,b1:3,b2:0},{a1:6,a2:6,b1:5,b2:2},{a1:6,a2:6,b1:6,b2:6}]){r.push(ptResult({score:sc,seen:{a1:6,a2:sc.a1>=3?6:0,b1:sc.a2>=3?6:0,b2:sc.b1>=3?6:0}}))}return r})()""")
+    check('nəticəyə görə fərqli səviyyə tövsiyə olunur', recs == ['a1','a2','b1','b2','b2'], str(recs))
+    check('medal nişanı qurulur', 'Qızıl medal' in m.evaluate("medalsHTML([2,0,1])"))
+
     print('3b. Dinləmə və oxu: epizodlar, tamamlama, növbəti')
     for kind, box in [('listening', '#lsBox'), ('reading', '#rdBox')]:
         close_overlays(m); m.evaluate(f"location.hash='{kind}'"); m.wait_for_timeout(300)
@@ -156,6 +178,14 @@ with sync_playwright() as p:
     check('səhv admin açarı rədd olunur', post('/api/admin', {'key': 'wrong', 'action': 'list'}).get('error') == 'forbidden')
     m.evaluate("location.hash='league'"); m.wait_for_timeout(800)
     check('liqa cədvəli yükləndi', 'liqası' in m.locator('#boardM').inner_text())
+
+    pj0 = json.load(urllib.request.urlopen(BASE + '/__test/prevweek'))
+    # Diqqət: medallar həftənin ilk sorğusunda bir dəfə hesablanır — testdə bu, keçən həftə əlavə edildikdən sonra baş verməlidir
+    r = json.load(urllib.request.urlopen(BASE + '/api/board?league=a1&id=medal-gold-0001'))
+    check('keçən həftənin 1-cisi qızıl medal alır', (r.get('medal') or {}).get('place') == 1 and r.get('medals') == [1, 0, 0], str(r.get('medal')))
+    r3 = json.load(urllib.request.urlopen(BASE + '/api/board?league=a1&id=medal-bron-0003'))
+    r4 = json.load(urllib.request.urlopen(BASE + '/api/board?league=a1&id=medal-four-0004'))
+    check('3-cü bürünc alır, 4-cü medal almır', (r3.get('medal') or {}).get('place') == 3 and r4.get('medal') is None)
 
     print('5. Admin paneli')
     a = b.new_page(viewport={'width': 900, 'height': 900}); a.on('pageerror', lambda e: errs.append(f'admin: {e}'))

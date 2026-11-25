@@ -38,6 +38,12 @@ await onRequest({ request: new Request('http://x/api/board', { method: 'POST', b
     if (k % 3 === 0) db.prepare('INSERT INTO events VALUES (?,?,?,?,?)').run(day(d), uid, 'limit_hit', null, Date.now()); } } }
 http.createServer(async (req, res) => {
   const u = new URL(req.url, 'http://localhost');
+  if (u.pathname === '/__test/prevweek') { // keçən həftənin liqa nəticələrini əlavə et (medal testi üçün)
+    const d = new Date(Date.now() + 4 * 3600e3 - 7 * 864e5); d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7)); const wk = d.toISOString().slice(0, 10);
+    db.exec("CREATE TABLE IF NOT EXISTS scores_v2 (id TEXT NOT NULL, week TEXT NOT NULL, league TEXT NOT NULL DEFAULT 'a1', name TEXT NOT NULL, color INTEGER NOT NULL DEFAULT 0, xp INTEGER NOT NULL DEFAULT 0, updated INTEGER NOT NULL, PRIMARY KEY (id, week))");
+    [['medal-gold-0001', 500], ['medal-silv-0002', 300], ['medal-bron-0003', 200], ['medal-four-0004', 100]].forEach(([id, xp], i) => db.prepare('INSERT OR REPLACE INTO scores_v2 VALUES (?,?,?,?,?,?,?)').run(id, wk, 'a1', 'U' + i, 0, xp, i));
+    try { db.exec('DELETE FROM medal_weeks'); } catch (e) {}
+    res.writeHead(200, { 'content-type': 'application/json' }); res.end(JSON.stringify({ week: wk })); return; }
   if (u.pathname === '/__test/pushsub') { res.writeHead(200, { 'content-type': 'application/json' }); res.end(JSON.stringify(await fakeSub(u.searchParams.get('n') || 'x'))); return; }
   if (u.pathname === '/__test/pushlog') { res.writeHead(200, { 'content-type': 'application/json' }); res.end(JSON.stringify(pushLog)); return; }
   if (u.pathname === '/__test/ai') { if (u.searchParams.has('fail')) aiFail = u.searchParams.get('fail') === '1'; if (u.searchParams.has('mp3')) aiMp3 = u.searchParams.get('mp3') === '1'; if (u.searchParams.has('garble')) aiGarble = u.searchParams.get('garble') === '1'; res.writeHead(200, { 'content-type': 'application/json' }); res.end(JSON.stringify({ aiCalls, aiFail, lastModel })); return; }

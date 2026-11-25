@@ -14,10 +14,24 @@ const MAX_WEEK_XP = 3000; // real istifadə üçün kifayət, saxta böyük rəq
 import { json, ensureSchema, premiumUntil, cleanCosmetics } from '../_shared.js';
 
 // Həftə bazar ertəsi Bakı vaxtı ilə (UTC+4) başlayır
-function weekKey() {
-  const d = new Date(Date.now() + 4 * 3600e3);
+function weekKey(ms = Date.now()) {
+  const d = new Date(ms + 4 * 3600e3);
   d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7));
   return d.toISOString().slice(0, 10);
+}
+
+// Medallar: keçən həftənin hər liqasında ilk 3 yer bir dəfə qeyd olunur
+const MEDAL_SCHEMA = ['CREATE TABLE IF NOT EXISTS medals (id TEXT NOT NULL, week TEXT NOT NULL, league TEXT NOT NULL, place INTEGER NOT NULL, xp INTEGER NOT NULL, PRIMARY KEY (id, week))',
+  'CREATE TABLE IF NOT EXISTS medal_weeks (week TEXT PRIMARY KEY, done INTEGER NOT NULL)'];
+async function finalizeWeek(DB, prev) {
+  for (const s of MEDAL_SCHEMA) await DB.prepare(s).run();
+  if (await DB.prepare('SELECT 1 FROM medal_weeks WHERE week = ?1').bind(prev).first()) return;
+  for (const lg of LEAGUES) {
+    const { results } = await DB.prepare('SELECT id, xp FROM scores_v2 WHERE week = ?1 AND league = ?2 AND xp > 0 ORDER BY xp DESC, updated ASC LIMIT 3').bind(prev, lg).all();
+    for (let i = 0; i < results.length; i++)
+      await DB.prepare('INSERT OR IGNORE INTO medals (id, week, league, place, xp) VALUES (?1, ?2, ?3, ?4, ?5)').bind(results[i].id, prev, lg, i + 1, results[i].xp).run();
+  }
+  await DB.prepare('INSERT OR IGNORE INTO medal_weeks (week, done) VALUES (?1, ?2)').bind(prev, Date.now()).run();
 }
 
 const cleanName = s => String(s || '').replace(/[\u0000-\u001f\u007f<>]/g, '').replace(/\s+/g, ' ').trim().slice(0, 20);
@@ -29,7 +43,8 @@ export async function onRequest({ request, env }) {
   await env.DB.prepare(SCHEMA).run();
   await ensureSchema(env.DB);
   const now = Date.now();
-  const week = weekKey();
+  const week = weekKey(), prevWeek = weekKey(Date.now() - 7 * 864e5);
+  await finalizeWeek(env.DB, prevWeek);
   const q = new URL(request.url).searchParams;
   let id = q.get('id') || '';
   let league = LEAGUES.includes(q.get('league')) ? q.get('league') : 'a1';
@@ -57,12 +72,13 @@ export async function onRequest({ request, env }) {
   }
 
   const top = (await env.DB.prepare(
-    `SELECT s.id, s.name, s.color, s.xp, p.avatar, p.ncolor, p.nstyle, p.frame, COALESCE(pr.until, 0) AS until
+    `SELECT s.id, s.name, s.color, s.xp, p.avatar, p.ncolor, p.nstyle, p.frame, COALESCE(pr.until, 0) AS until,
+       (SELECT COUNT(*) FROM medals m WHERE m.id = s.id AND m.place = 1) AS g, (SELECT COUNT(*) FROM medals m WHERE m.id = s.id AND m.place = 2) AS sv, (SELECT COUNT(*) FROM medals m WHERE m.id = s.id AND m.place = 3) AS b
      FROM scores_v2 s LEFT JOIN profiles p ON p.id = s.id LEFT JOIN premium pr ON pr.id = s.id
      WHERE s.week = ?1 AND s.league = ?2 AND s.xp > 0 ORDER BY s.xp DESC, s.updated ASC LIMIT 30`
   ).bind(week, league).all()).results.map(r => {
     const prem = r.until > now;
-    return { name: r.name, color: r.color, xp: r.xp, me: validId(id) && r.id === id, prem,
+    return { name: r.name, color: r.color, xp: r.xp, me: validId(id) && r.id === id, prem, medals: [r.g || 0, r.sv || 0, r.b || 0],
       look: cleanCosmetics({ avatar: r.avatar, ncolor: r.ncolor, nstyle: r.nstyle, frame: r.frame }, prem) };
   });
 
@@ -80,5 +96,13 @@ export async function onRequest({ request, env }) {
       if (a) above = { xp: a.xp };
     }
   }
-  return json({ week, league, total, top, me, above });
+  // Keçən həftə medal qazanmısansa — mərasim üçün
+  let medal = null, medals = [0, 0, 0];
+  if (validId(id)) {
+    const m = await env.DB.prepare('SELECT league, place, xp FROM medals WHERE id = ?1 AND week = ?2').bind(id, prevWeek).first();
+    if (m) medal = { week: prevWeek, league: m.league, place: m.place, xp: m.xp };
+    const { results } = await env.DB.prepare('SELECT place, COUNT(*) AS n FROM medals WHERE id = ?1 GROUP BY place').bind(id).all();
+    for (const r of results) medals[r.place - 1] = r.n;
+  }
+  return json({ week, league, total, top, me, above, medal, medals });
 }
