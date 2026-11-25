@@ -709,17 +709,265 @@ window.COURSE = [
     ]}
   ]}
 ]},
-{ id:'b2', name:'B2', title:'Orta-yuxarı', color:'#e0662f', units:[
-  { id:'b2-u1', title:'Peşmançılıq və arzular', grammar:'Third Conditional · I wish / If only' },
-  { id:'b2-u2', title:'Ehtimallar', grammar:'must / might / can\'t have done' },
-  { id:'b2-u3', title:'Akademik yazı', grammar:'however, although, despite, whereas' },
-  { id:'b2-u4', title:'Müzakirə və debat', grammar:'Fikir bildirmə, rəsmi üslub' },
-  { id:'b2-u5', title:'İş müsahibəsi', grammar:'Özünü təqdim, STAR cavabları' },
-  { id:'b2-u6', title:'Mürəkkəb passiv', grammar:'have something done · It is said that…' },
-  { id:'b2-u7', title:'Phrasal verbs və idiomlar', grammar:'look into, put off, break the ice…' },
-  { id:'b2-u8', title:'Təqdimat bacarıqları', grammar:'Təqdimat dili, keçid ifadələri' }
+{ id:'b2', name:'B2', title:'Yüksək', color:'#e0662f', units:[
+  { id:'b2-u1', title:'Peşmançılıq və arzular', grammar:'Third Conditional · I wish / If only · qarışıq şərtlər', lessons:[
+    { id:'b2-u1-l1', title:'Third Conditional', items:[
+      {t:'learn', title:'Keçmişi dəyişə bilsəydik…', body:'Keçmişdə baş verməyən, xəyali vəziyyət və peşmançılıq: IF + had + 3-cü forma, WOULD HAVE + 3-cü forma. Azərbaycan dilindəki «-saydım, -ardım» kimi, amma hər iki hissə keçmişə aiddir.', ex:[['If I had studied harder, I would have passed.','Daha yaxşı oxusaydım, keçərdim.'],["If we had left earlier, we wouldn't have missed the bus.",'Tez çıxsaydıq, avtobusu buraxmazdıq.'],['She would have come if you had invited her.','Dəvət etsəydin, gələrdi.'],['What would you have done?','Sən nə edərdin?']]},
+      {t:'mc', q:'If I ___ harder, I would have passed.', o:['had studied','studied','would study','have studied'], e:'If + had + 3-cü forma.'},
+      {t:'mc', q:'If we had left earlier, we ___ the flight.', o:["wouldn't have missed","didn't miss","won't miss","wouldn't miss"], e:'Nəticə hissəsi: would (not) have + 3-cü forma.'},
+      {t:'mc', q:'She would have come if you ___ her.', o:['had invited','invited','would invite','have invited'], e:'If-li hissədə: had invited.'},
+      {t:'mc', q:'«If I had known…» nə deməkdir?', o:['Bilsəydim… (amma bilmirdim)','Bilirəm ki…','Bilsəm…','Biləcəyəm…'], e:'Third conditional — keçmişdə olmayan vəziyyət.'},
+      {t:'order', az:'Daha tez çıxsaydıq, avtobusa çatardıq.', en:'If we had left earlier, we would have caught the bus.', extra:['will','leave']},
+      {t:'listen', en:'If you had told me, I would have helped you.', o:['If you had told me, I would have helped you.','If you tell me, I will help you.','If you had told me, I would help you.']},
+      {t:'speak', en:'If I had known, I would have called you.', az:'Bilsəydim, sənə zəng edərdim.'}
+    ]},
+    { id:'b2-u1-l2', title:'I wish / If only', items:[
+      {t:'learn', title:'Arzu və təəssüf', body:'WISH + keçmiş zaman — indiki vəziyyətdən narazılıq: I wish I had more time. WISH + had + 3-cü forma — keçmişə görə təəssüf: I wish I had studied more. WISH / IF ONLY + would — başqasının hərəkətindən əsəbiləşmək: I wish you would listen! «If only» daha güclü səslənir.', ex:[['I wish I had more free time.','Kaş daha çox boş vaxtım olaydı.'],['I wish I had gone to the party.','Kaş o məclisə gedəydim.'],['If only it would stop raining!','Kaş yağış dayanaydı!'],['I wish I could speak French.','Kaş fransızca danışa biləydim.']]},
+      {t:'mc', q:'I wish I ___ more free time. (indi yoxdur)', o:['had','have','will have','would have'], e:'İndiki arzu: wish + keçmiş zaman.'},
+      {t:'mc', q:'I wish I ___ to the party yesterday.', o:['had gone','went','go','would go'], e:'Keçmişə təəssüf: wish + had + 3-cü forma.'},
+      {t:'mc', q:'If only it ___ raining!', o:['would stop','stops','had stop','will stop'], e:'Əsəbilik / güclü arzu: would stop.'},
+      {t:'mc', q:'«I wish I could speak French» nə deməkdir?', o:['Kaş fransızca danışa biləydim.','Fransızca danışa bilirəm.','Fransızca danışmaq istəmirəm.','Fransızca danışacağam.'], e:'Wish + could — indiki bacarıqsızlığa təəssüf.'},
+      {t:'order', az:'Kaş daha çox oxuyaydım. (keçmişdə)', en:'I wish I had studied more.', extra:['have','would']},
+      {t:'dict', en:'I wish I lived closer to the sea.', extra:['live','would']},
+      {t:'speak', en:'If only I had more time.', az:'Kaş daha çox vaxtım olaydı.'}
+    ]},
+    { id:'b2-u1-l3', title:'Qarışıq şərtlər', items:[
+      {t:'learn', title:'Keçmiş və indiki qarışanda', body:'Keçmişdəki qərarın İNDİYƏ təsiri: If + had + 3-cü forma, WOULD + fel: If I had taken that job, I would be rich now. İndiki xüsusiyyətin KEÇMİŞƏ təsiri: If + keçmiş, WOULD HAVE + 3-cü forma: If I were more careful, I wouldn\'t have lost it.', ex:[['If I had taken that job, I would be in London now.','O işi qəbul etsəydim, indi Londonda olardım.'],["If I hadn't missed the train, I'd be home by now.",'Qatarı buraxmasaydım, artıq evdə olardım.'],["If she weren't so shy, she would have spoken to him.",'Bu qədər utancaq olmasaydı, onunla danışardı.']]},
+      {t:'mc', q:'If I had accepted that offer, I ___ in London now.', o:['would be living','would have lived','will live','lived'], e:'Keçmiş qərar → indiki nəticə: would + fel.'},
+      {t:'mc', q:"If she weren't so shy, she ___ to him at the party.", o:['would have spoken','would speak','spoke','will speak'], e:'İndiki xüsusiyyət → keçmiş nəticə: would have spoken.'},
+      {t:'mc', q:'Hansı cümlə keçmiş qərarın İNDİYƏ təsirini göstərir?', o:['If I had studied medicine, I would be a doctor now.','If I study medicine, I will be a doctor.','If I studied medicine, I would be a doctor.','If I had studied medicine, I would have been a doctor in 2020.'], e:'«now» — indiki nəticə.'},
+      {t:'order', az:'O işi qəbul etsəydim, indi Londonda olardım.', en:['If I had taken that job, I would be in London now.',"If I had taken that job, I'd be in London now."], extra:['will','have']},
+      {t:'listen', en:"If I hadn't missed the train, I'd be home by now.", o:["If I hadn't missed the train, I'd be home by now.","If I hadn't missed the train, I'd have been home.","If I don't miss the train, I'll be home soon."]},
+      {t:'speak', en:'If I had taken that job, I would be in London now.', az:'O işi qəbul etsəydim, indi Londonda olardım.'}
+    ]}
+  ]},
+  { id:'b2-u2', title:'Ehtimallar', grammar:'must / might / can\'t (have done) · ehtimal dərəcələri', lessons:[
+    { id:'b2-u2-l1', title:'must, might, can\'t', items:[
+      {t:'learn', title:'Nəticə çıxarmaq (indiki)', body:'MUST BE — əminəm ki, belədir. MIGHT / MAY / COULD BE — ola bilər. CAN\'T BE — ola bilməz. Diqqət: burada «mustn\'t» işlənmir, inkar «can\'t»-dır.', ex:[["She's been working all day. She must be exhausted.",'Bütün günü işləyib. Yəqin ki, çox yorğundur.'],["That can't be Leyla — she's in Paris.",'O, Leyla ola bilməz — Parisdədir.'],['He might be in the library.','Kitabxanada ola bilər.'],['You must be joking!','Yəqin zarafat edirsən!']]},
+      {t:'mc', q:"She's been working all day. She ___ be exhausted.", o:['must','can\'t','might not',"mustn't"], e:'Güclü əminlik: must be.'},
+      {t:'mc', q:"That ___ be Leyla — she's in Paris this week.", o:["can't",'must','may','should'], e:'Mümkün deyil: can\'t be.'},
+      {t:'mc', q:"I'm not sure where he is. He ___ be in the library.", o:['might','must',"can't",'should'], e:'Ehtimal: might.'},
+      {t:'mc', q:'«It can\'t be true!» nə deməkdir?', o:['Bu doğru ola bilməz!','Bu doğru olmamalıdır.','Bunu deyə bilmərəm.','Doğru olmaya bilər.'], e:'Can\'t be — qeyri-mümkün.'},
+      {t:'order', az:'O, evdə olmalıdır, çünki işıqlar yanır.', en:'He must be at home because the lights are on.', extra:["can't",'is']},
+      {t:'listen', en:'You must be joking!', o:['You must be joking!','You might be joking!','You must be hungry!']},
+      {t:'speak', en:"That can't be right — let me check again.", az:'Bu düz ola bilməz — bir də yoxlayım.'}
+    ]},
+    { id:'b2-u2-l2', title:'must have done', items:[
+      {t:'learn', title:'Keçmiş haqqında nəticə çıxarmaq', body:'MUST HAVE + 3-cü forma — yəqin ki, olub. MIGHT HAVE — ola bilər ki, olub. CAN\'T HAVE — ola bilməz ki, olsun. SHOULD HAVE — etməli idin (amma etmədin): təəssüf və ya tənqid.', ex:[['The ground is wet. It must have rained.','Yer yaşdır. Yəqin yağış yağıb.'],["He can't have seen me.",'O, məni görmüş ola bilməz.'],['They might have got lost.','Yolu azmış ola bilərlər.'],['You should have told me earlier!','Mənə daha tez deməli idin!']]},
+      {t:'mc', q:'The ground is wet. It ___ rained last night.', o:['must have',"can't have",'should have','must'], e:'Keçmiş haqqında əminlik: must have.'},
+      {t:'mc', q:'He ___ seen me — he walked right past without saying hello.', o:["can't have",'must have','should have','would'], e:'Ola bilməz ki, görsün: can\'t have.'},
+      {t:'mc', q:"I'm not sure why she left. She ___ been tired.", o:['might have','must',"can't have",'should'], e:'Ehtimal: might have been.'},
+      {t:'mc', q:"You ___ told me earlier! Now it's too late.", o:['should have','must have','might have',"can't have"], e:'Tənqid / təəssüf: should have.'},
+      {t:'order', az:'O, qatarı buraxmış olmalıdır.', en:'She must have missed the train.', extra:['missing','can']},
+      {t:'dict', en:'They might have got lost on the way.', extra:['must','get']},
+      {t:'speak', en:'I should have checked my email earlier.', az:'E-poçtumu daha tez yoxlamalı idim.'}
+    ]},
+    { id:'b2-u2-l3', title:'Ehtimal dərəcələri', items:[
+      {t:'learn', title:'Nə qədər əminsən?', body:'Rəsmi danışıqda və yazıda ehtimalı dəqiq ifadə etmək vacibdir. Diqqət: likely sifətdir: He is likely to come. Probably isə zərfdir: He will probably come.', ex:[['It is likely to rain.','Yağış yağması ehtimalı böyükdür.'],["He's unlikely to come.",'Onun gəlməsi ehtimalı azdır.'],["There's a good chance we'll win.",'Qalib gəlmək şansımız yüksəkdir.'],["I doubt he'll agree.",'Razılaşacağına şübhə edirəm.']]},
+      {t:'mc', q:'«It is likely to rain» nə deməkdir?', o:['Yağış yağması ehtimalı böyükdür.','Yağış yağmayacaq.','Yağışı sevirəm.','Yağış yağmalıdır.'], e:'Likely — ehtimal olunan.'},
+      {t:'mc', q:'Ən az ehtimalı bildirən hansıdır?', o:["It's highly unlikely.","It's quite likely.",'It will probably happen.',"There's a good chance."], e:'Highly unlikely — çox az ehtimal.'},
+      {t:'mc', q:"She will ___ get the job — she's the best candidate.", o:['probably','probable','likely to','unlikely'], e:'Will + probably + fel.'},
+      {t:'mc', q:"I ___ he'll come — he's very busy.", o:['doubt','sure','think surely','certain'], e:'I doubt — şübhə edirəm.'},
+      {t:'order', az:'Onun gəlməsi ehtimalı azdır.', en:['He is unlikely to come.',"He's unlikely to come."], extra:['likely','coming']},
+      {t:'listen', en:"There's a good chance we'll finish on time.", o:["There's a good chance we'll finish on time.","There's no chance we'll finish on time.","There's a good chance we'll start on time."]},
+      {t:'speak', en:"It's highly unlikely that prices will fall.", az:'Qiymətlərin düşməsi çox az ehtimal olunur.'}
+    ]}
+  ]},
+  { id:'b2-u3', title:'Akademik yazı', grammar:'however, although, despite, whereas · therefore, moreover · hedging', lessons:[
+    { id:'b2-u3-l1', title:'Ziddiyyət bildirmək', items:[
+      {t:'learn', title:'however, although, despite, whereas', body:'ALTHOUGH + cümlə (subyekt + fel). DESPITE / IN SPITE OF + isim və ya -ing. HOWEVER — yeni cümlənin əvvəlində, vergüllə. WHEREAS — iki faktı qarşılaşdırmaq üçün. «Despite of» — səhvdir!', ex:[['Although it was raining, we went out.','Yağış yağsa da, çölə çıxdıq.'],['Despite the rain, we went out.','Yağışa baxmayaraq çölə çıxdıq.'],['The plan was good. However, it was expensive.','Plan yaxşı idi. Lakin baha idi.'],['Some prefer online classes, whereas others do not.','Bəziləri onlayn dərsi seçir, digərləri isə yox.']]},
+      {t:'mc', q:'___ it was raining, we went out.', o:['Although','Despite','However','In spite'], e:'Ardınca cümlə gəlir: although.'},
+      {t:'mc', q:'___ the rain, we went out.', o:['Despite','Although','However','Even though'], e:'Ardınca isim gəlir: despite.'},
+      {t:'mc', q:'The plan was good. ___, it was too expensive.', o:['However','Although','Despite','Whereas'], e:'Yeni cümlə + vergül: However,'},
+      {t:'mc', q:'Some students prefer online classes, ___ others prefer face-to-face learning.', o:['whereas','despite','however','although of'], e:'İki faktın qarşılaşdırılması: whereas.'},
+      {t:'order', az:'Çətinliklərə baxmayaraq, layihəni bitirdik.', en:'Despite the difficulties, we finished the project.', extra:['Although','of']},
+      {t:'dict', en:'Although the results were positive, more research is needed.', extra:['Despite','however']},
+      {t:'speak', en:'However, there are some limitations to this study.', az:'Lakin bu tədqiqatın bəzi məhdudiyyətləri var.'}
+    ]},
+    { id:'b2-u3-l2', title:'Səbəb, nəticə, əlavə', items:[
+      {t:'learn', title:'Mətni məntiqlə bağlamaq', body:'Nəticə: therefore, as a result, consequently. Əlavə: moreover, furthermore, in addition. Səbəb: due to / because of + isim, because + cümlə.', ex:[['Demand increased. As a result, prices went up.','Tələb artdı. Nəticədə qiymətlər qalxdı.'],['The course is affordable. Moreover, it is flexible.','Kurs əlçatandır. Üstəlik, çevikdir.'],['The flight was delayed due to bad weather.','Uçuş pis hava səbəbindən gecikdi.'],['Therefore, more research is needed.','Buna görə də daha çox tədqiqat lazımdır.']]},
+      {t:'mc', q:'The demand increased. ___, prices went up.', o:['As a result','Moreover','Although','Despite'], e:'Nəticə: As a result.'},
+      {t:'mc', q:'The course is affordable. ___, it is very flexible.', o:['Moreover','Therefore','However','Whereas'], e:'Əlavə: Moreover.'},
+      {t:'mc', q:'The flight was delayed ___ bad weather.', o:['due to','because','therefore','as a result'], e:'İsimdən əvvəl: due to.'},
+      {t:'mc', q:'«Therefore» nə deməkdir?', o:['buna görə də','buna baxmayaraq','bundan əlavə','məsələn'], e:'Therefore = as a result.'},
+      {t:'order', az:'Buna görə də, daha çox tədqiqat lazımdır.', en:'Therefore, more research is needed.', extra:['However','needs']},
+      {t:'listen', en:'Furthermore, the data shows a clear trend.', o:['Furthermore, the data shows a clear trend.','However, the data shows a clear trend.','Furthermore, the data shows no clear trend.']},
+      {t:'speak', en:'As a result, unemployment has decreased.', az:'Nəticədə işsizlik azalıb.'}
+    ]},
+    { id:'b2-u3-l3', title:'Esse və ehtiyatlı dil', items:[
+      {t:'learn', title:'Esse quruluşu və hedging', body:'Esse: giriş (əsas fikir — thesis statement), əsas abzaslar (hər birinin ilk cümləsi — topic sentence), nəticə. Akademik yazıda mütləq ifadələrdən qaç (Everybody knows, It\'s obvious). Ehtiyatlı dil (hedging) işlət: It seems that, The results suggest, It could be argued that.', ex:[['The results suggest that…','Nəticələr göstərir ki…'],['It seems that young people prefer…','Görünür, gənclər … üstünlük verir.'],['It could be argued that…','Belə iddia etmək olar ki…'],['In conclusion, …','Sonda / Yekun olaraq…']]},
+      {t:'mc', q:'Esse girişində əsas fikri bildirən cümlə necə adlanır?', o:['thesis statement','topic sentence','conclusion','reference'], e:'Thesis statement — essenin əsas iddiası.'},
+      {t:'mc', q:'Akademik üsluba ən uyğun hansıdır?', o:['The results suggest that…','The results prove 100% that…','Everybody knows that…',"It's obvious that…"], e:'Ehtiyatlı və dəqiq dil.'},
+      {t:'mc', q:'«It could be argued that…» nə deməkdir?', o:['Belə iddia etmək olar ki…','Mübahisə etmək lazımdır ki…','Heç kim deyə bilməz ki…','Sübut olunub ki…'], e:'Fikri ehtiyatla təqdim etmək.'},
+      {t:'mc', q:'Nəticə hissəsinə uyğun başlanğıc:', o:['In conclusion, …','Firstly, …','For example, …','On the other hand, …'], e:'In conclusion / To conclude.'},
+      {t:'order', az:'Görünür, gənclər onlayn öyrənməyə üstünlük verir.', en:'It seems that young people prefer online learning.', extra:['seem','prefers']},
+      {t:'dict', en:'This essay will examine the main causes of unemployment.', extra:['examines','cause']},
+      {t:'speak', en:'In conclusion, technology has changed the way we learn.', az:'Sonda, texnologiya öyrənmə tərzimizi dəyişib.'}
+    ]}
+  ]},
+  { id:'b2-u4', title:'Müzakirə və debat', grammar:'Fikir bildirmə · razılaşma və etiraz · arqument', lessons:[
+    { id:'b2-u4-l1', title:'Fikir bildirmək', items:[
+      {t:'learn', title:'Fikrini peşəkar şəkildə de', body:'«I think» yaxşıdır, amma müxtəliflik fikrini daha inandırıcı edir. Güclü fikir: I strongly believe. Yumşaq fikir: It seems to me.', ex:[['In my opinion, …','Mənim fikrimcə…'],['From my point of view, …','Mənim baxış bucağımdan…'],['I strongly believe that…','Qəti inanıram ki…'],["As far as I'm concerned, …",'Mənə qalsa…'],['It seems to me that…','Mənə elə gəlir ki…']]},
+      {t:'mc', q:'Güclü fikir bildirən hansıdır?', o:['I strongly believe that…','I might think that…',"Maybe, I don't know…","I'm not sure, but…"], e:'Strongly believe — qəti inanmaq.'},
+      {t:'mc', q:'«As far as I\'m concerned» nə deməkdir?', o:['Mənə qalsa / məncə','Məni maraqlandırmır','Mən uzaqdayam','Məndən soruşmayın'], e:'Şəxsi fikir ifadəsi.'},
+      {t:'mc', q:'From my point ___ view, …', o:['of','in','on','at'], e:'Sabit ifadə: point of view.'},
+      {t:'mc', q:'Hansı ifadə rəsmi müzakirəyə uyğun DEYİL?', o:["I think you're totally stupid.","I see your point, but…","That's an interesting idea.","I'm afraid I disagree."], e:'Şəxsiyyətə hücum — qəbuledilməzdir.'},
+      {t:'order', az:'Məncə, təhsil hamı üçün pulsuz olmalıdır.', en:'In my opinion, education should be free for everyone.', extra:['must','to']},
+      {t:'listen', en:'It seems to me that we need more time.', o:['It seems to me that we need more time.','It seems to me that we need more money.','It seemed to me that we needed more time.']},
+      {t:'speak', en:'In my opinion, remote work increases productivity.', az:'Məncə, məsafədən iş məhsuldarlığı artırır.'}
+    ]},
+    { id:'b2-u4-l2', title:'Razılaşmaq və etiraz etmək', items:[
+      {t:'learn', title:'Nəzakətlə razılaşmamaq', body:'Etiraz edəndə əvvəlcə qarşı tərəfin fikrini qəbul et, sonra öz fikrini de: «I see what you mean, but…». Bu həm iş yerində, həm də akademik müzakirədə hörmət göstərir.', ex:[["I couldn't agree more.",'Tamamilə razıyam.'],["That's a good point, but…",'Yaxşı fikirdir, amma…'],['I see what you mean; however, …','Nə demək istədiyini başa düşürəm, lakin…'],["I'm afraid I disagree.",'Təəssüf ki, razı deyiləm.'],['With all due respect, …','Bütün hörmətimlə…']]},
+      {t:'mc', q:'Tam razılaşmanı bildirən hansıdır?', o:["I couldn't agree more.","I couldn't agree.","I don't agree more.",'I can agree less.'], e:'Couldn\'t agree more = 100% razıyam.'},
+      {t:'mc', q:'Nəzakətli etiraz hansıdır?', o:["I see what you mean, but I'm not sure that's true.","You're wrong.",'No way!',"That's nonsense."], e:'Əvvəl qəbul et, sonra etiraz et.'},
+      {t:'mc', q:'«I couldn\'t agree more» nə deməkdir?', o:['Tamamilə razıyam.','Heç razı deyiləm.','Daha çox razılaşa bilmərəm, çünki yoruldum.','Razılaşmaq istəmirəm.'], e:'Tez-tez səhv anlaşılan ifadədir!'},
+      {t:'mc', q:'«With all due respect…» nə deməkdir?', o:['Bütün hörmətimlə…','Hörmət etmirəm…','Hamıya hörmət…','Hörmətli dinləyicilər…'], e:'Nəzakətli etirazın başlanğıcı.'},
+      {t:'order', az:'Fikrini başa düşürəm, amma razı deyiləm.', en:["I see your point, but I don't agree.","I see your point but I don't agree."], extra:['disagree','not']},
+      {t:'dict', en:"That's a fair point, but have you considered the costs?", extra:['consider','cost']},
+      {t:'speak', en:"I'm afraid I have to disagree with you on this.", az:'Təəssüf ki, bu məsələdə səninlə razı deyiləm.'}
+    ]},
+    { id:'b2-u4-l3', title:'Arqument qurmaq', items:[
+      {t:'learn', title:'Arqumentin quruluşu', body:'Güclü arqument: fikir → səbəb → nümunə → qarşı arqument → yekun. Qarşı tərəfin fikrini də qeyd etmək arqumentini daha inandırıcı edir.', ex:[['Firstly, … / To begin with, …','Birincisi… / Əvvəlcə…'],['On the one hand… On the other hand…','Bir tərəfdən… Digər tərəfdən…'],['For instance, …','Məsələn…'],['Critics argue that…','Tənqidçilər iddia edir ki…'],['To sum up, …','Yekunlaşdırsaq…']]},
+      {t:'mc', q:'Qarşı tərəfin arqumentini təqdim etmək üçün:', o:['On the other hand, …','Firstly, …','To sum up, …','For instance, …'], e:'On the other hand — digər tərəfdən.'},
+      {t:'mc', q:'Nümunə vermək üçün:', o:['For instance, …','However, …','In contrast, …','Therefore, …'], e:'For instance = for example.'},
+      {t:'mc', q:'Yekun üçün:', o:['To sum up, …','To begin with, …','In addition, …','Despite this, …'], e:'To sum up — yekunlaşdırsaq.'},
+      {t:'mc', q:'«Critics argue that…» nə deməkdir?', o:['Tənqidçilər iddia edir ki…','Tənqidçilər razılaşır ki…','Tənqid etmək olmaz ki…','Aktyorlar mübahisə edir ki…'], e:'Argue — iddia etmək, əsaslandırmaq.'},
+      {t:'order', az:'Bir tərəfdən, sosial media insanları birləşdirir.', en:'On the one hand, social media connects people.', extra:['other','connect']},
+      {t:'listen', en:'To sum up, the benefits outweigh the risks.', o:['To sum up, the benefits outweigh the risks.','To sum up, the risks outweigh the benefits.','To start with, the benefits outweigh the risks.']},
+      {t:'speak', en:'On the other hand, it can be very expensive.', az:'Digər tərəfdən, bu çox baha ola bilər.'}
+    ]}
+  ]},
+  { id:'b2-u5', title:'İş müsahibəsi', grammar:'STAR cavabları · güclü fellər · maaş və suallar', lessons:[
+    { id:'b2-u5-l1', title:'STAR metodu', items:[
+      {t:'learn', title:'Situation → Task → Action → Result', body:'«Tell me about a time when…» sualına STAR ilə cavab ver: Situation (vəziyyət), Task (vəzifən), Action (SƏNİN atdığın addımlar), Result (nəticə, mümkünsə rəqəmlə). Past Simple işlət və «we» yox, «I» de — müsahibəçi sənin töhfəni bilmək istəyir.', ex:[['Situation: Our team was behind schedule.','Komandamız qrafikdən geri qalırdı.'],['Task: My task was to reduce delays.','Mənim vəzifəm gecikmələri azaltmaq idi.'],['Action: I organised weekly progress meetings.','Həftəlik proqres görüşləri təşkil etdim.'],['Result: We finished two weeks early.','İki həftə tez bitirdik.']]},
+      {t:'mc', q:'STAR-da «A» nəyi bildirir?', o:['Action — sənin atdığın addımlar','Answer — cavab','Ability — bacarıq','Attitude — münasibət'], e:'Ən vacib hissə: sən nə etdin?'},
+      {t:'mc', q:'«Tell me about a time when you solved a problem» — cavabda hansı zaman əsasdır?', o:['Past Simple','Present Simple','Future','Present Continuous'], e:'Keçmiş hadisəni danışırsan.'},
+      {t:'mc', q:'Nəticəni ən güclü göstərən cümlə:', o:['As a result, sales increased by 15%.','It was good, I think.','Everybody was happy maybe.','We did our best.'], e:'Ölçülə bilən nəticə.'},
+      {t:'mc', q:'STAR cavabında ən ZƏİF cümlə hansıdır?', o:["We did everything together, so I don't know.",'I organised a weekly meeting to track progress.','My task was to reduce delays.','The project was completed two weeks early.'], e:'Öz rolunu göstərmir.'},
+      {t:'order', az:'Mənim vəzifəm gecikmələri azaltmaq idi.', en:'My task was to reduce delays.', extra:['reducing','is']},
+      {t:'listen', en:'Tell me about a time when you worked under pressure.', o:['Tell me about a time when you worked under pressure.','Tell me about a time when you worked in a team.','Tell me about the time you work under pressure.']},
+      {t:'speak', en:'In my previous role, I was responsible for managing social media.', az:'Əvvəlki vəzifəmdə sosial mediaya cavabdeh idim.'}
+    ]},
+    { id:'b2-u5-l2', title:'Güclü fellər', items:[
+      {t:'learn', title:'Nailiyyətini güclü fellə de', body:'«I helped with» və «I did» zəif səslənir. CV və müsahibədə nəticə göstərən fellər işlət: led, achieved, improved, coordinated, implemented, reduced, increased, launched.', ex:[['I led a team of five volunteers.','Beş könüllüdən ibarət komandaya rəhbərlik etdim.'],['I improved customer satisfaction by 20%.','Müştəri məmnuniyyətini 20% artırdım.'],['I implemented a new system.','Yeni sistem tətbiq etdim.'],['I coordinated a conference for 200 people.','200 nəfərlik konfransı koordinasiya etdim.']]},
+      {t:'mc', q:'Daha güclü fel: «I ___ a team of five volunteers.»', o:['led','was in','helped','did'], e:'Led — rəhbərlik etdim.'},
+      {t:'mc', q:'«Implemented» nə deməkdir?', o:['tətbiq etdi','təsəvvür etdi','təqlid etdi','imtina etdi'], e:'Implement — həyata keçirmək, tətbiq etmək.'},
+      {t:'mc', q:'I ___ customer satisfaction by 20%.', o:['improved','made better at','improvement','improving'], e:'Improve — yaxşılaşdırmaq.'},
+      {t:'mc', q:'Hansı cümlə daha peşəkardır?', o:['I coordinated a conference for 200 participants.','I helped with some event stuff.','I was there at the conference.','I did many things.'], e:'Konkret fel + konkret rəqəm.'},
+      {t:'order', az:'Mən xərcləri 10% azaltdım.', en:'I reduced costs by 10%.', extra:['reduce','with']},
+      {t:'dict', en:'I successfully launched a new training programme.', extra:['launch','program']},
+      {t:'speak', en:'I coordinated a project with a team of five people.', az:'Beş nəfərlik komanda ilə layihəni koordinasiya etdim.'}
+    ]},
+    { id:'b2-u5-l3', title:'Maaş və suallar', items:[
+      {t:'learn', title:'Müsahibənin sonu', body:'Maaş sualına araşdırmaya əsaslanan aralıq de. Müsahibənin sonunda mütləq sual ver — bu, marağını göstərir. İlk müsahibədə yalnız məzuniyyət və erkən çıxmaq barədə soruşmaq pis təəssürat yarada bilər.', ex:[['What are your salary expectations?','Maaş gözləntiləriniz nədir?'],["I'm looking for a salary in the range of…",'… aralığında maaş gözləyirəm.'],['Do you have any questions for us?','Bizə sualınız varmı?'],['What does a typical day look like?','Adi iş günü necə keçir?']]},
+      {t:'mc', q:'«What are your salary expectations?» nə deməkdir?', o:['Maaş gözləntiləriniz nədir?','Maaşınız nə qədərdir?','Maaşı nə vaxt alırsınız?','Maaşdan razısınız?'], e:'Expectations — gözləntilər.'},
+      {t:'mc', q:'Peşəkar maaş cavabı hansıdır?', o:["Based on my research, I'm looking for a salary in the range of 1,200–1,500 AZN.",'Give me as much as possible.',"I don't care about money.",'Whatever you want.'], e:'Araşdırma + aralıq.'},
+      {t:'mc', q:'Müsahibənin sonunda yaxşı sual hansıdır?', o:['What does a typical day in this role look like?','How many holidays do I get?','Can I leave early every day?','No questions.'], e:'İşə maraq göstərən sual.'},
+      {t:'mc', q:'«Range» bu kontekstdə nə deməkdir?', o:['aralıq (məbləğ)','məsafə','sıra','dağ silsiləsi'], e:'Salary range — maaş aralığı.'},
+      {t:'order', az:'Bu vəzifə haqqında daha çox danışa bilərsiniz?', en:'Could you tell me more about this role?', extra:['say','for']},
+      {t:'listen', en:'Do you have any questions for us?', o:['Do you have any questions for us?','Do you have any questions for me?','Did you have any questions for us?']},
+      {t:'speak', en:'What opportunities for professional development do you offer?', az:'Peşəkar inkişaf üçün hansı imkanlar təklif edirsiniz?'}
+    ]}
+  ]},
+  { id:'b2-u6', title:'Mürəkkəb passiv', grammar:'have something done · It is said that… · modal + passiv', lessons:[
+    { id:'b2-u6-l1', title:'have something done', items:[
+      {t:'learn', title:'Başqasına etdirmək', body:'HAVE + əşya + 3-cü forma — işi başqası sənin üçün edir. Azərbaycan dilindəki «-dırmaq» kimi: saçımı kəsdirdim. Danışıqda GET də işlənir: I got my hair cut.', ex:[['I had my hair cut.','Saçımı kəsdirdim.'],['I had my car repaired.','Maşınımı təmir etdirdim.'],["We're having the flat painted.",'Mənzili rənglətdiririk.'],['We need to get the documents translated.','Sənədləri tərcümə etdirməliyik.']]},
+      {t:'mc', q:'I ___ my car repaired yesterday.', o:['had','did','made','was'], e:'Had + əşya + 3-cü forma.'},
+      {t:'mc', q:'She is having her flat ___.', o:['painted','paint','painting','to paint'], e:'Have + əşya + 3-cü forma: painted.'},
+      {t:'mc', q:'«I had my phone fixed» nə deməkdir?', o:['Telefonumu təmir etdirdim.','Telefonumu özüm təmir etdim.','Telefonum xarab oldu.','Telefonumu satdım.'], e:'Başqası təmir edib.'},
+      {t:'mc', q:'We need to get the documents ___ by Friday.', o:['translated','translate','translating','to translate'], e:'Get + əşya + 3-cü forma.'},
+      {t:'order', az:'Mən saçımı kəsdirdim.', en:['I had my hair cut.','I got my hair cut.'], extra:['cutted','did']},
+      {t:'listen', en:"We're having a new kitchen installed next week.", o:["We're having a new kitchen installed next week.","We're installing a new kitchen next week.",'We had a new kitchen installed last week.']},
+      {t:'speak', en:'I need to have my passport renewed.', az:'Pasportumu yenilətməliyəm.'}
+    ]},
+    { id:'b2-u6-l2', title:'It is said that…', items:[
+      {t:'learn', title:'Şəxssiz passiv', body:'Xəbər və rəsmi dildə: IT IS SAID / BELIEVED / REPORTED THAT… Və ya şəxslə: He is said TO BE… Keçmiş üçün: She is believed TO HAVE LEFT.', ex:[['It is said that the restaurant is the best in town.','Deyilənə görə restoran şəhərin ən yaxşısıdır.'],['He is said to be very rich.','Deyilənə görə çox varlıdır.'],['The suspect is believed to have left the country.','Şübhəlinin ölkəni tərk etdiyi güman edilir.'],['It is expected that prices will rise.','Qiymətlərin artacağı gözlənilir.']]},
+      {t:'mc', q:'It ___ that the company will hire 100 people.', o:['is reported','reports','is reporting','reported'], e:'Şəxssiz passiv: It is reported that…'},
+      {t:'mc', q:'He is said ___ the richest man in town.', o:['to be','being','be','that he is'], e:'Is said + to be.'},
+      {t:'mc', q:'The suspect is believed ___ the country last week.', o:['to have left','to leave','leaving','left'], e:'Keçmiş hadisə: to have left.'},
+      {t:'mc', q:'«It is widely believed that…» nə deməkdir?', o:['Geniş yayılmış fikrə görə…','Heç kim inanmır ki…','Çox az adam bilir ki…','İnanmaq çətindir ki…'], e:'Widely — geniş şəkildə.'},
+      {t:'order', az:'Deyilənə görə, bu restoran şəhərin ən yaxşısıdır.', en:'This restaurant is said to be the best in the city.', extra:['says','being']},
+      {t:'dict', en:'It is expected that prices will rise next year.', extra:['expects','raise']},
+      {t:'speak', en:'It is widely believed that exercise improves mental health.', az:'Geniş yayılmış fikrə görə idman ruhi sağlamlığı yaxşılaşdırır.'}
+    ]},
+    { id:'b2-u6-l3', title:'Modal + passiv', items:[
+      {t:'learn', title:'must be done, can be found…', body:'Rəsmi bildiriş, qayda və təlimatlarda: modal + BE + 3-cü forma. Present Perfect passiv: has / have BEEN + 3-cü forma.', ex:[['The form must be submitted by Monday.','Forma bazar ertəsinə qədər təqdim olunmalıdır.'],['More information can be found on our website.','Ətraflı məlumatı saytımızda tapmaq olar.'],['The results will be announced next week.','Nəticələr gələn həftə elan olunacaq.'],['Your application has been received.','Müraciətiniz qəbul olunub.']]},
+      {t:'mc', q:'The form must ___ by Monday.', o:['be submitted','submitted','submit','be submit'], e:'Modal + be + 3-cü forma.'},
+      {t:'mc', q:'More information can ___ on our website.', o:['be found','found','be find','find'], e:'Can be found.'},
+      {t:'mc', q:'The results ___ next week.', o:['will be announced','will announce','are announcing','will be announce'], e:'Will be + 3-cü forma.'},
+      {t:'mc', q:'The project ___ already been completed.', o:['has','have','is','was'], e:'The project (tək): has been completed.'},
+      {t:'order', az:'Bütün sənədlər imzalanmalıdır.', en:'All documents must be signed.', extra:['sign','are']},
+      {t:'listen', en:'Your application has been received.', o:['Your application has been received.','Your application has been rejected.','Your application will be received.']},
+      {t:'speak', en:'The report should be finished by Friday.', az:'Hesabat cümə gününə qədər bitirilməlidir.'}
+    ]}
+  ]},
+  { id:'b2-u7', title:'Phrasal verbs və idiomlar', grammar:'look into, put off, come up with… · break the ice, a piece of cake…', lessons:[
+    { id:'b2-u7-l1', title:'İş üçün phrasal verbs', items:[
+      {t:'learn', title:'İş mühitində ən çox işlənənlər', body:'Phrasal verb — fel + kiçik söz (into, off, up…), mənası çox vaxt tamamilə dəyişir. Bunları ifadə kimi bütöv öyrən.', ex:[['look into','araşdırmaq'],['put off','təxirə salmaq'],['carry out','həyata keçirmək'],['come up with','(fikir) tapmaq'],['take on','öhdəsinə götürmək'],['set up','qurmaq, yaratmaq']]},
+      {t:'mc', q:'We need to ___ the problem before Friday. (araşdırmaq)', o:['look into','look after','look up to','look out'], e:'Look into — araşdırmaq.'},
+      {t:'mc', q:'The meeting was ___ until next week.', o:['put off','put on','put up','put out'], e:'Put off — təxirə salmaq.'},
+      {t:'mc', q:'She ___ a brilliant idea.', o:['came up with','came across','came over','came out'], e:'Come up with — fikir tapmaq.'},
+      {t:'mc', q:'«Carry out research» nə deməkdir?', o:['tədqiqat aparmaq','tədqiqatı daşımaq','tədqiqatdan çıxmaq','tədqiqatı dayandırmaq'], e:'Carry out — həyata keçirmək.'},
+      {t:'order', az:'Biz yeni şirkət qurmaq istəyirik.', en:'We want to set up a new company.', extra:['build','on']},
+      {t:'listen', en:"I'll look into it and get back to you.", o:["I'll look into it and get back to you.","I'll look after it and get back to you.","I'll look into it and call you back."]},
+      {t:'speak', en:"Let's not put it off any longer.", az:'Gəlin bunu daha təxirə salmayaq.'}
+    ]},
+    { id:'b2-u7-l2', title:'Gündəlik phrasal verbs', items:[
+      {t:'learn', title:'Hər gün eşidəcəyin ifadələr', body:'Bu ifadələr filmlərdə, seriallarda və gündəlik danışıqda çox işlənir.', ex:[['give up','imtina etmək, əl çəkmək'],['run out of','qurtarmaq, tükənmək'],['turn down','rədd etmək'],['figure out','başa düşmək, həll yolu tapmaq'],['catch up with','çatmaq, geridə qalanı tamamlamaq'],['end up','sonda … olmaq']]},
+      {t:'mc', q:"I've ___ sugar. Can you buy some?", o:['run out of','run into','run away','run over'], e:'Run out of — qurtarmaq.'},
+      {t:'mc', q:'She ___ the job offer because the salary was low.', o:['turned down','turned up','turned off','turned into'], e:'Turn down — rədd etmək.'},
+      {t:'mc', q:"Don't ___! You're almost there.", o:['give up','give in to','give away','give back'], e:'Give up — təslim olmaq, əl çəkmək.'},
+      {t:'mc', q:'«Figure out» nə deməkdir?', o:['başa düşmək / həll yolu tapmaq','şəkil çəkmək','hesablamağı dayandırmaq','fiqur almaq'], e:'I can\'t figure it out — başa düşə bilmirəm.'},
+      {t:'order', az:'Sonda biz evdə qaldıq.', en:'We ended up staying at home.', extra:['end','stay']},
+      {t:'dict', en:"I can't figure out how this app works.", extra:['figured','work']},
+      {t:'speak', en:'I need to catch up with my studies this weekend.', az:'Bu həftəsonu dərslərimdəki geriliyi aradan qaldırmalıyam.'}
+    ]},
+    { id:'b2-u7-l3', title:'İdiomlar', items:[
+      {t:'learn', title:'Hərfi tərcümə etmə!', body:'İdiomun mənası sözlərin cəmindən fərqlidir. «A piece of cake» tort deyil — «çox asan» deməkdir.', ex:[['a piece of cake','çox asan'],['break the ice','tanışlıqda gərginliyi aradan qaldırmaq'],['hit the nail on the head','tam yerinə vurmaq, düz demək'],['once in a blue moon','çox nadir hallarda'],['cost an arm and a leg','çox baha başa gəlmək'],['under the weather','özünü bir az pis hiss etmək']]},
+      {t:'mc', q:'«A piece of cake» nə deməkdir?', o:['çox asan','bir dilim tort','çox dadlı','çox kiçik'], e:'The exam was a piece of cake.'},
+      {t:'mc', q:'Yeni qrupda tanışlığı başlatmaq:', o:['break the ice','cut the cake','hit the road','spill the beans'], e:'Break the ice.'},
+      {t:'mc', q:'«Once in a blue moon» nə deməkdir?', o:['çox nadir hallarda','hər ay','mavi ay olanda','gecə yarısı'], e:'Çox nadir.'},
+      {t:'mc', q:'That phone cost ___! (çox baha)', o:['an arm and a leg','a hand and a foot','a piece of cake','the earth and sky'], e:'Cost an arm and a leg.'},
+      {t:'order', az:'Bu imtahan çox asan idi.', en:'The exam was a piece of cake.', extra:['easy','an']},
+      {t:'listen', en:"I'm feeling a bit under the weather today.", o:["I'm feeling a bit under the weather today.","I'm feeling a bit better today.",'The weather is a bit bad today.']},
+      {t:'speak', en:"You've hit the nail on the head.", az:'Tam yerinə vurdun.'}
+    ]}
+  ]},
+  { id:'b2-u8', title:'Təqdimat bacarıqları', grammar:'Təqdimatın dili · keçid ifadələri · suallara cavab', lessons:[
+    { id:'b2-u8-l1', title:'Təqdimatı başlamaq', items:[
+      {t:'learn', title:'Güclü başlanğıc', body:'İlk 30 saniyə vacibdir: salamla, mövzunu və məqsədi de, quruluşu göstər. Üzr istəməklə başlama («Sorry, my English is bad») — bu, dinləyicinin diqqətini səhvlərə yönəldir.', ex:[['Good morning, everyone. Thank you for coming.','Hamıya sabahınız xeyir. Gəldiyiniz üçün təşəkkürlər.'],["Today I'm going to talk about…",'Bu gün … haqqında danışacağam.'],['The aim of this presentation is to…','Bu təqdimatın məqsədi …'],["I've divided my talk into three parts.",'Çıxışımı üç hissəyə bölmüşəm.'],['Feel free to interrupt me with questions.','Sualınız olsa, sözümü kəsə bilərsiniz.']]},
+      {t:'mc', q:'Təqdimatın məqsədini demək üçün:', o:['The aim of this presentation is to…','I want to finish quickly.',"Let's go.",'Sorry for my English.'], e:'The aim … is to…'},
+      {t:'mc', q:'Quruluşu təqdim etmək üçün:', o:["I've divided my talk into three parts.",'I have three things maybe.','Three parts there are.','Parts are three.'], e:'Dinləyiciyə yol xəritəsi ver.'},
+      {t:'mc', q:'Başlanğıcda nəyi deməmək daha yaxşıdır?', o:['Sorry, my English is very bad…','Good morning, everyone.','Thank you for coming.',"Today I'd like to talk about…"], e:'Üzrlə başlamaq inamı azaldır.'},
+      {t:'mc', q:'«Feel free to interrupt me» nə deməkdir?', o:['Sual vermək üçün sözümü kəsə bilərsiniz.','Məni narahat etməyin.','Sərbəst çıxa bilərsiniz.','Sözümü kəsməyin.'], e:'Dinləyicini sual verməyə dəvət.'},
+      {t:'order', az:'Bu gün mən karyera planlaşdırması haqqında danışacağam.', en:['Today I am going to talk about career planning.',"Today I'm going to talk about career planning."], extra:['speak','for']},
+      {t:'listen', en:'Let me start with a short story.', o:['Let me start with a short story.','Let me finish with a short story.','Let me start with a short video.']},
+      {t:'speak', en:'Good morning, everyone. Thank you for coming.', az:'Hamıya sabahınız xeyir. Gəldiyiniz üçün təşəkkür edirəm.'}
+    ]},
+    { id:'b2-u8-l2', title:'Keçid ifadələri', items:[
+      {t:'learn', title:'Signposting — dinləyicini idarə et', body:'Keçid ifadələri dinləyiciyə harada olduğunu göstərir: növbəti hissə, slayda istinad, yekun. Bunlar olmadan ən yaxşı məzmun belə qarışıq görünür.', ex:[['Moving on to the next point, …','Növbəti fikrə keçək…'],["Let's now look at the results.",'İndi nəticələrə baxaq.'],['As you can see on this slide, …','Bu slaydda gördüyünüz kimi…'],['This brings me to my next point.','Bu, məni növbəti fikrimə gətirir.'],['To summarise, …','Yekunlaşdırsaq…']]},
+      {t:'mc', q:'Növbəti hissəyə keçid:', o:['Moving on to the next point, …','In conclusion, …','Good morning, …','Any questions?'], e:'Moving on…'},
+      {t:'mc', q:'Slayda istinad:', o:['As you can see on this slide, …','As you can hear, …','Look at me, …','The slide is here.'], e:'As you can see…'},
+      {t:'mc', q:'«This brings me to my next point» nə deməkdir?', o:['Bu, məni növbəti fikrimə gətirir.','Bu, məni geri qaytarır.','Bu nöqtəni gətirin.','Bu, son fikrimdir.'], e:'Hamar keçid ifadəsi.'},
+      {t:'mc', q:'Yekunlaşdırmaq üçün:', o:['To summarise, …','Firstly, …','Moving on, …','For example, …'], e:'To summarise / To sum up.'},
+      {t:'order', az:'İndi isə nəticələrə baxaq.', en:["Let's now look at the results.","Now let's look at the results."], extra:['see','to']},
+      {t:'dict', en:'As you can see, sales doubled in two years.', extra:['saw','double']},
+      {t:'speak', en:'This brings me to my final point.', az:'Bu, məni son fikrimə gətirir.'}
+    ]},
+    { id:'b2-u8-l3', title:'Suallara cavab vermək', items:[
+      {t:'learn', title:'Sual-cavab hissəsi', body:'Bilmədiyin suala uydurma cavab vermə — dürüst ol və sonra xəbər verəcəyini de. Sualı başa düşmədinsə, dəqiqləşdir. Cavabdan sonra soruş: Does that answer your question?', ex:[["That's a really good question.",'Bu, çox yaxşı sualdır.'],['Let me make sure I understand — are you asking about…?','Düzgün başa düşdüyümə əmin olum — … haqqında soruşursunuz?'],["I'm not sure, but I'll find out and get back to you.",'Əmin deyiləm, amma öyrənib sizə xəbər verəcəyəm.'],['Does that answer your question?','Bu, sualınıza cavab oldu?'],['Thank you for your attention.','Diqqətiniz üçün təşəkkür edirəm.']]},
+      {t:'mc', q:'Bilmədiyin suala peşəkar cavab:', o:["I'm not sure, but I'll find out and get back to you.","I don't know.","That's a stupid question.",'Next question.'], e:'Dürüstlük + öhdəlik.'},
+      {t:'mc', q:'Sualı dəqiqləşdirmək üçün:', o:['Let me make sure I understand — are you asking about costs?','What?','Repeat!',"I didn't listen."], e:'Nəzakətli dəqiqləşdirmə.'},
+      {t:'mc', q:'«Does that answer your question?» nə deməkdir?', o:['Bu, sualınıza cavab oldu?','Sualınız nədir?','Sual verə bilərsiniz?','Cavabı bilirsiniz?'], e:'Cavabdan sonra yoxlama.'},
+      {t:'mc', q:'Təqdimatın ən yaxşı sonu:', o:['Thank you for your attention. Are there any questions?','OK, bye.',"That's all, I think.",'Finished.'], e:'Təşəkkür + suallara dəvət.'},
+      {t:'order', az:'Bu, çox yaxşı sualdır.', en:["That's a really good question.",'That is a really good question.'], extra:['very','an']},
+      {t:'listen', en:'Thank you for your attention.', o:['Thank you for your attention.','Thank you for your patience.','Thank you for your question.']},
+      {t:'speak', en:"I'm not sure, but I'll find out and get back to you.", az:'Əmin deyiləm, amma öyrənib sizə xəbər verəcəyəm.'}
+    ]}
+  ]}
 ]}
 ];
+
 
 // Gündəlik video tövsiyələri (səviyyəyə görə, hər gün növbəti video).
 // Hamısı YouTube-da mövcud olduğu yoxlanılmış videolardır: [videoId, başlıq, kanal / mənbə]

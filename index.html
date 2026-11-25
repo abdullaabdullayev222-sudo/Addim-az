@@ -562,7 +562,7 @@ const SP=[["Nice to meet you.","Tanış olmağıma şadam.","«Meet» sözündə
 ["Could you repeat that, please?","Zəhmət olmasa, təkrar edə bilərsiniz?","«That» sözündə «th» — dilin ucu dişlərin arasında, «zet» yox."],
 ["I would like to improve my English.","İngilis dilimi təkmilləşdirmək istərdim.","«Would» — «w» dodaqlar yumrulanır, «v» kimi tələffüz etmə."],
 ["What time does the lesson start?","Dərs saat neçədə başlayır?","«What» — yenə «w»: dodaqları qabağa ver, «vot» yox."]];
-let si=0,DIC=null,heard='';
+let si=0,DIC=null,heard='',MT=null;
 const norm=s=>s.toLowerCase().replace(/[^a-z' ]/g,' ').split(/\s+/).filter(Boolean);
 function showS(){const s=SP[si];$('sCount').textContent=`Cümlə ${si+1} / ${SP.length}`;$('sEn').textContent=s[0];$('sAz').textContent=s[1];$('sTip').textContent='Tələffüz məsləhəti: '+s[2];$('sOut').innerHTML='';heard=''}
 function grade(){const tgt=norm(SP[si][0]),got=new Set(norm(heard));let hit=0;
@@ -571,7 +571,7 @@ function grade(){const tgt=norm(SP[si][0]),got=new Set(norm(heard));let hit=0;
   $('sOut').innerHTML=`<div style="display:flex;gap:14px;align-items:center"><div class="score">${pct}%</div><div>${pct>=80?'Əla! +10 XP':'Qırmızı sözləri bir də dinlə və təkrar et.'}</div></div><div style="margin-top:10px">${toks}</div><p class="note">Eşidilən: «${esc(heard)}»</p>`}
 $('sHear').onclick=()=>speak([{text:SP[si][0]}],0.9);
 $('sNext').onclick=()=>{si=(si+1)%SP.length;showS()};
-$('sMic').onclick=()=>{
+$('sMic').onclick=()=>{MT=null;
   if(!DIC){$('sNote').textContent='Mikrofonla yoxlama bu brauzerdə dəstəklənmir — Chrome-da aç. Nümunəni dinləyib ucadan təkrar edə bilərsən.';return}
   if($('sMic').dataset.on){DIC.stop().catch(()=>{});return}
   heard='';$('sOut').innerHTML='<p class="note">Dinləyirəm… cümləni oxu.</p>';
@@ -625,7 +625,7 @@ function renderVideo(el,title){const V=window.VIDEOS||{},list=V[S.lvl]||V.a1;if(
   el.querySelector('.th').onclick=function(){this.outerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(v[0])}?autoplay=1" title="${esc(v[1])}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`}}
 
 /* ---------- welcome & placement test ---------- */
-const LVINFO={a1:['Başlanğıc','Sıfırdan və ya çox az bilirəm'],a2:['Elementar','Sadə söhbət edə bilirəm'],b1:['Orta','Gündəlik mövzularda rahat danışıram'],b2:['Orta-yuxarı','Mürəkkəb mövzuları anlayıram']};
+const LVINFO={a1:['Başlanğıc','Sıfırdan və ya çox az bilirəm'],a2:['Elementar','Sadə söhbət edə bilirəm'],b1:['Orta','Gündəlik mövzularda rahat danışıram'],b2:['Yüksək','Mürəkkəb mövzuları anlayıram, rəsmi və akademik dildə işləyirəm']};
 const LVCOL={a1:'#16956a',a2:'#2f7de1',b1:'#7b56d6',b2:'#e0662f'};
 let PT=null;
 function welcome(){const w=$('wBox');
@@ -678,7 +678,9 @@ let LS=null;
 const lessonsLeft=()=>Math.max(0,(CFG.freeLessonsPerDay||3)-(S.lday[today()]||0));
 function startLesson(id){const a=ALL.find(z=>z.x.id===id);if(!a)return;
   if(!isPrem()&&!isDone(id)&&lessonsLeft()<=0){play('down');track('limit_hit');return sheet('Bugünlük pulsuz dərslər bitdi',`<p>Bu gün ${CFG.freeLessonsPerDay||3} yeni dərs keçdin — əla iş! Sabah yenə ${CFG.freeLessonsPerDay||3} dərs açılacaq. Keçdiyin dərsləri təkrarlamaq, günün quizi və məşqlər isə limitsizdir.</p><p><b>Premium</b> ilə istədiyin qədər dərs keç və hər dərsdə +50% XP qazan.</p>`,'<a class="btn sun" href="#premium" id="goPrem">Premium-a bax</a><button class="btn ghost" id="shClose">Sabah davam edərəm</button>')||($('shClose').onclick=closeSheet,$('goPrem').onclick=closeSheet)}
-  LS={a,items:a.x.items.map(it=>({...it})),i:0,ok:0,scored:0,xp:0};location.hash='lesson';if(location.hash==='#lesson')route();renderStep()}
+  const items=a.x.items.map(it=>({...it}));
+  if(!items.some(i=>i.t==='speak')){const o=items.find(i=>i.t==='order');if(o)items.splice(items.length-1,0,{t:'speak',en:[].concat(o.en)[0],az:o.az})}
+  LS={a,items,i:0,ok:0,scored:0,xp:0};location.hash='lesson';if(location.hash==='#lesson')route();renderStep()}
 function fbBox(ok,title,body){return `<div class="fb ${ok?'ok':'no'}"><b>${esc(title)}</b>${body?'<div>'+esc(body)+'</div>':''}<button class="btn ${ok?'':'sun'}" id="lNext">Davam et</button></div>`}
 function answered(ok,right,e,el){const it=LS.items[LS.i];
   if(!it.re){LS.scored++;if(ok)LS.ok++}
@@ -701,15 +703,34 @@ function renderStep(){
     box.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const ok=opts[+b.dataset.i]===right;
       box.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(opts[+x.dataset.i]===right)x.classList.add('right')});if(!ok)b.classList.add('wrong');
       answered(ok,right,it.e,b)});return}
-  if(it.t==='order'){
-    const vs=[].concat(it.en),bank=shuffle(toks(vs[0]).concat(it.extra||[])),ans=[];
-    box.innerHTML=`<p class="q">Bu cümləni ingiliscə qur</p><div class="card" style="background:var(--wrb);border-color:#c5ecd8;font-size:19px;font-weight:800">${esc(it.az)}</div><div class="ans" id="oAns" aria-live="polite"></div><div class="bank" id="oBank">${bank.map((w,i)=>`<button class="chip" data-i="${i}">${esc(w)}</button>`).join('')}</div><button class="btn" id="oChk" disabled>Yoxla</button>`;
+  if(it.t==='order'||it.t==='dict'){
+    const vs=[].concat(it.en),bank=shuffle(toks(vs[0]).concat(it.extra||[])),ans=[],dict=it.t==='dict';
+    box.innerHTML=(dict?`<p class="q">Dinlə və eşitdiyin cümləni qur</p><button class="bigplay" id="lPlay" aria-label="Dinlə">${IC.spk}</button><div class="row" style="justify-content:center;margin:-8px 0 0"><button class="w" id="lSlow">yavaş dinlə</button></div>`:`<p class="q">Bu cümləni ingiliscə qur</p><div class="card" style="background:var(--wrb);border-color:#c5ecd8;font-size:19px;font-weight:800">${esc(it.az)}</div>`)+`<div class="ans" id="oAns" aria-live="polite"></div><div class="bank" id="oBank">${bank.map((w,i)=>`<button class="chip" data-i="${i}">${esc(w)}</button>`).join('')}</div><button class="btn" id="oChk" disabled>Yoxla</button>`;
+    if(dict){const p=()=>speak([{text:vs[0]}],1);$('lPlay').onclick=p;$('lSlow').onclick=()=>speak([{text:vs[0]}],0.7);p()}
     const draw=()=>{$('oAns').innerHTML=ans.map((bi,k)=>`<button class="chip" data-k="${k}">${esc(bank[bi])}</button>`).join('');
       $('oAns').querySelectorAll('.chip').forEach(c=>c.onclick=()=>{if(c.closest('.ans').dataset.lock)return;const bi=ans.splice(+c.dataset.k,1)[0];$('oBank').querySelector(`[data-i="${bi}"]`).classList.remove('used');draw()});
       $('oChk').disabled=!ans.length};
     $('oBank').querySelectorAll('.chip').forEach(c=>c.onclick=()=>{if(c.classList.contains('used')||$('oAns').dataset.lock)return;c.classList.add('used');ans.push(+c.dataset.i);draw()});
     $('oChk').onclick=()=>{const said=norm2(ans.map(i=>bank[i]).join(' ')),ok=vs.some(v=>norm2(v)===said);$('oAns').dataset.lock=1;$('oChk').remove();
       if(ok)speak([{text:vs[0]}],1).catch(()=>{});answered(ok,vs[0],'',$('oAns'))};return}
+  if(it.t==='speak'){
+    let said='';
+    box.innerHTML=`<p class="q">Ucadan de</p><div class="card" style="background:var(--spb);border-color:#fbd8c5"><div class="say">${esc(it.en)}</div><div style="color:var(--mut)">${esc(it.az||'')}</div></div><div class="row"><button class="btn ghost" id="kHear">▶ Dinlə</button><button class="btn sun" id="kMic">● Danış</button></div><div id="kOut" style="margin-top:12px"></div><button class="w" id="kSkip" style="display:block;margin:16px auto 0;font-weight:800">İndi danışa bilmirəm — keç</button>`;
+    $('kHear').onclick=()=>speak([{text:it.en}],0.9);
+    $('kSkip').onclick=()=>{if(DIC&&$('kMic').dataset.on)DIC.stop().catch(()=>{});MT=null;LS.i++;renderStep()};
+    const judge=()=>{const tgt=norm(it.en),got=new Set(norm(said));let hit=0;const tk=tgt.map(w=>{const ok=got.has(w);if(ok)hit++;return `<span class="tok ${ok?'hit':'miss'}">${esc(w)}</span>`}).join('');
+      const pct=Math.round(hit/tgt.length*100);
+      if(pct>=70){MT=null;play('ok');const g=bonusXP(5);addXP(g,null,$('kMic'));LS.xp+=g;$('kSkip').remove();$('kMic').remove();
+        $('kOut').innerHTML=`<div style="margin-bottom:6px">${tk}</div>`;const f=document.createElement('div');f.innerHTML=fbBox(true,pct+'% — əla tələffüz!','');box.appendChild(f.firstElementChild);$('lNext').onclick=()=>{LS.i++;renderStep()};$('lNext').focus({preventScroll:true})}
+      else{play('no');$('kOut').innerHTML=`<div class="score" style="font-size:36px">${pct}%</div><div style="margin:6px 0">${tk}</div><p class="note">Qırmızı sözləri bir də dinlə və yenidən de. «Eşidilən: ${esc(said)}»</p>`}};
+    $('kMic').onclick=()=>{
+      if(!DIC){$('kOut').innerHTML='<p class="note">Mikrofonla yoxlama bu brauzerdə işləmir — Chrome-da aç. İndi ucadan deyib «keç» düyməsinə basa bilərsən.</p>';return}
+      if($('kMic').dataset.on){DIC.stop().catch(()=>{});return}
+      said='';MT={partial:t=>{$('kOut').innerHTML=`<p class="note">${esc((said+' '+t).trim())}</p>`},final:t=>{said=(said+' '+t).trim()},
+        state:st=>{const on=st==='listening',b=$('kMic');if(!b)return;if(on)b.dataset.on='1';else delete b.dataset.on;b.textContent=on?'■ Dayandır':'● Danış';if(!on&&said)judge()}};
+      $('kOut').innerHTML='<p class="note">Dinləyirəm… cümləni ucadan de.</p>';
+      DIC.start().catch(e=>{$('kOut').innerHTML=`<p class="note">${e&&e.code==='not_granted'?'Mikrofona icazə verilmədi. «Keç» düyməsi ilə davam edə bilərsən.':'Mikrofon başlamadı, yenidən cəhd et.'}</p>`})};
+    return}
   LS.i++;renderStep();
 }
 function finishLesson(){const a=LS.a,first=!isDone(a.x.id),acc=LS.scored?Math.round(LS.ok/LS.scored*100):100,bonus=bonusXP(first?15:5);if(first){const t=today();S.lday={[t]:(S.lday[t]||0)+1};track('lesson',a.x.id)}
@@ -865,10 +886,12 @@ function nativeDictation(){const cb={p:()=>{},f:()=>{},s:()=>{}};let rec=null;
       rec.onend=()=>cb.s({state:'idle',reason:'stopped'});
       return new Promise((res,rej)=>{rec.onstart=()=>{cb.s({state:'listening'});res()};rec.onerror=e=>{cb.s({state:'idle',reason:e.error});rej({code:e.error==='not-allowed'?'not_granted':e.error})};rec.start()})},
     stop(){if(rec)rec.stop();return Promise.resolve()}}}
+const SPK={partial:text=>{$('sOut').innerHTML=`<p class="note">${esc(heard+' '+text)}</p>`},final:text=>{heard=(heard+' '+text).trim()},
+  state:state=>{const on=state==='listening';if(on)$('sMic').dataset.on='1';else delete $('sMic').dataset.on;$('sMic').textContent=on?'■ Dayandır':'● Danış';if(!on&&heard)grade()}};
 function wireDictation(d){DIC=d;
-  d.onPartial(({text})=>{$('sOut').innerHTML=`<p class="note">${esc(heard+' '+text)}</p>`});
-  d.onFinal(({text})=>{heard=(heard+' '+text).trim()});
-  d.onState(({state})=>{const on=state==='listening';if(on)$('sMic').dataset.on='1';else delete $('sMic').dataset.on;$('sMic').textContent=on?'■ Dayandır':'● Danış';if(!on&&heard)grade()});
+  d.onPartial(({text})=>(MT||SPK).partial(text));
+  d.onFinal(({text})=>(MT||SPK).final(text));
+  d.onState(({state})=>(MT||SPK).state(state));
 }
 if(SR)wireDictation(nativeDictation());
 if(window.claude&&claude.use){
