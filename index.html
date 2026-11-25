@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Addım — İngilis dili</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#2f45ff">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Addım">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="description" content="Azərbaycan dilində ingilis dili öyrən: gündəlik quiz, reading, listening, speaking, writing.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+/* VOICE: friendly, energetic study companion; short Azerbaijani prompts, English as the thing practised
+   IDEA: a pocket phrasebook that keeps score — every screen is one exercise card
+   PICTURE: the streak flame on a cobalt band with this week's seven days beneath it
+   COLOUR and TYPE: white / cobalt #2f45ff dominant, sun yellow support, coral accent for mistakes; Nunito 900 + 400
+   LAYOUT: one phone-width column, hash-routed views, fixed bottom tab bar */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#0b0e2b);--ink:light-dark(#14163a,#eef0ff);--mut:light-dark(#5d6287,#a9aed6);--card:light-dark(#f2f4ff,#161a47);--line:light-dark(#dfe3ff,#262b66);--blue:#2f45ff;--blue2:light-dark(#2236e6,#5468ff);--sun:#ffcf33;--coral:#ff5a4e;--ok:light-dark(#0f8a5f,#3fd39a)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Nunito,system-ui,sans-serif;overflow-x:clip}
+.app{max-width:540px;margin:0 auto;padding-bottom:96px}
+header.top{display:flex;align-items:center;justify-content:space-between;padding:14px 18px}
+.logo{font-weight:900;font-size:22px;letter-spacing:-.02em}.logo b{color:var(--blue2)}
+.pill{display:flex;gap:6px;align-items:center;background:var(--card);border-radius:99px;padding:6px 12px;font-weight:800;white-space:nowrap}
+.hero{background:var(--blue);color:#fff;margin:0 12px;border-radius:28px;padding:22px 20px 20px;position:relative;overflow:hidden}
+.hero h1{font-size:32px;line-height:1.05;margin:0 0 4px;font-weight:900;text-wrap:balance}
+.hero p{margin:0;color:#dfe3ff}
+.flamebox{display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:center;margin-top:16px}
+.flame{width:120px;height:140px}
+.big{font-size:52px;font-weight:900;line-height:1}
+.week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-top:18px}
+.day{text-align:center;font-size:13px;font-weight:800;color:#c9cffd}
+.dot{width:34px;height:34px;margin:4px auto 0;border-radius:50%;border:2px solid #6577ff;display:grid;place-items:center}
+.dot.on{background:var(--sun);border-color:var(--sun)}.dot.today{outline:3px solid #fff;outline-offset:2px}
+.bar{height:12px;background:rgba(255,255,255,.22);border-radius:99px;overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;background:var(--sun);border-radius:99px;transition:width .5s}
+.goal{display:flex;justify-content:space-between;font-weight:800;font-size:14px;margin-top:16px}
+section.band{padding:20px 16px}
+h2{font-size:22px;font-weight:900;margin:0 0 12px;line-height:1.15}
+.daily{display:flex;align-items:center;gap:14px;background:var(--sun);color:#14163a;border-radius:22px;padding:18px;border:0;width:100%;text-align:left;font:inherit;cursor:pointer}
+.daily strong{display:block;font-size:20px;font-weight:900}.daily .go{margin-left:auto;font-size:26px;font-weight:900}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.skill{background:var(--card);border-radius:20px;padding:16px;text-decoration:none;color:var(--ink);display:block;border:2px solid transparent}
+.skill:hover,.skill:focus-visible{border-color:var(--blue2)}
+.skill svg{width:36px;height:36px}.skill b{display:block;font-size:18px;margin-top:8px}.skill span{color:var(--mut);font-size:14px}
+.mini{height:6px;background:var(--line);border-radius:99px;margin-top:10px;overflow:hidden}.mini i{display:block;height:100%;background:var(--blue2)}
+.card{background:var(--card);border-radius:22px;padding:18px}
+.view{display:none}.view.on{display:block}
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--mut);font-weight:800;text-decoration:none;min-height:44px}
+.prog{height:12px;background:var(--line);border-radius:99px;overflow:hidden;margin:6px 0 18px}.prog i{display:block;height:100%;background:var(--blue2);transition:width .3s}
+.q{font-size:22px;font-weight:900;line-height:1.25;margin:0 0 16px}
+.opts{display:grid;gap:10px}
+button{font:inherit}
+.opt{min-height:52px;border-radius:16px;border:2px solid var(--line);background:var(--bg);color:var(--ink);font-weight:800;font-size:17px;text-align:left;padding:12px 16px;cursor:pointer}
+.opt:focus-visible,.btn:focus-visible,.chip:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.opt.right{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 14%,var(--bg))}
+.opt.wrong{border-color:var(--coral);background:color-mix(in srgb,var(--coral) 14%,var(--bg))}
+.expl{margin-top:14px;border-radius:16px;padding:14px 16px;background:var(--bg);border:2px solid var(--line)}
+.expl b{display:block}
+.btn{min-height:50px;border:0;border-radius:16px;background:var(--blue);color:#fff;font-weight:900;font-size:17px;padding:12px 22px;cursor:pointer;width:100%;margin-top:14px}
+.btn.ghost{background:transparent;color:var(--blue2);border:2px solid var(--line)}
+.btn:disabled{opacity:.45;cursor:default}
+.row{display:flex;gap:10px;flex-wrap:wrap}.row .btn{flex:1 1 140px;width:auto}
+.text{font-size:18px;line-height:1.75}
+.w{border-bottom:2px dotted var(--blue2);cursor:pointer;background:none;border-top:0;border-left:0;border-right:0;color:inherit;font:inherit;padding:0}
+.tip{position:sticky;bottom:90px;background:var(--ink);color:var(--bg);border-radius:14px;padding:10px 14px;font-weight:800;margin-top:12px;display:none}
+.line{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}.line b{flex:none;width:72px;color:var(--mut)}
+.say{font-size:26px;font-weight:900;line-height:1.2;margin:6px 0}
+.tok{display:inline-block;margin:2px 3px;padding:2px 8px;border-radius:8px;font-weight:800}
+.tok.hit{background:color-mix(in srgb,var(--ok) 20%,transparent);color:var(--ok)}.tok.miss{background:color-mix(in srgb,var(--coral) 18%,transparent);color:var(--coral)}
+.score{font-size:52px;font-weight:900;line-height:1;color:var(--blue2)}
+textarea{width:100%;min-height:160px;border-radius:16px;border:2px solid var(--line);background:var(--bg);color:var(--ink);font:16px/1.6 Nunito,sans-serif;padding:14px}
+textarea:focus{outline:3px solid var(--blue2);outline-offset:1px}
+.mist{border-left:4px solid var(--coral);padding:8px 12px;margin:10px 0;background:var(--bg);border-radius:0 12px 12px 0}
+.mist s{color:var(--coral)}.mist ins{color:var(--ok);text-decoration:none;font-weight:800}
+.note{font-size:13px;color:var(--mut);margin-top:10px}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom)}
+nav.tabs div{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));width:100%;max-width:540px}
+nav.tabs a{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 2px;min-height:60px;color:var(--mut);text-decoration:none;font-size:13px;font-weight:800}
+nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue2)}
+.res{text-align:center;padding:24px 8px}
+.install{display:flex;align-items:center;gap:12px;background:var(--ink);color:var(--bg);padding:10px 14px;padding-top:max(10px,env(safe-area-inset-top))}
+.install img{width:40px;height:40px;border-radius:10px;flex:none}
+.install div{flex:1;line-height:1.25}.install b{display:block;font-size:15px}.install span{font-size:13px;opacity:.8}
+.install .get{background:var(--sun);color:#14163a;border:0;border-radius:99px;font-weight:900;padding:10px 18px;min-height:44px;cursor:pointer;flex:none}
+.install .x{background:none;border:0;color:inherit;font-size:22px;min-width:36px;min-height:44px;cursor:pointer;opacity:.7}
+.sheet{position:fixed;inset:0;background:rgba(10,12,40,.55);display:none;align-items:flex-end;justify-content:center;z-index:20}
+.sheet.on{display:flex}
+.sheet>div{background:var(--bg);color:var(--ink);width:100%;max-width:540px;border-radius:24px 24px 0 0;padding:22px 20px calc(22px + env(safe-area-inset-bottom))}
+.sheet ol{padding-left:20px;font-size:17px}.sheet li{margin:8px 0}
+@media(display-mode:standalone){.install{display:none!important}}
+@media(prefers-reduced-motion:no-preference){.flame .fl{transform-origin:60px 130px;animation:flick 2.4s ease-in-out infinite}@keyframes flick{50%{transform:scale(1.04,.97)}}}
+@media(max-width:380px){.flamebox{grid-template-columns:90px 1fr}.flame{width:90px;height:105px}.dot{width:28px;height:28px}}
+</style>
+</head>
+<body>
+<div class="install" id="install" hidden>
+  <img src="icon-192.png" alt="">
+  <div><b>Addım tətbiqini yüklə</b><span>Pulsuz · ana ekrandan bir toxunuşla aç</span></div>
+  <button class="get" id="getApp">Yüklə</button>
+  <button class="x" id="hideInst" aria-label="Bağla">×</button>
+</div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="shT"><div>
+  <h2 id="shT">Tətbiqi telefona əlavə et</h2>
+  <div id="shBody"></div>
+  <button class="btn" id="shClose">Başa düşdüm</button>
+</div></div>
+<div class="app">
+<header class="top">
+  <div class="logo">Ad<b>dım</b></div>
+  <div class="pill" title="Xal (XP)"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z" fill="#ffcf33"/></svg><span id="xpTot">0</span> XP</div>
+</header>
+
+<!-- HOME -->
+<main class="view" id="v-home">
+  <div class="hero">
+    <h1 id="greet">Salam! Bu gün də bir addım at.</h1>
+    <p>İngilis dili — hər gün azacıq, amma mütəmadi.</p>
+    <div class="flamebox">
+      <svg class="flame" viewBox="0 0 120 140" aria-hidden="true"><g class="fl"><path d="M60 6C70 34 100 50 100 88a40 40 0 0 1-80 0c0-20 10-32 18-40 2 12 8 18 14 20C50 46 50 26 60 6z" fill="#ffcf33"/><path d="M60 58c6 16 22 24 22 42a22 22 0 0 1-44 0c0-10 6-17 10-21 2 8 6 11 10 12-2-12-2-22 2-33z" fill="#ff5a4e"/><ellipse cx="60" cy="134" rx="34" ry="5" fill="rgba(0,0,0,.18)"/></g></svg>
+      <div><div class="big" id="streak">0</div><div style="font-weight:800">günlük seriya</div><div style="color:#c9cffd;font-size:14px" id="best"></div></div>
+    </div>
+    <div class="week" id="week"></div>
+    <div class="goal"><span>Günlük hədəf</span><span id="goalTxt">0 / 50 XP</span></div>
+    <div class="bar"><i id="goalBar" style="width:0"></i></div>
+  </div>
+  <section class="band">
+    <button class="daily" id="startQuiz"><svg width="44" height="44" viewBox="0 0 44 44"><rect x="4" y="6" width="36" height="32" rx="8" fill="#2f45ff"/><path d="M14 22l6 6 11-12" stroke="#ffcf33" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span><strong>Günün quizi</strong><span id="quizState">8 sual · hər düzgün cavab +10 XP</span></span><span class="go">›</span></button>
+  </section>
+  <section class="band" style="padding-top:0">
+    <h2>Bacarıqlar</h2>
+    <div class="grid" id="skills"></div>
+    <p class="note">Prototip: proqres yalnız bu brauzerdə saxlanılır. İlk açılışda nümunə üçün 3 günlük seriya əlavə olunur. <button class="w" id="reset">Sıfırla</button></p>
+  </section>
+</main>
+
+<!-- QUIZ -->
+<main class="view" id="v-quiz"><section class="band">
+  <a class="back" href="#home">‹ Geri</a>
+  <div class="prog"><i id="qBar" style="width:0"></i></div>
+  <div id="quizBox"></div>
+</section></main>
+
+<!-- READING -->
+<main class="view" id="v-reading"><section class="band">
+  <a class="back" href="#home">‹ Geri</a>
+  <h2>Reading · A2</h2>
+  <p class="note" style="margin-top:-6px">Tanış olmayan sözün üzərinə toxun — tərcüməsi görünəcək.</p>
+  <div class="card"><h3 style="margin:0 0 8px;font-size:20px">My first week at university</h3><div class="text" id="rText"></div></div>
+  <div class="tip" id="tip"></div>
+  <h2 style="margin-top:22px">Suallar</h2>
+  <div id="rQs"></div>
+</section></main>
+
+<!-- LISTENING -->
+<main class="view" id="v-listening"><section class="band">
+  <a class="back" href="#home">‹ Geri</a>
+  <h2>Listening · Kafedə</h2>
+  <div class="card">
+    <p style="margin:0">Dialoqu dinlə, sonra sualları cavabla. Əvvəlcə mətnə baxmadan dinləməyə çalış.</p>
+    <div class="row"><button class="btn" id="play">▶ Dinlə</button><button class="btn ghost" id="slow">Yavaş</button></div>
+    <button class="btn ghost" id="showTr">Transkripti göstər</button>
+    <div id="tr" hidden style="margin-top:12px"></div>
+    <p class="note" id="lNote"></p>
+  </div>
+  <h2 style="margin-top:22px">Suallar</h2>
+  <div id="lQs"></div>
+</section></main>
+
+<!-- SPEAKING -->
+<main class="view" id="v-speaking"><section class="band">
+  <a class="back" href="#home">‹ Geri</a>
+  <h2>Speaking</h2>
+  <div class="card">
+    <div class="note" id="sCount" style="margin:0"></div>
+    <div class="say" id="sEn"></div>
+    <div style="color:var(--mut)" id="sAz"></div>
+    <div class="expl" id="sTip" style="font-size:15px"></div>
+    <div class="row"><button class="btn ghost" id="sHear">▶ Nümunəni dinlə</button><button class="btn" id="sMic">● Danış</button></div>
+    <div id="sOut" style="margin-top:14px"></div>
+    <button class="btn ghost" id="sNext">Növbəti cümlə ›</button>
+    <p class="note" id="sNote"></p>
+  </div>
+</section></main>
+
+<!-- WRITING -->
+<main class="view" id="v-writing"><section class="band">
+  <a class="back" href="#home">‹ Geri</a>
+  <h2>Writing</h2>
+  <div class="card">
+    <p style="margin:0 0 10px;font-weight:800" id="wPrompt"></p>
+    <textarea id="wIn" placeholder="Write here in English..."></textarea>
+    <div class="note" id="wCount">0 söz</div>
+    <div class="row"><button class="btn" id="wCheck">Yoxla</button><button class="btn ghost" id="wNew">Başqa mövzu</button></div>
+    <div id="wOut" style="margin-top:14px"></div>
+  </div>
+</section></main>
+</div>
+
+<nav class="tabs" aria-label="Bölmələr"><div id="tabs"></div></nav>
+
+<script>
+{
+const IC={
+home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>',
+reading:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M3 5h6a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H3zM21 5h-6a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h7z"/></svg>',
+listening:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="5" height="7" rx="2"/><rect x="16" y="14" width="5" height="7" rx="2"/></svg>',
+speaking:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>',
+writing:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M14 6l4 4"/></svg>'};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $=id=>document.getElementById(id);
+const dkey=d=>d.toISOString().slice(0,10);
+const today=()=>{const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return dkey(d)};
+const shiftDay=(k,n)=>{const d=new Date(k+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+n);return dkey(d)};
+
+/* ---------- state ---------- */
+const GOAL=50;
+let S;
+const load=()=>{try{S=JSON.parse(localStorage.getItem('addim')||'null')}catch(e){S=null}
+  if(!S){S={days:{},skills:{reading:0,listening:0,speaking:0,writing:0},quiz:{}};const t=today();[1,2,3].forEach(n=>S.days[shiftDay(t,-n)]=GOAL);save()}};
+const save=()=>{try{localStorage.setItem('addim',JSON.stringify(S))}catch(e){}};
+const addXP=(n,skill)=>{const t=today();S.days[t]=(S.days[t]||0)+n;if(skill)S.skills[skill]=Math.min(100,(S.skills[skill]||0)+n);save();renderHome()};
+const streak=()=>{let k=today(),n=0;if(!S.days[k])k=shiftDay(k,-1);while(S.days[k]){n++;k=shiftDay(k,-1)}return n};
+
+/* ---------- home ---------- */
+const SK=[['reading','Reading','Oxu və anla'],['listening','Listening','Dinlə və anla'],['speaking','Speaking','Danış, tələffüzü yoxla'],['writing','Writing','Yaz, rəy al']];
+const WD=['B','B.e','Ç.a','Ç','C.a','C','Ş'];
+function renderHome(){
+  const t=today(),xp=S.days[t]||0,st=streak();
+  $('streak').textContent=st;
+  $('best').textContent=xp>=GOAL?'Bugünkü hədəf tamamlandı':'Bu gün '+Math.max(0,GOAL-xp)+' XP qalıb';
+  $('xpTot').textContent=Object.values(S.days).reduce((a,b)=>a+b,0);
+  $('goalTxt').textContent=Math.min(xp,GOAL)+' / '+GOAL+' XP';
+  $('goalBar').style.width=Math.min(100,xp/GOAL*100)+'%';
+  $('week').innerHTML=[6,5,4,3,2,1,0].map(n=>{const k=shiftDay(t,-n),d=new Date(k+'T12:00:00Z').getUTCDay();
+    return `<div class="day">${WD[d]}<div class="dot ${S.days[k]?'on':''} ${n===0?'today':''}">${S.days[k]?'<svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 12l5 5 9-10" stroke="#14163a" stroke-width="3.5" fill="none" stroke-linecap="round"/></svg>':''}</div></div>`}).join('');
+  $('skills').innerHTML=SK.map(([id,n,d])=>`<a class="skill" href="#${id}" style="color:var(--ink)"><span style="color:var(--blue2)">${IC[id]}</span><b>${n}</b><span>${d}</span><div class="mini"><i style="width:${S.skills[id]||0}%"></i></div></a>`).join('');
+  const q=S.quiz[t];$('quizState').textContent=q?`Bu gün tamamlandı: ${q}/8 düzgün · yenidən keç`:'8 sual · hər düzgün cavab +10 XP';
+}
+
+/* ---------- quiz ---------- */
+const BANK=[
+["«Kitab» sözü ingiliscə necədir?",["book","desk","page","bag"],"Book — kitab. Page — səhifə, desk — yazı masası, bag — çanta."],
+["She ___ to school every day.",["goes","go","going","gone"],"He / she / it ilə Present Simple-da fel -s / -es şəkilçisi alır: she goes."],
+["I ___ a student.",["am","is","are","be"],"«I» əvəzliyi ilə «to be» feli həmişə «am» formasında olur."],
+["«Sabah» ingiliscə necədir?",["tomorrow","yesterday","today","tonight"],"Tomorrow — sabah, yesterday — dünən, today — bu gün, tonight — bu axşam."],
+["There ___ two apples on the table.",["are","is","be","am"],"Cəm isimlə «there are» işlənir: there are two apples. Tək isimlə — there is."],
+["«I have been to London» nə deməkdir?",["Londonda olmuşam","Londona gedirəm","Londonda yaşayıram","Londona gedəcəyəm"],"Present Perfect (have been) həyat təcrübəsini bildirir: nə vaxtsa orada olmusan."],
+["He didn't ___ the email.",["send","sent","sends","sending"],"«Didn't»-dən sonra fel həmişə əsas formada qalır: didn't send, didn't sent yox."],
+["«Məşğul» sözü ingiliscə necədir?",["busy","easy","lazy","free"],"Busy — məşğul. Free — boş (vaxtı olan), lazy — tənbəl."],
+["___ university",["a","an","— (heç nə)","the a"],"University «yu» səsi ilə başlayır (samit səs), ona görə «a university» deyilir. «An» sait SƏSİ ilə başlayan sözlərdən əvvəl gəlir."],
+["I'm interested ___ music.",["in","on","at","for"],"«Interested in» sabit birləşmədir: maraqlanmaq."],
+["If it rains, I ___ at home.",["will stay","stayed","stay will","staying"],"First conditional: if + Present Simple, will + fel. If it rains, I will stay."],
+["«Buy» felinin keçmiş forması?",["bought","buyed","brought","buy"],"Buy — bought (qaydasız fel). Brought — «bring» felinin keçmiş formasıdır, tez-tez qarışdırılır."],
+["«Mənim 25 yaşım var» düzgün tərcümə:",["I am 25 years old","I have 25 years","I have 25 age","My age have 25"],"İngiliscədə yaş «be» feli ilə deyilir: I am 25. «I have 25 years» Azərbaycan dilindən hərfi tərcümə səhvidir."],
+["«Həftəsonu» ingiliscə necədir?",["weekend","weekday","week","holiday"],"Weekend — həftəsonu, weekday — iş günü, holiday — bayram / tətil."]];
+const seeded=(seed)=>()=>{seed=(seed*9301+49297)%233280;return seed/233280};
+const shuffle=(a,r=Math.random)=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+let QZ=[],qi=0,qok=0;
+function startQuiz(){const r=seeded(+today().replace(/-/g,''));QZ=shuffle(BANK,r).slice(0,8).map(([q,o,e])=>({q,a:o[0],o:shuffle(o),e}));qi=0;qok=0;location.hash='quiz';showQ()}
+function showQ(){
+  $('qBar').style.width=(qi/QZ.length*100)+'%';
+  if(qi>=QZ.length){S.quiz[today()]=qok;save();renderHome();
+    $('quizBox').innerHTML=`<div class="res"><div class="score">${qok}/${QZ.length}</div><h2 style="margin-top:12px">${qok>=6?'Əla nəticə!':'Yaxşı başlanğıc!'}</h2><p>+${qok*10} XP qazandın. Sabah yeni suallar olacaq — seriyanı qırma.</p><a class="btn" style="display:block;text-decoration:none" href="#home">Ana səhifəyə qayıt</a></div>`;return}
+  const it=QZ[qi];
+  $('quizBox').innerHTML=`<div class="note" style="margin:0 0 6px">Sual ${qi+1} / ${QZ.length}</div><p class="q">${esc(it.q)}</p><div class="opts">${it.o.map((o,i)=>`<button class="opt" data-i="${i}">${esc(o)}</button>`).join('')}</div><div id="qEx"></div>`;
+  $('quizBox').querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    const ok=it.o[+b.dataset.i]===it.a;if(ok){qok++;addXP(10)}
+    $('quizBox').querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(it.o[+x.dataset.i]===it.a)x.classList.add('right')});
+    if(!ok)b.classList.add('wrong');
+    $('qEx').innerHTML=`<div class="expl"><b style="color:${ok?'var(--ok)':'var(--coral)'}">${ok?'Düzgündür! +10 XP':'Düzgün cavab: '+esc(it.a)}</b>${esc(it.e)}</div><button class="btn" id="qNext">${qi+1<QZ.length?'Davam et':'Nəticəni gör'}</button>`;
+    $('qNext').onclick=()=>{qi++;showQ()};$('qNext').focus();
+  });
+}
+$('startQuiz').onclick=startQuiz;
+
+/* ---------- shared MCQ block ---------- */
+function mcq(box,qs,skill){
+  box.innerHTML=qs.map((q,n)=>`<div class="card" style="margin-bottom:12px"><p class="q" style="font-size:18px">${n+1}. ${esc(q[0])}</p><div class="opts" data-n="${n}">${shuffle(q[1]).map(o=>`<button class="opt" data-v="${esc(o)}">${esc(o)}</button>`).join('')}</div><div class="ex"></div></div>`).join('');
+  box.querySelectorAll('.opts').forEach(g=>{const q=qs[+g.dataset.n];g.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+    const ok=b.dataset.v===q[1][0];g.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(x.dataset.v===q[1][0])x.classList.add('right')});
+    if(!ok)b.classList.add('wrong');else addXP(5,skill);
+    g.nextElementSibling.innerHTML=`<div class="expl"><b style="color:${ok?'var(--ok)':'var(--coral)'}">${ok?'Düzgün! +5 XP':'Diqqət:'}</b>${esc(q[2])}</div>`})})
+}
+
+/* ---------- reading ---------- */
+const GL={busy:'məşğul',groupmates:'qrup yoldaşları',friendly:'mehriban',"couldn't":'bacarmadım (can-ın keçmişi, inkar)',asked:'soruşdum, xahiş etdim',library:'kitabxana',quiet:'sakit',join:'qoşulmaq',confidently:'inamla, özünəinamla',met:'tanış oldum (meet → met)',together:'birlikdə',because:'çünki'};
+const RT="My name is Nigar. I am from Ganja, but now I study in Baku. My first week at university was busy. On Monday, I met my groupmates. They were friendly and we had lunch together. On Wednesday, I couldn't find my classroom, so I asked a teacher for help. Every evening I study for two hours in the library. It is quiet there. Next week I want to join the English club because I want to speak more confidently.";
+$('rText').innerHTML=RT.split(/(\s+)/).map(w=>{const k=w.replace(/[.,]/g,'').toLowerCase();return GL[k]?`<button class="w" data-k="${esc(k)}">${esc(w)}</button>`:esc(w)}).join('');
+let tipT;$('rText').querySelectorAll('.w').forEach(b=>b.onclick=()=>{const t=$('tip');t.textContent=b.dataset.k+' — '+GL[b.dataset.k];t.style.display='block';clearTimeout(tipT);tipT=setTimeout(()=>t.style.display='none',3500)});
+mcq($('rQs'),[
+["Where is Nigar from?",["Ganja","Baku","Sheki","London"],"Mətndə: «I am from Ganja, but now I study in Baku» — Gəncədəndir, Bakıda oxuyur."],
+["What happened on Wednesday?",["She couldn't find her classroom","She met her groupmates","She joined a club","She had an exam"],"«On Wednesday, I couldn't find my classroom» — sinif otağını tapa bilmədi."],
+["Why does she want to join the English club?",["To speak more confidently","To meet a teacher","Because it is quiet","To study in the library"],"«…because I want to speak more confidently» — daha inamla danışmaq üçün."]],'reading');
+
+/* ---------- listening ---------- */
+const DLG=[["Customer","Hi! Can I have a coffee, please?","airy"],["Barista","Sure. Small or large?","rounded"],["Customer","Large, please. How much is it?","airy"],["Barista","It's four manats.","rounded"],["Customer","Here you are. Thank you!","airy"]];
+$('tr').innerHTML=DLG.map(l=>`<div class="line"><b>${esc(l[0])}</b><span>${esc(l[1])}</span></div>`).join('');
+$('showTr').onclick=()=>{$('tr').hidden=!$('tr').hidden;$('showTr').textContent=$('tr').hidden?'Transkripti göstər':'Transkripti gizlət'};
+let TTS=null;
+const speakFallback=(lines,rate)=>new Promise(res=>{const ss=window.speechSynthesis;if(!ss)return res(false);ss.cancel();lines.forEach((l,i)=>{const u=new SpeechSynthesisUtterance(l.text);u.lang='en-US';u.rate=rate;if(i===lines.length-1)u.onend=()=>res(true);ss.speak(u)})});
+async function speak(lines,rate=1){
+  if(TTS){try{await TTS.speak(lines.map(l=>({text:l.text,voice:l.voice||'buttery',language:'en',rate})));return}catch(e){if(e&&e.code==='busy')return}}
+  if(!(await speakFallback(lines,rate))&&!window.speechSynthesis)$('lNote').textContent='Bu brauzerdə səsləndirmə işləmir. Transkripti oxu.';
+}
+$('play').onclick=()=>speak(DLG.map(l=>({text:l[1],voice:l[2]})),1);
+$('slow').onclick=()=>speak(DLG.map(l=>({text:l[1],voice:l[2]})),0.75);
+mcq($('lQs'),[
+["What does the customer order?",["A large coffee","A small coffee","A large tea","Two coffees"],"«Large, please» — böyük qəhvə."],
+["How much is it?",["Four manats","Two manats","Fourteen manats","Forty manats"],"«It's four manats.» Diqqət: four (4) və fourteen (14) tez qarışdırılır."],
+["What does «Here you are» mean?",["Buyurun (bir şey verəndə)","Siz buradasınız","Mən buradayam","Burada gözləyin"],"«Here you are» — bir şeyi kiməsə uzadanda deyilir: buyurun."]],'listening');
+
+/* ---------- speaking ---------- */
+const SP=[["Nice to meet you.","Tanış olmağıma şadam.","«Meet» sözündə uzun «i:» səsi var — «mit» yox, «mii:t»."],
+["I study economics at university.","Universitetdə iqtisadiyyat oxuyuram.","«University» — «yu-ni-VÖR-si-ti». Vurğu üçüncü hecaya düşür."],
+["Could you repeat that, please?","Zəhmət olmasa, təkrar edə bilərsiniz?","«That» sözündə «th» — dilin ucu dişlərin arasında, «zet» yox."],
+["I would like to improve my English.","İngilis dilimi təkmilləşdirmək istərdim.","«Would» — «w» dodaqlar yumrulanır, «v» kimi tələffüz etmə."],
+["What time does the lesson start?","Dərs saat neçədə başlayır?","«What» — yenə «w»: dodaqları qabağa ver, «vot» yox."]];
+let si=0,DIC=null,heard='';
+const norm=s=>s.toLowerCase().replace(/[^a-z' ]/g,' ').split(/\s+/).filter(Boolean);
+function showS(){const s=SP[si];$('sCount').textContent=`Cümlə ${si+1} / ${SP.length}`;$('sEn').textContent=s[0];$('sAz').textContent=s[1];$('sTip').textContent='Tələffüz məsləhəti: '+s[2];$('sOut').innerHTML='';heard=''}
+function grade(){const tgt=norm(SP[si][0]),got=new Set(norm(heard));let hit=0;
+  const toks=tgt.map(w=>{const ok=got.has(w);if(ok)hit++;return `<span class="tok ${ok?'hit':'miss'}">${esc(w)}</span>`}).join('');
+  const pct=Math.round(hit/tgt.length*100);if(pct>=80)addXP(10,'speaking');
+  $('sOut').innerHTML=`<div style="display:flex;gap:14px;align-items:center"><div class="score">${pct}%</div><div>${pct>=80?'Əla! +10 XP':'Qırmızı sözləri bir də dinlə və təkrar et.'}</div></div><div style="margin-top:10px">${toks}</div><p class="note">Eşidilən: «${esc(heard)}»</p>`}
+$('sHear').onclick=()=>speak([{text:SP[si][0]}],0.9);
+$('sNext').onclick=()=>{si=(si+1)%SP.length;showS()};
+$('sMic').onclick=()=>{
+  if(!DIC){$('sNote').textContent='Mikrofonla yoxlama bu brauzerdə dəstəklənmir — Chrome-da aç. Burada nümunəni dinləyib ucadan təkrar edə bilərsən.';return}
+  if($('sMic').dataset.on){DIC.stop().catch(()=>{});return}
+  heard='';$('sOut').innerHTML='<p class="note">Dinləyirəm… cümləni oxu, sonra düyməyə yenidən bas.</p>';
+  DIC.start().catch(e=>{$('sNote').textContent=e&&e.code==='not_granted'?'Mikrofona icazə verilmədi.':'Mikrofon başlamadı, yenidən cəhd et.'});
+};
+showS();
+
+/* ---------- writing ---------- */
+const WP=["Özünü təqdim et: adın, nə ilə məşğul olursan və hobbin (3–5 cümlə).","Dünənki gününü təsvir et: nə etdin? (Past Simple işlət, 4–6 cümlə)","Gələcək planların: 5 ildən sonra harada olmaq istəyirsən? (4–6 cümlə)","Sevdiyin şəhəri təsvir et və niyə sevdiyini yaz (4–6 cümlə)."];
+let wi=0,SAMPLE=null;
+const showW=()=>{$('wPrompt').textContent=WP[wi]};showW();
+$('wNew').onclick=()=>{wi=(wi+1)%WP.length;showW();$('wOut').innerHTML=''};
+$('wIn').oninput=()=>{const n=$('wIn').value.trim().split(/\s+/).filter(Boolean).length;$('wCount').textContent=n+' söz'};
+$('wCheck').onclick=async()=>{
+  const txt=$('wIn').value.trim();
+  if(txt.split(/\s+/).length<5){$('wOut').innerHTML='<p class="note">Ən azı 1–2 cümlə yaz, sonra yoxla.</p>';return}
+  if(!SAMPLE){$('wOut').innerHTML='<p class="note">Süni intellekt ilə avtomatik yoxlama növbəti versiyada əlavə olunacaq. Hələlik mətnini düzəldilmiş nümunə ilə müqayisə etmək üçün müəlliminə göndərə bilərsən.</p>';return}
+  $('wCheck').disabled=true;$('wOut').innerHTML='<p class="note">Yoxlanılır…</p>';
+  try{
+    const r=await SAMPLE.json(`You are an English teacher for Azerbaijani-speaking learners. Task given to the learner: "${WP[wi]}". Learner's text is below between <text> tags. Return ONLY JSON: {"level":"estimated CEFR level like A2","corrected":"the full corrected English text","mistakes":[{"wrong":"exact wrong fragment","right":"correction","why":"short explanation IN AZERBAIJANI (Latin script)"}],"praise":"one sentence in Azerbaijani on what was good","tip":"one concrete next-step tip in Azerbaijani"}. Max 6 mistakes, most important first. If no mistakes, return an empty list.\n<text>${txt}</text>`,{modelTier:'quick'});
+    const m=Array.isArray(r.mistakes)?r.mistakes:[];
+    $('wOut').innerHTML=`<div style="display:flex;gap:14px;align-items:center"><div class="score">${esc(r.level||'—')}</div><div>${esc(r.praise||'')}</div></div>
+      ${m.length?'<h3 style="margin:16px 0 4px">Səhvlər</h3>'+m.map(x=>`<div class="mist"><s>${esc(x.wrong)}</s> → <ins>${esc(x.right)}</ins><div style="font-size:15px">${esc(x.why)}</div></div>`).join(''):'<p><b>Səhv tapılmadı — əla!</b></p>'}
+      <h3 style="margin:16px 0 4px">Düzəldilmiş mətn</h3><div class="expl" style="margin:0">${esc(r.corrected||'')}</div>
+      <p><b>Növbəti addım:</b> ${esc(r.tip||'')}</p><p class="note">Rəy süni intellekt tərəfindən hazırlanır və təxminidir. Səviyyə qiymətləndirməsi rəsmi CEFR nəticəsi deyil.</p>`;
+    addXP(15,'writing');
+  }catch(e){$('wOut').innerHTML=`<p class="note">${e&&e.code==='rate_limited'?'Çox sorğu göndərildi, bir az sonra yenidən cəhd et.':e&&e.code==='not_granted'?'Süni intellekt rəyinə icazə verilmədi.':'Yoxlama alınmadı, yenidən cəhd et.'}</p>`}
+  $('wCheck').disabled=false;
+};
+
+/* ---------- routing ---------- */
+const VIEWS=['home','quiz','reading','listening','speaking','writing'];
+$('tabs').innerHTML=[['home','Bu gün'],['reading','Reading'],['listening','Listening'],['speaking','Speaking'],['writing','Writing']].map(([k,n])=>`<a href="#${k}" data-k="${k}">${IC[k]}<span>${n}</span></a>`).join('');
+function route(){let v=location.hash.slice(1);if(!VIEWS.includes(v))v='home';if(v==='quiz'&&!QZ.length){startQuiz();return}
+  VIEWS.forEach(k=>$('v-'+k).classList.toggle('on',k===v));
+  document.querySelectorAll('#tabs a').forEach(a=>a.classList.toggle('on',a.dataset.k===v||(v==='quiz'&&a.dataset.k==='home')));window.scrollTo(0,0)}
+addEventListener('hashchange',route);
+$('reset').onclick=()=>{try{localStorage.removeItem('addim')}catch(e){}load();renderHome()};
+const h=new Date().getHours();$('greet').textContent=(h<12?'Sabahın xeyir!':h<18?'Salam!':'Axşamın xeyir!')+' Bu gün də bir addım at.';
+load();renderHome();route();
+
+/* ---------- PWA: offline + install ---------- */
+if('serviceWorker' in navigator&&location.protocol!=='file:')addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+const isStandalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+let deferred=null,dismissed=false;
+try{dismissed=sessionStorage.getItem('addim-inst')==='x'}catch(e){}
+const showBar=()=>{if(!isStandalone&&!dismissed)$('install').hidden=false};
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;showBar()});
+addEventListener('appinstalled',()=>{$('install').hidden=true;deferred=null});
+if(isIOS||matchMedia('(max-width:820px)').matches)showBar();
+const sheet=(html)=>{$('shBody').innerHTML=html;$('sheet').classList.add('on');$('shClose').focus()};
+$('shClose').onclick=()=>$('sheet').classList.remove('on');
+$('sheet').onclick=e=>{if(e.target.id==='sheet')$('sheet').classList.remove('on')};
+$('hideInst').onclick=()=>{$('install').hidden=true;try{sessionStorage.setItem('addim-inst','x')}catch(e){}};
+$('getApp').onclick=async()=>{
+  if(deferred){deferred.prompt();const c=await deferred.userChoice.catch(()=>null);if(c&&c.outcome==='accepted')$('install').hidden=true;deferred=null;return}
+  if(isIOS)sheet('<ol><li>Aşağıdakı <b>Paylaş</b> düyməsinə toxun (kvadrat və yuxarı ox).</li><li><b>«Ana ekrana əlavə et»</b> (Add to Home Screen) seç.</li><li><b>Əlavə et</b> düyməsinə bas — Addım ikonu ana ekranda görünəcək.</li></ol><p class="note">iPhone-da bu, Safari brauzerində işləyir.</p>');
+  else sheet('<ol><li>Brauzerin menyusunu aç (yuxarıda <b>⋮</b> üç nöqtə).</li><li><b>«Tətbiqi quraşdır»</b> və ya <b>«Ana ekrana əlavə et»</b> seç.</li><li>Təsdiqlə — Addım ikonu ana ekranda görünəcək.</li></ol><p class="note">Ən yaxşı nəticə Chrome brauzerində olur.</p>');
+};
+
+/* ---------- browser speech recognition (outside Claude) ---------- */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+function nativeDictation(){
+  const cb={p:()=>{},f:()=>{},s:()=>{}};let rec=null;
+  return{onPartial:f=>cb.p=f,onFinal:f=>cb.f=f,onState:f=>cb.s=f,
+    start(){rec=new SR();rec.lang='en-US';rec.interimResults=true;rec.continuous=false;
+      rec.onresult=e=>{let part='';for(let i=e.resultIndex;i<e.results.length;i++){const r=e.results[i];if(r.isFinal)cb.f({text:r[0].transcript});else part+=r[0].transcript}if(part)cb.p({text:part})};
+      rec.onend=()=>cb.s({state:'idle',reason:'stopped'});
+      return new Promise((res,rej)=>{rec.onstart=()=>{cb.s({state:'listening'});res()};rec.onerror=e=>{cb.s({state:'idle',reason:e.error});rej({code:e.error==='not-allowed'?'not_granted':e.error})};rec.start()})},
+    stop(){if(rec)rec.stop();return Promise.resolve()}}
+}
+function wireDictation(d){DIC=d;
+  d.onPartial(({text})=>{$('sOut').innerHTML=`<p class="note">${esc(heard+' '+text)}</p>`});
+  d.onFinal(({text})=>{heard=(heard+' '+text).trim()});
+  d.onState(({state})=>{const on=state==='listening';if(on)$('sMic').dataset.on='1';else delete $('sMic').dataset.on;$('sMic').textContent=on?'■ Dayandır':'● Danış';if(!on&&heard)grade()});
+}
+if(SR)wireDictation(nativeDictation());
+
+/* ---------- Claude capabilities (only inside Claude) ---------- */
+if(window.claude&&claude.use){
+  claude.use('tts').then(t=>{TTS=t}).catch(()=>{});
+  claude.use('sample').then(s=>{SAMPLE=s}).catch(()=>{});
+  claude.use('dictation').then(d=>{if(d)wireDictation(d)}).catch(()=>{});
+}
+}
+</script>
+</body>
+</html>
