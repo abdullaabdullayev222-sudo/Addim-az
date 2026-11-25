@@ -10,8 +10,16 @@ const SCHEMAS = [
   `CREATE TABLE IF NOT EXISTS codes (code TEXT PRIMARY KEY, days INTEGER NOT NULL, note TEXT,
      created INTEGER NOT NULL, redeemed_by TEXT, redeemed_at INTEGER)`,
   `CREATE TABLE IF NOT EXISTS profiles (id TEXT PRIMARY KEY, avatar TEXT, ncolor INTEGER DEFAULT 0,
-     nstyle INTEGER DEFAULT 0, frame INTEGER DEFAULT 0)`
+     nstyle INTEGER DEFAULT 0, frame INTEGER DEFAULT 0)`,
+  // Anonim statistika: istifadəçi (təsadüfi id), gündəlik aktivlik, hadisələr
+  `CREATE TABLE IF NOT EXISTS users (uid TEXT PRIMARY KEY, first_day TEXT NOT NULL, last_day TEXT NOT NULL, lvl TEXT, standalone INTEGER DEFAULT 0)`,
+  `CREATE TABLE IF NOT EXISTS daily (day TEXT NOT NULL, uid TEXT NOT NULL, PRIMARY KEY (day, uid))`,
+  `CREATE TABLE IF NOT EXISTS events (day TEXT NOT NULL, uid TEXT NOT NULL, ev TEXT NOT NULL, data TEXT, ts INTEGER NOT NULL)`,
+  `CREATE INDEX IF NOT EXISTS events_day ON events (day, ev)`
 ];
+
+// Bakı vaxtı ilə bugünkü tarix (YYYY-MM-DD)
+export const bakuDay = (ms = Date.now()) => new Date(ms + 4 * 3600e3).toISOString().slice(0, 10);
 export async function ensureSchema(db) { for (const s of SCHEMAS) await db.prepare(s).run(); }
 
 export async function premiumUntil(db, id) {

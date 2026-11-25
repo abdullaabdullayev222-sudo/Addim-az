@@ -15,7 +15,7 @@
 :root{color-scheme:light;--bg:#f4f8f2;--ink:#1f2a37;--mut:#5b6676;--line:#e3e9e1;--sun:#ff9f1c;--ok:#1f9d6b}
 *{box-sizing:border-box;min-width:0}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Nunito,system-ui,sans-serif}
-main{max-width:720px;margin:0 auto;padding:24px 16px 60px}
+main{max-width:860px;margin:0 auto;padding:24px 16px 60px}
 h1{font-size:30px;margin:0 0 4px}h2{font-size:20px;margin:0 0 10px}
 .card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px;margin-top:16px}
 label{display:block;font-weight:800;margin:10px 0 4px}
@@ -35,6 +35,23 @@ th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}
 td.c{font-weight:800;white-space:nowrap}
 .used{color:var(--ok);font-weight:800}.free{color:#b4540a;font-weight:800}
 .stat{font-size:15px;font-weight:800}
+.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media(max-width:560px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tile{background:#f7faf6;border:1px solid var(--line);border-radius:16px;padding:12px}
+.tile b{display:block;font-size:30px;line-height:1.1;font-variant-numeric:tabular-nums}.tile span{color:var(--mut);font-size:13px;font-weight:800}
+.chart{display:grid;grid-template-columns:repeat(14,minmax(0,1fr));gap:4px;align-items:end;height:160px;margin-top:12px;padding-bottom:22px;position:relative}
+.col{display:grid;grid-template-columns:1fr 1fr;align-items:end;height:100%;gap:2px;position:relative}
+.col i{display:block;width:100%;border-radius:6px 6px 2px 2px;min-height:2px}
+.col .a{background:#2f7de1}.col .n{background:#ff9f1c}
+.col em{position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);font-size:11px;font-style:normal;color:var(--mut);white-space:nowrap}
+.col small{font-size:11px;font-weight:800}
+.legend{display:flex;gap:14px;font-size:13px;font-weight:800;color:var(--mut);margin-top:6px}.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.hb{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,2fr) 44px;gap:10px;align-items:center;padding:5px 0;font-size:14px}
+.hb .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hb .bar{height:12px;background:#eef2ec;border-radius:99px;overflow:hidden}.hb .bar i{display:block;height:100%;background:#16956a;border-radius:99px}
+.hb .v{text-align:right;font-weight:900;font-variant-numeric:tabular-nums}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}@media(max-width:620px){.two{grid-template-columns:1fr}}
+h3{font-size:16px;margin:18px 0 6px}
+.hint{color:var(--mut);font-size:13px}
 </style>
 </head>
 <body>
@@ -46,6 +63,12 @@ td.c{font-weight:800;white-space:nowrap}
     <h2>Admin açarı</h2>
     <input type="password" id="key" placeholder="Cloudflare-də yazdığın ADMIN_KEY" autocomplete="current-password">
     <p class="msg">Açar yalnız bu brauzer tabında yadda qalır.</p>
+  </div>
+
+  <div class="card" id="statCard">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><h2 style="margin:0">Statistika</h2><button class="ghost" id="sload" style="margin:0">Yenilə</button></div>
+    <p class="msg" id="smsg">Açarı yaz və «Yenilə» düyməsinə bas.</p>
+    <div id="stats"></div>
   </div>
 
   <div class="card">
@@ -67,6 +90,7 @@ td.c{font-weight:800;white-space:nowrap}
     <div style="overflow-x:auto"><table><thead><tr><th>Kod</th><th>Gün</th><th>Qeyd</th><th>Yaradılıb</th><th>Status</th></tr></thead><tbody id="list"></tbody></table></div>
   </div>
 </main>
+<script src="course.js"></script>
 <script>
 {
 const $=id=>document.getElementById(id);
@@ -89,6 +113,41 @@ async function load(){try{const d=await api({action:'list'});
   $('list').innerHTML=d.codes.map(c=>`<tr><td class="c">${esc(c.code)}</td><td>${esc(c.days)}</td><td>${esc(c.note||'')}</td><td>${esc(fmt(c.created))}</td><td>${c.redeemed_by?`<span class="used">İstifadə olunub</span><br><span style="color:var(--mut)">${esc(fmt(c.redeemed_at))}</span>`:'<span class="free">Gözləyir</span>'}</td></tr>`).join('')||'<tr><td colspan="5">Hələ kod yoxdur.</td></tr>'}
   catch(e){$('stat').textContent=e.message}}
 $('load').onclick=load;
+const TITLES={};(window.COURSE||[]).forEach(l=>l.units.forEach((u,ui)=>(u.lessons||[]).forEach((x,xi)=>TITLES[x.id]=`${l.name} · B${ui+1}.${xi+1} ${x.title}`)));
+const pct=(a,b)=>b?Math.round(a/b*100)+'%':'—';
+const hbars=(rows,label,max)=>{max=max||Math.max(1,...rows.map(r=>r.n));return rows.map(r=>`<div class="hb"><span class="t" title="${esc(label(r))}">${esc(label(r))}</span><span class="bar"><i style="width:${r.n/max*100}%"></i></span><span class="v">${esc(r.n)}</span></div>`).join('')||'<p class="hint">Hələ məlumat yoxdur.</p>'};
+async function stats(){$('smsg').textContent='Yüklənir…';
+  try{const d=await api({action:'stats'});$('smsg').textContent=`Bakı vaxtı ilə bu gün: ${d.today}. Rəqəmlər anonimdir — hər cihaz bir istifadəçi sayılır.`;
+    const mx=Math.max(1,...d.days.map(x=>Math.max(x.active,x.fresh)));
+    const R=d.retention;
+    $('stats').innerHTML=`<div class="tiles">
+      <div class="tile"><b>${d.dau}</b><span>Bu gün aktiv</span></div>
+      <div class="tile"><b>${d.wau}</b><span>Son 7 gündə aktiv</span></div>
+      <div class="tile"><b>${d.mau}</b><span>Son 30 gündə aktiv</span></div>
+      <div class="tile"><b>${d.totalUsers}</b><span>Ümumi istifadəçi</span></div>
+      <div class="tile"><b>${d.installed}</b><span>Telefona yükləyib</span></div>
+      <div class="tile"><b>${d.premActive}</b><span>Aktiv Premium</span></div></div>
+    <h3>Son 14 gün</h3>
+    <div class="chart">${d.days.map(x=>`<div class="col" title="${esc(x.day)}: ${x.active} aktiv, ${x.fresh} yeni"><i class="a" style="height:${x.active/mx*100}%"></i><i class="n" style="height:${x.fresh/mx*100}%"></i><em>${esc(x.day.slice(8))}</em></div>`).join('')}</div>
+    <div class="legend"><span><i style="background:#2f7de1"></i>Aktiv</span><span><i style="background:#ff9f1c"></i>Yeni</span></div>
+    <div class="two"><div><h3>Geri qayıdanlar</h3>
+      <div class="hb"><span class="t">Növbəti gün qayıdıb</span><span class="bar"><i style="width:${R.cohort?R.d1/R.cohort*100:0}%;background:#2f7de1"></i></span><span class="v">${pct(R.d1,R.cohort)}</span></div>
+      <div class="hb"><span class="t">7+ gün sonra qayıdıb</span><span class="bar"><i style="width:${R.cohort7?R.d7/R.cohort7*100:0}%;background:#2f7de1"></i></span><span class="v">${pct(R.d7,R.cohort7)}</span></div>
+      <p class="hint">Son 30 gündə gələn ${R.cohort} istifadəçi əsasında.</p></div>
+    <div><h3>Fəaliyyət</h3>
+      <div class="hb"><span class="t">Dərs (7 gün)</span><span class="bar"><i style="width:100%"></i></span><span class="v">${d.lessons7}</span></div>
+      <div class="hb"><span class="t">Dərs (ümumi)</span><span class="bar"><i style="width:100%"></i></span><span class="v">${d.lessonsAll}</span></div>
+      <div class="hb"><span class="t">Günün quizi (7 gün)</span><span class="bar"><i style="width:100%;background:#f5b800"></i></span><span class="v">${d.quiz7}</span></div></div></div>
+    <div class="two"><div><h3>Seçilən səviyyə</h3>${hbars(d.levels,r=>String(r.lvl).toUpperCase())}</div>
+      <div><h3>Səviyyə testinin nəticəsi</h3>${hbars(d.placement,r=>String(r.lvl||'—').toUpperCase())}</div></div>
+    <h3>Premium yolu (son 7 gün)</h3>
+    ${hbars([{k:'Gündəlik limitə çatan',n:d.limitHits7},{k:'Premium səhifəsinə baxan',n:d.premViews7},{k:'Kod aktivləşdirən (ümumi)',n:d.codesUsed},{k:'Aktiv Premium',n:d.premActive}],r=>r.k)}
+    <h3>Bu həftənin liqaları</h3>${hbars(d.league.map(r=>({...r})),r=>`${String(r.league).toUpperCase()} liqası (lider: ${r.top} XP)`)}
+    <h3>Dərslər üzrə: neçə nəfər tamamlayıb</h3><p class="hint">Sayın kəskin düşdüyü dərs — istifadəçilərin ən çox dayandığı yerdir.</p>
+    ${hbars(d.funnel,r=>TITLES[r.id]||r.id)}`}
+  catch(e){$('smsg').textContent=e.message}}
+$('sload').onclick=stats;
+if($('key').value)stats();
 }
 </script>
 </body>
