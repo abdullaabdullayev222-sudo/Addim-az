@@ -5,7 +5,7 @@
 import { json } from '../_shared.js';
 import { KEYS } from '../_tts_keys.js';
 import { padStart } from '../_mp3.js';
-import { AURA2, ttsKey, sha16, toBytes, spoken } from '../_tts.js';
+import { AURA2, ttsKey, sha16, toBytes, spoken, similarity, hear } from '../_tts.js';
 
 const VOICES = ['asteria', 'orion'];
 const AUDIO_HEADERS = { 'content-type': 'audio/mpeg', 'cache-control': 'public, max-age=31536000, immutable' };
@@ -28,14 +28,25 @@ export async function onRequest({ request, env }) {
 
   if (!env.AI) return json({ error: 'ai_not_bound' }, 503);
   try {
-    const out = await env.AI.run('@cf/deepgram/aura-2-en', { text: say, speaker: AURA2[voice], encoding: 'mp3' }, { returnRawResponse: true });
-    const res = out instanceof Response ? out : new Response(out);
-    if (!res.ok) throw new Error('ai_status_' + res.status);
-    const raw = new Uint8Array(await res.arrayBuffer());
-    if (raw.byteLength < 500) throw new Error('ai_short');
-    const buf = padStart(raw, 0.25);
-    await env.DB.prepare('INSERT OR REPLACE INTO tts (k, audio, created) VALUES (?1, ?2, ?3)').bind(k, buf, Date.now()).run();
-    return new Response(buf, { headers: { ...AUDIO_HEADERS, 'x-tts': 'new' } });
+    // Yarat → Whisper ilə dinlə → səhv eşidilirsə yenidən yarat (ən çox 3 cəhd), ən yaxşısını saxla.
+    // Model eyni cümləni hər dəfə bir az fərqli oxuyur; bəzən ilk söz «yeyilir» («Good» → «But»).
+    let best = null;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const out = await env.AI.run('@cf/deepgram/aura-2-en', { text: say, speaker: AURA2[voice], encoding: 'mp3' }, { returnRawResponse: true });
+      const res = out instanceof Response ? out : new Response(out);
+      if (!res.ok) throw new Error('ai_status_' + res.status);
+      const raw = new Uint8Array(await res.arrayBuffer());
+      if (raw.byteLength < 500) throw new Error('ai_short');
+      const buf = padStart(raw, 0.25);
+      let heard = '', score = 1;
+      try { heard = await hear(env, buf); score = similarity(text, heard); } catch (e) { heard = '?'; score = 0.99; }
+      if (!best || score > best.score) best = { buf, heard, score };
+      if (score >= 0.85) break;
+    }
+    await env.DB.prepare('INSERT OR REPLACE INTO tts (k, audio, created) VALUES (?1, ?2, ?3)').bind(k, best.buf, Date.now()).run();
+    await env.DB.prepare('CREATE TABLE IF NOT EXISTS ttscheck (k TEXT PRIMARY KEY, heard TEXT NOT NULL, created INTEGER NOT NULL)').run();
+    await env.DB.prepare('INSERT OR REPLACE INTO ttscheck (k, heard, created) VALUES (?1, ?2, ?3)').bind(k, best.heard, Date.now()).run();
+    return new Response(best.buf, { headers: { ...AUDIO_HEADERS, 'x-tts': 'new', 'x-tts-score': best.score.toFixed(2) } });
   } catch (e) {
     // Gündəlik pulsuz limit bitəndə və ya model əlçatmaz olanda tətbiq cihazın öz səsinə keçir
     return json({ error: 'tts_unavailable', detail: String(e && e.message || e).slice(0, 120) }, 503);

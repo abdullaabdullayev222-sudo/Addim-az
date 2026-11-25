@@ -214,14 +214,19 @@ with sync_playwright() as p:
     c1 = ai()['aiCalls']
     st2, src2, _ = get('/api/tts?v=orion&t=' + urllib.parse.quote('Turn left.'))
     check('ikinci dəfə bazadan gəlir (AI yenidən çağırılmır)', st2 == 200 and src2 == 'cache' and ai()['aiCalls'] == c1)
-    check('Aura-2 modeli və qadın/kişi səsi işlənir', ai()['lastModel'] == '@cf/deepgram/aura-2-en:orion', ai()['lastModel'])
+    check('Aura-2 modeli və kişi səsi (Apollo) işlənir', ai()['lastModel'] == '@cf/deepgram/aura-2-en:apollo', ai()['lastModel'])
     get('/__test/ai?mp3=1')
     st5, _, n5 = get('/api/tts?v=asteria&t=' + urllib.parse.quote('Nice to meet you.'))
     check('MP3-ün əvvəlinə 0.25 san. sükut əlavə olunur (50+11 kadr)', st5 == 200 and n5 == 61 * 144, str(n5))
     check('qadın səsi Thalia', ai()['lastModel'].endswith(':thalia'))
-    get('/__test/ai?mp3=0')
+    get('/__test/ai?mp3=0&garble=1'); c0 = ai()['aiCalls']
+    st6, _, _ = get('/api/tts?v=asteria&t=' + urllib.parse.quote("Don't give up. Missing one day hardly matters; missing two in a row is what breaks the habit."))
+    check('səhv eşidilən səs avtomatik yenidən yaradılır (3 cəhd)', st6 == 200 and ai()['aiCalls'] - c0 == 6, str(ai()['aiCalls'] - c0))
+    get('/__test/ai?garble=0'); c0 = ai()['aiCalls']
+    get('/api/tts?v=asteria&t=' + urllib.parse.quote('Large, please. How much is it?'))
+    check('düzgün eşidilən səs bir cəhddə qəbul olunur', ai()['aiCalls'] - c0 == 2, str(ai()['aiCalls'] - c0))
     chk = json.load(urllib.request.urlopen(BASE + '/api/ttscheck?v=asteria&t=' + urllib.parse.quote('Nice to meet you.')))
-    check('səs yoxlaması (Whisper) eşidilən mətni qaytarır', chk.get('heard') == 'Nice to meet you.', str(chk))
+    check('səs yoxlaması (Whisper) eşidilən mətni və balı qaytarır', chk.get('heard') == 'Nice to meet you.' and chk.get('score') == 1, str(chk))
     c2 = ai()['aiCalls']; chk2 = json.load(urllib.request.urlopen(BASE + '/api/ttscheck?v=asteria&t=' + urllib.parse.quote('Nice to meet you.')))
     check('səs yoxlaması bir dəfə aparılır (təkrar çağırış pulsuz)', chk2.get('cached') and ai()['aiCalls'] == c2)
     st3, _, _ = get('/api/tts?v=asteria&t=' + urllib.parse.quote('Say something random that is not in the course'))
