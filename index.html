@@ -599,7 +599,7 @@ const ALL=(window.COURSE||[]).flatMap(l=>l.units.flatMap((u,ui)=>(u.lessons||[])
 const isDone=id=>S.course[id]!=null;
 const LVORD=['a1','a2','b1','b2'];
 const unlocked=id=>{const lvid=ALL.find(b=>b.x.id===id).lv.id;if(S.placed&&LVORD.indexOf(lvid)<LVORD.indexOf(S.placed))return true;const seq=ALL.filter(a=>a.lv.id===ALL.find(b=>b.x.id===id).lv.id),i=seq.findIndex(a=>a.x.id===id);return i===0||isDone(id)||isDone(seq[i-1].x.id)};
-const nextLesson=()=>ALL.find(a=>!isDone(a.x.id))||null;
+const nextLesson=()=>ALL.find(a=>a.lv.id===S.lvl&&!isDone(a.x.id))||ALL.find(a=>!isDone(a.x.id))||null;
 const norm2=s=>String(s).toLowerCase().replace(/[’`]/g,"'").replace(/[^a-z0-9' ]/g,' ').replace(/\s+/g,' ').trim();
 const toks=s=>s.split(' ').map(w=>w.replace(/[.,!?]/g,'')).filter(Boolean);
 function renderNext(){const n=nextLesson(),el=$('nextCard');

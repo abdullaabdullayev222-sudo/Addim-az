@@ -242,14 +242,238 @@ window.COURSE = [
   ]}
 ]},
 { id:'a2', name:'A2', title:'Elementar', color:'#2f7de1', units:[
-  { id:'a2-u1', title:'Keçən həftə', grammar:'Past Simple (qaydalı fellər)' },
-  { id:'a2-u2', title:'Səyahət', grammar:'Past Simple (qaydasız fellər)' },
-  { id:'a2-u3', title:'Alış-veriş', grammar:'Müqayisə: bigger, the biggest' },
-  { id:'a2-u4', title:'Planlar', grammar:'be going to · Present Continuous (gələcək)' },
-  { id:'a2-u5', title:'Sağlamlıq', grammar:'should / shouldn\'t' },
-  { id:'a2-u6', title:'Təcrübələr', grammar:'Present Perfect: ever / never' },
-  { id:'a2-u7', title:'Tələbə həyatı', grammar:'must / have to' },
-  { id:'a2-u8', title:'Hekayələr', grammar:'Past Continuous' }
+  { id:'a2-u1', title:'Keçən həftə', grammar:'Past Simple (qaydalı fellər) · was / were', lessons:[
+    { id:'a2-u1-l1', title:'Dünən nə etdin?', items:[
+      {t:'learn', title:'Past Simple: qaydalı fellər', body:'Keçmişdə bitmiş hərəkət üçün felə -ED əlavə olunur və bütün şəxslər üçün eynidir: I worked, she worked. Yazılış: live → lived, study → studied, stop → stopped. Tələffüz: worked /t/, played /d/, wanted /ɪd/.', ex:[['I worked yesterday.','Dünən işlədim.'],['She played tennis.','O, tennis oynadı.'],['We studied all night.','Bütün gecə oxuduq.'],['They watched a film.','Onlar film izlədilər.']]},
+      {t:'mc', q:'Yesterday I ___ football.', o:['played','play','plays','playing'], e:'Yesterday — keçmiş: played.'},
+      {t:'mc', q:'She ___ in a bank last year.', o:['worked','works','work','working'], e:'Last year — keçmiş: worked.'},
+      {t:'mc', q:'study → keçmiş forma?', o:['studied','studyed','studed','studdied'], e:'Samit + y → -ied: studied.'},
+      {t:'mc', q:'stop → keçmiş forma?', o:['stopped','stoped','stopt','stopping'], e:'Qısa fel, sait + samit → samit qoşalaşır: stopped.'},
+      {t:'order', az:'Dünən axşam televizora baxdım.', en:'I watched TV last night.', extra:['watch','at']},
+      {t:'listen', en:'We visited our grandparents last weekend.', o:['We visited our grandparents last weekend.','We visit our grandparents every weekend.','We visited our parents last weekend.']}
+    ]},
+    { id:'a2-u1-l2', title:'İnkar və sual: did', items:[
+      {t:'learn', title:"didn't və Did…?", body:'Keçmişdə inkar: didn\'t + felin əsas forması. Sual: Did + şəxs + əsas forma? Diqqət: did-dən sonra fel -ED almır — keçmiş zaman artıq «did»-dədir.', ex:[["I didn't work yesterday.",'Dünən işləmədim.'],['Did you call her? — Yes, I did.','Ona zəng etdin? — Bəli.'],["She didn't like the film.",'Filmi bəyənmədi.'],['Where did you go?','Hara getdin?']]},
+      {t:'mc', q:'I ___ watch the match yesterday.', o:["didn't","don't","wasn't",'not'], e:'Keçmişdə inkar: didn\'t.'},
+      {t:'mc', q:'___ you call her?', o:['Did','Do','Were','Was'], e:'Keçmiş zamanda sual: Did…?'},
+      {t:'mc', q:'Did she finish the project? — No, she ___.', o:["didn't","doesn't","wasn't",'not'], e:'Qısa cavab: No, she didn\'t.'},
+      {t:'mc', q:'Hansı düzgündür?', o:["He didn't like the film.","He didn't liked the film.",'He not liked the film.',"He doesn't liked the film."], e:'Didn\'t + əsas forma (like).'},
+      {t:'order', az:'Sən dünən işlədin?', en:'Did you work yesterday?', extra:['worked','do']},
+      {t:'order', az:'Biz avtobusu gözləmədik.', en:["We didn't wait for the bus.",'We did not wait for the bus.'], extra:['waited',"don't"]}
+    ]},
+    { id:'a2-u1-l3', title:'was / were', items:[
+      {t:'learn', title:'«be» feli keçmişdə', body:'I / he / she / it → WAS. You / we / they → WERE. İnkar: wasn\'t, weren\'t. Sual: Was it…? Were you…? Həmçinin: there was / there were.', ex:[['I was at home.','Evdə idim.'],['They were tired.','Onlar yorğun idilər.'],["Was it good? — Yes, it was.",'Yaxşı idi? — Bəli.'],['There were many people.','Çoxlu adam var idi.']]},
+      {t:'mc', q:'I ___ at university yesterday.', o:['was','were','am','did'], e:'I ilə keçmişdə: was.'},
+      {t:'mc', q:'They ___ very happy.', o:['were','was','are been','did'], e:'They ilə: were.'},
+      {t:'mc', q:'___ the exam difficult?', o:['Was','Were','Did','Is been'], e:'The exam (tək) → Was…?'},
+      {t:'mc', q:'There ___ many people at the concert.', o:['were','was','are','did'], e:'Many people — cəm: there were.'},
+      {t:'order', az:'Dünən hava çox soyuq idi.', en:['It was very cold yesterday.','Yesterday it was very cold.'], extra:['were','is']},
+      {t:'listen', en:'Where were you last night?', o:['Where were you last night?','Where are you tonight?','Where was he last night?']}
+    ]}
+  ]},
+  { id:'a2-u2', title:'Səyahət', grammar:'Past Simple (qaydasız fellər)', lessons:[
+    { id:'a2-u2-l1', title:'Qaydasız fellər 1', items:[
+      {t:'learn', title:'Ən çox işlənən qaydasız fellər', body:'Bu fellər -ED almır, keçmiş formasını əzbərləmək lazımdır. Yaxşı xəbər: bütün şəxslər üçün eynidir.', ex:[['go → went','getmək'],['have → had','olmaq, yemək'],['see → saw','görmək'],['eat → ate','yemək'],['take → took','götürmək, çəkmək'],['buy → bought','almaq']]},
+      {t:'mc', q:'Last summer we ___ to Sheki.', o:['went','goed','go','gone'], e:'Go → went.'},
+      {t:'mc', q:'I ___ a great film yesterday.', o:['saw','seed','see','seen'], e:'See → saw.'},
+      {t:'mc', q:'She ___ a new phone.', o:['bought','buyed','brought','buys'], e:'Buy → bought. Brought — bring (gətirmək) felinin keçmişidir.'},
+      {t:'mc', q:'We ___ breakfast at the hotel.', o:['had','haved','has','have'], e:'Have → had.'},
+      {t:'order', az:'Biz Şəkiyə avtobusla getdik.', en:'We went to Sheki by bus.', extra:['go','on']},
+      {t:'listen', en:'I took a lot of photos.', o:['I took a lot of photos.','I take a lot of photos.','I took a lot of notes.']}
+    ]},
+    { id:'a2-u2-l2', title:'Qaydasız fellər 2', items:[
+      {t:'learn', title:'Daha çox qaydasız fel', body:'Say və tell fərqi: SAY something (nəsə demək), TELL somebody (kiməsə demək): He said hello. He told me a story.', ex:[['come → came','gəlmək'],['leave → left','tərk etmək, yola düşmək'],['fly → flew','uçmaq'],['find → found','tapmaq'],['lose → lost','itirmək'],['tell → told / say → said','danışmaq / demək']]},
+      {t:'mc', q:'Our plane ___ at 6 am.', o:['left','leaved','leave','lefted'], e:'Leave → left.'},
+      {t:'mc', q:'I ___ my passport at the airport!', o:['lost','losed','lose','losted'], e:'Lose → lost.'},
+      {t:'mc', q:'He ___ me a funny story.', o:['told','telled','said','says'], e:'Kiməsə danışmaq: tell somebody → told me.'},
+      {t:'mc', q:'We ___ to London last year.', o:['flew','flied','flown','fly'], e:'Fly → flew (flown — üçüncü forma).'},
+      {t:'order', az:'Mən çantamı oteldə tapdım.', en:'I found my bag at the hotel.', extra:['find','in']},
+      {t:'listen', en:'They came back on Sunday.', o:['They came back on Sunday.','They come back on Sunday.','They came back on Monday.']}
+    ]},
+    { id:'a2-u2-l3', title:'Hava limanı və otel', items:[
+      {t:'learn', title:'Səyahət ifadələri', body:'«Luggage» (baqaj) sayılmayan isimdir: my luggage is heavy (luggages yox). Otelə gələndə check in, çıxanda check out edirsən.', ex:[["I'd like to check in.",'Qeydiyyatdan keçmək istəyirəm.'],['Here is my passport.','Pasportum buyurun.'],['I booked a room for two nights.','İki gecəlik otaq sifariş etmişəm.'],['boarding pass','minik talonu'],['How was your trip?','Səfərin necə keçdi?']]},
+      {t:'mc', q:'«Boarding pass» nə deməkdir?', o:['minik talonu','pasport','bilet kassası','gömrük'], e:'Təyyarəyə minmək üçün talon.'},
+      {t:'mc', q:'Hansı düzgündür?', o:['My luggage is heavy.','My luggages are heavy.','My luggage are heavy.','A luggage is heavy.'], e:'Luggage sayılmır: cəmi və «a» yoxdur.'},
+      {t:'mc', q:'How ___ your holiday? — It was great!', o:['was','were','did','is'], e:'Holiday tək: How was…?'},
+      {t:'order', az:'İki gecəlik otaq sifariş etdim.', en:'I booked a room for two nights.', extra:['book','in']},
+      {t:'listen', en:"I'd like to check in, please.", o:["I'd like to check in, please.","I'd like to check out, please.","I'd like a room, please."]},
+      {t:'mc', q:'Oteldə «check out» nə deməkdir?', o:['oteldən çıxış etmək','otelə gəlmək','otağı yoxlamaq','hesabı soruşmaq'], e:'Check out — otağı təhvil verib çıxmaq.'}
+    ]}
+  ]},
+  { id:'a2-u3', title:'Alış-veriş', grammar:'Müqayisə: cheaper, the cheapest', lessons:[
+    { id:'a2-u3-l1', title:'Müqayisə', items:[
+      {t:'learn', title:'-er / more … than', body:'Qısa sifətlər: +ER than (cheap → cheaper). Uzun sifətlər: MORE … than (more expensive). Yazılış: big → bigger, easy → easier. Qaydasız: good → better, bad → worse. Diqqət: THAN (-dan) ilə THEN (sonra) fərqlidir.', ex:[['cheaper than','-dan ucuz'],['bigger than','-dan böyük'],['more expensive than','-dan bahalı'],['better / worse','daha yaxşı / daha pis']]},
+      {t:'mc', q:'This phone is ___ than that one. (cheap)', o:['cheaper','more cheap','cheapest','cheapper'], e:'Qısa sifət: cheaper.'},
+      {t:'mc', q:'Baku is ___ than Ganja. (big)', o:['bigger','biger','more big','biggest'], e:'Big → bigger (samit qoşalaşır).'},
+      {t:'mc', q:'This dress is ___ than the blue one. (expensive)', o:['more expensive','expensiver','most expensive','more expensiver'], e:'Uzun sifət: more expensive.'},
+      {t:'mc', q:'My English is ___ now. (good)', o:['better','gooder','more good','best'], e:'Good → better.'},
+      {t:'order', az:'Bu çanta o çantadan ucuzdur.', en:'This bag is cheaper than that bag.', extra:['more','then']},
+      {t:'listen', en:'The weather is worse today.', o:['The weather is worse today.','The weather is better today.','The weather was worse today.']}
+    ]},
+    { id:'a2-u3-l2', title:'Ən …', items:[
+      {t:'learn', title:'the -est / the most', body:'Ən yüksək dərəcə: THE + -EST (the cheapest) və ya THE MOST + uzun sifət (the most expensive). Qaydasız: the best, the worst. «The» unutma!', ex:[['the cheapest','ən ucuz'],['the biggest','ən böyük'],['the most expensive','ən bahalı'],['the best / the worst','ən yaxşı / ən pis']]},
+      {t:'mc', q:'This is ___ shop in the city. (big)', o:['the biggest','the bigger','biggest','the most big'], e:'Ən böyük: the biggest.'},
+      {t:'mc', q:"It's ___ restaurant in Baku. (expensive)", o:['the most expensive','the expensivest','most expensive','the more expensive'], e:'Uzun sifət: the most expensive.'},
+      {t:'mc', q:'She is ___ student in our class. (good)', o:['the best','the better','the goodest','best'], e:'Good → the best.'},
+      {t:'mc', q:'That was ___ day of my life! (bad)', o:['the worst','the baddest','the worse','worst'], e:'Bad → the worst.'},
+      {t:'order', az:'Bu, ən ucuz variantdır.', en:['This is the cheapest option.',"This is the cheapest option."], extra:['cheaper','more']},
+      {t:'listen', en:"What's the best way to learn English?", o:["What's the best way to learn English?","What's the best way to learn Russian?","What's the fastest way to learn English?"]}
+    ]},
+    { id:'a2-u3-l3', title:'Mağazada', items:[
+      {t:'learn', title:'Mağaza ifadələri', body:'Sadəcə baxırsansa: I\'m just looking. Çox böyük / kiçik: TOO big / TOO small (too — həddindən artıq).', ex:[['Can I help you?','Kömək edə bilərəm?'],["No, thanks. I'm just looking.",'Yox, sağ olun. Sadəcə baxıram.'],['Can I try it on?','Geyinib baxa bilərəm?'],["It's too small.",'Çox kiçikdir.'],["I'll take it.",'Bunu alıram.'],['Can I pay by card?','Kartla ödəyə bilərəm?']]},
+      {t:'mc', q:'Satıcı: «Can I help you?» Sən sadəcə baxırsan:', o:["No, thanks. I'm just looking.",'Yes, I look.',"I'm looking just.",'No, I see.'], e:'Standart ifadə: I\'m just looking.'},
+      {t:'mc', q:'«Can I try it on?» nə deməkdir?', o:['Geyinib baxa bilərəm?','Ona baxa bilərəm?','Onu ala bilərəm?','Qaytara bilərəm?'], e:'Try on — geyinib yoxlamaq.'},
+      {t:'mc', q:'These shoes are ___ small. I need a bigger size.', o:['too','very much','enough','so much'], e:'Too small — lazım olandan kiçik.'},
+      {t:'mc', q:'«I\'ll take it.» nə deməkdir?', o:['Bunu alıram.','Bunu götürüb qaytaracağam.','Bunu sonra alaram.','Bunu istəmirəm.'], e:'Mağazada «take» — almaq qərarı.'},
+      {t:'order', az:'Kartla ödəyə bilərəm?', en:'Can I pay by card?', extra:['with','pays']},
+      {t:'listen', en:'Do you have this in a smaller size?', o:['Do you have this in a smaller size?','Do you have this in a bigger size?','Do you have this in black?']}
+    ]}
+  ]},
+  { id:'a2-u4', title:'Planlar', grammar:'be going to · Present Continuous (gələcək)', lessons:[
+    { id:'a2-u4-l1', title:'be going to', items:[
+      {t:'learn', title:'Niyyət və plan: be going to', body:'Artıq qərar verdiyin plan: am / is / are + going to + fel. Həmçinin indi gördüyün əlamətə əsaslanan proqnoz: Look at the clouds! It\'s going to rain.', ex:[["I'm going to study tonight.",'Bu axşam dərs oxuyacağam.'],['She is going to buy a car.','O, maşın alacaq.'],['Are you going to apply?','Müraciət edəcəksən?'],["It's going to rain.",'Yağış yağacaq.']]},
+      {t:'mc', q:'I ___ going to visit my aunt this weekend.', o:['am','is','are','will'], e:'I ilə: am going to.'},
+      {t:'mc', q:'They ___ going to buy a new flat.', o:['are','is','am','do'], e:'They ilə: are going to.'},
+      {t:'mc', q:'Look at those clouds! It ___ rain.', o:['is going to','goes to','going to','is go to'], e:'Gördüyün əlamətə əsaslanan proqnoz: is going to.'},
+      {t:'mc', q:'___ you going to apply for the job?', o:['Are','Do','Will','Is'], e:'Sual: Are you going to…?'},
+      {t:'order', az:'Bu axşam ingilis dili oxuyacağam.', en:['I am going to study English tonight.',"I'm going to study English tonight."], extra:['will','studying']},
+      {t:'listen', en:'What are you going to do after university?', o:['What are you going to do after university?','What are you doing after university?','What did you do after university?']}
+    ]},
+    { id:'a2-u4-l2', title:'Razılaşdırılmış planlar', items:[
+      {t:'learn', title:'Present Continuous gələcək üçün', body:'Vaxtı və yeri razılaşdırılmış planlar (görüş, bilet, qəbul) üçün Present Continuous işlənir: I\'m meeting Leyla at 6. Cümlədə gələcək vaxt göstəricisi olmalıdır (tomorrow, on Friday).', ex:[["I'm meeting Leyla at 6.",'Saat 6-da Leyla ilə görüşürəm.'],["We're flying to Istanbul on Friday.",'Cümə günü İstanbula uçuruq.'],['What are you doing on Saturday?','Şənbə nə edirsən?'],['Are you free on Sunday?','Bazar günü boşsan?']]},
+      {t:'mc', q:'I ___ my friends tonight. We have a table at 8.', o:['am meeting','meet','meets','will meeting'], e:'Razılaşdırılmış plan: am meeting.'},
+      {t:'mc', q:'Hansı cümlə gələcək planı bildirir?', o:["We're leaving tomorrow morning.",'We leave every morning.','We left yesterday morning.','We were leaving.'], e:'Tomorrow + Present Continuous = plan.'},
+      {t:'mc', q:'What ___ you doing on Saturday?', o:['are','do','will','did'], e:'What are you doing…? — planı soruşmaq.'},
+      {t:'order', az:'Cümə günü İstanbula uçuruq.', en:['We are flying to Istanbul on Friday.',"We're flying to Istanbul on Friday."], extra:['fly','in']},
+      {t:'listen', en:"I'm seeing the doctor tomorrow.", o:["I'm seeing the doctor tomorrow.",'I saw the doctor yesterday.',"I'm seeing the dentist tomorrow."]},
+      {t:'mc', q:'«Are you free on Sunday?» nə deməkdir?', o:['Bazar günü boşsan?','Bazar günü pulsuzdur?','Bazar günü azadlıqdır?','Bazar günü gəlirsən?'], e:'Free burada — boş vaxtı olan.'}
+    ]},
+    { id:'a2-u4-l3', title:'Dəvət et və cavab ver', items:[
+      {t:'learn', title:'Dəvət, qəbul, imtina', body:'Dəvət: Would you like to…? (nəzakətli), Do you want to…?, How about…?, Let\'s… Qəbul: I\'d love to! İmtina: Sorry, I can\'t. I\'m busy. Maybe another time.', ex:[['Would you like to go to a café?','Kafeyə getmək istərdin?'],["Yes, I'd love to!",'Bəli, məmnuniyyətlə!'],["Sorry, I can't. I'm busy.",'Bağışla, bacarmıram. Məşğulam.'],['How about the cinema?','Bəs kino necə?'],["Let's meet at six.",'Altıda görüşək.']]},
+      {t:'mc', q:'Dəvəti nəzakətlə qəbul et:', o:["I'd love to!",'I love to!','Yes, I like.','I would love.'], e:'I\'d love to! — I would love to.'},
+      {t:'mc', q:'Nəzakətlə imtina et:', o:["Sorry, I can't. I'm busy on Friday.",'No.',"I don't want.","No, it's boring."], e:'Səbəb də əlavə etmək nəzakətlidir.'},
+      {t:'mc', q:'___ going to the cinema? — Good idea!', o:['How about','What for','Why not to',"Let's"], e:'How about + -ing: How about going…?'},
+      {t:'order', az:'Kafeyə getmək istərdin?', en:['Would you like to go to a café?','Would you like to go to a cafe?'], extra:['want','going']},
+      {t:'listen', en:"Let's meet at the metro station.", o:["Let's meet at the metro station.","Let's meet at the bus station.","Let's eat at the metro station."]},
+      {t:'mc', q:'«Maybe another time» nə deməkdir?', o:['Bəlkə başqa vaxt','Başqa yerdə','Bir də heç vaxt','Bu dəfə yox, sabah'], e:'Nəzakətli imtina ifadəsi.'}
+    ]}
+  ]},
+  { id:'a2-u5', title:'Sağlamlıq', grammar:'should / shouldn\'t', lessons:[
+    { id:'a2-u5-l1', title:'Özümü pis hiss edirəm', items:[
+      {t:'learn', title:'Xəstəlik haqqında danışmaq', body:'Ağrını çox vaxt HAVE ilə deyirik: I have a headache. Bədən hissəsi ilə HURT: My back hurts. Soruşmaq: What\'s the matter?', ex:[['I have a headache.','Başım ağrıyır.'],['I have a cold.','Soyuqlamışam.'],['I have a sore throat.','Boğazım ağrıyır.'],['I have a temperature.','Qızdırmam var.'],['My back hurts.','Belim ağrıyır.'],["What's the matter?",'Nə olub?']]},
+      {t:'mc', q:'«Başım ağrıyır» ingiliscə:', o:['I have a headache.','I have a head pain.','My head is ache.','I am headache.'], e:'Have a headache — sabit ifadə.'},
+      {t:'mc', q:'«Sore throat» nə deməkdir?', o:['boğaz ağrısı','diş ağrısı','qarın ağrısı','qızdırma'], e:'Throat — boğaz.'},
+      {t:'mc', q:'My back ___.', o:['hurts','hurt','is hurt','hurting'], e:'My back (it) → hurts.'},
+      {t:'mc', q:'«What\'s the matter?» nə deməkdir?', o:['Nə olub?','Hansı mövzudur?','Nə edirsən?','Nə qədərdir?'], e:'Kiminsə pis olduğunu görəndə soruşulur.'},
+      {t:'order', az:'Mən soyuqlamışam.', en:['I have a cold.',"I've got a cold."], extra:['am','the']},
+      {t:'listen', en:'I have a temperature and a cough.', o:['I have a temperature and a cough.','I have a headache and a cough.','She has a temperature and a cough.']}
+    ]},
+    { id:'a2-u5-l2', title:'should / shouldn\'t', items:[
+      {t:'learn', title:'Məsləhət vermək', body:'SHOULD + felin əsas forması = «-malısan» (məsləhət). Bütün şəxslər üçün eynidir, «to» işlənmir. İnkar: shouldn\'t.', ex:[['You should rest.','İstirahət etməlisən.'],["You shouldn't eat fast food.",'Fast food yeməməlisən.'],['Should I see a doctor?','Həkimə getməliyəm?'],['She should take a break.','O, fasilə verməlidir.']]},
+      {t:'mc', q:'You look tired. You ___ go to bed early.', o:['should','shoulds','should to','are should'], e:'Should + əsas forma.'},
+      {t:'mc', q:'You ___ drink so much coffee.', o:["shouldn't","don't should",'not should',"shouldn't to"], e:'İnkar: shouldn\'t.'},
+      {t:'mc', q:'___ I see a doctor?', o:['Should','Do','Am','Does'], e:'Sual: Should I…?'},
+      {t:'mc', q:'Hansı düzgündür?', o:['She should take a break.','She shoulds take a break.','She should takes a break.','She should to take a break.'], e:'Should dəyişmir, sonrakı fel də dəyişmir.'},
+      {t:'order', az:'Sən daha çox su içməlisən.', en:'You should drink more water.', extra:['drinks','to']},
+      {t:'listen', en:"You shouldn't work so late.", o:["You shouldn't work so late.",'You should work so late.',"You shouldn't walk so late."]}
+    ]},
+    { id:'a2-u5-l3', title:'Həkimdə', items:[
+      {t:'learn', title:'Həkim qəbulu', body:'Qəbula yazılmaq: make an appointment. Dərmanı qəbul etmək: TAKE medicine. Gündə iki dəfə: twice a day. Xəstə dosta: Get well soon!', ex:[["I'd like to make an appointment.",'Həkim qəbuluna yazılmaq istəyirəm.'],['prescription','resept'],['Take this medicine twice a day.','Bu dərmanı gündə iki dəfə qəbul edin.'],['I feel better.','Özümü daha yaxşı hiss edirəm.'],['Get well soon!','Tez sağal!']]},
+      {t:'mc', q:'«Appointment» nə deməkdir?', o:['qəbul (vaxt təyini)','dərman','resept','xəstəxana'], e:'Make an appointment — vaxt təyin etmək.'},
+      {t:'mc', q:'Take this medicine ___ a day.', o:['twice','two time','second','double'], e:'Once (bir dəfə), twice (iki dəfə), three times.'},
+      {t:'mc', q:'Xəstə dosta nə deyirsən?', o:['Get well soon!','Good luck!','Well done!','Have fun!'], e:'Get well soon — tez sağal.'},
+      {t:'mc', q:'I feel ___ today, thank you.', o:['better','gooder','more good','best'], e:'Good / well → better.'},
+      {t:'order', az:'Həkim qəbuluna yazılmaq istəyirəm.', en:["I'd like to make an appointment.",'I would like to make an appointment.'], extra:['do','take']},
+      {t:'listen', en:'How often do you have this pain?', o:['How often do you have this pain?','How long do you have this pain?','How often does he have this pain?']}
+    ]}
+  ]},
+  { id:'a2-u6', title:'Təcrübələr', grammar:'Present Perfect: ever / never / just / yet', lessons:[
+    { id:'a2-u6-l1', title:'Heç … olmusan?', items:[
+      {t:'learn', title:'Present Perfect: həyat təcrübəsi', body:'Have / has + felin 3-cü forması. Nə vaxt olduğu vacib deyilsə, işlənir: Have you ever been to Paris? I\'ve never eaten sushi. 3-cü formalar: be → been, see → seen, eat → eaten, do → done, try → tried.', ex:[['Have you ever been to Paris?','Heç Parisdə olmusan?'],["I've never eaten sushi.",'Heç vaxt suşi yeməmişəm.'],['She has seen this film three times.','O, bu filmi üç dəfə izləyib.'],['Yes, I have. / No, I haven\'t.','Bəli. / Xeyr.']]},
+      {t:'mc', q:'Have you ever ___ to Istanbul?', o:['been','went','go','was'], e:'Have + been (be-nin 3-cü forması).'},
+      {t:'mc', q:"I've never ___ sushi.", o:['eaten','ate','eat','eated'], e:'Eat → ate → eaten.'},
+      {t:'mc', q:'She ___ seen this film three times.', o:['has','have','is','did'], e:'She ilə: has.'},
+      {t:'mc', q:'Have you ever tried yoga? — Yes, I ___.', o:['have','did','do','am'], e:'Qısa cavab: Yes, I have.'},
+      {t:'order', az:'Mən heç vaxt Londonda olmamışam.', en:['I have never been to London.',"I've never been to London."], extra:['went','in']},
+      {t:'listen', en:'Have you ever met a famous person?', o:['Have you ever met a famous person?','Have you ever seen a famous person?','Did you meet a famous person?']}
+    ]},
+    { id:'a2-u6-l2', title:'Present Perfect yoxsa Past Simple?', items:[
+      {t:'learn', title:'Vaxt göstərilirsə — Past Simple', body:'PRESENT PERFECT — nə vaxt olduğu deyilmir (təcrübə): I\'ve been to Paris. PAST SIMPLE — konkret vaxt var: I went there in 2019. Yesterday, last year, in 2020, ago ilə həmişə Past Simple.', ex:[["I've been to Paris.",'Parisdə olmuşam.'],['I went there in 2019.','Ora 2019-da getmişdim.'],["She's lost her keys.",'Açarlarını itirib (indi yoxdur).'],['She lost her keys yesterday.','Dünən açarlarını itirdi.']]},
+      {t:'mc', q:'I ___ to Paris in 2019.', o:['went','have been','have gone','go'], e:'In 2019 — konkret vaxt: Past Simple.'},
+      {t:'mc', q:'___ you ever ___ a horse?', o:['Have / ridden','Did / ride','Have / rode','Do / ride'], e:'Ever — təcrübə: Have you ever ridden…?'},
+      {t:'mc', q:'She ___ her keys yesterday.', o:['lost','has lost','loses','have lost'], e:'Yesterday — Past Simple.'},
+      {t:'mc', q:'«Yesterday» sözü ilə hansı zaman işlənir?', o:['Past Simple','Present Perfect','Present Simple','Present Continuous'], e:'Bitmiş konkret vaxt → Past Simple.'},
+      {t:'order', az:'Mən bu filmə keçən həftə baxdım.', en:'I watched this film last week.', extra:['have','seen']},
+      {t:'listen', en:"I've lived here since 2020.", o:["I've lived here since 2020.",'I lived here in 2020.',"I've lived here for two years."]}
+    ]},
+    { id:'a2-u6-l3', title:'just, already, yet', items:[
+      {t:'learn', title:'just / already / yet', body:'JUST — indicə: I\'ve just finished. ALREADY — artıq (gözləniləndən tez): I\'ve already done it. YET — hələ (inkarda), artıq (sualda); cümlənin sonunda gəlir: I haven\'t finished yet. Have you finished yet?', ex:[["I've just arrived.",'İndicə gəldim.'],["I've already eaten.",'Artıq yemişəm.'],["I haven't decided yet.",'Hələ qərar verməmişəm.'],['Have you called him yet?','Ona artıq zəng etmisən?']]},
+      {t:'mc', q:"I've ___ finished my homework — five minutes ago.", o:['just','yet','ever','never'], e:'İndicə — just.'},
+      {t:'mc', q:'Have you called him ___?', o:['yet','already','just','ever'], e:'Sualın sonunda: yet.'},
+      {t:'mc', q:"She hasn't replied ___.", o:['yet','already','just','still'], e:'İnkarın sonunda: yet.'},
+      {t:'mc', q:"I've ___ seen this film. Let's watch something else.", o:['already','yet','ever','still'], e:'Artıq — already.'},
+      {t:'order', az:'Mən hələ cavab verməmişəm.', en:["I haven't answered yet.",'I have not answered yet.'], extra:['already',"don't"]},
+      {t:'listen', en:"They've just arrived at the airport.", o:["They've just arrived at the airport.","They've already left the airport.",'They just arrive at the airport.']}
+    ]}
+  ]},
+  { id:'a2-u7', title:'Tələbə həyatı', grammar:'must / have to', lessons:[
+    { id:'a2-u7-l1', title:'Qaydalar: must', items:[
+      {t:'learn', title:"must / mustn't", body:'MUST — vacibdir, məcburidir (qayda və ya öz fikrin). MUSTN\'T — QADAĞANDIR. Must-dan sonra «to» işlənmir.', ex:[['You must be on time.','Vaxtında gəlməlisən.'],["You mustn't use phones in the exam.",'İmtahanda telefon qadağandır.'],['I must finish this today.','Bunu bu gün bitirməliyəm.'],['Students must wear ID cards.','Tələbələr vəsiqə taxmalıdır.']]},
+      {t:'mc', q:'Students ___ be on time.', o:['must','musts','must to','are must'], e:'Must + əsas forma.'},
+      {t:'mc', q:'You ___ cheat in the exam!', o:["mustn't","don't must",'not must',"haven't to"], e:'Qadağa: mustn\'t.'},
+      {t:'mc', q:'«You mustn\'t smoke here» nə deməkdir?', o:['Burada siqaret çəkmək qadağandır.','Burada siqaret çəkmək məcburi deyil.','Burada siqaret çəkə bilərsən.','Burada siqaret çəkməlisən.'], e:'Mustn\'t = qadağa.'},
+      {t:'mc', q:'Hansı düzgündür?', o:['We must finish today.','We must to finish today.','We musts finish today.','We must finishing today.'], e:'Must + əsas forma, «to» yoxdur.'},
+      {t:'order', az:'İmtahanda telefondan istifadə etməməlisiniz.', en:["You mustn't use your phone in the exam.",'You must not use your phone in the exam.'], extra:["don't",'uses']},
+      {t:'listen', en:'You must hand in your essay on Monday.', o:['You must hand in your essay on Monday.','You must hand in your essay on Friday.','You can hand in your essay on Monday.']}
+    ]},
+    { id:'a2-u7-l2', title:"have to / don't have to", items:[
+      {t:'learn', title:"have to və don't have to", body:'HAVE TO — xarici zərurət (iş, qayda): I have to work on Saturdays. DON\'T HAVE TO — lazım deyil, məcburi deyil. Diqqət: mustn\'t (qadağandır) ≠ don\'t have to (lazım deyil)!', ex:[['I have to work on Saturdays.','Şənbələr işləməliyəm.'],['She has to wear a uniform.','O, forma geyinməlidir.'],["You don't have to come.",'Gəlməyin vacib deyil.'],['Do you have to study today?','Bu gün oxumalısan?']]},
+      {t:'mc', q:'I ___ work on Saturdays. It\'s my job.', o:['have to','has to','must to','having to'], e:'I ilə: have to.'},
+      {t:'mc', q:'She ___ get up early tomorrow — it\'s a holiday.', o:["doesn't have to","mustn't","don't have to","hasn't to"], e:'Lazım deyil: doesn\'t have to (she ilə does).'},
+      {t:'mc', q:'«You don\'t have to come» nə deməkdir?', o:['Gəlməyin vacib deyil.','Gəlmək qadağandır.','Gəlməməlisən.','Gəlmə!'], e:'Don\'t have to — seçim sənindir.'},
+      {t:'mc', q:'___ you have to wear a uniform at work?', o:['Do','Have','Are','Must'], e:'Sual: Do you have to…?'},
+      {t:'order', az:'Mən hər gün işə getməli deyiləm.', en:["I don't have to go to work every day.",'I do not have to go to work every day.'], extra:["mustn't",'has']},
+      {t:'listen', en:'He has to study for his exams.', o:['He has to study for his exams.','He had to study for his exams.','He wants to study for his exams.']}
+    ]},
+    { id:'a2-u7-l3', title:'Universitet həyatı', items:[
+      {t:'learn', title:'Universitet sözləri', body:'Bu sözlər həm təhsildə, həm də xaricdə oxumaq üçün müraciətlərdə tez-tez lazım olur.', ex:[['lecture / seminar','mühazirə / seminar'],['deadline','son təhvil tarixi'],['assignment','tapşırıq'],['scholarship','təqaüd'],['take notes','qeyd götürmək'],['pass / fail an exam','imtahandan keçmək / kəsilmək']]},
+      {t:'mc', q:'«Deadline» nə deməkdir?', o:['son təhvil tarixi','imtahan','mühazirə','qiymət'], e:'Tapşırığı təhvil vermək üçün son tarix.'},
+      {t:'mc', q:'«Scholarship» nə deməkdir?', o:['təqaüd','məktəb','tələbə bileti','qiymət cədvəli'], e:'Scholarship — təhsil təqaüdü.'},
+      {t:'mc', q:'I studied a lot, so I ___ the exam.', o:['passed','past','passed by','failed'], e:'Pass an exam — imtahandan keçmək. Past — keçmiş (isim).'},
+      {t:'mc', q:'«Take notes» nə deməkdir?', o:['qeyd götürmək','not yazmaq (musiqi)','bayram qeyd etmək','pul götürmək'], e:'Mühazirədə qeyd yazmaq.'},
+      {t:'order', az:'Tapşırığı cümə gününə qədər təhvil verməliyəm.', en:'I have to submit the assignment by Friday.', extra:['until','must']},
+      {t:'listen', en:'The lecture starts at ten.', o:['The lecture starts at ten.','The lecture starts at two.','The seminar starts at ten.']}
+    ]}
+  ]},
+  { id:'a2-u8', title:'Hekayələr', grammar:'Past Continuous · when / while', lessons:[
+    { id:'a2-u8-l1', title:'Past Continuous', items:[
+      {t:'learn', title:'Keçmişdə davam edən hərəkət', body:'WAS / WERE + fel-ING: keçmişdə müəyyən anda davam edən hərəkət. I was reading at 9 pm yesterday — dünən saat 9-da oxuyurdum.', ex:[['I was reading at 9 pm.','Saat 9-da oxuyurdum.'],['They were playing football.','Onlar futbol oynayırdılar.'],['What were you doing?','Nə edirdin?'],['It was raining.','Yağış yağırdı.']]},
+      {t:'mc', q:'At 8 pm yesterday I ___ dinner.', o:['was having','had been','were having','am having'], e:'I ilə: was + -ing.'},
+      {t:'mc', q:'They ___ waiting for the bus.', o:['were','was','are','did'], e:'They ilə: were.'},
+      {t:'mc', q:'What ___ you doing at midnight?', o:['were','was','did','are'], e:'You ilə: were.'},
+      {t:'mc', q:'It ___ raining when I woke up.', o:['was','were','is','did'], e:'It ilə: was.'},
+      {t:'order', az:'Mən saat yeddidə ingilis dili oxuyurdum.', en:'I was studying English at seven.', extra:['were','studied']},
+      {t:'listen', en:'We were talking about the trip.', o:['We were talking about the trip.','We are talking about the trip.','We were thinking about the trip.']}
+    ]},
+    { id:'a2-u8-l2', title:'when / while', items:[
+      {t:'learn', title:'Uzun və qısa hərəkət', body:'Uzun hərəkət — Past Continuous, onu kəsən qısa hərəkət — Past Simple. WHEN qısa hərəkətlə, WHILE uzun hərəkətlə işlənir.', ex:[['I was walking when it started to rain.','Gəzirdim ki, yağış başladı.'],['While I was cooking, the phone rang.','Yemək bişirərkən telefon zəng çaldı.'],['She was sleeping when I came.','Mən gələndə o yatırdı.']]},
+      {t:'mc', q:'I was having a shower when the phone ___.', o:['rang','was ringing','rings','ringed'], e:'Qısa hərəkət — Past Simple: rang (ring → rang).'},
+      {t:'mc', q:'___ I was walking home, I met an old friend.', o:['While','When','During','Then'], e:'Uzun hərəkətlə: while.'},
+      {t:'mc', q:'She ___ when the teacher came in.', o:['was sleeping','slept','sleeps','is sleeping'], e:'Davam edən hərəkət: was sleeping.'},
+      {t:'mc', q:'«I was reading when he called» — hansı hərəkət daha uzun davam edirdi?', o:['I was reading','he called','ikisi də eyni','heç biri'], e:'Was reading — uzun, called — onu kəsən qısa hərəkət.'},
+      {t:'order', az:'Mən yatarkən telefon zəng çaldı.', en:['The phone rang while I was sleeping.','While I was sleeping the phone rang.'], extra:['ringed','when']},
+      {t:'listen', en:'I was driving when I saw the accident.', o:['I was driving when I saw the accident.','I was driving when I heard the accident.','I drove when I saw the accident.']}
+    ]},
+    { id:'a2-u8-l3', title:'Hekayə danış', items:[
+      {t:'learn', title:'Hekayəni bağlayan sözlər', body:'Hekayəni ardıcıl danışmaq üçün: First (əvvəlcə), Then / After that (sonra), Suddenly (birdən), Finally / In the end (sonda). Fonu Past Continuous ilə, hadisələri Past Simple ilə danış.', ex:[['It was a sunny day and we were walking in the park.','Günəşli gün idi, parkda gəzirdik.'],['Suddenly, it started to rain.','Birdən yağış başladı.'],['Then we went to a café.','Sonra kafeyə getdik.'],['In the end, we had a great time.','Sonda çox yaxşı vaxt keçirdik.']]},
+      {t:'mc', q:'Hekayədə gözlənilməz hadisə: «___, the lights went out.»', o:['Suddenly','Finally','First','After'], e:'Suddenly — birdən.'},
+      {t:'mc', q:'«In the end» nə deməkdir?', o:['sonda, axırda','əvvəlcə','birdən','sonra'], e:'In the end = finally.'},
+      {t:'mc', q:'Hekayəni nə ilə başlamaq olar?', o:['First','Finally','In the end','Suddenly'], e:'First — əvvəlcə.'},
+      {t:'mc', q:'Hansı cümlə düzgündür?', o:['It was a sunny day and we were walking in the park.','It was a sunny day and we was walking in the park.','It were a sunny day and we walking in the park.','It is a sunny day and we were walk in the park.'], e:'It was, we were + -ing.'},
+      {t:'order', az:'Sonra biz kafeyə getdik.', en:['Then we went to a café.','Then we went to a cafe.'], extra:['go','after']},
+      {t:'listen', en:'Finally, we found the hotel.', o:['Finally, we found the hotel.','Finally, we found the station.','Suddenly, we found the hotel.']}
+    ]}
+  ]}
 ]},
 { id:'b1', name:'B1', title:'Orta', color:'#7b56d6', units:[
   { id:'b1-u1', title:'Həyat təcrübəsi', grammar:'Present Perfect və Past Simple · for / since' },
