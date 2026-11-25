@@ -627,7 +627,7 @@ function playOne(url,rate,tok){return new Promise((res,rej)=>{if(!AEL){AEL=new A
   a.src=url;try{a.playbackRate=Math.max(.5,Math.min(1.5,rate*(S.rate||1)));a.preservesPitch=true}catch(e){}
   const p=a.play();if(p&&p.catch)p.catch(e=>{done();rej(e)})})}
 async function speakAI(lines,rate,tok){for(const l of lines){if(tok!==SPEAK_TOKEN)return;
-  await playOne('/api/tts?m=2&v='+(l.voice==='rounded'?'orion':'asteria')+'&t='+encodeURIComponent(l.text),rate,tok)}}
+  await playOne('/api/tts?m=3&v='+(l.voice==='rounded'?'orion':'asteria')+'&t='+encodeURIComponent(l.text),rate,tok)}}
 async function speak(lines,rate=1){const tok=++SPEAK_TOKEN;
   if(TTS){try{await TTS.speak(lines.map(l=>({text:l.text,voice:l.voice||'buttery',language:'en',rate:rate*(S.rate||1)})));return}catch(e){if(e&&e.code==='busy')return}}
   if(aiOn()&&Date.now()>AI_DOWN_UNTIL){try{await speakAI(lines,rate,tok);return}catch(e){if(tok!==SPEAK_TOKEN)return;AI_DOWN_UNTIL=Date.now()+10*60e3}}
