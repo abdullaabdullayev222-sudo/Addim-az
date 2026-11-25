@@ -128,10 +128,48 @@ textarea:focus,input[type=text]:focus{outline:3px solid var(--blue);outline-offs
 .install .x{background:none;border:0;font-size:22px;min-width:36px;min-height:44px;cursor:pointer;color:var(--mut)}
 @media(display-mode:standalone){.install{display:none!important}}
 nav.tabs{position:fixed;left:0;right:0;bottom:0;background:#fffffff2;backdrop-filter:blur(8px);border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom);z-index:10}
-nav.tabs div{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));width:100%;max-width:560px}
+nav.tabs div{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:100%;max-width:560px}
 nav.tabs a{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0;min-height:60px;color:var(--mut);text-decoration:none;font-size:12px;font-weight:800}
 nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 .res{text-align:center;padding:24px 8px}
+/* course path */
+.next{display:flex;align-items:center;gap:14px;background:var(--wrb);border:2px solid #b8e6cf;border-radius:22px;padding:16px 18px;text-decoration:none;color:var(--ink);margin-bottom:12px;box-shadow:0 4px 0 #a5dcc0}
+.next .lv{width:52px;height:52px;border-radius:16px;background:var(--wr);color:#fff;display:grid;place-items:center;font-weight:900;font-size:18px;flex:none}
+.next small{display:block;color:var(--mut);font-weight:800}.next strong{display:block;font-size:19px;font-weight:900;line-height:1.2}.next .go{margin-left:auto;font-size:28px;font-weight:900;color:var(--wr)}
+.lvls{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 8px}
+.lvl{flex:none;min-height:44px;padding:8px 16px;border-radius:99px;border:2px solid var(--line);background:var(--card);font-weight:900;cursor:pointer}
+.lvl[aria-pressed=true]{color:#fff;border-color:transparent}
+.unit{margin-top:18px;border-radius:24px;overflow:hidden;background:var(--card);border:1px solid var(--line)}
+.uhead{padding:14px 16px;color:#fff}.uhead small{display:block;font-weight:800;opacity:.9}.uhead b{display:block;font-size:20px;line-height:1.2}.uhead span{font-size:14px;opacity:.95}
+.path{padding:18px 0 8px;display:grid;gap:14px;justify-items:center}
+.node{display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;color:var(--ink);background:none;border:0;cursor:pointer;font:inherit}
+.node .c{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;border:0;box-shadow:0 5px 0 rgba(0,0,0,.14)}
+.node .c svg{width:38px;height:38px}
+.node .t{font-weight:900;font-size:14px;max-width:150px;text-align:center;line-height:1.2}
+.node.lock .c{background:#e8ece6!important;box-shadow:0 5px 0 #d3d9d0}.node.lock{cursor:default;color:var(--mut)}
+.node.cur .c{outline:4px solid #fff;box-shadow:0 0 0 7px var(--sun),0 5px 0 rgba(0,0,0,.14)}
+.badge{font-size:12px;font-weight:900;background:var(--sun);color:#fff;border-radius:99px;padding:2px 10px}
+.soon{padding:12px 16px;color:var(--mut);font-weight:800;font-size:14px}
+/* lesson */
+.lbar{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.lbar .prog{flex:1;margin:0}
+.xbtn{background:none;border:0;font-size:28px;color:var(--mut);min-width:44px;min-height:44px;cursor:pointer}
+.learn h3{font-size:22px;margin:0 0 8px;line-height:1.2}
+.extab{display:grid;gap:8px;margin-top:14px}
+.exr{display:flex;align-items:center;gap:10px;background:#f7faf6;border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.exr div{flex:1}.exr b{display:block}.exr span{color:var(--mut);font-size:15px}
+.spk{width:40px;height:40px;border-radius:50%;border:0;background:var(--rdb);color:var(--rd);cursor:pointer;flex:none;display:grid;place-items:center}
+.spk svg{width:20px;height:20px}
+.ans{min-height:64px;border-bottom:2px solid var(--line);display:flex;flex-wrap:wrap;gap:8px;padding:8px 0;margin:14px 0}
+.bank{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px}
+.chip{min-height:46px;padding:8px 14px;border-radius:14px;border:2px solid var(--line);background:var(--card);font-weight:800;font-size:17px;cursor:pointer;box-shadow:0 3px 0 var(--line)}
+.chip.used{visibility:hidden}
+.fb{position:sticky;bottom:72px;margin-top:16px;border-radius:18px;padding:14px 16px;font-weight:800}
+.fb.ok{background:#e5f7ee;color:#0f6b47}.fb.no{background:#fdeaea;color:#a23a3a}
+.fb b{display:block;font-size:18px}.fb .btn{margin-top:10px}
+.bigplay{width:96px;height:96px;border-radius:28px;border:0;background:var(--lsb);color:var(--ls);display:grid;place-items:center;margin:8px auto 18px;cursor:pointer;box-shadow:0 5px 0 #d6c8fb}
+.bigplay svg{width:48px;height:48px}
+@media(min-width:1000px){.fb{bottom:16px}}
 .float{position:fixed;font-weight:900;color:var(--star);font-size:22px;pointer-events:none;z-index:40;text-shadow:0 1px 0 #fff}
 .conf{position:fixed;top:-10px;width:10px;height:14px;border-radius:3px;z-index:50;pointer-events:none}
 @media(prefers-reduced-motion:no-preference){
@@ -188,16 +226,35 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
     <div class="bar"><i id="goalBar" style="width:0"></i></div>
   </div>
   <section class="band">
+    <a class="next" href="#course" id="nextCard"></a>
     <button class="daily" id="startQuiz"><svg width="46" height="46" viewBox="0 0 24 24"><use href="#starI"/></svg>
       <span><strong>Günün quizi</strong><span id="quizState">8 sual · hər düzgün cavab +10 XP</span></span><span class="go">›</span></button>
     <a class="nudge tab-league" href="#league" id="nudgeM"></a>
   </section>
   <section class="band" style="padding-top:0">
-    <h2>Bacarıqlar</h2>
-    <div class="grid" id="skills"></div>
-    <p class="note" id="freezeNote"></p>
+    <p class="note" id="freezeNote" style="margin-top:0"></p>
   </section>
 </main>
+
+<!-- COURSE -->
+<main class="view" id="v-course"><section class="band">
+  <h2>Kurs</h2>
+  <div class="lvls" id="lvls"></div>
+  <div id="units"></div>
+</section></main>
+
+<!-- PRACTICE -->
+<main class="view" id="v-practice"><section class="band">
+  <h2>Məşq</h2>
+  <p class="note" style="margin-top:-6px">Bacarıqları ayrıca məşq et — hər düzgün cavab XP qazandırır.</p>
+  <div class="grid" id="skills"></div>
+</section></main>
+
+<!-- LESSON -->
+<main class="view" id="v-lesson"><section class="band">
+  <div class="lbar"><button class="xbtn" id="lQuit" aria-label="Dərsdən çıx">×</button><div class="prog"><i id="lBar" style="width:0"></i></div></div>
+  <div id="lBox"></div>
+</section></main>
 
 <!-- LEAGUE (phones) -->
 <main class="view" id="v-league"><section class="band"><div class="league" id="boardM"></div></section></main>
@@ -211,7 +268,7 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 
 <!-- READING -->
 <main class="view" id="v-reading"><section class="band">
-  <a class="back" href="#home">‹ Geri</a>
+  <a class="back" href="#practice">‹ Geri</a>
   <h2>Reading · A2</h2>
   <p class="note" style="margin-top:-6px">Tanış olmayan sözün üzərinə toxun — tərcüməsi görünəcək.</p>
   <div class="card" style="background:var(--rdb);border-color:#cfe2fb"><h3 style="margin:0 0 8px;font-size:20px">My first week at university</h3><div class="text" id="rText"></div></div>
@@ -222,7 +279,7 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 
 <!-- LISTENING -->
 <main class="view" id="v-listening"><section class="band">
-  <a class="back" href="#home">‹ Geri</a>
+  <a class="back" href="#practice">‹ Geri</a>
   <h2>Listening · Kafedə</h2>
   <div class="card" style="background:var(--lsb);border-color:#e0d4fb">
     <p style="margin:0">Dialoqu dinlə, sonra sualları cavabla. Əvvəlcə mətnə baxmadan dinləməyə çalış.</p>
@@ -237,7 +294,7 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 
 <!-- SPEAKING -->
 <main class="view" id="v-speaking"><section class="band">
-  <a class="back" href="#home">‹ Geri</a>
+  <a class="back" href="#practice">‹ Geri</a>
   <h2>Speaking</h2>
   <div class="card" style="background:var(--spb);border-color:#fbd8c5">
     <div class="note" id="sCount" style="margin:0"></div>
@@ -253,7 +310,7 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 
 <!-- WRITING -->
 <main class="view" id="v-writing"><section class="band">
-  <a class="back" href="#home">‹ Geri</a>
+  <a class="back" href="#practice">‹ Geri</a>
   <h2>Writing</h2>
   <div class="card" style="background:var(--wrb);border-color:#c5ecd8">
     <p style="margin:0 0 10px;font-weight:800" id="wPrompt"></p>
@@ -277,9 +334,13 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
   <symbol id="starI" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z" fill="#ffc83d" stroke="#e0a400" stroke-width="1.2" stroke-linejoin="round"/></symbol>
 </svg>
 
+<script src="course.js"></script>
 <script>
 {
 const IC={
+course:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M4 19V8l8-4 8 4v11"/><path d="M9 20v-6h6v6"/><path d="M4 9h16"/></svg>',
+practice:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6v12M18 6v12M3 9v6M21 9v6M6 12h12"/></svg>',
+spk:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 8a5 5 0 0 1 0 8M19 5a9 9 0 0 1 0 14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>',
 home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>',
 league:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M7 4h10v4a5 5 0 0 1-10 0zM7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4M12 13v4M8 21h8M9 17h6"/></svg>',
 reading:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M3 5h6a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H3zM21 5h-6a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h7z"/></svg>',
@@ -297,7 +358,7 @@ const COLORS=['#2f7de1','#7b56d6','#e0662f','#16956a','#d6336c','#0e9aa7'];
 
 /* ---------- state ---------- */
 const GOAL=50;let S;
-const blank=()=>({days:{},freeze:0,frozen:{},skills:{reading:0,listening:0,speaking:0,writing:0},quiz:{},goalDone:{},me:null});
+const blank=()=>({days:{},freeze:0,frozen:{},skills:{reading:0,listening:0,speaking:0,writing:0},quiz:{},goalDone:{},me:null,course:{},lvl:'a1'});
 const load=()=>{try{S=JSON.parse(localStorage.getItem('addim2')||'null')}catch(e){S=null}if(!S)S=blank();for(const k in blank())if(S[k]===undefined)S[k]=blank()[k]};
 const save=()=>{try{localStorage.setItem('addim2',JSON.stringify(S))}catch(e){}};
 const active=k=>S.days[k]>0||S.frozen[k];
@@ -331,6 +392,7 @@ function renderHome(){
     return `<div class="day">${WD[d]}<div class="dot ${on||fr?'on':''} ${n===0?'today':''}">${on?'<svg viewBox="0 0 64 64"><use href="#sunI"/></svg>':fr?'<svg viewBox="0 0 64 64"><use href="#sunIce"/></svg>':''}</div></div>`}).join('');
   $('skills').innerHTML=SK.map(([id,n,d,c,b])=>`<a class="skill" href="#${id}" style="background:var(${b})"><div class="ic" style="color:var(${c})">${IC[id]}</div><b>${n}</b><span>${d}</span><div class="mini"><i style="width:${S.skills[id]||0}%;background:var(${c})"></i></div></a>`).join('');
   const q=S.quiz[t];$('quizState').textContent=q!=null?`Bu gün: ${q}/8 düzgün · yenidən keç`:'8 sual · hər düzgün cavab +10 XP';
+  if(typeof renderNext==='function')renderNext();
   $('freezeNote').textContent=S.freeze?`Seriya qoruyucusu: ${S.freeze} ədəd — bir gün buraxsan, seriyan sönməz.`:'Hər 7 günlük seriyada seriya qoruyucusu qazanırsan.';
 }
 
@@ -450,6 +512,74 @@ $('wCheck').onclick=async()=>{
   $('wCheck').disabled=false;
 };
 
+/* ---------- course ---------- */
+const LOCK='<svg viewBox="0 0 24 24" fill="none" stroke="#9aa59a" stroke-width="2.4" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+const ALL=(window.COURSE||[]).flatMap(l=>l.units.flatMap((u,ui)=>(u.lessons||[]).map((x,xi)=>({lv:l,u,ui,x,xi}))));
+const isDone=id=>S.course[id]!=null;
+const unlocked=id=>{const seq=ALL.filter(a=>a.lv.id===ALL.find(b=>b.x.id===id).lv.id),i=seq.findIndex(a=>a.x.id===id);return i===0||isDone(id)||isDone(seq[i-1].x.id)};
+const nextLesson=()=>ALL.find(a=>!isDone(a.x.id))||null;
+const norm2=s=>String(s).toLowerCase().replace(/[’`]/g,"'").replace(/[^a-z0-9' ]/g,' ').replace(/\s+/g,' ').trim();
+const toks=s=>s.split(' ').map(w=>w.replace(/[.,!?]/g,'')).filter(Boolean);
+function renderNext(){const n=nextLesson(),el=$('nextCard');
+  if(!n){el.innerHTML=`<div class="lv">${IC.course}</div><span><small>Kurs</small><strong>Bütün dərsləri keçdin! Yeni bölmələr tezliklə.</strong></span>`;el.onclick=null;return}
+  el.innerHTML=`<div class="lv" style="background:${n.lv.color}">${esc(n.lv.name)}</div><span><small>${ALL.some(a=>isDone(a.x.id))?'Növbəti dərs':'İlk dərsin'} · Bölmə ${n.ui+1}: ${esc(n.u.title)}</small><strong>${esc(n.x.title)}</strong></span><span class="go">›</span>`;
+  el.onclick=e=>{e.preventDefault();startLesson(n.x.id)}}
+function renderCourse(){
+  const C=window.COURSE||[],lv=C.find(l=>l.id===S.lvl)||C[0];if(!lv)return;
+  $('lvls').innerHTML=C.map(l=>`<button class="lvl" data-l="${l.id}" aria-pressed="${l.id===lv.id}" style="${l.id===lv.id?'background:'+l.color:''}">${esc(l.name)} · ${esc(l.title)}</button>`).join('');
+  $('lvls').querySelectorAll('.lvl').forEach(b=>b.onclick=()=>{S.lvl=b.dataset.l;save();renderCourse()});
+  const nx=nextLesson(),off=[0,70,-70,40,-40];
+  $('units').innerHTML=lv.units.map((u,ui)=>{
+    const head=`<div class="uhead" style="background:${u.lessons?lv.color:'#9aa8b6'}"><small>${esc(lv.name)} · Bölmə ${ui+1}</small><b>${esc(u.title)}</b><span>${esc(u.grammar)}</span></div>`;
+    if(!u.lessons)return `<div class="unit">${head}<div class="soon">Tezliklə əlavə olunacaq</div></div>`;
+    const nodes=u.lessons.map((x,i)=>{const d=isDone(x.id),op=unlocked(x.id),cur=nx&&nx.x.id===x.id;
+      return `<button class="node ${op?'':'lock'} ${cur?'cur':''}" data-id="${x.id}" style="transform:translateX(${off[i%off.length]}px)" ${op?'':'disabled'}><span class="c" style="background:${d?'#fff4d6':cur?lv.color:'#fff'};border:3px solid ${d?'#ffd66b':lv.color}">${d?'<svg viewBox="0 0 64 64"><use href="#sunI"/></svg>':op?'<svg viewBox="0 0 24 24"><use href="#starI"/></svg>':LOCK}</span><span class="t">${esc(x.title)}</span>${cur?'<span class="badge">Başla</span>':d?`<span class="hint">${S.course[x.id]}% düzgün</span>`:''}</button>`}).join('');
+    return `<div class="unit">${head}<div class="path">${nodes}</div></div>`}).join('');
+  $('units').querySelectorAll('.node:not(.lock)').forEach(b=>b.onclick=()=>startLesson(b.dataset.id));
+}
+let LS=null;
+function startLesson(id){const a=ALL.find(z=>z.x.id===id);if(!a)return;
+  LS={a,items:a.x.items.map(it=>({...it})),i:0,ok:0,scored:0,xp:0};location.hash='lesson';if(location.hash==='#lesson')route();renderStep()}
+function fbBox(ok,title,body){return `<div class="fb ${ok?'ok':'no'}"><b>${esc(title)}</b>${body?'<div>'+esc(body)+'</div>':''}<button class="btn ${ok?'':'sun'}" id="lNext">Davam et</button></div>`}
+function answered(ok,right,e,el){const it=LS.items[LS.i];
+  if(!it.re){LS.scored++;if(ok)LS.ok++}
+  if(ok){addXP(5,null,el);LS.xp+=5}else if(!it.re)LS.items.push({...it,re:1});
+  const f=document.createElement('div');f.innerHTML=fbBox(ok,ok?['Əla!','Düzgündür!','Bravo!','Tam doğru!'][LS.i%4]:'Düzgün cavab: '+right,ok?'':e||'');$('lBox').appendChild(f.firstElementChild);
+  $('lNext').onclick=()=>{LS.i++;renderStep()};$('lNext').focus({preventScroll:true});$('lNext').scrollIntoView({block:'nearest'})}
+function renderStep(){
+  if(!LS)return;const n=LS.items.length;$('lBar').style.width=(LS.i/n*100)+'%';
+  if(LS.i>=n)return finishLesson();
+  const it=LS.items[LS.i],box=$('lBox');window.scrollTo(0,0);
+  if(it.t==='learn'){
+    box.innerHTML=`<div class="card learn"><div class="note" style="margin:0 0 4px">Yeni mövzu</div><h3>${esc(it.title)}</h3><p style="margin:0">${esc(it.body)}</p><div class="extab">${it.ex.map((r,i)=>`<div class="exr"><button class="spk" data-i="${i}" aria-label="Dinlə">${IC.spk}</button><div><b>${esc(r[0])}</b><span>${esc(r[1])}</span></div></div>`).join('')}</div></div><button class="btn" id="lNext">Başa düşdüm</button>`;
+    box.querySelectorAll('.spk').forEach(b=>b.onclick=()=>speak([{text:it.ex[+b.dataset.i][0].replace(/ \/ /g,', ')}],0.9));
+    $('lNext').onclick=()=>{LS.i++;renderStep()};return}
+  if(it.t==='mc'||it.t==='listen'){
+    const right=it.t==='listen'?it.en:it.o[0],opts=shuffle(it.o);
+    box.innerHTML=(it.t==='listen'?`<p class="q">Eşitdiyin cümləni seç</p><button class="bigplay" id="lPlay" aria-label="Dinlə">${IC.spk}</button><div class="row" style="justify-content:center;margin:-8px 0 14px"><button class="w" id="lSlow">yavaş dinlə</button></div>`:`<p class="q">${esc(it.q)}</p>`)+`<div class="opts">${opts.map((o,i)=>`<button class="opt" data-i="${i}">${esc(o)}</button>`).join('')}</div>`;
+    if(it.t==='listen'){const p=()=>speak([{text:it.en}],1);$('lPlay').onclick=p;$('lSlow').onclick=()=>speak([{text:it.en}],0.7);p()}
+    box.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const ok=opts[+b.dataset.i]===right;
+      box.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(opts[+x.dataset.i]===right)x.classList.add('right')});if(!ok)b.classList.add('wrong');
+      answered(ok,right,it.e,b)});return}
+  if(it.t==='order'){
+    const vs=[].concat(it.en),bank=shuffle(toks(vs[0]).concat(it.extra||[])),ans=[];
+    box.innerHTML=`<p class="q">Bu cümləni ingiliscə qur</p><div class="card" style="background:var(--wrb);border-color:#c5ecd8;font-size:19px;font-weight:800">${esc(it.az)}</div><div class="ans" id="oAns" aria-live="polite"></div><div class="bank" id="oBank">${bank.map((w,i)=>`<button class="chip" data-i="${i}">${esc(w)}</button>`).join('')}</div><button class="btn" id="oChk" disabled>Yoxla</button>`;
+    const draw=()=>{$('oAns').innerHTML=ans.map((bi,k)=>`<button class="chip" data-k="${k}">${esc(bank[bi])}</button>`).join('');
+      $('oAns').querySelectorAll('.chip').forEach(c=>c.onclick=()=>{if(c.closest('.ans').dataset.lock)return;const bi=ans.splice(+c.dataset.k,1)[0];$('oBank').querySelector(`[data-i="${bi}"]`).classList.remove('used');draw()});
+      $('oChk').disabled=!ans.length};
+    $('oBank').querySelectorAll('.chip').forEach(c=>c.onclick=()=>{if(c.classList.contains('used')||$('oAns').dataset.lock)return;c.classList.add('used');ans.push(+c.dataset.i);draw()});
+    $('oChk').onclick=()=>{const said=norm2(ans.map(i=>bank[i]).join(' ')),ok=vs.some(v=>norm2(v)===said);$('oAns').dataset.lock=1;$('oChk').remove();
+      if(ok)speak([{text:vs[0]}],1).catch(()=>{});answered(ok,vs[0],'',$('oAns'))};return}
+  LS.i++;renderStep();
+}
+function finishLesson(){const a=LS.a,first=!isDone(a.x.id),acc=LS.scored?Math.round(LS.ok/LS.scored*100):100,bonus=first?15:5;
+  S.course[a.x.id]=Math.max(S.course[a.x.id]||0,acc);save();addXP(bonus,null,null);LS.xp+=bonus;
+  const nx=nextLesson();
+  $('lBox').innerHTML=`<div class="res"><svg width="120" height="120" viewBox="0 0 64 64"><use href="#sunI"/></svg><h2 style="margin-top:8px">Dərs tamamlandı!</h2><p style="margin:0">${esc(a.x.title)}</p><div class="row" style="justify-content:center;gap:28px;margin:18px 0"><div><div class="score">${acc}%</div><div class="hint">düzgün</div></div><div><div class="score" style="color:var(--star)">+${LS.xp}</div><div class="hint">XP</div></div></div>${nx?`<button class="btn" id="lGoNext">Növbəti dərs: ${esc(nx.x.title)}</button>`:''}<a class="btn ghost" href="#course">Kursa qayıt</a></div>`;
+  $('lBar').style.width='100%';if(nx)$('lGoNext').onclick=()=>startLesson(nx.x.id);LS=null;renderNext();
+}
+$('lQuit').onclick=()=>sheet('Dərsdən çıxırsan?','<p>Bu dərsdəki proqresin yadda qalmayacaq. Qazandığın XP isə səndə qalır.</p>','<button class="btn" id="qStay">Davam et</button><button class="btn ghost" id="qLeave">Çıx</button>')||($('qStay').onclick=closeSheet,$('qLeave').onclick=()=>{closeSheet();LS=null;location.hash='course'});
+
 /* ---------- league ---------- */
 let BOARD=null,boardErr=false,syncT=null;
 const daysLeft=()=>{const d=new Date(today()+'T12:00:00Z').getUTCDay();return d===0?0:7-d};
@@ -496,12 +626,14 @@ $('sheet').onclick=e=>{if(e.target.id==='sheet')closeSheet()};
 addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet()});
 
 /* ---------- routing ---------- */
-const VIEWS=['home','league','quiz','reading','listening','speaking','writing'];
-$('tabs').innerHTML=[['home','Bu gün'],['league','Liqa'],['reading','Reading'],['listening','Listening'],['speaking','Speaking'],['writing','Writing']].map(([k,n])=>`<a href="#${k}" data-k="${k}">${IC[k]}<span>${n}</span></a>`).join('');
+const VIEWS=['home','course','league','practice','quiz','lesson','reading','listening','speaking','writing'];
+$('tabs').innerHTML=[['home','Bu gün'],['course','Kurs'],['league','Liqa'],['practice','Məşq']].map(([k,n])=>`<a href="#${k}" data-k="${k}">${IC[k]}<span>${n}</span></a>`).join('');
 function route(){let v=location.hash.slice(1);if(!VIEWS.includes(v))v='home';if(v==='quiz'&&!QZ.length){startQuiz();return}
+  if(v==='lesson'&&!LS){location.hash='course';return}
+  if(v==='course')renderCourse();
   if(v==='league'&&matchMedia('(min-width:1000px)').matches)v='home';
   VIEWS.forEach(k=>$('v-'+k).classList.toggle('on',k===v));
-  document.querySelectorAll('#tabs a').forEach(a=>a.classList.toggle('on',a.dataset.k===v||(v==='quiz'&&a.dataset.k==='home')));
+  document.querySelectorAll('#tabs a').forEach(a=>a.classList.toggle('on',a.dataset.k===v||(v==='quiz'&&a.dataset.k==='home')||(v==='lesson'&&a.dataset.k==='course')||(['reading','listening','speaking','writing'].includes(v)&&a.dataset.k==='practice')));
   if(v==='league')sync();window.scrollTo(0,0)}
 addEventListener('hashchange',route);
 const h=new Date().getHours();$('greet').textContent=(h<12?'Sabahın xeyir!':h<18?'Salam!':'Axşamın xeyir!')+' Bu gün də bir addım at.';
