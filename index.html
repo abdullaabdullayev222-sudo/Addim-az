@@ -5,99 +5,143 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Addım — İngilis dili</title>
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#2f45ff">
+<meta name="theme-color" content="#f4f8f2">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Addım">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="description" content="Azərbaycan dilində ingilis dili öyrən: gündəlik quiz, reading, listening, speaking, writing.">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="description" content="Azərbaycan dilində ingilis dili öyrən: gündəlik quiz, həftəlik liqa, reading, listening, speaking, writing.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet">
 <style>
-/* VOICE: friendly, energetic study companion; short Azerbaijani prompts, English as the thing practised
-   IDEA: a pocket phrasebook that keeps score — every screen is one exercise card
-   PICTURE: the streak flame on a cobalt band with this week's seven days beneath it
-   COLOUR and TYPE: white / cobalt #2f45ff dominant, sun yellow support, coral accent for mistakes; Nunito 900 + 400
-   LAYOUT: one phone-width column, hash-routed views, fixed bottom tab bar */
-:root{color-scheme:light dark;--bg:light-dark(#ffffff,#0b0e2b);--ink:light-dark(#14163a,#eef0ff);--mut:light-dark(#5d6287,#a9aed6);--card:light-dark(#f2f4ff,#161a47);--line:light-dark(#dfe3ff,#262b66);--blue:#2f45ff;--blue2:light-dark(#2236e6,#5468ff);--sun:#ffcf33;--coral:#ff5a4e;--ok:light-dark(#0f8a5f,#3fd39a)}
-:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+/* VOICE: cheerful, calm study companion — bright but never glaring
+   IDEA: a sunny morning notebook — every day you study, the sun rises a little higher
+   PICTURE: the streak sun over a soft sky band, the week as seven little suns, the league podium beside it
+   COLOUR and TYPE: soft mint-cream ground (not pure white), white cards, one pastel per skill, sun orange + star gold accents, slate text; Nunito
+   LAYOUT: phone column; on wide screens the weekly league sits in a sticky side panel; bottom tab bar on phones */
+:root{color-scheme:light;--bg:#f4f8f2;--card:#ffffff;--ink:#1f2a37;--mut:#5b6676;--line:#e3e9e1;
+--sun:#ff9f1c;--sun2:#ffcf3f;--star:#f5b800;--coral:#ef5d5d;--ok:#1f9d6b;--blue:#2f7de1;
+--rd:#2b7bd9;--rdb:#e2efff;--ls:#7b56d6;--lsb:#efe8ff;--sp:#e0662f;--spb:#ffeadf;--wr:#16956a;--wrb:#dcf4e8;--qz:#fff0b8}
 *{box-sizing:border-box;min-width:0}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Nunito,system-ui,sans-serif;overflow-x:clip}
-.app{max-width:540px;margin:0 auto;padding-bottom:96px}
-header.top{display:flex;align-items:center;justify-content:space-between;padding:14px 18px}
-.logo{font-weight:900;font-size:22px;letter-spacing:-.02em}.logo b{color:var(--blue2)}
-.pill{display:flex;gap:6px;align-items:center;background:var(--card);border-radius:99px;padding:6px 12px;font-weight:800;white-space:nowrap}
-.hero{background:var(--blue);color:#fff;margin:0 12px;border-radius:28px;padding:22px 20px 20px;position:relative;overflow:hidden}
-.hero h1{font-size:32px;line-height:1.05;margin:0 0 4px;font-weight:900;text-wrap:balance}
-.hero p{margin:0;color:#dfe3ff}
-.flamebox{display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:center;margin-top:16px}
-.flame{width:120px;height:140px}
-.big{font-size:52px;font-weight:900;line-height:1}
-.week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin-top:18px}
-.day{text-align:center;font-size:13px;font-weight:800;color:#c9cffd}
-.dot{width:34px;height:34px;margin:4px auto 0;border-radius:50%;border:2px solid #6577ff;display:grid;place-items:center}
-.dot.on{background:var(--sun);border-color:var(--sun)}.dot.today{outline:3px solid #fff;outline-offset:2px}
-.bar{height:12px;background:rgba(255,255,255,.22);border-radius:99px;overflow:hidden;margin-top:8px}
-.bar i{display:block;height:100%;background:var(--sun);border-radius:99px;transition:width .5s}
-.goal{display:flex;justify-content:space-between;font-weight:800;font-size:14px;margin-top:16px}
-section.band{padding:20px 16px}
+button{font:inherit;color:inherit}
+.shell{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:minmax(0,560px);justify-content:center;gap:28px;padding-bottom:100px}
+@media(min-width:1000px){.shell{grid-template-columns:minmax(0,560px) 380px;padding-bottom:40px}.side{display:block!important}nav.tabs{display:none!important}.tab-league{display:none!important}}
+.side{display:none;position:sticky;top:16px;align-self:start;margin-top:16px}
+header.top{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;gap:10px}
+.logo{font-weight:900;font-size:24px;letter-spacing:-.02em;display:flex;align-items:center;gap:8px}.logo b{color:var(--sun)}
+.pills{display:flex;gap:8px}
+.pill{display:flex;gap:6px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px 12px;font-weight:900;white-space:nowrap;font-size:15px}
+.pill svg{width:20px;height:20px;flex:none}
+.hero{margin:0 12px;border-radius:28px;padding:22px 20px 20px;background:linear-gradient(160deg,#dff0ff 0%,#fff6dc 70%,#ffe9c9 100%);position:relative;overflow:hidden;border:1px solid #f0e6cf}
+.hero h1{font-size:30px;line-height:1.08;margin:0 0 4px;font-weight:900;text-wrap:balance}
+.hero p{margin:0;color:var(--mut)}
+.sunbox{display:grid;grid-template-columns:128px 1fr;gap:14px;align-items:center;margin-top:12px}
+.bigsun{width:128px;height:128px}
+.big{font-size:54px;font-weight:900;line-height:1;color:#d96a00}
+.sub{font-weight:800}.hint{color:var(--mut);font-size:14px}
+.week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin-top:16px}
+.day{text-align:center;font-size:13px;font-weight:800;color:var(--mut)}
+.dot{width:36px;height:36px;margin:4px auto 0;border-radius:50%;display:grid;place-items:center;background:#ffffffb0;border:2px dashed #e2cfa3}
+.dot svg{width:30px;height:30px}.dot.on{border:0;background:none}.dot.today{outline:3px solid var(--sun);outline-offset:2px}
+.goal{display:flex;justify-content:space-between;font-weight:900;font-size:14px;margin-top:16px}
+.bar{height:14px;background:#ffffffc0;border-radius:99px;overflow:hidden;margin-top:6px;border:1px solid #f0e2c0}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--sun2),var(--sun));border-radius:99px;transition:width .6s cubic-bezier(.2,.9,.3,1.2)}
+section.band{padding:18px 14px}
 h2{font-size:22px;font-weight:900;margin:0 0 12px;line-height:1.15}
-.daily{display:flex;align-items:center;gap:14px;background:var(--sun);color:#14163a;border-radius:22px;padding:18px;border:0;width:100%;text-align:left;font:inherit;cursor:pointer}
-.daily strong{display:block;font-size:20px;font-weight:900}.daily .go{margin-left:auto;font-size:26px;font-weight:900}
+.daily{display:flex;align-items:center;gap:14px;background:var(--qz);border-radius:22px;padding:16px 18px;border:2px solid #f6dd7a;width:100%;text-align:left;cursor:pointer;box-shadow:0 4px 0 #f0cf5a}
+.daily:active{transform:translateY(2px);box-shadow:0 2px 0 #f0cf5a}
+.daily strong{display:block;font-size:20px;font-weight:900}.daily .go{margin-left:auto;font-size:28px;font-weight:900;color:#b07a00}
+.nudge{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px 14px;margin-top:12px;text-decoration:none;color:var(--ink)}
+.nudge b{color:var(--blue)}.nudge svg{width:30px;height:30px;flex:none;color:var(--sun)}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.skill{background:var(--card);border-radius:20px;padding:16px;text-decoration:none;color:var(--ink);display:block;border:2px solid transparent}
-.skill:hover,.skill:focus-visible{border-color:var(--blue2)}
-.skill svg{width:36px;height:36px}.skill b{display:block;font-size:18px;margin-top:8px}.skill span{color:var(--mut);font-size:14px}
-.mini{height:6px;background:var(--line);border-radius:99px;margin-top:10px;overflow:hidden}.mini i{display:block;height:100%;background:var(--blue2)}
-.card{background:var(--card);border-radius:22px;padding:18px}
+.skill{border-radius:22px;padding:16px;text-decoration:none;color:var(--ink);display:block;border:2px solid transparent;transition:transform .15s}
+.skill:hover{transform:translateY(-2px)}.skill:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.skill .ic{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:#ffffffb8}.skill .ic svg{width:26px;height:26px}
+.skill b{display:block;font-size:18px;margin-top:10px}.skill span{color:var(--mut);font-size:14px}
+.mini{height:8px;background:#ffffffb8;border-radius:99px;margin-top:10px;overflow:hidden}.mini i{display:block;height:100%;border-radius:99px}
+.card{background:var(--card);border-radius:22px;padding:18px;border:1px solid var(--line)}
 .view{display:none}.view.on{display:block}
 .back{display:inline-flex;align-items:center;gap:6px;color:var(--mut);font-weight:800;text-decoration:none;min-height:44px}
-.prog{height:12px;background:var(--line);border-radius:99px;overflow:hidden;margin:6px 0 18px}.prog i{display:block;height:100%;background:var(--blue2);transition:width .3s}
+.prog{height:14px;background:#e6ece4;border-radius:99px;overflow:hidden;margin:6px 0 18px}.prog i{display:block;height:100%;background:linear-gradient(90deg,#7bd389,var(--ok));transition:width .35s}
 .q{font-size:22px;font-weight:900;line-height:1.25;margin:0 0 16px}
 .opts{display:grid;gap:10px}
-button{font:inherit}
-.opt{min-height:52px;border-radius:16px;border:2px solid var(--line);background:var(--bg);color:var(--ink);font-weight:800;font-size:17px;text-align:left;padding:12px 16px;cursor:pointer}
-.opt:focus-visible,.btn:focus-visible,.chip:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
-.opt.right{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 14%,var(--bg))}
-.opt.wrong{border-color:var(--coral);background:color-mix(in srgb,var(--coral) 14%,var(--bg))}
-.expl{margin-top:14px;border-radius:16px;padding:14px 16px;background:var(--bg);border:2px solid var(--line)}
+.opt{min-height:54px;border-radius:16px;border:2px solid var(--line);background:var(--card);font-weight:800;font-size:17px;text-align:left;padding:12px 16px;cursor:pointer;box-shadow:0 3px 0 var(--line)}
+.opt:hover:not(:disabled){border-color:#b9cbe0}
+.opt:focus-visible,.btn:focus-visible,.daily:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.opt.right{border-color:var(--ok);background:#e5f7ee;box-shadow:0 3px 0 #9fdcbf}
+.opt.wrong{border-color:var(--coral);background:#fdeaea;box-shadow:0 3px 0 #f3b7b7}
+.expl{margin-top:14px;border-radius:16px;padding:14px 16px;background:#f7faf6;border:1px solid var(--line)}
 .expl b{display:block}
-.btn{min-height:50px;border:0;border-radius:16px;background:var(--blue);color:#fff;font-weight:900;font-size:17px;padding:12px 22px;cursor:pointer;width:100%;margin-top:14px}
-.btn.ghost{background:transparent;color:var(--blue2);border:2px solid var(--line)}
-.btn:disabled{opacity:.45;cursor:default}
+.btn{min-height:52px;border:0;border-radius:16px;background:var(--blue);color:#fff;font-weight:900;font-size:17px;padding:12px 22px;cursor:pointer;width:100%;margin-top:14px;box-shadow:0 4px 0 #1f5fb4;text-decoration:none;display:block;text-align:center}
+.btn:active{transform:translateY(2px);box-shadow:0 2px 0 #1f5fb4}
+.btn.ghost{background:var(--card);color:var(--blue);border:2px solid var(--line);box-shadow:0 3px 0 var(--line)}
+.btn.sun{background:var(--sun);box-shadow:0 4px 0 #d27a00}
+.btn:disabled{opacity:.5;cursor:default}
 .row{display:flex;gap:10px;flex-wrap:wrap}.row .btn{flex:1 1 140px;width:auto}
-.text{font-size:18px;line-height:1.75}
-.w{border-bottom:2px dotted var(--blue2);cursor:pointer;background:none;border-top:0;border-left:0;border-right:0;color:inherit;font:inherit;padding:0}
-.tip{position:sticky;bottom:90px;background:var(--ink);color:var(--bg);border-radius:14px;padding:10px 14px;font-weight:800;margin-top:12px;display:none}
+.text{font-size:18px;line-height:1.8}
+.w{border:0;border-bottom:2px dotted var(--rd);cursor:pointer;background:none;padding:0;font:inherit}
+.tip{position:sticky;bottom:96px;background:var(--ink);color:#fff;border-radius:14px;padding:10px 14px;font-weight:800;margin-top:12px;display:none}
 .line{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}.line b{flex:none;width:72px;color:var(--mut)}
 .say{font-size:26px;font-weight:900;line-height:1.2;margin:6px 0}
 .tok{display:inline-block;margin:2px 3px;padding:2px 8px;border-radius:8px;font-weight:800}
-.tok.hit{background:color-mix(in srgb,var(--ok) 20%,transparent);color:var(--ok)}.tok.miss{background:color-mix(in srgb,var(--coral) 18%,transparent);color:var(--coral)}
-.score{font-size:52px;font-weight:900;line-height:1;color:var(--blue2)}
-textarea{width:100%;min-height:160px;border-radius:16px;border:2px solid var(--line);background:var(--bg);color:var(--ink);font:16px/1.6 Nunito,sans-serif;padding:14px}
-textarea:focus{outline:3px solid var(--blue2);outline-offset:1px}
-.mist{border-left:4px solid var(--coral);padding:8px 12px;margin:10px 0;background:var(--bg);border-radius:0 12px 12px 0}
+.tok.hit{background:#dff5ea;color:var(--ok)}.tok.miss{background:#fde6e6;color:var(--coral)}
+.score{font-size:52px;font-weight:900;line-height:1;color:var(--blue)}
+textarea,input[type=text]{width:100%;border-radius:16px;border:2px solid var(--line);background:#fbfdfb;color:var(--ink);font:16px/1.6 Nunito,sans-serif;padding:12px 14px}
+textarea{min-height:160px}
+textarea:focus,input[type=text]:focus{outline:3px solid var(--blue);outline-offset:1px}
+.mist{border-left:4px solid var(--coral);padding:8px 12px;margin:10px 0;background:#fff7f7;border-radius:0 12px 12px 0}
 .mist s{color:var(--coral)}.mist ins{color:var(--ok);text-decoration:none;font-weight:800}
 .note{font-size:13px;color:var(--mut);margin-top:10px}
-nav.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom)}
-nav.tabs div{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));width:100%;max-width:540px}
-nav.tabs a{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 2px;min-height:60px;color:var(--mut);text-decoration:none;font-size:13px;font-weight:800}
-nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue2)}
-.res{text-align:center;padding:24px 8px}
-.install{display:flex;align-items:center;gap:12px;background:var(--ink);color:var(--bg);padding:10px 14px;padding-top:max(10px,env(safe-area-inset-top))}
-.install img{width:40px;height:40px;border-radius:10px;flex:none}
-.install div{flex:1;line-height:1.25}.install b{display:block;font-size:15px}.install span{font-size:13px;opacity:.8}
-.install .get{background:var(--sun);color:#14163a;border:0;border-radius:99px;font-weight:900;padding:10px 18px;min-height:44px;cursor:pointer;flex:none}
-.install .x{background:none;border:0;color:inherit;font-size:22px;min-width:36px;min-height:44px;cursor:pointer;opacity:.7}
-.sheet{position:fixed;inset:0;background:rgba(10,12,40,.55);display:none;align-items:flex-end;justify-content:center;z-index:20}
+/* league */
+.league{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:18px;overflow:hidden}
+.lhead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.lhead h2{margin:0}.lhead span{font-size:13px;color:var(--mut);font-weight:800}
+.podium{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:end;gap:8px;margin:16px 0 8px;text-align:center}
+.pod .av{margin:0 auto 6px}.pod .nm{font-weight:900;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pod .xp{font-size:13px;color:var(--mut);font-weight:800}
+.pod .blk{border-radius:14px 14px 4px 4px;margin-top:6px;display:grid;place-items:center;font-weight:900;font-size:22px;color:#fff}
+.p1 .blk{height:84px;background:linear-gradient(#ffd24a,#f5a800)}.p2 .blk{height:62px;background:linear-gradient(#d9e2ec,#a9b8c8)}.p3 .blk{height:48px;background:linear-gradient(#f3c39b,#d28b55)}
+.av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:900;font-size:17px;flex:none}
+.p1 .av{width:52px;height:52px;font-size:21px;box-shadow:0 0 0 3px #ffd24a}
+.lrow{display:flex;align-items:center;gap:10px;padding:9px 8px;border-radius:14px}
+.lrow .rk{width:26px;text-align:center;font-weight:900;color:var(--mut)}
+.lrow .nm{flex:1;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lrow .xp{font-weight:900;white-space:nowrap}
+.lrow.me{background:#fff4d6;outline:2px solid #ffd66b}
+.lmsg{background:#eef6ff;border-radius:14px;padding:10px 12px;font-weight:800;font-size:14px;margin-top:10px}
+.zone{font-size:12px;font-weight:900;color:var(--ok);padding:4px 8px}
+.sheet{position:fixed;inset:0;background:rgba(31,42,55,.4);display:none;align-items:flex-end;justify-content:center;z-index:30}
 .sheet.on{display:flex}
-.sheet>div{background:var(--bg);color:var(--ink);width:100%;max-width:540px;border-radius:24px 24px 0 0;padding:22px 20px calc(22px + env(safe-area-inset-bottom))}
+.sheet>div{background:var(--card);width:100%;max-width:540px;border-radius:26px 26px 0 0;padding:22px 20px calc(22px + env(safe-area-inset-bottom));max-height:92vh;overflow:auto}
+@media(min-width:700px){.sheet{align-items:center}.sheet>div{border-radius:26px}}
 .sheet ol{padding-left:20px;font-size:17px}.sheet li{margin:8px 0}
+.swatches{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.sw{width:44px;height:44px;border-radius:50%;border:3px solid transparent;cursor:pointer}
+.sw[aria-pressed=true]{border-color:var(--ink)}
+.install{display:flex;align-items:center;gap:12px;background:#fff4d6;border-bottom:1px solid #f3e1ae;padding:10px 14px;padding-top:max(10px,env(safe-area-inset-top))}
+.install img{width:40px;height:40px;border-radius:10px;flex:none}
+.install div{flex:1;line-height:1.25}.install b{display:block;font-size:15px}.install span{font-size:13px;color:var(--mut)}
+.install .get{background:var(--sun);color:#fff;border:0;border-radius:99px;font-weight:900;padding:10px 18px;min-height:44px;cursor:pointer;flex:none;box-shadow:0 3px 0 #d27a00}
+.install .x{background:none;border:0;font-size:22px;min-width:36px;min-height:44px;cursor:pointer;color:var(--mut)}
 @media(display-mode:standalone){.install{display:none!important}}
-@media(prefers-reduced-motion:no-preference){.flame .fl{transform-origin:60px 130px;animation:flick 2.4s ease-in-out infinite}@keyframes flick{50%{transform:scale(1.04,.97)}}}
-@media(max-width:380px){.flamebox{grid-template-columns:90px 1fr}.flame{width:90px;height:105px}.dot{width:28px;height:28px}}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;background:#fffffff2;backdrop-filter:blur(8px);border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom);z-index:10}
+nav.tabs div{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));width:100%;max-width:560px}
+nav.tabs a{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0;min-height:60px;color:var(--mut);text-decoration:none;font-size:12px;font-weight:800}
+nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
+.res{text-align:center;padding:24px 8px}
+.float{position:fixed;font-weight:900;color:var(--star);font-size:22px;pointer-events:none;z-index:40;text-shadow:0 1px 0 #fff}
+.conf{position:fixed;top:-10px;width:10px;height:14px;border-radius:3px;z-index:50;pointer-events:none}
+@media(prefers-reduced-motion:no-preference){
+ .bigsun .rays{transform-origin:64px 64px;animation:spin 24s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+ .float{animation:up 1s ease-out forwards}@keyframes up{to{transform:translateY(-60px);opacity:0}}
+ .conf{animation:fall var(--d) cubic-bezier(.3,.6,.6,1) forwards}@keyframes fall{to{transform:translate(var(--x),105vh) rotate(var(--r))}}
+ .pop{animation:pop .4s}@keyframes pop{50%{transform:scale(1.18)}}
+}
+@media(prefers-reduced-motion:reduce){.conf{display:none}}
+@media(max-width:380px){.sunbox{grid-template-columns:96px 1fr}.bigsun{width:96px;height:96px}.dot{width:30px;height:30px}.dot svg{width:26px;height:26px}.pill{padding:5px 9px;font-size:14px}}
 </style>
 </head>
 <body>
@@ -108,39 +152,55 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue2)}
   <button class="x" id="hideInst" aria-label="Bağla">×</button>
 </div>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="shT"><div>
-  <h2 id="shT">Tətbiqi telefona əlavə et</h2>
+  <h2 id="shT"></h2>
   <div id="shBody"></div>
-  <button class="btn" id="shClose">Başa düşdüm</button>
+  <div id="shBtns"><button class="btn" id="shClose">Başa düşdüm</button></div>
 </div></div>
+
+<div class="shell">
 <div class="app">
 <header class="top">
-  <div class="logo">Ad<b>dım</b></div>
-  <div class="pill" title="Xal (XP)"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z" fill="#ffcf33"/></svg><span id="xpTot">0</span> XP</div>
+  <div class="logo"><svg width="30" height="30" viewBox="0 0 64 64"><use href="#sunI"/></svg><span>Ad<b>dım</b></span></div>
+  <div class="pills">
+    <div class="pill" title="Günlük seriya"><svg viewBox="0 0 64 64"><use href="#sunI"/></svg><span id="stPill">0</span></div>
+    <div class="pill" title="Bu həftə qazanılan ulduzlar (XP)"><svg viewBox="0 0 24 24"><use href="#starI"/></svg><span id="xpTot">0</span></div>
+  </div>
 </header>
 
 <!-- HOME -->
 <main class="view" id="v-home">
   <div class="hero">
     <h1 id="greet">Salam! Bu gün də bir addım at.</h1>
-    <p>İngilis dili — hər gün azacıq, amma mütəmadi.</p>
-    <div class="flamebox">
-      <svg class="flame" viewBox="0 0 120 140" aria-hidden="true"><g class="fl"><path d="M60 6C70 34 100 50 100 88a40 40 0 0 1-80 0c0-20 10-32 18-40 2 12 8 18 14 20C50 46 50 26 60 6z" fill="#ffcf33"/><path d="M60 58c6 16 22 24 22 42a22 22 0 0 1-44 0c0-10 6-17 10-21 2 8 6 11 10 12-2-12-2-22 2-33z" fill="#ff5a4e"/><ellipse cx="60" cy="134" rx="34" ry="5" fill="rgba(0,0,0,.18)"/></g></svg>
-      <div><div class="big" id="streak">0</div><div style="font-weight:800">günlük seriya</div><div style="color:#c9cffd;font-size:14px" id="best"></div></div>
+    <p>Hər gün bir az — günəşin sönməsin.</p>
+    <div class="sunbox">
+      <svg class="bigsun" viewBox="0 0 128 128" aria-hidden="true">
+        <defs><radialGradient id="sg" cx=".4" cy=".35"><stop offset="0" stop-color="#ffe680"/><stop offset=".6" stop-color="#ffc233"/><stop offset="1" stop-color="#ff9f1c"/></radialGradient></defs>
+        <g class="rays" fill="#ffc94a"><path d="M103.5 57.6L125.0 64.0L103.5 70.4ZM101.4 78.2L116.8 94.5L95.0 89.3ZM89.3 95.0L94.5 116.8L78.2 101.4ZM70.4 103.5L64.0 125.0L57.6 103.5ZM49.8 101.4L33.5 116.8L38.7 95.0ZM33.0 89.3L11.2 94.5L26.6 78.2ZM24.5 70.4L3.0 64.0L24.5 57.6ZM26.6 49.8L11.2 33.5L33.0 38.7ZM38.7 33.0L33.5 11.2L49.8 26.6ZM57.6 24.5L64.0 3.0L70.4 24.5ZM78.2 26.6L94.5 11.2L89.3 33.0ZM95.0 38.7L116.8 33.5L101.4 49.8Z"/></g>
+        <circle cx="64" cy="64" r="34" fill="url(#sg)"/>
+        <circle cx="52" cy="58" r="4" fill="#7a4a00"/><circle cx="76" cy="58" r="4" fill="#7a4a00"/>
+        <path d="M52 72q12 10 24 0" stroke="#7a4a00" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <circle cx="45" cy="70" r="5" fill="#ff8a65" opacity=".5"/><circle cx="83" cy="70" r="5" fill="#ff8a65" opacity=".5"/>
+      </svg>
+      <div><div class="big" id="streak">0</div><div class="sub">günlük seriya</div><div class="hint" id="best"></div></div>
     </div>
     <div class="week" id="week"></div>
     <div class="goal"><span>Günlük hədəf</span><span id="goalTxt">0 / 50 XP</span></div>
     <div class="bar"><i id="goalBar" style="width:0"></i></div>
   </div>
   <section class="band">
-    <button class="daily" id="startQuiz"><svg width="44" height="44" viewBox="0 0 44 44"><rect x="4" y="6" width="36" height="32" rx="8" fill="#2f45ff"/><path d="M14 22l6 6 11-12" stroke="#ffcf33" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <button class="daily" id="startQuiz"><svg width="46" height="46" viewBox="0 0 24 24"><use href="#starI"/></svg>
       <span><strong>Günün quizi</strong><span id="quizState">8 sual · hər düzgün cavab +10 XP</span></span><span class="go">›</span></button>
+    <a class="nudge tab-league" href="#league" id="nudgeM"></a>
   </section>
   <section class="band" style="padding-top:0">
     <h2>Bacarıqlar</h2>
     <div class="grid" id="skills"></div>
-    <p class="note">Prototip: proqres yalnız bu brauzerdə saxlanılır. İlk açılışda nümunə üçün 3 günlük seriya əlavə olunur. <button class="w" id="reset">Sıfırla</button></p>
+    <p class="note" id="freezeNote"></p>
   </section>
 </main>
+
+<!-- LEAGUE (phones) -->
+<main class="view" id="v-league"><section class="band"><div class="league" id="boardM"></div></section></main>
 
 <!-- QUIZ -->
 <main class="view" id="v-quiz"><section class="band">
@@ -154,7 +214,7 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue2)}
   <a class="back" href="#home">‹ Geri</a>
   <h2>Reading · A2</h2>
   <p class="note" style="margin-top:-6px">Tanış olmayan sözün üzərinə toxun — tərcüməsi görünəcək.</p>
-  <div class="card"><h3 style="margin:0 0 8px;font-size:20px">My first week at university</h3><div class="text" id="rText"></div></div>
+  <div class="card" style="background:var(--rdb);border-color:#cfe2fb"><h3 style="margin:0 0 8px;font-size:20px">My first week at university</h3><div class="text" id="rText"></div></div>
   <div class="tip" id="tip"></div>
   <h2 style="margin-top:22px">Suallar</h2>
   <div id="rQs"></div>
@@ -164,7 +224,7 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue2)}
 <main class="view" id="v-listening"><section class="band">
   <a class="back" href="#home">‹ Geri</a>
   <h2>Listening · Kafedə</h2>
-  <div class="card">
+  <div class="card" style="background:var(--lsb);border-color:#e0d4fb">
     <p style="margin:0">Dialoqu dinlə, sonra sualları cavabla. Əvvəlcə mətnə baxmadan dinləməyə çalış.</p>
     <div class="row"><button class="btn" id="play">▶ Dinlə</button><button class="btn ghost" id="slow">Yavaş</button></div>
     <button class="btn ghost" id="showTr">Transkripti göstər</button>
@@ -179,12 +239,12 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue2)}
 <main class="view" id="v-speaking"><section class="band">
   <a class="back" href="#home">‹ Geri</a>
   <h2>Speaking</h2>
-  <div class="card">
+  <div class="card" style="background:var(--spb);border-color:#fbd8c5">
     <div class="note" id="sCount" style="margin:0"></div>
     <div class="say" id="sEn"></div>
     <div style="color:var(--mut)" id="sAz"></div>
-    <div class="expl" id="sTip" style="font-size:15px"></div>
-    <div class="row"><button class="btn ghost" id="sHear">▶ Nümunəni dinlə</button><button class="btn" id="sMic">● Danış</button></div>
+    <div class="expl" id="sTip" style="font-size:15px;background:#fffaf6"></div>
+    <div class="row"><button class="btn ghost" id="sHear">▶ Nümunəni dinlə</button><button class="btn sun" id="sMic">● Danış</button></div>
     <div id="sOut" style="margin-top:14px"></div>
     <button class="btn ghost" id="sNext">Növbəti cümlə ›</button>
     <p class="note" id="sNote"></p>
@@ -195,7 +255,7 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue2)}
 <main class="view" id="v-writing"><section class="band">
   <a class="back" href="#home">‹ Geri</a>
   <h2>Writing</h2>
-  <div class="card">
+  <div class="card" style="background:var(--wrb);border-color:#c5ecd8">
     <p style="margin:0 0 10px;font-weight:800" id="wPrompt"></p>
     <textarea id="wIn" placeholder="Write here in English..."></textarea>
     <div class="note" id="wCount">0 söz</div>
@@ -205,12 +265,23 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue2)}
 </section></main>
 </div>
 
+<aside class="side" aria-label="Həftəlik liqa"><div class="league" id="boardD"></div></aside>
+</div>
+
 <nav class="tabs" aria-label="Bölmələr"><div id="tabs"></div></nav>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="sunI" viewBox="0 0 64 64"><g fill="#ffc94a"><path d="M32 2l5 12h-10zM32 62l-5-12h10zM2 32l12-5v10zM62 32l-12 5V27zM10.8 10.8l11.9 5-7 7zM53.2 53.2l-11.9-5 7-7zM10.8 53.2l5-11.9 7 7zM53.2 10.8l-5 11.9-7-7z"/></g><circle cx="32" cy="32" r="15" fill="#ff9f1c"/><circle cx="29" cy="29" r="9" fill="#ffc233"/></symbol>
+  <symbol id="sunOff" viewBox="0 0 64 64"><circle cx="32" cy="32" r="14" fill="#e9dcc0"/></symbol>
+  <symbol id="sunIce" viewBox="0 0 64 64"><circle cx="32" cy="32" r="16" fill="#bfe3ff"/><path d="M32 20v24M22 26l20 12M42 26L22 38" stroke="#fff" stroke-width="3" stroke-linecap="round"/></symbol>
+  <symbol id="starI" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z" fill="#ffc83d" stroke="#e0a400" stroke-width="1.2" stroke-linejoin="round"/></symbol>
+</svg>
 
 <script>
 {
 const IC={
 home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>',
+league:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M7 4h10v4a5 5 0 0 1-10 0zM7 6H4a3 3 0 0 0 3 4M17 6h3a3 3 0 0 1-3 4M12 13v4M8 21h8M9 17h6"/></svg>',
 reading:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M3 5h6a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H3zM21 5h-6a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h7z"/></svg>',
 listening:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="5" height="7" rx="2"/><rect x="16" y="14" width="5" height="7" rx="2"/></svg>',
 speaking:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>',
@@ -220,30 +291,47 @@ const $=id=>document.getElementById(id);
 const dkey=d=>d.toISOString().slice(0,10);
 const today=()=>{const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return dkey(d)};
 const shiftDay=(k,n)=>{const d=new Date(k+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+n);return dkey(d)};
+const weekStart=k=>{const d=new Date(k+'T12:00:00Z');return shiftDay(k,-((d.getUTCDay()+6)%7))};
+const ord=n=>{const l=n%10,t=n%100;let s;if(n%100===0)s='cü';else if(l===0)s={10:'cu',20:'ci',30:'cu',40:'cı',50:'ci',60:'cı',70:'ci',80:'ci',90:'cı'}[t];else s={1:'ci',2:'ci',3:'cü',4:'cü',5:'ci',6:'cı',7:'ci',8:'ci',9:'cu'}[l];return n+'-'+s};
+const COLORS=['#2f7de1','#7b56d6','#e0662f','#16956a','#d6336c','#0e9aa7'];
 
 /* ---------- state ---------- */
-const GOAL=50;
-let S;
-const load=()=>{try{S=JSON.parse(localStorage.getItem('addim')||'null')}catch(e){S=null}
-  if(!S){S={days:{},skills:{reading:0,listening:0,speaking:0,writing:0},quiz:{}};const t=today();[1,2,3].forEach(n=>S.days[shiftDay(t,-n)]=GOAL);save()}};
-const save=()=>{try{localStorage.setItem('addim',JSON.stringify(S))}catch(e){}};
-const addXP=(n,skill)=>{const t=today();S.days[t]=(S.days[t]||0)+n;if(skill)S.skills[skill]=Math.min(100,(S.skills[skill]||0)+n);save();renderHome()};
-const streak=()=>{let k=today(),n=0;if(!S.days[k])k=shiftDay(k,-1);while(S.days[k]){n++;k=shiftDay(k,-1)}return n};
+const GOAL=50;let S;
+const blank=()=>({days:{},freeze:0,frozen:{},skills:{reading:0,listening:0,speaking:0,writing:0},quiz:{},goalDone:{},me:null});
+const load=()=>{try{S=JSON.parse(localStorage.getItem('addim2')||'null')}catch(e){S=null}if(!S)S=blank();for(const k in blank())if(S[k]===undefined)S[k]=blank()[k]};
+const save=()=>{try{localStorage.setItem('addim2',JSON.stringify(S))}catch(e){}};
+const active=k=>S.days[k]>0||S.frozen[k];
+function applyFreeze(){const t=today(),y=shiftDay(t,-1),yy=shiftDay(t,-2);
+  if(!active(y)&&active(yy)&&S.freeze>0){S.freeze--;S.frozen[y]=1;save();sheet('Seriyan qorundu!','<p>Dünən dərs keçmədin, amma <b>seriya qoruyucusu</b> günəşini söndürməyə qoymadı. Bu gün bir dərs keç ki, seriya davam etsin.</p>')}}
+const streak=()=>{let k=today(),n=0;if(!active(k))k=shiftDay(k,-1);while(active(k)){if(S.days[k]>0)n++;k=shiftDay(k,-1)}return n};
+const weekXP=()=>{const ws=weekStart(today());let s=0;for(const k in S.days)if(k>=ws)s+=S.days[k];return s};
+function addXP(n,skill,el){
+  const t=today(),before=streak(),was=S.days[t]||0;S.days[t]=was+n;
+  if(skill)S.skills[skill]=Math.min(100,(S.skills[skill]||0)+n);
+  const st=streak();
+  if(st>before&&st%7===0&&S.freeze<2){S.freeze++;setTimeout(()=>sheet(st+' günlük seriya!','<p>Möhtəşəm! Hədiyyə olaraq <b>seriya qoruyucusu</b> qazandın: bir gün dərs buraxsan, seriyan sönməyəcək.</p>'),900)}
+  if(was<GOAL&&S.days[t]>=GOAL&&!S.goalDone[t]){S.goalDone[t]=1;confetti();}
+  save();renderHome();if(el)floatXP(el,n);syncSoon();
+}
+function floatXP(el,n){const r=el.getBoundingClientRect(),f=document.createElement('div');f.className='float';f.textContent='+'+n+' XP';f.style.left=(r.left+r.width/2-30)+'px';f.style.top=(r.top-10)+'px';document.body.appendChild(f);setTimeout(()=>f.remove(),1100);const p=$('xpTot').parentElement;p.classList.remove('pop');void p.offsetWidth;p.classList.add('pop')}
+function confetti(){const c=['#ffc83d','#ff9f1c','#2f7de1','#7b56d6','#16956a','#ef5d5d'];for(let i=0;i<60;i++){const d=document.createElement('div');d.className='conf';d.style.left=Math.random()*100+'vw';d.style.background=c[i%c.length];d.style.setProperty('--x',(Math.random()*160-80)+'px');d.style.setProperty('--r',(Math.random()*720)+'deg');d.style.setProperty('--d',(1.6+Math.random()*1.4)+'s');document.body.appendChild(d);setTimeout(()=>d.remove(),3200)}
+  setTimeout(()=>sheet('Günlük hədəf tamamlandı!','<p>Bu gün <b>50 XP</b> topladın. Günəşin parlayır — sabah da qayıt ki, seriyan böyüsün.</p>'),700)}
 
 /* ---------- home ---------- */
-const SK=[['reading','Reading','Oxu və anla'],['listening','Listening','Dinlə və anla'],['speaking','Speaking','Danış, tələffüzü yoxla'],['writing','Writing','Yaz, rəy al']];
+const SK=[['reading','Reading','Oxu və anla','--rd','--rdb'],['listening','Listening','Dinlə və anla','--ls','--lsb'],['speaking','Speaking','Danış, tələffüzü yoxla','--sp','--spb'],['writing','Writing','Yaz, rəy al','--wr','--wrb']];
 const WD=['B','B.e','Ç.a','Ç','C.a','C','Ş'];
 function renderHome(){
   const t=today(),xp=S.days[t]||0,st=streak();
-  $('streak').textContent=st;
-  $('best').textContent=xp>=GOAL?'Bugünkü hədəf tamamlandı':'Bu gün '+Math.max(0,GOAL-xp)+' XP qalıb';
-  $('xpTot').textContent=Object.values(S.days).reduce((a,b)=>a+b,0);
+  $('streak').textContent=st;$('stPill').textContent=st;
+  $('best').textContent=xp>=GOAL?'Bugünkü hədəf tamamlandı':xp>0?'Hədəfə '+(GOAL-xp)+' XP qalıb':st?'Bu gün dərs keç ki, seriya sönməsin':'İlk dərsini keç və günəşini yandır';
+  $('xpTot').textContent=weekXP();
   $('goalTxt').textContent=Math.min(xp,GOAL)+' / '+GOAL+' XP';
   $('goalBar').style.width=Math.min(100,xp/GOAL*100)+'%';
-  $('week').innerHTML=[6,5,4,3,2,1,0].map(n=>{const k=shiftDay(t,-n),d=new Date(k+'T12:00:00Z').getUTCDay();
-    return `<div class="day">${WD[d]}<div class="dot ${S.days[k]?'on':''} ${n===0?'today':''}">${S.days[k]?'<svg width="16" height="16" viewBox="0 0 24 24"><path d="M5 12l5 5 9-10" stroke="#14163a" stroke-width="3.5" fill="none" stroke-linecap="round"/></svg>':''}</div></div>`}).join('');
-  $('skills').innerHTML=SK.map(([id,n,d])=>`<a class="skill" href="#${id}" style="color:var(--ink)"><span style="color:var(--blue2)">${IC[id]}</span><b>${n}</b><span>${d}</span><div class="mini"><i style="width:${S.skills[id]||0}%"></i></div></a>`).join('');
-  const q=S.quiz[t];$('quizState').textContent=q?`Bu gün tamamlandı: ${q}/8 düzgün · yenidən keç`:'8 sual · hər düzgün cavab +10 XP';
+  $('week').innerHTML=[6,5,4,3,2,1,0].map(n=>{const k=shiftDay(t,-n),d=new Date(k+'T12:00:00Z').getUTCDay(),on=S.days[k]>0,fr=!on&&S.frozen[k];
+    return `<div class="day">${WD[d]}<div class="dot ${on||fr?'on':''} ${n===0?'today':''}">${on?'<svg viewBox="0 0 64 64"><use href="#sunI"/></svg>':fr?'<svg viewBox="0 0 64 64"><use href="#sunIce"/></svg>':''}</div></div>`}).join('');
+  $('skills').innerHTML=SK.map(([id,n,d,c,b])=>`<a class="skill" href="#${id}" style="background:var(${b})"><div class="ic" style="color:var(${c})">${IC[id]}</div><b>${n}</b><span>${d}</span><div class="mini"><i style="width:${S.skills[id]||0}%;background:var(${c})"></i></div></a>`).join('');
+  const q=S.quiz[t];$('quizState').textContent=q!=null?`Bu gün: ${q}/8 düzgün · yenidən keç`:'8 sual · hər düzgün cavab +10 XP';
+  $('freezeNote').textContent=S.freeze?`Seriya qoruyucusu: ${S.freeze} ədəd — bir gün buraxsan, seriyan sönməz.`:'Hər 7 günlük seriyada seriya qoruyucusu qazanırsan.';
 }
 
 /* ---------- quiz ---------- */
@@ -264,30 +352,30 @@ const BANK=[
 ["«Həftəsonu» ingiliscə necədir?",["weekend","weekday","week","holiday"],"Weekend — həftəsonu, weekday — iş günü, holiday — bayram / tətil."]];
 const seeded=(seed)=>()=>{seed=(seed*9301+49297)%233280;return seed/233280};
 const shuffle=(a,r=Math.random)=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
-let QZ=[],qi=0,qok=0;
-function startQuiz(){const r=seeded(+today().replace(/-/g,''));QZ=shuffle(BANK,r).slice(0,8).map(([q,o,e])=>({q,a:o[0],o:shuffle(o),e}));qi=0;qok=0;location.hash='quiz';showQ()}
+let QZ=[],qi=0,qok=0,qStreak=0;
+function startQuiz(){const r=seeded(+today().replace(/-/g,''));QZ=shuffle(BANK,r).slice(0,8).map(([q,o,e])=>({q,a:o[0],o:shuffle(o),e}));qi=0;qok=0;qStreak=0;location.hash='quiz';showQ()}
 function showQ(){
   $('qBar').style.width=(qi/QZ.length*100)+'%';
   if(qi>=QZ.length){S.quiz[today()]=qok;save();renderHome();
-    $('quizBox').innerHTML=`<div class="res"><div class="score">${qok}/${QZ.length}</div><h2 style="margin-top:12px">${qok>=6?'Əla nəticə!':'Yaxşı başlanğıc!'}</h2><p>+${qok*10} XP qazandın. Sabah yeni suallar olacaq — seriyanı qırma.</p><a class="btn" style="display:block;text-decoration:none" href="#home">Ana səhifəyə qayıt</a></div>`;return}
+    $('quizBox').innerHTML=`<div class="res"><svg width="72" height="72" viewBox="0 0 24 24"><use href="#starI"/></svg><div class="score">${qok}/${QZ.length}</div><h2 style="margin-top:12px">${qok>=7?'Əla nəticə!':qok>=5?'Yaxşı iş!':'Yaxşı başlanğıc!'}</h2><p>+${qok*10} XP qazandın. Sabah yeni suallar olacaq.</p><a class="btn" href="#league">Liqada yerimə bax</a><a class="btn ghost" href="#home">Ana səhifə</a></div>`;return}
   const it=QZ[qi];
-  $('quizBox').innerHTML=`<div class="note" style="margin:0 0 6px">Sual ${qi+1} / ${QZ.length}</div><p class="q">${esc(it.q)}</p><div class="opts">${it.o.map((o,i)=>`<button class="opt" data-i="${i}">${esc(o)}</button>`).join('')}</div><div id="qEx"></div>`;
+  $('quizBox').innerHTML=`<div class="note" style="margin:0 0 6px">Sual ${qi+1} / ${QZ.length}${qStreak>=2?' · <b style="color:var(--sun)">'+qStreak+' ardıcıl düzgün!</b>':''}</div><p class="q">${esc(it.q)}</p><div class="opts">${it.o.map((o,i)=>`<button class="opt" data-i="${i}">${esc(o)}</button>`).join('')}</div><div id="qEx"></div>`;
   $('quizBox').querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
-    const ok=it.o[+b.dataset.i]===it.a;if(ok){qok++;addXP(10)}
+    const ok=it.o[+b.dataset.i]===it.a;if(ok){qok++;qStreak++;addXP(10,null,b)}else qStreak=0;
     $('quizBox').querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(it.o[+x.dataset.i]===it.a)x.classList.add('right')});
     if(!ok)b.classList.add('wrong');
-    $('qEx').innerHTML=`<div class="expl"><b style="color:${ok?'var(--ok)':'var(--coral)'}">${ok?'Düzgündür! +10 XP':'Düzgün cavab: '+esc(it.a)}</b>${esc(it.e)}</div><button class="btn" id="qNext">${qi+1<QZ.length?'Davam et':'Nəticəni gör'}</button>`;
-    $('qNext').onclick=()=>{qi++;showQ()};$('qNext').focus();
+    $('qEx').innerHTML=`<div class="expl"><b style="color:${ok?'var(--ok)':'var(--coral)'}">${ok?['Düzgündür!','Əla!','Bravo!','Tam doğru!'][qi%4]+' +10 XP':'Düzgün cavab: '+esc(it.a)}</b>${esc(it.e)}</div><button class="btn" id="qNext">${qi+1<QZ.length?'Davam et':'Nəticəni gör'}</button>`;
+    $('qNext').onclick=()=>{qi++;showQ()};$('qNext').focus({preventScroll:true});
   });
 }
 $('startQuiz').onclick=startQuiz;
 
-/* ---------- shared MCQ block ---------- */
+/* ---------- shared MCQ ---------- */
 function mcq(box,qs,skill){
   box.innerHTML=qs.map((q,n)=>`<div class="card" style="margin-bottom:12px"><p class="q" style="font-size:18px">${n+1}. ${esc(q[0])}</p><div class="opts" data-n="${n}">${shuffle(q[1]).map(o=>`<button class="opt" data-v="${esc(o)}">${esc(o)}</button>`).join('')}</div><div class="ex"></div></div>`).join('');
   box.querySelectorAll('.opts').forEach(g=>{const q=qs[+g.dataset.n];g.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
     const ok=b.dataset.v===q[1][0];g.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(x.dataset.v===q[1][0])x.classList.add('right')});
-    if(!ok)b.classList.add('wrong');else addXP(5,skill);
+    if(!ok)b.classList.add('wrong');else addXP(5,skill,b);
     g.nextElementSibling.innerHTML=`<div class="expl"><b style="color:${ok?'var(--ok)':'var(--coral)'}">${ok?'Düzgün! +5 XP':'Diqqət:'}</b>${esc(q[2])}</div>`})})
 }
 
@@ -309,7 +397,8 @@ let TTS=null;
 const speakFallback=(lines,rate)=>new Promise(res=>{const ss=window.speechSynthesis;if(!ss)return res(false);ss.cancel();lines.forEach((l,i)=>{const u=new SpeechSynthesisUtterance(l.text);u.lang='en-US';u.rate=rate;if(i===lines.length-1)u.onend=()=>res(true);ss.speak(u)})});
 async function speak(lines,rate=1){
   if(TTS){try{await TTS.speak(lines.map(l=>({text:l.text,voice:l.voice||'buttery',language:'en',rate})));return}catch(e){if(e&&e.code==='busy')return}}
-  if(!(await speakFallback(lines,rate))&&!window.speechSynthesis)$('lNote').textContent='Bu brauzerdə səsləndirmə işləmir. Transkripti oxu.';
+  if(!window.speechSynthesis){$('lNote').textContent='Bu brauzerdə səsləndirmə işləmir. Transkripti oxu.';return}
+  await speakFallback(lines,rate);
 }
 $('play').onclick=()=>speak(DLG.map(l=>({text:l[1],voice:l[2]})),1);
 $('slow').onclick=()=>speak(DLG.map(l=>({text:l[1],voice:l[2]})),0.75);
@@ -329,14 +418,14 @@ const norm=s=>s.toLowerCase().replace(/[^a-z' ]/g,' ').split(/\s+/).filter(Boole
 function showS(){const s=SP[si];$('sCount').textContent=`Cümlə ${si+1} / ${SP.length}`;$('sEn').textContent=s[0];$('sAz').textContent=s[1];$('sTip').textContent='Tələffüz məsləhəti: '+s[2];$('sOut').innerHTML='';heard=''}
 function grade(){const tgt=norm(SP[si][0]),got=new Set(norm(heard));let hit=0;
   const toks=tgt.map(w=>{const ok=got.has(w);if(ok)hit++;return `<span class="tok ${ok?'hit':'miss'}">${esc(w)}</span>`}).join('');
-  const pct=Math.round(hit/tgt.length*100);if(pct>=80)addXP(10,'speaking');
+  const pct=Math.round(hit/tgt.length*100);if(pct>=80)addXP(10,'speaking',$('sMic'));
   $('sOut').innerHTML=`<div style="display:flex;gap:14px;align-items:center"><div class="score">${pct}%</div><div>${pct>=80?'Əla! +10 XP':'Qırmızı sözləri bir də dinlə və təkrar et.'}</div></div><div style="margin-top:10px">${toks}</div><p class="note">Eşidilən: «${esc(heard)}»</p>`}
 $('sHear').onclick=()=>speak([{text:SP[si][0]}],0.9);
 $('sNext').onclick=()=>{si=(si+1)%SP.length;showS()};
 $('sMic').onclick=()=>{
-  if(!DIC){$('sNote').textContent='Mikrofonla yoxlama bu brauzerdə dəstəklənmir — Chrome-da aç. Burada nümunəni dinləyib ucadan təkrar edə bilərsən.';return}
+  if(!DIC){$('sNote').textContent='Mikrofonla yoxlama bu brauzerdə dəstəklənmir — Chrome-da aç. Nümunəni dinləyib ucadan təkrar edə bilərsən.';return}
   if($('sMic').dataset.on){DIC.stop().catch(()=>{});return}
-  heard='';$('sOut').innerHTML='<p class="note">Dinləyirəm… cümləni oxu, sonra düyməyə yenidən bas.</p>';
+  heard='';$('sOut').innerHTML='<p class="note">Dinləyirəm… cümləni oxu.</p>';
   DIC.start().catch(e=>{$('sNote').textContent=e&&e.code==='not_granted'?'Mikrofona icazə verilmədi.':'Mikrofon başlamadı, yenidən cəhd et.'});
 };
 showS();
@@ -350,33 +439,76 @@ $('wIn').oninput=()=>{const n=$('wIn').value.trim().split(/\s+/).filter(Boolean)
 $('wCheck').onclick=async()=>{
   const txt=$('wIn').value.trim();
   if(txt.split(/\s+/).length<5){$('wOut').innerHTML='<p class="note">Ən azı 1–2 cümlə yaz, sonra yoxla.</p>';return}
-  if(!SAMPLE){$('wOut').innerHTML='<p class="note">Süni intellekt ilə avtomatik yoxlama növbəti versiyada əlavə olunacaq. Hələlik mətnini düzəldilmiş nümunə ilə müqayisə etmək üçün müəlliminə göndərə bilərsən.</p>';return}
+  if(!SAMPLE){$('wOut').innerHTML='<p class="note">Süni intellekt ilə avtomatik yoxlama növbəti versiyada əlavə olunacaq.</p>';return}
   $('wCheck').disabled=true;$('wOut').innerHTML='<p class="note">Yoxlanılır…</p>';
   try{
-    const r=await SAMPLE.json(`You are an English teacher for Azerbaijani-speaking learners. Task given to the learner: "${WP[wi]}". Learner's text is below between <text> tags. Return ONLY JSON: {"level":"estimated CEFR level like A2","corrected":"the full corrected English text","mistakes":[{"wrong":"exact wrong fragment","right":"correction","why":"short explanation IN AZERBAIJANI (Latin script)"}],"praise":"one sentence in Azerbaijani on what was good","tip":"one concrete next-step tip in Azerbaijani"}. Max 6 mistakes, most important first. If no mistakes, return an empty list.\n<text>${txt}</text>`,{modelTier:'quick'});
+    const r=await SAMPLE.json(`You are an English teacher for Azerbaijani-speaking learners. Task given to the learner: "${WP[wi]}". Learner's text is below between <text> tags. Return ONLY JSON: {"level":"estimated CEFR level like A2","corrected":"the full corrected English text","mistakes":[{"wrong":"exact wrong fragment","right":"correction","why":"short explanation IN AZERBAIJANI (Latin script)"}],"praise":"one sentence in Azerbaijani on what was good","tip":"one concrete next-step tip in Azerbaijani"}. Max 6 mistakes, most important first.\n<text>${txt}</text>`,{modelTier:'quick'});
     const m=Array.isArray(r.mistakes)?r.mistakes:[];
-    $('wOut').innerHTML=`<div style="display:flex;gap:14px;align-items:center"><div class="score">${esc(r.level||'—')}</div><div>${esc(r.praise||'')}</div></div>
-      ${m.length?'<h3 style="margin:16px 0 4px">Səhvlər</h3>'+m.map(x=>`<div class="mist"><s>${esc(x.wrong)}</s> → <ins>${esc(x.right)}</ins><div style="font-size:15px">${esc(x.why)}</div></div>`).join(''):'<p><b>Səhv tapılmadı — əla!</b></p>'}
-      <h3 style="margin:16px 0 4px">Düzəldilmiş mətn</h3><div class="expl" style="margin:0">${esc(r.corrected||'')}</div>
-      <p><b>Növbəti addım:</b> ${esc(r.tip||'')}</p><p class="note">Rəy süni intellekt tərəfindən hazırlanır və təxminidir. Səviyyə qiymətləndirməsi rəsmi CEFR nəticəsi deyil.</p>`;
-    addXP(15,'writing');
-  }catch(e){$('wOut').innerHTML=`<p class="note">${e&&e.code==='rate_limited'?'Çox sorğu göndərildi, bir az sonra yenidən cəhd et.':e&&e.code==='not_granted'?'Süni intellekt rəyinə icazə verilmədi.':'Yoxlama alınmadı, yenidən cəhd et.'}</p>`}
+    $('wOut').innerHTML=`<div style="display:flex;gap:14px;align-items:center"><div class="score">${esc(r.level||'—')}</div><div>${esc(r.praise||'')}</div></div>${m.length?'<h3 style="margin:16px 0 4px">Səhvlər</h3>'+m.map(x=>`<div class="mist"><s>${esc(x.wrong)}</s> → <ins>${esc(x.right)}</ins><div style="font-size:15px">${esc(x.why)}</div></div>`).join(''):'<p><b>Səhv tapılmadı — əla!</b></p>'}<h3 style="margin:16px 0 4px">Düzəldilmiş mətn</h3><div class="expl" style="margin:0">${esc(r.corrected||'')}</div><p><b>Növbəti addım:</b> ${esc(r.tip||'')}</p><p class="note">Rəy təxminidir, rəsmi CEFR nəticəsi deyil.</p>`;
+    addXP(15,'writing',$('wCheck'));
+  }catch(e){$('wOut').innerHTML='<p class="note">Yoxlama alınmadı, yenidən cəhd et.</p>'}
   $('wCheck').disabled=false;
 };
 
-/* ---------- routing ---------- */
-const VIEWS=['home','quiz','reading','listening','speaking','writing'];
-$('tabs').innerHTML=[['home','Bu gün'],['reading','Reading'],['listening','Listening'],['speaking','Speaking'],['writing','Writing']].map(([k,n])=>`<a href="#${k}" data-k="${k}">${IC[k]}<span>${n}</span></a>`).join('');
-function route(){let v=location.hash.slice(1);if(!VIEWS.includes(v))v='home';if(v==='quiz'&&!QZ.length){startQuiz();return}
-  VIEWS.forEach(k=>$('v-'+k).classList.toggle('on',k===v));
-  document.querySelectorAll('#tabs a').forEach(a=>a.classList.toggle('on',a.dataset.k===v||(v==='quiz'&&a.dataset.k==='home')));window.scrollTo(0,0)}
-addEventListener('hashchange',route);
-$('reset').onclick=()=>{try{localStorage.removeItem('addim')}catch(e){}load();renderHome()};
-const h=new Date().getHours();$('greet').textContent=(h<12?'Sabahın xeyir!':h<18?'Salam!':'Axşamın xeyir!')+' Bu gün də bir addım at.';
-load();renderHome();route();
+/* ---------- league ---------- */
+let BOARD=null,boardErr=false,syncT=null;
+const daysLeft=()=>{const d=new Date(today()+'T12:00:00Z').getUTCDay();return d===0?0:7-d};
+const avatar=(name,ci,me)=>`<div class="av" style="background:${COLORS[ci%COLORS.length]||COLORS[0]}">${esc((name||'?').trim().charAt(0).toUpperCase())}</div>`;
+function renderBoard(el){
+  const left=daysLeft(),head=`<div class="lhead"><h2>Həftəlik liqa</h2><span>${left?left+' gün qalıb':'bu gün bitir'}</span></div>`;
+  if(!S.me){el.innerHTML=head+`<p style="margin:12px 0 0">Bu həftə ən çox XP toplayanlar burada görünür. Qoşul və adını cədvəldə gör!</p><button class="btn sun" data-join>Liqaya qoşul</button><p class="note">Hər bazar ertəsi liqa sıfırlanır — hər kəs yenidən başlayır.</p>`;el.querySelector('[data-join]').onclick=askName;return}
+  if(!BOARD){el.innerHTML=head+`<p class="note">${boardErr?'Liqaya qoşulmaq üçün internet lazımdır. Bir az sonra yenidən yoxla.':'Yüklənir…'}</p>`;return}
+  const top=BOARD.top||[],pod=[top[1],top[0],top[2]],cls=['p2','p1','p3'],num=[2,1,3];
+  const podium=top.length?`<div class="podium">${pod.map((p,i)=>p?`<div class="pod ${cls[i]}">${avatar(p.name,p.color)}<div class="nm">${esc(p.name)}${p.me?' (sən)':''}</div><div class="xp">${p.xp} XP</div><div class="blk">${num[i]}</div></div>`:'<div></div>').join('')}</div>`:'';
+  const rest=top.slice(3).map((p,i)=>`<div class="lrow ${p.me?'me':''}"><span class="rk">${i+4}</span>${avatar(p.name,p.color)}<span class="nm">${esc(p.name)}${p.me?' (sən)':''}</span><span class="xp">${p.xp} XP</span></div>`).join('');
+  const me=BOARD.me,inTop=top.some(p=>p.me);
+  const meRow=me&&!inTop?`<div class="lrow me"><span class="rk">${me.rank}</span>${avatar(S.me.name,S.me.color)}<span class="nm">${esc(S.me.name)} (sən)</span><span class="xp">${me.xp} XP</span></div>`:'';
+  let msg='';
+  if(me&&me.xp===0)msg='Bu həftə hələ XP toplamamısan. Günün quizi ilə başla — 80 XP-yə qədər!';
+  else if(me&&me.rank===1)msg='Liderlik səndədir! Yerini qorumaq üçün hər gün qayıt.';
+  else if(me&&BOARD.above)msg=`${BOARD.above.xp-me.xp+1} XP qazan və ${ord(me.rank-1)} yerə qalx.`;
+  el.innerHTML=head+podium+rest+meRow+(msg?`<div class="lmsg">${esc(msg)}</div>`:'')+`<p class="note">Bu həftə ${BOARD.total} iştirakçı · <button class="w" data-edit>Adımı dəyiş</button></p>`;
+  el.querySelector('[data-edit]').onclick=askName;
+}
+function renderBoards(){renderBoard($('boardD'));renderBoard($('boardM'));
+  const n=$('nudgeM');if(!S.me){n.innerHTML=`${IC.league}<span><b>Həftəlik liqaya qoşul</b> — digər öyrənənlərlə yarış</span>`}else if(BOARD&&BOARD.me){n.innerHTML=`${IC.league}<span>Liqada <b>${ord(BOARD.me.rank)} yerdəsən</b> · ${BOARD.me.xp} XP</span>`}else n.innerHTML=`${IC.league}<span>Həftəlik liqa</span>`}
+async function sync(){
+  if(!S.me)return renderBoards();
+  try{const r=await fetch('/api/board',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({id:S.me.id,name:S.me.name,color:S.me.color,xp:weekXP()})});
+    if(!r.ok)throw 0;BOARD=await r.json();boardErr=false}catch(e){boardErr=true}
+  renderBoards();
+}
+const syncSoon=()=>{clearTimeout(syncT);syncT=setTimeout(sync,1200)};
+function askName(){
+  let col=S.me?S.me.color:Math.floor(Math.random()*COLORS.length);
+  sheet(S.me?'Adını dəyiş':'Liqaya qoşul',`<p style="margin-top:0">Cədvəldə görünəcək adı yaz. Ləqəb də ola bilər.</p><input type="text" id="nmIn" maxlength="20" placeholder="Məs: Nigar" value="${esc(S.me?S.me.name:'')}" autocomplete="nickname"><div class="swatches" id="sws">${COLORS.map((c,i)=>`<button class="sw" style="background:${c}" data-c="${i}" aria-label="Rəng ${i+1}" aria-pressed="${i===col}"></button>`).join('')}</div><p class="note" id="nmErr"></p>`,
+   `<button class="btn sun" id="nmSave">Yadda saxla</button><button class="btn ghost" id="shClose2">Sonra</button>`);
+  $('sws').onclick=e=>{const b=e.target.closest('.sw');if(!b)return;col=+b.dataset.c;$('sws').querySelectorAll('.sw').forEach(x=>x.setAttribute('aria-pressed',x===b))};
+  $('shClose2').onclick=closeSheet;$('nmIn').focus();
+  $('nmSave').onclick=()=>{const v=$('nmIn').value.trim().replace(/\s+/g,' ');if(v.length<2){$('nmErr').textContent='Ən azı 2 hərf yaz.';return}
+    S.me={id:S.me?S.me.id:(crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2)),name:v,color:col};save();closeSheet();BOARD=null;renderBoards();sync()};
+}
 
-/* ---------- PWA: offline + install ---------- */
-if('serviceWorker' in navigator&&location.protocol!=='file:')addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+/* ---------- sheet ---------- */
+function sheet(title,html,btns){$('shT').textContent=title;$('shBody').innerHTML=html;$('shBtns').innerHTML=btns||'<button class="btn" id="shClose">Başa düşdüm</button>';const c=$('shClose');if(c)c.onclick=closeSheet;$('sheet').classList.add('on')}
+const closeSheet=()=>$('sheet').classList.remove('on');
+$('sheet').onclick=e=>{if(e.target.id==='sheet')closeSheet()};
+addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet()});
+
+/* ---------- routing ---------- */
+const VIEWS=['home','league','quiz','reading','listening','speaking','writing'];
+$('tabs').innerHTML=[['home','Bu gün'],['league','Liqa'],['reading','Reading'],['listening','Listening'],['speaking','Speaking'],['writing','Writing']].map(([k,n])=>`<a href="#${k}" data-k="${k}">${IC[k]}<span>${n}</span></a>`).join('');
+function route(){let v=location.hash.slice(1);if(!VIEWS.includes(v))v='home';if(v==='quiz'&&!QZ.length){startQuiz();return}
+  if(v==='league'&&matchMedia('(min-width:1000px)').matches)v='home';
+  VIEWS.forEach(k=>$('v-'+k).classList.toggle('on',k===v));
+  document.querySelectorAll('#tabs a').forEach(a=>a.classList.toggle('on',a.dataset.k===v||(v==='quiz'&&a.dataset.k==='home')));
+  if(v==='league')sync();window.scrollTo(0,0)}
+addEventListener('hashchange',route);
+const h=new Date().getHours();$('greet').textContent=(h<12?'Sabahın xeyir!':h<18?'Salam!':'Axşamın xeyir!')+' Bu gün də bir addım at.';
+load();applyFreeze();renderHome();route();sync();
+
+/* ---------- PWA ---------- */
+if('serviceWorker' in navigator&&location.protocol==='https:')addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 const isStandalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
 const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 let deferred=null,dismissed=false;
@@ -385,35 +517,28 @@ const showBar=()=>{if(!isStandalone&&!dismissed)$('install').hidden=false};
 addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;showBar()});
 addEventListener('appinstalled',()=>{$('install').hidden=true;deferred=null});
 if(isIOS||matchMedia('(max-width:820px)').matches)showBar();
-const sheet=(html)=>{$('shBody').innerHTML=html;$('sheet').classList.add('on');$('shClose').focus()};
-$('shClose').onclick=()=>$('sheet').classList.remove('on');
-$('sheet').onclick=e=>{if(e.target.id==='sheet')$('sheet').classList.remove('on')};
 $('hideInst').onclick=()=>{$('install').hidden=true;try{sessionStorage.setItem('addim-inst','x')}catch(e){}};
 $('getApp').onclick=async()=>{
   if(deferred){deferred.prompt();const c=await deferred.userChoice.catch(()=>null);if(c&&c.outcome==='accepted')$('install').hidden=true;deferred=null;return}
-  if(isIOS)sheet('<ol><li>Aşağıdakı <b>Paylaş</b> düyməsinə toxun (kvadrat və yuxarı ox).</li><li><b>«Ana ekrana əlavə et»</b> (Add to Home Screen) seç.</li><li><b>Əlavə et</b> düyməsinə bas — Addım ikonu ana ekranda görünəcək.</li></ol><p class="note">iPhone-da bu, Safari brauzerində işləyir.</p>');
-  else sheet('<ol><li>Brauzerin menyusunu aç (yuxarıda <b>⋮</b> üç nöqtə).</li><li><b>«Tətbiqi quraşdır»</b> və ya <b>«Ana ekrana əlavə et»</b> seç.</li><li>Təsdiqlə — Addım ikonu ana ekranda görünəcək.</li></ol><p class="note">Ən yaxşı nəticə Chrome brauzerində olur.</p>');
+  if(isIOS)sheet('Tətbiqi telefona əlavə et','<ol><li>Aşağıdakı <b>Paylaş</b> düyməsinə toxun (kvadrat və yuxarı ox).</li><li><b>«Ana ekrana əlavə et»</b> (Add to Home Screen) seç.</li><li><b>Əlavə et</b> düyməsinə bas — Addım ikonu ana ekranda görünəcək.</li></ol><p class="note">iPhone-da bu, Safari brauzerində işləyir.</p>');
+  else sheet('Tətbiqi telefona əlavə et','<ol><li>Brauzerin menyusunu aç (yuxarıda <b>⋮</b> üç nöqtə).</li><li><b>«Tətbiqi quraşdır»</b> və ya <b>«Ana ekrana əlavə et»</b> seç.</li><li>Təsdiqlə — Addım ikonu ana ekranda görünəcək.</li></ol><p class="note">Ən yaxşı nəticə Chrome brauzerində olur.</p>');
 };
 
-/* ---------- browser speech recognition (outside Claude) ---------- */
+/* ---------- speech recognition ---------- */
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-function nativeDictation(){
-  const cb={p:()=>{},f:()=>{},s:()=>{}};let rec=null;
+function nativeDictation(){const cb={p:()=>{},f:()=>{},s:()=>{}};let rec=null;
   return{onPartial:f=>cb.p=f,onFinal:f=>cb.f=f,onState:f=>cb.s=f,
     start(){rec=new SR();rec.lang='en-US';rec.interimResults=true;rec.continuous=false;
       rec.onresult=e=>{let part='';for(let i=e.resultIndex;i<e.results.length;i++){const r=e.results[i];if(r.isFinal)cb.f({text:r[0].transcript});else part+=r[0].transcript}if(part)cb.p({text:part})};
       rec.onend=()=>cb.s({state:'idle',reason:'stopped'});
       return new Promise((res,rej)=>{rec.onstart=()=>{cb.s({state:'listening'});res()};rec.onerror=e=>{cb.s({state:'idle',reason:e.error});rej({code:e.error==='not-allowed'?'not_granted':e.error})};rec.start()})},
-    stop(){if(rec)rec.stop();return Promise.resolve()}}
-}
+    stop(){if(rec)rec.stop();return Promise.resolve()}}}
 function wireDictation(d){DIC=d;
   d.onPartial(({text})=>{$('sOut').innerHTML=`<p class="note">${esc(heard+' '+text)}</p>`});
   d.onFinal(({text})=>{heard=(heard+' '+text).trim()});
   d.onState(({state})=>{const on=state==='listening';if(on)$('sMic').dataset.on='1';else delete $('sMic').dataset.on;$('sMic').textContent=on?'■ Dayandır':'● Danış';if(!on&&heard)grade()});
 }
 if(SR)wireDictation(nativeDictation());
-
-/* ---------- Claude capabilities (only inside Claude) ---------- */
 if(window.claude&&claude.use){
   claude.use('tts').then(t=>{TTS=t}).catch(()=>{});
   claude.use('sample').then(s=>{SAMPLE=s}).catch(()=>{});

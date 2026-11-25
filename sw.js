@@ -1,5 +1,5 @@
 // Addım service worker: tətbiqi oflayn işlədir
-const CACHE = 'addim-v1';
+const CACHE = 'addim-v2';
 const FILES = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
@@ -10,12 +10,13 @@ self.addEventListener('activate', e => {
   e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
 });
 
-// Əvvəl şəbəkə (yeni versiya üçün), alınmasa yaddaşdakı nüsxə
+// Əvvəl şəbəkə (yeni versiya üçün), alınmasa yaddaşdakı nüsxə. Liqa API-si heç vaxt keşlənmir.
 self.addEventListener('fetch', e => {
-  if (e.request.method !== 'GET') return;
+  const url = new URL(e.request.url);
+  if (e.request.method !== 'GET' || url.pathname.startsWith('/api/')) return;
   e.respondWith(
     fetch(e.request).then(r => {
-      if (r.ok && new URL(e.request.url).origin === location.origin) {
+      if (r.ok && url.origin === location.origin) {
         const copy = r.clone();
         caches.open(CACHE).then(c => c.put(e.request, copy));
       }
