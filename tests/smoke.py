@@ -104,7 +104,42 @@ with sync_playwright() as p:
     a.click('#gen'); a.wait_for_timeout(700)
     check('kod yaradıldı', a.locator('#out .code').count() == 1)
 
-    print('6. JS xətaları')
+    print('6. Səsləndirmə: dayandırma və səs seçimi')
+    # real telefondakı kimi: səs uzun davam edir, cancel() onu dayandırır
+    FAKE_TTS = '''(()=>{const ss={_q:[],paused:false,speaking:false,
+      speak(u){this._q.push(u);this.speaking=true},
+      cancel(){const q=this._q;this._q=[];this.speaking=false;q.forEach(u=>u.onerror&&u.onerror({}))},
+      getVoices(){return [{name:'Samantha (Enhanced)',lang:'en-US'},{name:'Daniel',lang:'en-GB'}]},
+      addEventListener(){},resume(){},pause(){}};
+      Object.defineProperty(window,'speechSynthesis',{value:ss,configurable:true})})()'''
+    m.context.close()
+    m = page('android_chrome'); m.add_init_script(FAKE_TTS)
+    m.goto(BASE + '/'); m.wait_for_timeout(500)
+    if m.locator('#ptA1').count(): m.click('#ptA1'); m.wait_for_timeout(400)
+    m.evaluate("location.hash='listening'"); m.wait_for_timeout(300)
+    m.click('#play'); m.wait_for_timeout(150)
+    check('dinləmə başlayanda düymə «Dayandır» olur', 'Dayandır' in m.locator('#play').inner_text())
+    m.click('#play'); m.wait_for_timeout(150)
+    check('ikinci toxunuş səsi dayandırır', 'Dayandır' not in m.locator('#play').inner_text())
+    m.click('#slow'); m.wait_for_timeout(100); m.click('#play'); m.wait_for_timeout(100)
+    check('başqa səs başlayanda əvvəlki dayanır', 'Dayandır' not in m.locator('#slow').inner_text() and 'Dayandır' in m.locator('#play').inner_text())
+    m.evaluate("location.hash='home'"); m.wait_for_timeout(200)
+    check('səhifə dəyişəndə səs dayanır', m.evaluate("document.querySelectorAll('.playing').length") == 0)
+    m.evaluate("location.hash='profile'"); m.wait_for_timeout(300)
+    check('profildə səs bölməsi var', 'Səsləndirmə səsi' in m.locator('#voiceCard').inner_text())
+    check('ən təbii səs ilk seçilib (★)', 'Samantha' in m.locator('#vSel').input_value())
+    m.evaluate("location.hash='course'"); m.wait_for_timeout(200); m.click('#units .node:not(.lock) >> nth=0'); m.wait_for_timeout(200)
+    for _ in range(12):
+        if m.locator('#lPlay').count(): break
+        close_overlays(m)
+        if m.locator('#lNext').count() and m.locator('#lNext').is_visible(): m.click('#lNext'); continue
+        if m.locator('#oBank').count(): m.click('#oBank .chip >> nth=0'); m.click('#oChk'); continue
+        if m.locator('#lBox .opt').count(): m.click('#lBox .opt >> nth=0'); continue
+    check('dərsdə dinləmə avtomatik başlayır (dayandır ikonu)', m.locator('#lPlay.playing').count() == 1)
+    m.click('#lPlay'); m.wait_for_timeout(100)
+    check('dərsdə dinləməni dayandırmaq olur', m.locator('#lPlay.playing').count() == 0)
+
+    print('7. JS xətaları')
     check('heç bir JavaScript xətası yoxdur', not errs, '; '.join(errs[:3]))
     b.close()
 

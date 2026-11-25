@@ -232,6 +232,8 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 .fb b{display:block;font-size:18px}.fb .btn{margin-top:10px}
 .bigplay{width:96px;height:96px;border-radius:28px;border:0;background:var(--lsb);color:var(--ls);display:grid;place-items:center;margin:8px auto 18px;cursor:pointer;box-shadow:0 5px 0 #d6c8fb}
 .bigplay svg{width:48px;height:48px}
+.bigplay.playing,.spk.playing{background:#ffe1d6;color:var(--coral);box-shadow:0 5px 0 #f6b9a6}
+.btn.playing{background:var(--coral);color:#fff;box-shadow:0 4px 0 #c94545;border-color:transparent}
 @media(min-width:1000px){.fb{bottom:16px}}
 .float{position:fixed;font-weight:900;color:var(--star);font-size:22px;pointer-events:none;z-index:40;text-shadow:0 1px 0 #fff}
 .conf{position:fixed;top:-10px;width:10px;height:14px;border-radius:3px;z-index:50;pointer-events:none}
@@ -304,7 +306,7 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 
 <!-- PROFILE STUDIO -->
 <main class="view" id="v-profile"><section class="band studio" id="pBox"></section>
-  <section class="band" style="padding-top:0"><div class="card" id="pInstallCard" style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px"><span><b>Tətbiqi telefona yüklə</b><span class="lim">Ana ekrandan bir toxunuşla aç</span></span><button class="btn sun" id="pInstall" style="width:auto;margin:0">Yüklə</button></div><div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:12px"><span><b>Səs effektləri</b><span class="lim">Toxunuş, düzgün cavab, XP səsləri</span></span><button class="pill" id="sndBtn" aria-label="Səs effektləri"></button></div><p class="note">Tətbiqi yaxşılaşdırmaq üçün anonim istifadə statistikası toplanır: neçə dərs keçildiyi, hansı səviyyə seçildiyi. Adın, e-poçtun və ya şəxsi məlumatın toplanmır.</p></section>
+  <section class="band" style="padding-top:0"><div class="card" id="pInstallCard" style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px"><span><b>Tətbiqi telefona yüklə</b><span class="lim">Ana ekrandan bir toxunuşla aç</span></span><button class="btn sun" id="pInstall" style="width:auto;margin:0">Yüklə</button></div><div class="card" id="voiceCard" style="margin-bottom:12px"></div><div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:12px"><span><b>Səs effektləri</b><span class="lim">Toxunuş, düzgün cavab, XP səsləri</span></span><button class="pill" id="sndBtn" aria-label="Səs effektləri"></button></div><p class="note">Tətbiqi yaxşılaşdırmaq üçün anonim istifadə statistikası toplanır: neçə dərs keçildiyi, hansı səviyyə seçildiyi. Adın, e-poçtun və ya şəxsi məlumatın toplanmır.</p></section>
 </main>
 
 <!-- PREMIUM -->
@@ -543,14 +545,33 @@ const DLG=[["Customer","Hi! Can I have a coffee, please?","airy"],["Barista","Su
 $('tr').innerHTML=DLG.map(l=>`<div class="line"><b>${esc(l[0])}</b><span>${esc(l[1])}</span></div>`).join('');
 $('showTr').onclick=()=>{$('tr').hidden=!$('tr').hidden;$('showTr').textContent=$('tr').hidden?'Transkripti göstər':'Transkripti gizlət'};
 let TTS=null;
-const speakFallback=(lines,rate)=>new Promise(res=>{const ss=window.speechSynthesis;if(!ss)return res(false);ss.cancel();lines.forEach((l,i)=>{const u=new SpeechSynthesisUtterance(l.text);u.lang='en-US';u.rate=rate;if(i===lines.length-1)u.onend=()=>res(true);ss.speak(u)})});
+/* ---- natural voice selection + play/stop ---- */
+let VOICES=[],SPK_BTN=null,SPEAKING=false;
+const FEMALE=/female|samantha|ava|aria|jenny|karen|serena|libby|sonia|allison|susan|zira|victoria|moira|tessa|fiona|kate|emma|olivia|natasha|joanna/i;
+const BADV=/compact|eloquence|novelty|whisper|bells|boing|bubbles|cellos|zarvox|trinoids|organ|albert|fred|junior|ralph|jester|superstar|wobble|bahh|hysterical|deranged|good news|bad news|pipe/i;
+function rankVoice(v){let s=0;if(/natural|neural|enhanced|premium|online/i.test(v.name))s+=10;if(/Google US English|Google UK English|Samantha|Ava|Allison|Susan|Karen|Daniel|Serena|Aria|Jenny|Guy|Libby|Sonia|Ryan|Arthur|Martha/i.test(v.name))s+=5;if(/en[-_]US/i.test(v.lang))s+=2;else if(/en[-_]GB/i.test(v.lang))s+=1;if(BADV.test(v.name))s-=30;return s}
+function loadVoices(){try{VOICES=speechSynthesis.getVoices().filter(v=>/^en([-_]|$)/i.test(v.lang)&&!BADV.test(v.name)).sort((a,b)=>rankVoice(b)-rankVoice(a))}catch(e){VOICES=[]}if(location.hash==='#profile'&&typeof drawVoice==='function')drawVoice()}
+if(window.speechSynthesis){loadVoices();try{speechSynthesis.addEventListener('voiceschanged',loadVoices)}catch(e){speechSynthesis.onvoiceschanged=loadVoices}}
+function voicePair(){const first=(S.voice&&VOICES.find(v=>v.name===S.voice))||VOICES[0]||null;
+  const second=VOICES.find(v=>v!==first&&first&&FEMALE.test(v.name)!==FEMALE.test(first.name))||VOICES.find(v=>v!==first)||first;return [first,second]}
+const speakNative=(lines,rate)=>new Promise(res=>{const ss=window.speechSynthesis;if(!ss)return res(false);ss.cancel();const [v1,v2]=voicePair();
+  lines.forEach((l,i)=>{const u=new SpeechSynthesisUtterance(l.text),v=l.voice==='rounded'?v2:v1;u.lang=v?v.lang:'en-US';if(v)try{u.voice=v}catch(e){}u.rate=Math.max(.5,Math.min(1.5,rate*(S.rate||1)*0.95));u.pitch=1;
+    if(i===lines.length-1){u.onend=()=>res(true);u.onerror=()=>res(true)}ss.speak(u)});
+  setTimeout(()=>{if(ss.paused)ss.resume()},250)});
 async function speak(lines,rate=1){
-  if(TTS){try{await TTS.speak(lines.map(l=>({text:l.text,voice:l.voice||'buttery',language:'en',rate})));return}catch(e){if(e&&e.code==='busy')return}}
-  if(!window.speechSynthesis){$('lNote').textContent='Bu brauzerdə səsləndirmə işləmir. Transkripti oxu.';return}
-  await speakFallback(lines,rate);
+  if(TTS){try{await TTS.speak(lines.map(l=>({text:l.text,voice:l.voice||'buttery',language:'en',rate:rate*(S.rate||1)})));return}catch(e){if(e&&e.code==='busy')return}}
+  if(!window.speechSynthesis){toast('Bu brauzerdə səsləndirmə işləmir — mətni oxu.');return}
+  await speakNative(lines,rate);
 }
-$('play').onclick=()=>speak(DLG.map(l=>({text:l[1],voice:l[2]})),1);
-$('slow').onclick=()=>speak(DLG.map(l=>({text:l[1],voice:l[2]})),0.75);
+const STOP_SVG='<svg viewBox="0 0 24 24" fill="currentColor" style="width:44%;height:44%"><rect x="5" y="5" width="14" height="14" rx="3"/></svg>';
+function markBtn(b,on){if(!b||!b.isConnected)return;if(b.dataset.l0===undefined)b.dataset.l0=b.innerHTML;
+  b.classList.toggle('playing',on);b.setAttribute('aria-pressed',on?'true':'false');
+  b.innerHTML=on?(b.classList.contains('bigplay')||b.classList.contains('spk')?STOP_SVG:'■ Dayandır'):b.dataset.l0}
+function stopSpeech(){try{TTS&&TTS.stop()}catch(e){}try{window.speechSynthesis&&speechSynthesis.cancel()}catch(e){}const b=SPK_BTN;SPK_BTN=null;SPEAKING=false;markBtn(b,false)}
+function playBtn(btn,lines,rate=1){if(SPEAKING&&SPK_BTN===btn){stopSpeech();return}stopSpeech();SPK_BTN=btn;SPEAKING=true;markBtn(btn,true);
+  speak(lines,rate).catch(()=>{}).finally(()=>{if(SPK_BTN===btn){SPEAKING=false;SPK_BTN=null;markBtn(btn,false)}})}
+$('play').onclick=()=>playBtn($('play'),DLG.map(l=>({text:l[1],voice:l[2]})),1);
+$('slow').onclick=()=>playBtn($('slow'),DLG.map(l=>({text:l[1],voice:l[2]})),0.75);
 mcq($('lQs'),[
 ["What does the customer order?",["A large coffee","A small coffee","A large tea","Two coffees"],"«Large, please» — böyük qəhvə."],
 ["How much is it?",["Four manats","Two manats","Fourteen manats","Forty manats"],"«It's four manats.» Diqqət: four (4) və fourteen (14) tez qarışdırılır."],
@@ -569,8 +590,8 @@ function grade(){const tgt=norm(SP[si][0]),got=new Set(norm(heard));let hit=0;
   const toks=tgt.map(w=>{const ok=got.has(w);if(ok)hit++;return `<span class="tok ${ok?'hit':'miss'}">${esc(w)}</span>`}).join('');
   const pct=Math.round(hit/tgt.length*100);if(pct>=80)addXP(10,'speaking',$('sMic'));
   $('sOut').innerHTML=`<div style="display:flex;gap:14px;align-items:center"><div class="score">${pct}%</div><div>${pct>=80?'Əla! +10 XP':'Qırmızı sözləri bir də dinlə və təkrar et.'}</div></div><div style="margin-top:10px">${toks}</div><p class="note">Eşidilən: «${esc(heard)}»</p>`}
-$('sHear').onclick=()=>speak([{text:SP[si][0]}],0.9);
-$('sNext').onclick=()=>{si=(si+1)%SP.length;showS()};
+$('sHear').onclick=()=>playBtn($('sHear'),[{text:SP[si][0]}],0.9);
+$('sNext').onclick=()=>{stopSpeech();si=(si+1)%SP.length;showS()};
 $('sMic').onclick=()=>{MT=null;
   if(!DIC){$('sNote').textContent='Mikrofonla yoxlama bu brauzerdə dəstəklənmir — Chrome-da aç. Nümunəni dinləyib ucadan təkrar edə bilərsən.';return}
   if($('sMic').dataset.on){DIC.stop().catch(()=>{});return}
@@ -689,24 +710,24 @@ function answered(ok,right,e,el){const it=LS.items[LS.i];
   const f=document.createElement('div');f.innerHTML=fbBox(ok,ok?['Əla!','Düzgündür!','Bravo!','Tam doğru!'][LS.i%4]:'Düzgün cavab: '+right,ok?'':e||'');$('lBox').appendChild(f.firstElementChild);
   $('lNext').onclick=()=>{LS.i++;renderStep()};$('lNext').focus({preventScroll:true});$('lNext').scrollIntoView({block:'nearest'})}
 function renderStep(){
-  if(!LS)return;const n=LS.items.length;$('lBar').style.width=(LS.i/n*100)+'%';
+  stopSpeech();if(!LS)return;const n=LS.items.length;$('lBar').style.width=(LS.i/n*100)+'%';
   if(LS.i>=n)return finishLesson();
   const it=LS.items[LS.i],box=$('lBox');window.scrollTo(0,0);
   if(it.t==='learn'){
     box.innerHTML=`<div class="card learn"><div class="note" style="margin:0 0 4px">Yeni mövzu</div><h3>${esc(it.title)}</h3><p style="margin:0">${esc(it.body)}</p><div class="extab">${it.ex.map((r,i)=>`<div class="exr"><button class="spk" data-i="${i}" aria-label="Dinlə">${IC.spk}</button><div><b>${esc(r[0])}</b><span>${esc(r[1])}</span></div></div>`).join('')}</div></div><button class="btn" id="lNext">Başa düşdüm</button>`;
-    box.querySelectorAll('.spk').forEach(b=>b.onclick=()=>speak([{text:it.ex[+b.dataset.i][0].replace(/ \/ /g,', ')}],0.9));
+    box.querySelectorAll('.spk').forEach(b=>b.onclick=()=>playBtn(b,[{text:it.ex[+b.dataset.i][0].replace(/ \/ /g,', ')}],0.9));
     $('lNext').onclick=()=>{LS.i++;renderStep()};return}
   if(it.t==='mc'||it.t==='listen'){
     const right=it.t==='listen'?it.en:it.o[0],opts=shuffle(it.o);
     box.innerHTML=(it.t==='listen'?`<p class="q">Eşitdiyin cümləni seç</p><button class="bigplay" id="lPlay" aria-label="Dinlə">${IC.spk}</button><div class="row" style="justify-content:center;margin:-8px 0 14px"><button class="w" id="lSlow">yavaş dinlə</button></div>`:`<p class="q">${esc(it.q)}</p>`)+`<div class="opts">${opts.map((o,i)=>`<button class="opt" data-i="${i}">${esc(o)}</button>`).join('')}</div>`;
-    if(it.t==='listen'){const p=()=>speak([{text:it.en}],1);$('lPlay').onclick=p;$('lSlow').onclick=()=>speak([{text:it.en}],0.7);p()}
+    if(it.t==='listen'){const p=()=>playBtn($('lPlay'),[{text:it.en}],1);$('lPlay').onclick=p;$('lSlow').onclick=()=>playBtn($('lSlow'),[{text:it.en}],0.7);p()}
     box.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const ok=opts[+b.dataset.i]===right;
       box.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(opts[+x.dataset.i]===right)x.classList.add('right')});if(!ok)b.classList.add('wrong');
       answered(ok,right,it.e,b)});return}
   if(it.t==='order'||it.t==='dict'){
     const vs=[].concat(it.en),bank=shuffle(toks(vs[0]).concat(it.extra||[])),ans=[],dict=it.t==='dict';
     box.innerHTML=(dict?`<p class="q">Dinlə və eşitdiyin cümləni qur</p><button class="bigplay" id="lPlay" aria-label="Dinlə">${IC.spk}</button><div class="row" style="justify-content:center;margin:-8px 0 0"><button class="w" id="lSlow">yavaş dinlə</button></div>`:`<p class="q">Bu cümləni ingiliscə qur</p><div class="card" style="background:var(--wrb);border-color:#c5ecd8;font-size:19px;font-weight:800">${esc(it.az)}</div>`)+`<div class="ans" id="oAns" aria-live="polite"></div><div class="bank" id="oBank">${bank.map((w,i)=>`<button class="chip" data-i="${i}">${esc(w)}</button>`).join('')}</div><button class="btn" id="oChk" disabled>Yoxla</button>`;
-    if(dict){const p=()=>speak([{text:vs[0]}],1);$('lPlay').onclick=p;$('lSlow').onclick=()=>speak([{text:vs[0]}],0.7);p()}
+    if(dict){const p=()=>playBtn($('lPlay'),[{text:vs[0]}],1);$('lPlay').onclick=p;$('lSlow').onclick=()=>playBtn($('lSlow'),[{text:vs[0]}],0.7);p()}
     const draw=()=>{$('oAns').innerHTML=ans.map((bi,k)=>`<button class="chip" data-k="${k}">${esc(bank[bi])}</button>`).join('');
       $('oAns').querySelectorAll('.chip').forEach(c=>c.onclick=()=>{if(c.closest('.ans').dataset.lock)return;const bi=ans.splice(+c.dataset.k,1)[0];$('oBank').querySelector(`[data-i="${bi}"]`).classList.remove('used');draw()});
       $('oChk').disabled=!ans.length};
@@ -716,7 +737,7 @@ function renderStep(){
   if(it.t==='speak'){
     let said='';
     box.innerHTML=`<p class="q">Ucadan de</p><div class="card" style="background:var(--spb);border-color:#fbd8c5"><div class="say">${esc(it.en)}</div><div style="color:var(--mut)">${esc(it.az||'')}</div></div><div class="row"><button class="btn ghost" id="kHear">▶ Dinlə</button><button class="btn sun" id="kMic">● Danış</button></div><div id="kOut" style="margin-top:12px"></div><button class="w" id="kSkip" style="display:block;margin:16px auto 0;font-weight:800">İndi danışa bilmirəm — keç</button>`;
-    $('kHear').onclick=()=>speak([{text:it.en}],0.9);
+    $('kHear').onclick=()=>playBtn($('kHear'),[{text:it.en}],0.9);
     $('kSkip').onclick=()=>{if(DIC&&$('kMic').dataset.on)DIC.stop().catch(()=>{});MT=null;LS.i++;renderStep()};
     const judge=()=>{const tgt=norm(it.en),got=new Set(norm(said));let hit=0;const tk=tgt.map(w=>{const ok=got.has(w);if(ok)hit++;return `<span class="tok ${ok?'hit':'miss'}">${esc(w)}</span>`}).join('');
       const pct=Math.round(hit/tgt.length*100);
@@ -746,7 +767,18 @@ $('lQuit').onclick=()=>sheet('Dərsdən çıxırsan?','<p>Bu dərsdəki proqresi
 function drawHeader(){$('hdAv').innerHTML=avatar(S.me?S.me.name:'?',S.me?S.me.color:0,S.look.avatar||S.look.frame?S.look:{avatar:'cat',frame:S.look.frame})+(isPrem()?'<svg class="cr" viewBox="0 0 24 24"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z" fill="#f5b800" stroke="#c98a00" stroke-width="1.2" stroke-linejoin="round"/></svg>':'');
   const pr=$('promo');pr.hidden=isPrem();if(!isPrem())pr.innerHTML=`<svg viewBox="0 0 24 24"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z" fill="#f5b800" stroke="#c98a00" stroke-width="1.2" stroke-linejoin="round"/></svg><span><b>Addım Premium</b> — limitsiz dərs, +50% XP, xüsusi avatarlar və liqada parlayan adın</span>`}
 function lockedTap(){play('down');location.hash='premium'}
-function renderProfile(){const P=isPrem(),L=S.look,b=$('pBox'),nm=S.me?S.me.name:'',AV=window.AVATARS||[],FREE=window.FREE_AVATARS||6;
+const RATES=[['Yavaş',0.8],['Normal',1],['Sürətli',1.15]];
+function drawVoice(){const c=$('voiceCard');if(!c)return;
+  if(!window.speechSynthesis||!VOICES.length){c.innerHTML='<b>Səsləndirmə səsi</b><p class="note" style="margin:6px 0 0">Bu cihazda ingilis səsi tapılmadı. Telefonun parametrlərində (Əlçatanlıq → Danışıq məzmunu → Səslər) ingilis səsi yükləsən, dinləmə daha təbii olacaq.</p>';return}
+  const cur=voicePair()[0];
+  c.innerHTML=`<b>Səsləndirmə səsi</b><span class="lim">Dinləmə tapşırıqlarında hansı səs oxusun</span>
+  <div class="row" style="margin-top:10px"><select id="vSel" style="flex:1 1 200px;min-height:46px;border-radius:14px;border:2px solid var(--line);font:16px Nunito,sans-serif;padding:8px 10px;background:#fbfdfb">${VOICES.map(v=>`<option value="${esc(v.name)}" ${cur&&v.name===cur.name?'selected':''}>${esc(v.name.replace(/Microsoft |Google /,''))} · ${esc(v.lang)}${rankVoice(v)>=10?' ★':''}</option>`).join('')}</select><button class="btn ghost" id="vTest" style="flex:0 0 auto;width:auto;margin:0">▶ Dinlə</button></div>
+  <div class="chipsx" id="vRate" style="margin-top:10px">${RATES.map(r=>`<button class="chipx" data-r="${r[1]}" aria-pressed="${(S.rate||1)===r[1]}">${r[0]}</button>`).join('')}</div>
+  <p class="note">★ — daha təbii səslər. iPhone-da «Enhanced / Premium» səsləri Parametrlər → Əlçatanlıq → Danışıq məzmunu → Səslər bölməsindən pulsuz yükləmək olar.</p>`;
+  $('vSel').onchange=e=>{S.voice=e.target.value;save()};
+  $('vTest').onclick=()=>playBtn($('vTest'),[{text:"Hi! I'm your English voice. How does this sound?"}],1);
+  c.querySelectorAll('#vRate .chipx').forEach(b=>b.onclick=()=>{S.rate=+b.dataset.r;save();drawVoice()})}
+function renderProfile(){drawVoice();const P=isPrem(),L=S.look,b=$('pBox'),nm=S.me?S.me.name:'',AV=window.AVATARS||[],FREE=window.FREE_AVATARS||6;
   b.innerHTML=`<h2>Profilim ${P?CROWN:''}</h2>
   <div class="preview">${avatar(nm||'?',S.me?S.me.color:0,L)}<div style="min-width:0;flex:1"><div class="nm">${nm?nameHTML(nm,L,P):'<span style="color:var(--mut)">Adın burada görünəcək</span>'}</div><span class="lim">Liqada belə görünəcəksən</span></div></div>
   <div class="row" style="margin-top:12px"><input type="text" id="pName" maxlength="20" placeholder="Adın və ya ləqəbin" value="${esc(nm)}" style="flex:1 1 180px"><button class="btn" id="pSave" style="flex:0 0 auto;width:auto;margin:0">Yadda saxla</button></div>
@@ -846,7 +878,7 @@ addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet()});
 /* ---------- routing ---------- */
 const VIEWS=['welcome','profile','premium','home','course','league','practice','quiz','lesson','reading','listening','speaking','writing'];
 $('tabs').innerHTML=[['home','Bu gün'],['course','Kurs'],['league','Liqa'],['practice','Məşq']].map(([k,n])=>`<a href="#${k}" data-k="${k}">${IC[k]}<span>${n}</span></a>`).join('');
-function route(){let v=location.hash.slice(1);if(!VIEWS.includes(v))v='home';if(v==='quiz'&&!QZ.length){startQuiz();return}
+function route(){stopSpeech();let v=location.hash.slice(1);if(!VIEWS.includes(v))v='home';if(v==='quiz'&&!QZ.length){startQuiz();return}
   if(v==='lesson'&&!LS){location.hash='course';return}
   if(v==='course')renderCourse();
   if(v==='welcome'){PT=null;welcome()}
