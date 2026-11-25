@@ -5,7 +5,7 @@
 import { json } from '../_shared.js';
 import { KEYS } from '../_tts_keys.js';
 import { padStart } from '../_mp3.js';
-import { AURA2, ttsKey, sha16, toBytes } from '../_tts.js';
+import { AURA2, ttsKey, sha16, toBytes, spoken } from '../_tts.js';
 
 const VOICES = ['asteria', 'orion'];
 const AUDIO_HEADERS = { 'content-type': 'audio/mpeg', 'cache-control': 'public, max-age=31536000, immutable' };
@@ -21,13 +21,14 @@ export async function onRequest({ request, env }) {
   if (!env.DB) return json({ error: 'db_not_bound' }, 503);
 
   await env.DB.prepare('CREATE TABLE IF NOT EXISTS tts (k TEXT PRIMARY KEY, audio BLOB NOT NULL, created INTEGER NOT NULL)').run();
-  const k = ttsKey(h, voice);
+  const say = spoken(text);
+  const k = ttsKey(say === text ? h : await sha16(say), voice);
   const row = await env.DB.prepare('SELECT audio FROM tts WHERE k = ?1').bind(k).first();
   if (row && row.audio) return new Response(toBytes(row.audio), { headers: { ...AUDIO_HEADERS, 'x-tts': 'cache' } });
 
   if (!env.AI) return json({ error: 'ai_not_bound' }, 503);
   try {
-    const out = await env.AI.run('@cf/deepgram/aura-2-en', { text, speaker: AURA2[voice], encoding: 'mp3' }, { returnRawResponse: true });
+    const out = await env.AI.run('@cf/deepgram/aura-2-en', { text: say, speaker: AURA2[voice], encoding: 'mp3' }, { returnRawResponse: true });
     const res = out instanceof Response ? out : new Response(out);
     if (!res.ok) throw new Error('ai_status_' + res.status);
     const raw = new Uint8Array(await res.arrayBuffer());
