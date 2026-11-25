@@ -116,6 +116,10 @@ textarea:focus,input[type=text]:focus{outline:3px solid var(--blue);outline-offs
 .zone{font-size:12px;font-weight:900;color:var(--ok);padding:4px 8px}
 .sheet{position:fixed;inset:0;background:rgba(31,42,55,.4);display:none;align-items:flex-end;justify-content:center;z-index:30}
 .sheet.on{display:flex}
+.sheet.ios26{align-items:flex-start}.sheet.ios26>div{border-radius:0 0 26px 26px;max-height:78vh;padding-top:calc(18px + env(safe-area-inset-top))}
+#iosPoint{position:fixed;right:10px;bottom:calc(8px + env(safe-area-inset-bottom));z-index:31;display:none;flex-direction:column;align-items:flex-end;pointer-events:none}
+#iosPoint.on{display:flex}#iosPoint span{background:#2f7de1;color:#fff;font-weight:700;font-size:15px;padding:8px 12px;border-radius:14px;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+#iosPoint svg{margin-right:14px;animation:ipb 1s ease-in-out infinite}@keyframes ipb{50%{transform:translateY(8px)}}
 .sheet>div{background:var(--card);width:100%;max-width:540px;border-radius:26px 26px 0 0;padding:22px 20px calc(22px + env(safe-area-inset-bottom));max-height:92vh;overflow:auto}
 @media(min-width:700px){.sheet{align-items:center}.sheet>div{border-radius:26px}}
 .sheet ol{padding-left:20px;font-size:17px}.sheet li{margin:8px 0}
@@ -254,6 +258,7 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
   <button class="get" id="getApp">Yüklə</button>
   <button class="x" id="hideInst" aria-label="Bağla">×</button>
 </div>
+<div id="iosPoint" aria-hidden="true"><span>••• düyməsi aşağıdadır</span><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2f7de1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v15M6 13l6 6 6-6"/></svg></div>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="shT"><div>
   <h2 id="shT"></h2>
   <div id="shBody"></div>
@@ -888,7 +893,7 @@ function askName(){
 
 /* ---------- sheet ---------- */
 function sheet(title,html,btns){$('shT').textContent=title;$('shBody').innerHTML=html;$('shBtns').innerHTML=btns||'<button class="btn" id="shClose">Başa düşdüm</button>';const c=$('shClose');if(c)c.onclick=closeSheet;$('sheet').classList.add('on')}
-const closeSheet=()=>$('sheet').classList.remove('on');
+let IP_T=0;const closeSheet=()=>{const sh=$('sheet');sh.classList.remove('on');if(sh.classList.contains('ios26')){sh.classList.remove('ios26');clearTimeout(IP_T);IP_T=setTimeout(()=>$('iosPoint').classList.remove('on'),20000)}else $('iosPoint').classList.remove('on')};
 $('sheet').onclick=e=>{if(e.target.id==='sheet')closeSheet()};
 addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet()});
 
@@ -925,15 +930,17 @@ const IN_APP=(()=>{const m=UA.match(/Instagram|FBAN|FBAV|FB_IAB|musical_ly|Byted
 const IOS_BR=/CriOS/.test(UA)?'Chrome':/FxiOS/.test(UA)?'Firefox':/EdgiOS/.test(UA)?'Edge':/OPiOS|OPT\//.test(UA)?'Opera':'Safari';
 const SHARE_I='<svg width="20" height="20" viewBox="0 0 24 24" style="vertical-align:-4px" fill="none" stroke="#2f7de1" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>';
 const ADD_I='<svg width="20" height="20" viewBox="0 0 24 24" style="vertical-align:-4px" fill="none" stroke="#2f7de1" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8M8 12h8"/></svg>';
+const IOS26=(+((UA.match(/Version\/(\d+)/)||[])[1]||0)>=26)||/OS (2[6-9])_/.test(UA);
 const DOTS_I='<b style="letter-spacing:1px">•••</b>';
 const LINK_BOX='<div class="row" style="margin-top:10px"><input type="text" id="instLink" readonly value="'+esc(location.origin+'/')+'" style="flex:1 1 180px"><button class="btn ghost" id="instCopy" style="flex:0 0 auto;width:auto;margin:0">Linki kopyala</button></div>';
 function installHelp(){
   if(IN_APP)return ['Əvvəlcə brauzerdə aç',`<p style="margin-top:0">Bu səhifə <b>${esc(IN_APP)}</b>-ın daxili brauzerində açılıb. Buradan tətbiq yükləmək mümkün deyil — bu, ${esc(IN_APP)}-ın məhdudiyyətidir.</p><ol>${isIOS?`<li>Ekranın yuxarısında və ya aşağısında ${DOTS_I} düyməsinə toxun.</li><li><b>«Open in external browser»</b> və ya <b>«Safari-də aç»</b> seç.</li>`:`<li>Sağ yuxarıda <b>⋮</b> düyməsinə toxun.</li><li><b>«Open in Chrome»</b> və ya <b>«Brauzerdə aç»</b> seç.</li>`}<li>Açılan brauzerdə yenidən <b>«Yüklə»</b> düyməsinə bas.</li></ol><p class="note">Bu seçim yoxdursa, linki kopyala və ${isIOS?'Safari-yə':'Chrome-a'} yapışdır:</p>${LINK_BOX}`];
+  if(isIOS&&IOS_BR==='Safari'&&IOS26)return ['iPhone-a yüklə',`<ol><li>Ekranın <b>ən aşağısında</b>, ünvan sətrinin sağındakı ${DOTS_I} (üç nöqtə) düyməsinə toxun. <span class="lim">Mavi ox onu göstərir.</span></li><li>Açılan menyuda ${SHARE_I} <b>Paylaş</b> (Share) seç.</li><li>Siyahını yuxarı sürüşdür və ${ADD_I} <b>«Ana ekrana əlavə et»</b> (Add to Home Screen) seç.</li><li><b>«Veb tətbiq kimi aç»</b> açıq qalsın, sağ yuxarıda <b>«Əlavə et»</b> (Add) bas.</li></ol><p class="note">Əvvəlcə bu pəncərəni bağla («Başa düşdüm»), sonra addımları et. «Ana ekrana əlavə et» görünmürsə: siyahının sonunda «Əməliyyatları redaktə et» (Edit Actions) bölməsindən əlavə et. Gizli (Private) rejimdə işləməyə bilər.</p>`,'ios26'];
   if(isIOS&&IOS_BR==='Safari')return ['iPhone-a yüklə',`<ol><li>${SHARE_I} <b>Paylaş</b> düyməsinə toxun. <span class="lim">iOS 26-da: əvvəlcə ünvan sətrindəki ${DOTS_I} düyməsinə, sonra «Paylaş»-a.</span></li><li>Açılan siyahını aşağı sürüşdür və ${ADD_I} <b>«Ana ekrana əlavə et»</b> (Add to Home Screen) seç.</li><li><b>«Veb tətbiq kimi aç»</b> açıq qalsın və <b>«Əlavə et»</b> bas. Addım ikonu ana ekranda görünəcək.</li></ol><p class="note">«Ana ekrana əlavə et» görünmürsə: siyahının ən sonunda «Əməliyyatları redaktə et» (Edit Actions) bölməsindən onu əlavə et. Gizli (Private) rejimdə bu seçim olmaya bilər — adi rejimdə aç.</p>`];
   if(isIOS)return [`iPhone-a yüklə (${IOS_BR})`,`<ol><li>${IOS_BR==='Chrome'?`Ünvan sətrinin sağındakı ${SHARE_I} <b>Paylaş</b> düyməsinə toxun.`:`Menyunu aç (${DOTS_I} və ya ☰) və ${SHARE_I} <b>Paylaş</b> seç.`}</li><li>${ADD_I} <b>«Ana ekrana əlavə et»</b> (Add to Home Screen) seç.</li><li><b>«Əlavə et»</b> bas — Addım ikonu ana ekranda görünəcək.</li></ol><p class="note">Bu seçim görünmürsə, iPhone-un köhnə versiyası ola bilər (iOS 16.4-dən əvvəl). Onda linki kopyala və <b>Safari</b>-də aç:</p>${LINK_BOX}`];
   return ['Telefona yüklə','<ol><li>Brauzerin menyusunu aç (yuxarıda <b>⋮</b> üç nöqtə).</li><li><b>«Tətbiqi quraşdır»</b> və ya <b>«Ana ekrana əlavə et»</b> seç.</li><li>Təsdiqlə — Addım ikonu ana ekranda görünəcək.</li></ol><p class="note">Ən yaxşı nəticə Chrome brauzerində olur.</p>'];
 }
-function showInstall(){track('install_help',IN_APP?'inapp':isIOS?'ios-'+IOS_BR.toLowerCase():'other');const [t,h]=installHelp();sheet(t,h);
+function showInstall(){track('install_help',IN_APP?'inapp':isIOS?'ios-'+IOS_BR.toLowerCase():'other');const [t,h,mode]=installHelp();sheet(t,h);const sh=$('sheet');sh.classList.toggle('ios26',mode==='ios26');$('iosPoint').classList.toggle('on',mode==='ios26');
   const c=$('instCopy');if(c)c.onclick=()=>{const v=$('instLink').value;(navigator.clipboard?navigator.clipboard.writeText(v):Promise.reject()).then(()=>toast('Link kopyalandı')).catch(()=>{$('instLink').select();toast('Linki seç və kopyala')})}}
 $('getApp').onclick=async()=>{
   if(deferred){deferred.prompt();const c=await deferred.userChoice.catch(()=>null);if(c&&c.outcome==='accepted')$('install').hidden=true;deferred=null;return}

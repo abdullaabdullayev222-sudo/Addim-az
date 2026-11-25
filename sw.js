@@ -1,5 +1,5 @@
 // Addım service worker: tətbiqi oflayn işlədir
-const CACHE = 'addim-v14';
+const CACHE = 'addim-v15';
 const AUDIO = 'addim-audio-v1';
 const FILES = ['./', './index.html', './course.js', './avatars.js', './config.js', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png'];
 

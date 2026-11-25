@@ -6,6 +6,7 @@ from playwright.sync_api import sync_playwright
 BASE = 'http://localhost:8790'
 UA = {
   'iphone_safari':  'Mozilla/5.0 (iPhone; CPU iPhone OS 18_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.1 Mobile/15E148 Safari/604.1',
+  'iphone_safari26':'Mozilla/5.0 (iPhone; CPU iPhone OS 18_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.1 Mobile/15E148 Safari/604.1',
   'iphone_chrome':  'Mozilla/5.0 (iPhone; CPU iPhone OS 18_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/131.0.6778.73 Mobile/15E148 Safari/604.1',
   'iphone_instagram':'Mozilla/5.0 (iPhone; CPU iPhone OS 18_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 Instagram 357.0.0.25.101 (iPhone15,3; iOS 18_1; az_AZ; az; scale=3.00; 1290x2796)',
   'iphone_tiktok':  'Mozilla/5.0 (iPhone; CPU iPhone OS 18_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 musical_ly_37.5.0 BytedanceWebview/d8a21c6',
@@ -60,6 +61,18 @@ with sync_playwright() as p:
             check('iphone_safari: «Ana ekrana əlavə et» addımı', 'Ana ekrana əlavə et' in m.locator('#shBody').inner_text())
             check('iphone_safari: iOS 26 qeydi', 'iOS 26' in m.locator('#shBody').inner_text())
         m.context.close()
+    m = page('iphone_safari26'); m.goto(BASE + '/#home'); m.wait_for_timeout(600)
+    m.click('#getApp'); m.wait_for_timeout(200)
+    body = m.locator('#shBody').inner_text()
+    check('iOS 26 Safari: əvvəl ••• sonra Paylaş', body.index('•••') < body.index('Paylaş') and 'Ana ekrana əlavə et' in body, body[:80])
+    check('iOS 26 Safari: pəncərə yuxarıda, ox aşağıda görünür', 'ios26' in m.get_attribute('#sheet','class') and m.locator('#iosPoint').is_visible())
+    bx = m.locator('#iosPoint').bounding_box()
+    check('iOS 26 Safari: ox sağ aşağı küncdədir', bx['x'] + bx['width'] > 370 and bx['y'] + bx['height'] > 780, str(bx))
+    m.click('#shClose'); m.wait_for_timeout(200)
+    check('iOS 26 Safari: bağlandıqdan sonra ox qalır', not m.locator('#sheet').is_visible() and m.locator('#iosPoint').is_visible())
+    m.context.close()
+    m = page('iphone_safari'); m.goto(BASE + '/#home'); m.wait_for_timeout(500); m.click('#getApp'); m.wait_for_timeout(200)
+    check('köhnə iOS Safari: ox göstərilmir', not m.locator('#iosPoint').is_visible()); m.context.close()
     m = page('iphone_instagram'); m.goto(BASE + '/#profile'); m.wait_for_timeout(500)
     m.click('#pInstall'); m.wait_for_timeout(200)
     check('profil «Yüklə» düyməsi təlimatı açır', m.locator('#shT').inner_text() == 'Əvvəlcə brauzerdə aç'); m.context.close()
