@@ -22,7 +22,7 @@ def post(path, body):
     try: return json.load(urllib.request.urlopen(r))
     except urllib.error.HTTPError as e: return json.load(e)
 def close_overlays(m):
-    m.evaluate("['sheet','cel'].forEach(i=>document.getElementById(i).classList.remove('on'))")
+    m.evaluate("['sheet','cel','strike'].forEach(i=>document.getElementById(i).classList.remove('on'))")
 
 def play_lesson(m):
     seen = set()
@@ -91,6 +91,14 @@ with sync_playwright() as p:
     check('A1 dərsi sona çatdı', m.locator('.res').count() == 1)
     check('A1 dərsində danışma tapşırığı', 'speak' in seen, str(seen))
     check('dərs sonunda video kartı', m.locator('#vidLesson .vid').count() == 1)
+    m.wait_for_timeout(1600)
+    check('ilk gün: şimşək çaxır (seriya animasiyası)', m.locator('#strike.on').is_visible() and m.locator('#stkN').inner_text() == '1')
+    check('başlıqda şimşək ikonu', m.locator('#stIco').get_attribute('href') == '#boltI')
+    m.click('#stkGo'); m.wait_for_timeout(200)
+    check('şimşək pəncərəsi bağlanır', not m.locator('#strike').is_visible())
+    m.evaluate("location.hash='home'"); m.wait_for_timeout(300)
+    check('ana səhifədə şimşək personajı yanır', 'off' not in (m.get_attribute('#bigBolt', 'class') or ''))
+    m.evaluate("location.hash='course'"); m.wait_for_timeout(200)
     m.evaluate("location.hash='course'"); m.wait_for_timeout(200); m.click('.lvl[data-l="b2"]'); m.wait_for_timeout(200)
     nodes = m.locator('#units .node:not(.lock)').count()
     check('B2 dərsləri görünür', nodes >= 1, str(nodes))

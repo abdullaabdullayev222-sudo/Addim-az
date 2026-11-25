@@ -250,6 +250,29 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
  .pop{animation:pop .4s}@keyframes pop{50%{transform:scale(1.18)}}
 }
 @media(prefers-reduced-motion:reduce){.conf{display:none}}
+/* şimşək seriyası */
+.bolt .zz,.bolt.off .spark{display:none}.bolt.off .zz{display:inline}
+.bolt.off .body{fill:#ece7dc;stroke:#cfc7b6}.bolt.off .face circle[fill="#ff7a59"]{opacity:.15}
+.strike{position:fixed;inset:0;z-index:60;display:none;place-items:center;background:radial-gradient(circle at 50% 40%,#2b2f6b 0,#14163a 70%);overflow:hidden;cursor:pointer}
+.strike.on{display:grid}.strike .flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+.strike .bolt-path{position:absolute;left:0;top:0;width:100%;height:58%;pointer-events:none}
+.strike .bolt-path path{fill:none;stroke:#fff6c4;stroke-width:6;stroke-linejoin:round;filter:drop-shadow(0 0 10px #ffd84d) drop-shadow(0 0 26px #ffb703)}
+.strike .stkcard{position:relative;text-align:center;color:#fff;padding:24px;margin-top:22vh}
+.strike .num{font-size:96px;font-weight:900;line-height:1;background:linear-gradient(#fff6c4,#ffc21a 60%,#ff8a00);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 18px #ffb70399)}
+.strike h2{color:#fff;margin:6px 0 4px;font-size:26px}.strike p{color:#c9cdf5;margin:0 auto 18px;max-width:320px}
+.strike .btn{max-width:280px;margin:0 auto}
+.strike .zap{position:absolute;width:40px;height:40px;pointer-events:none}
+@media(prefers-reduced-motion:no-preference){
+ .bolt:not(.off) .spark{animation:flick 1.6s steps(2) infinite}@keyframes flick{0%,40%{opacity:1}50%{opacity:.15}70%{opacity:1}}
+ .bolt:not(.off) .body{transform-origin:64px 64px;animation:buzz 3.2s ease-in-out infinite}@keyframes buzz{0%,86%,100%{transform:none}88%{transform:translate(-1.5px,1px) rotate(-1.5deg)}90%{transform:translate(1.5px,-1px) rotate(1.5deg)}92%{transform:none}}
+ .bolt.off .zz text{animation:zz 2.4s ease-in-out infinite}@keyframes zz{50%{transform:translateY(-4px);opacity:.4}}
+ .strike.on .flash{animation:flash .9s ease-out both}@keyframes flash{0%{opacity:0}8%{opacity:.95}18%{opacity:.1}30%{opacity:.85}55%,100%{opacity:0}}
+ .strike.on .bolt-path path{stroke-dasharray:1400;stroke-dashoffset:1400;animation:draw .28s ease-in forwards,fadeb 1.2s .9s forwards}@keyframes draw{to{stroke-dashoffset:0}}@keyframes fadeb{to{opacity:.25}}
+ .strike.on .stkcard{animation:shake .5s .25s both}@keyframes shake{0%{transform:scale(.6);opacity:0}30%{transform:scale(1.08) translate(-6px,3px);opacity:1}45%{transform:translate(6px,-3px)}60%{transform:translate(-4px,2px)}75%{transform:translate(3px,-1px)}100%{transform:none}}
+ .strike .zap{animation:zap .5s ease-out both}@keyframes zap{0%{transform:scale(.2) rotate(0);opacity:0}30%{opacity:1}100%{transform:scale(1.3) rotate(40deg);opacity:0}}
+ .pill.zing{animation:zing .7s}@keyframes zing{20%{transform:scale(1.25);box-shadow:0 0 0 6px #ffd84d66}100%{transform:none}}
+}
+
 @media(max-width:380px){.sunbox{grid-template-columns:96px 1fr}.bigsun{width:96px;height:96px}.dot{width:30px;height:30px}.dot svg{width:26px;height:26px}.pill{padding:5px 9px;font-size:14px}}
 </style>
 </head>
@@ -260,6 +283,9 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
   <button class="get" id="getApp">Yüklə</button>
   <button class="x" id="hideInst" aria-label="Bağla">×</button>
 </div>
+<div class="strike" id="strike" role="dialog" aria-modal="true" aria-labelledby="stkT"><div class="flash"></div>
+  <svg class="bolt-path" viewBox="0 0 400 460" preserveAspectRatio="none" aria-hidden="true"><path d="M230 0L180 110L238 128L160 250L222 262L150 460"/><path d="M180 110L120 170L150 178L96 240" style="stroke-width:3"/></svg>
+  <div class="stkcard"><div class="num" id="stkN">1</div><h2 id="stkT">günlük seriya!</h2><p id="stkM"></p><button class="btn sun" id="stkGo">Davam et ⚡</button></div></div>
 <div id="iosPoint" aria-hidden="true"><span>••• düyməsi aşağıdadır</span><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#2f7de1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v15M6 13l6 6 6-6"/></svg></div>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="shT"><div>
   <h2 id="shT"></h2>
@@ -272,7 +298,7 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 <header class="top">
   <div class="logo"><svg width="30" height="30" viewBox="0 0 64 64"><use href="#sunI"/></svg><span>Ad<b>dım</b></span></div>
   <div class="pills">
-    <div class="pill" title="Günlük seriya"><svg viewBox="0 0 64 64"><use href="#sunI"/></svg><span id="stPill">0</span></div>
+    <div class="pill" title="Günlük seriya"><svg viewBox="0 0 64 64"><use href="#boltI" id="stIco"/></svg><span id="stPill">0</span></div>
     <div class="pill" title="Bu həftə qazanılan ulduzlar (XP)"><svg viewBox="0 0 24 24"><use href="#starI"/></svg><span id="xpTot">0</span></div>
     <a class="hdav" href="#profile" id="hdAv" aria-label="Profil"></a>
   </div>
@@ -282,15 +308,14 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 <main class="view" id="v-home">
   <div class="hero">
     <h1 id="greet">Salam! Bu gün də bir addım at.</h1>
-    <p>Hər gün bir az — günəşin sönməsin.</p>
+    <p>Hər gün bir az — şimşəyin sönməsin.</p>
     <div class="sunbox">
-      <svg class="bigsun" viewBox="0 0 128 128" aria-hidden="true">
-        <defs><radialGradient id="sg" cx=".4" cy=".35"><stop offset="0" stop-color="#ffe680"/><stop offset=".6" stop-color="#ffc233"/><stop offset="1" stop-color="#ff9f1c"/></radialGradient></defs>
-        <g class="rays" fill="#ffc94a"><path d="M103.5 57.6L125.0 64.0L103.5 70.4ZM101.4 78.2L116.8 94.5L95.0 89.3ZM89.3 95.0L94.5 116.8L78.2 101.4ZM70.4 103.5L64.0 125.0L57.6 103.5ZM49.8 101.4L33.5 116.8L38.7 95.0ZM33.0 89.3L11.2 94.5L26.6 78.2ZM24.5 70.4L3.0 64.0L24.5 57.6ZM26.6 49.8L11.2 33.5L33.0 38.7ZM38.7 33.0L33.5 11.2L49.8 26.6ZM57.6 24.5L64.0 3.0L70.4 24.5ZM78.2 26.6L94.5 11.2L89.3 33.0ZM95.0 38.7L116.8 33.5L101.4 49.8Z"/></g>
-        <circle cx="64" cy="64" r="34" fill="url(#sg)"/>
-        <circle cx="52" cy="58" r="4" fill="#7a4a00"/><circle cx="76" cy="58" r="4" fill="#7a4a00"/>
-        <path d="M52 72q12 10 24 0" stroke="#7a4a00" stroke-width="4" fill="none" stroke-linecap="round"/>
-        <circle cx="45" cy="70" r="5" fill="#ff8a65" opacity=".5"/><circle cx="83" cy="70" r="5" fill="#ff8a65" opacity=".5"/>
+      <svg class="bigsun bolt" id="bigBolt" viewBox="0 0 128 128" aria-hidden="true">
+        <g class="spark" stroke="#ffb703" stroke-width="4" stroke-linecap="round" fill="none"><path d="M14 30l9 4-5 6 9 3"/><path d="M110 22l-8 6 6 4-8 6"/><path d="M112 96l-9-2 3 7-9-1"/><path d="M18 100l8-5 1 7 8-5"/></g>
+        <path class="body" d="M76 6L26 72h32l-10 50 54-70H68z" fill="url(#bg1)" stroke="#d97706" stroke-width="5" stroke-linejoin="round"/>
+        <path d="M68 18L42 56" stroke="#fff6c4" stroke-width="5" stroke-linecap="round" opacity=".75"/>
+        <g class="face"><circle cx="58" cy="66" r="4.5" fill="#5a3300"/><circle cx="74" cy="66" r="4.5" fill="#5a3300"/><circle cx="59.5" cy="64.5" r="1.5" fill="#fff"/><circle cx="75.5" cy="64.5" r="1.5" fill="#fff"/><path d="M58 76q8 7 16 0" stroke="#5a3300" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="51" cy="74" r="4" fill="#ff7a59" opacity=".45"/><circle cx="81" cy="74" r="4" fill="#ff7a59" opacity=".45"/></g>
+        <g class="zz" fill="#9aa5b1" font-weight="900" font-family="sans-serif"><text x="92" y="40" font-size="16">z</text><text x="102" y="26" font-size="12">z</text></g>
       </svg>
       <div><div class="big" id="streak">0</div><div class="sub">günlük seriya</div><div class="hint" id="best"></div></div>
     </div>
@@ -401,6 +426,10 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="sunI" viewBox="0 0 64 64"><g fill="#ffc94a"><path d="M32 2l5 12h-10zM32 62l-5-12h10zM2 32l12-5v10zM62 32l-12 5V27zM10.8 10.8l11.9 5-7 7zM53.2 53.2l-11.9-5 7-7zM10.8 53.2l5-11.9 7 7zM53.2 10.8l-5 11.9-7-7z"/></g><circle cx="32" cy="32" r="15" fill="#ff9f1c"/><circle cx="29" cy="29" r="9" fill="#ffc233"/></symbol>
+  <linearGradient id="bg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe46b"/><stop offset=".55" stop-color="#ffc21a"/><stop offset="1" stop-color="#ff8a00"/></linearGradient>
+  <symbol id="boltI" viewBox="0 0 64 64"><path d="M38 3L12 37h17l-5 24 28-36H35z" fill="url(#bg1)" stroke="#d97706" stroke-width="3" stroke-linejoin="round"/><path d="M33 10L19 31" stroke="#fff6c4" stroke-width="3" stroke-linecap="round" opacity=".8"/></symbol>
+  <symbol id="boltOff" viewBox="0 0 64 64"><path d="M38 3L12 37h17l-5 24 28-36H35z" fill="#e6e1d6" stroke="#c9c2b3" stroke-width="3" stroke-linejoin="round"/></symbol>
+  <symbol id="boltIce" viewBox="0 0 64 64"><path d="M38 3L12 37h17l-5 24 28-36H35z" fill="#cfe9ff" stroke="#7cc0f5" stroke-width="3" stroke-linejoin="round"/><path d="M30 26l8 6M38 26l-8 6" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></symbol>
   <symbol id="sunOff" viewBox="0 0 64 64"><circle cx="32" cy="32" r="14" fill="#e9dcc0"/></symbol>
   <symbol id="sunIce" viewBox="0 0 64 64"><circle cx="32" cy="32" r="16" fill="#bfe3ff"/><path d="M32 20v24M22 26l20 12M42 26L22 38" stroke="#fff" stroke-width="3" stroke-linecap="round"/></symbol>
   <symbol id="starI" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z" fill="#ffc83d" stroke="#e0a400" stroke-width="1.2" stroke-linejoin="round"/></symbol>
@@ -446,20 +475,34 @@ const CROWN='<svg class="crown" viewBox="0 0 24 24" aria-label="Premium"><path d
 const LOCKI='<svg viewBox="0 0 24 24" fill="none" stroke="#c98a00" stroke-width="2.6" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
 const active=k=>S.days[k]>0||S.frozen[k];
 function applyFreeze(){const t=today(),y=shiftDay(t,-1),yy=shiftDay(t,-2);
-  if(!active(y)&&active(yy)&&S.freeze>0){S.freeze--;S.frozen[y]=1;save();sheet('Seriyan qorundu!','<p>Dünən dərs keçmədin, amma <b>seriya qoruyucusu</b> günəşini söndürməyə qoymadı. Bu gün bir dərs keç ki, seriya davam etsin.</p>')}}
+  if(!active(y)&&active(yy)&&S.freeze>0){S.freeze--;S.frozen[y]=1;save();sheet('Seriyan qorundu!','<p>Dünən dərs keçmədin, amma <b>seriya qoruyucusu</b> şimşəyini söndürməyə qoymadı. Bu gün bir dərs keç ki, seriya davam etsin.</p>')}}
 const streak=()=>{let k=today(),n=0;if(!active(k))k=shiftDay(k,-1);while(active(k)){if(S.days[k]>0)n++;k=shiftDay(k,-1)}return n};
 const weekXP=()=>{const ws=weekStart(today());let s=0;for(const k in S.days)if(k>=ws)s+=S.days[k];return s};
 function addXP(n,skill,el){
   const t=today(),before=streak(),was=S.days[t]||0;S.days[t]=was+n;
   if(skill)S.skills[skill]=Math.min(100,(S.skills[skill]||0)+n);
   const st=streak();
-  if(st>before&&st%7===0&&S.freeze<2){S.freeze++;setTimeout(()=>sheet(st+' günlük seriya!','<p>Möhtəşəm! Hədiyyə olaraq <b>seriya qoruyucusu</b> qazandın: bir gün dərs buraxsan, seriyan sönməyəcək.</p>'),900)}
+  if(st>before){let gift=false;if(st%7===0&&S.freeze<2){S.freeze++;gift=true}STRIKE={n:st,gift};strikeSoon()}
   if(was<GOAL&&S.days[t]>=GOAL&&!S.goalDone[t]){S.goalDone[t]=1;confetti();}
   save();renderHome();if(el)floatXP(el,n);syncSoon();
 }
 function floatXP(el,n){setTimeout(()=>play('xp'),160);const r=el.getBoundingClientRect(),f=document.createElement('div');f.className='float';f.textContent='+'+n+' XP';f.style.left=(r.left+r.width/2-30)+'px';f.style.top=(r.top-10)+'px';document.body.appendChild(f);setTimeout(()=>f.remove(),1100);const p=$('xpTot').parentElement;p.classList.remove('pop');void p.offsetWidth;p.classList.add('pop')}
 function confetti(){play('rank');const c=['#ffc83d','#ff9f1c','#2f7de1','#7b56d6','#16956a','#ef5d5d'];for(let i=0;i<60;i++){const d=document.createElement('div');d.className='conf';d.style.left=Math.random()*100+'vw';d.style.background=c[i%c.length];d.style.setProperty('--x',(Math.random()*160-80)+'px');d.style.setProperty('--r',(Math.random()*720)+'deg');d.style.setProperty('--d',(1.6+Math.random()*1.4)+'s');document.body.appendChild(d);setTimeout(()=>d.remove(),3200)}
-  setTimeout(()=>sheet('Günlük hədəf tamamlandı!','<p>Bu gün <b>50 XP</b> topladın. Günəşin parlayır — sabah da qayıt ki, seriyan böyüsün.</p>'),700)}
+  setTimeout(()=>sheet('Günlük hədəf tamamlandı!','<p>Bu gün <b>50 XP</b> topladın. Enerjin tam doludur — sabah da qayıt ki, seriyan böyüsün.</p>'),700)}
+
+
+/* ---------- şimşək: gündəlik seriya animasiyası ---------- */
+let STRIKE=null;
+const STRIKE_MSG=['Elektrikləndin! Bu enerjini sabaha da saxla.','Gurultunu eşitdin? İngilis dili səndən qorxmağa başlayıb.','Şimşək kimi sürətlisən — seriyanı qoru!','Batareya 100%. Sabah yenidən doldur.','Bu gün də çaxdı! Ardıcıllıq — sehrin özüdür.','Göy guruldadı, sən öyrəndin. Əla iş!','Enerji axını davam edir — dayanmaq yoxdur!'];
+function strikeSoon(){const v=location.hash.slice(1);if(v==='lesson'||v==='quiz')return;setTimeout(showStrike,v==='home'?250:500)}
+function showStrike(){if(!STRIKE)return;const {n,gift}=STRIKE;STRIKE=null;const el=$('strike');
+  $('stkN').textContent=n;$('stkT').textContent=n===1?'Şimşək çaxdı!':n+' günlük seriya!';
+  $('stkM').innerHTML=n===1?'İlk şimşəyin çaxdı! Sabah da gəl ki, ikincisi çaxsın.':gift?'Bir həftə ardıcıl! Hədiyyə: <b>seriya qoruyucusu</b> — bir gün buraxsan, şimşəyin sönməyəcək.':esc(STRIKE_MSG[n%STRIKE_MSG.length]);
+  el.classList.remove('on');void el.offsetWidth;el.classList.add('on');play('thunder');try{navigator.vibrate&&navigator.vibrate([25,40,90])}catch(e){}
+  el.querySelectorAll('.zap').forEach(z=>z.remove());
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches)for(let i=0;i<9;i++)setTimeout(()=>{if(!el.classList.contains('on'))return;const z=document.createElementNS('http://www.w3.org/2000/svg','svg');z.setAttribute('viewBox','0 0 64 64');z.setAttribute('class','zap');z.innerHTML='<use href="#boltI"/>';z.style.left=(10+Math.random()*80)+'vw';z.style.top=(25+Math.random()*55)+'vh';el.appendChild(z);setTimeout(()=>z.remove(),600)},250+i*140);
+  const p=$('stPill').parentElement;p.classList.remove('zing');void p.offsetWidth;p.classList.add('zing');
+  const close=()=>{el.classList.remove('on')};$('stkGo').onclick=e=>{e.stopPropagation();close()};el.onclick=close;$('stkGo').focus({preventScroll:true})}
 
 /* ---------- home ---------- */
 const SK=[['reading','Reading','Oxu və anla','--rd','--rdb'],['listening','Listening','Dinlə və anla','--ls','--lsb'],['speaking','Speaking','Danış, tələffüzü yoxla','--sp','--spb'],['writing','Writing','Yaz, rəy al','--wr','--wrb']];
@@ -467,12 +510,13 @@ const WD=['B','B.e','Ç.a','Ç','C.a','C','Ş'];
 function renderHome(){
   const t=today(),xp=S.days[t]||0,st=streak();
   $('streak').textContent=st;$('stPill').textContent=st;
-  $('best').textContent=xp>=GOAL?'Bugünkü hədəf tamamlandı':xp>0?'Hədəfə '+(GOAL-xp)+' XP qalıb':st?'Bu gün dərs keç ki, seriya sönməsin':'İlk dərsini keç və günəşini yandır';
+  const lit=xp>0;$('bigBolt').classList.toggle('off',!lit);$('stIco').setAttribute('href',st||lit?'#boltI':'#boltOff');
+  $('best').textContent=xp>=GOAL?'Bugünkü hədəf tamamlandı':xp>0?'Hədəfə '+(GOAL-xp)+' XP qalıb':st?'Bu gün dərs keç ki, seriya sönməsin':'İlk dərsini keç və şimşəyi çaxdır';
   $('xpTot').textContent=weekXP();
   $('goalTxt').textContent=Math.min(xp,GOAL)+' / '+GOAL+' XP';
   $('goalBar').style.width=Math.min(100,xp/GOAL*100)+'%';
   $('week').innerHTML=[6,5,4,3,2,1,0].map(n=>{const k=shiftDay(t,-n),d=new Date(k+'T12:00:00Z').getUTCDay(),on=S.days[k]>0,fr=!on&&S.frozen[k];
-    return `<div class="day">${WD[d]}<div class="dot ${on||fr?'on':''} ${n===0?'today':''}">${on?'<svg viewBox="0 0 64 64"><use href="#sunI"/></svg>':fr?'<svg viewBox="0 0 64 64"><use href="#sunIce"/></svg>':''}</div></div>`}).join('');
+    return `<div class="day">${WD[d]}<div class="dot ${on||fr?'on':''} ${n===0?'today':''}">${on?'<svg viewBox="0 0 64 64"><use href="#boltI"/></svg>':fr?'<svg viewBox="0 0 64 64"><use href="#boltIce"/></svg>':''}</div></div>`}).join('');
   $('skills').innerHTML=SK.map(([id,n,d,c,b])=>`<a class="skill" href="#${id}" style="background:var(${b})"><div class="ic" style="color:var(${c})">${IC[id]}</div><b>${n}</b><span>${d}</span><div class="mini"><i style="width:${S.skills[id]||0}%;background:var(${c})"></i></div></a>`).join('');
   const q=S.quiz[t];$('quizState').textContent=q!=null?`Bu gün: ${q}/8 düzgün · yenidən keç`:'8 sual · hər düzgün cavab +10 XP';
   if(typeof renderNext==='function')renderNext();
@@ -501,7 +545,7 @@ let QZ=[],qi=0,qok=0,qStreak=0;
 function startQuiz(){const r=seeded(+today().replace(/-/g,''));QZ=shuffle(BANK,r).slice(0,8).map(([q,o,e])=>({q,a:o[0],o:shuffle(o),e}));qi=0;qok=0;qStreak=0;location.hash='quiz';showQ()}
 function showQ(){
   $('qBar').style.width=(qi/QZ.length*100)+'%';
-  if(qi>=QZ.length){S.quiz[today()]=qok;save();renderHome();track('quiz');
+  if(qi>=QZ.length){S.quiz[today()]=qok;save();renderHome();track('quiz');if(STRIKE)setTimeout(showStrike,1200);
     $('quizBox').innerHTML=`<div class="res"><svg width="72" height="72" viewBox="0 0 24 24"><use href="#starI"/></svg><div class="score">${qok}/${QZ.length}</div><h2 style="margin-top:12px">${qok>=7?'Əla nəticə!':qok>=5?'Yaxşı iş!':'Yaxşı başlanğıc!'}</h2><p>+${qok*10} XP qazandın. Sabah yeni suallar olacaq.</p><a class="btn" href="#league">Liqada yerimə bax</a><a class="btn ghost" href="#home">Ana səhifə</a></div>`;return}
   const it=QZ[qi];
   $('quizBox').innerHTML=`<div class="note" style="margin:0 0 6px">Sual ${qi+1} / ${QZ.length}${qStreak>=2?' · <b style="color:var(--sun)">'+qStreak+' ardıcıl düzgün!</b>':''}</div><p class="q">${esc(it.q)}</p><div class="opts">${it.o.map((o,i)=>`<button class="opt" data-i="${i}">${esc(o)}</button>`).join('')}</div><div id="qEx"></div>`;
@@ -574,7 +618,7 @@ const speakNative=(lines,rate)=>new Promise(res=>{const ss=window.speechSynthesi
    iOS üçün bir Audio elementi təkrar istifadə olunur (ilk toxunuşdan sonra icazəli qalır). */
 const VOICE_TEST="Hi! I'm your English voice. How does this sound?";
 let AEL=null,SPEAK_TOKEN=0,AI_DOWN_UNTIL=0;
-Object.defineProperty(window,'S',{get:()=>S,configurable:true});Object.defineProperty(window,'LS',{get:()=>LS,set:v=>{LS=v},configurable:true});Object.defineProperty(window,'AEL',{get:()=>AEL||{paused:true},configurable:true});Object.defineProperty(window,'AI_DOWN_UNTIL',{get:()=>AI_DOWN_UNTIL,configurable:true});
+Object.defineProperty(window,'S',{get:()=>S,configurable:true});Object.defineProperty(window,'STRIKE',{get:()=>STRIKE,configurable:true});Object.defineProperty(window,'LS',{get:()=>LS,set:v=>{LS=v},configurable:true});Object.defineProperty(window,'AEL',{get:()=>AEL||{paused:true},configurable:true});Object.defineProperty(window,'AI_DOWN_UNTIL',{get:()=>AI_DOWN_UNTIL,configurable:true});
 const aiOn=()=>S.voiceSrc!=='device'&&location.protocol==='https:'||S.voiceSrc!=='device'&&/^(localhost|127\.)/.test(location.hostname);
 function playOne(url,rate,tok){return new Promise((res,rej)=>{if(!AEL){AEL=new Audio();AEL.preload='auto'}const a=AEL;let started=false;
   const done=()=>{clearTimeout(t);a.onended=a.onerror=a.onplaying=null;a._stop=null};
@@ -651,7 +695,16 @@ const SFX={
   xp:()=>{[1319,1568,2093].forEach((f,i)=>tone(f,.09,{type:'triangle',vol:.06,at:i*.05}))},
   done:()=>{[523,659,784,1047].forEach((f,i)=>tone(f,.25,{vol:.12,at:i*.12}));tone(1568,.5,{type:'triangle',vol:.06,at:.5})},
   rank:()=>{[392,523,659,784,1047,1319].forEach((f,i)=>tone(f,.18,{type:'triangle',vol:.1,at:i*.09}));[1047,1319,1568].forEach(f=>tone(f,.7,{vol:.06,at:.6}))},
-  down:()=>{tone(440,.18,{type:'triangle',vol:.07,to:330})}
+  down:()=>{tone(440,.18,{type:'triangle',vol:.07,to:330})},
+  thunder:()=>{const a=ac();if(!a)return;const t=a.currentTime,sr=a.sampleRate,len=Math.floor(sr*2.6),buf=a.createBuffer(1,len,sr),d=buf.getChannelData(0);
+    let last=0;for(let i=0;i<len;i++){const w=Math.random()*2-1;last=(last+0.02*w)/1.02;d[i]=i<sr*.12?w:last*3.5}
+    const src=a.createBufferSource();src.buffer=buf;
+    const crack=a.createBiquadFilter();crack.type='highpass';crack.frequency.value=900;
+    const g1=a.createGain();g1.gain.setValueAtTime(.0001,t);g1.gain.exponentialRampToValueAtTime(.55,t+.01);g1.gain.exponentialRampToValueAtTime(.0001,t+.25);
+    const low=a.createBiquadFilter();low.type='lowpass';low.frequency.setValueAtTime(420,t);low.frequency.exponentialRampToValueAtTime(90,t+2.4);
+    const g2=a.createGain();g2.gain.setValueAtTime(.0001,t);g2.gain.exponentialRampToValueAtTime(.9,t+.18);g2.gain.setValueAtTime(.9,t+.5);g2.gain.exponentialRampToValueAtTime(.0001,t+2.5);
+    src.connect(crack).connect(g1).connect(a.destination);src.connect(low).connect(g2).connect(a.destination);src.start(t);src.stop(t+2.6);
+    [1568,2349,3136].forEach((f,i)=>tone(f,.07,{type:'square',vol:.025,at:.02+i*.035,to:f*.5}))}
 };
 const play=k=>{if(S&&S.sound&&SFX[k])try{SFX[k]()}catch(e){}};
 document.addEventListener('pointerdown',e=>{if(e.target.closest('button,a.skill,a.next,.daily,.chip'))play('tap')},true);
@@ -789,7 +842,7 @@ function finishLesson(){const a=LS.a,first=!a.mist&&!isDone(a.x.id),acc=LS.score
   const nx=nextLesson();
   $('lBox').innerHTML=`<div class="res"><svg width="120" height="120" viewBox="0 0 64 64"><use href="#sunI"/></svg><h2 style="margin-top:8px">${a.mist?'Səhvlər təkrarlandı!':a.x.review?'Təkrar tamamlandı!':'Dərs tamamlandı!'}</h2><p style="margin:0">${esc(a.x.title)}</p><div class="row" style="justify-content:center;gap:28px;margin:18px 0"><div><div class="score">${acc}%</div><div class="hint">düzgün</div></div><div><div class="score" style="color:var(--star)">+${LS.xp}</div><div class="hint">XP</div></div></div>${nx?`<button class="btn" id="lGoNext">Növbəti dərs: ${esc(nx.x.title)}</button>`:''}<a class="btn ghost" href="#course">Kursa qayıt</a></div>`;
   $('lBox').insertAdjacentHTML('beforeend','<div id="vidLesson" style="margin-top:8px"></div>');renderVideo($('vidLesson'),'Dərsdən sonra bax');
-  play('done');$('lBar').style.width='100%';if(nx)$('lGoNext').onclick=()=>startLesson(nx.x.id);LS=null;renderNext();
+  play('done');$('lBar').style.width='100%';if(nx)$('lGoNext').onclick=()=>startLesson(nx.x.id);LS=null;renderNext();if(STRIKE)setTimeout(showStrike,1300);
 }
 $('lQuit').onclick=()=>sheet('Dərsdən çıxırsan?','<p>Bu dərsdəki proqresin yadda qalmayacaq. Qazandığın XP isə səndə qalır.</p>','<button class="btn" id="qStay">Davam et</button><button class="btn ghost" id="qLeave">Çıx</button>')||($('qStay').onclick=closeSheet,$('qLeave').onclick=()=>{closeSheet();LS=null;location.hash='course'});
 
@@ -910,7 +963,7 @@ addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet()});
 /* ---------- routing ---------- */
 const VIEWS=['welcome','profile','premium','home','course','league','practice','quiz','lesson','reading','listening','speaking','writing'];
 $('tabs').innerHTML=[['home','Bu gün'],['course','Kurs'],['league','Liqa'],['practice','Məşq']].map(([k,n])=>`<a href="#${k}" data-k="${k}">${IC[k]}<span>${n}</span></a>`).join('');
-function route(){stopSpeech();let v=location.hash.slice(1);if(!VIEWS.includes(v))v='home';if(v==='quiz'&&!QZ.length){startQuiz();return}
+function route(){stopSpeech();let v=location.hash.slice(1);if(STRIKE&&v!=='lesson'&&v!=='quiz')setTimeout(showStrike,400);if(!VIEWS.includes(v))v='home';if(v==='quiz'&&!QZ.length){startQuiz();return}
   if(v==='lesson'&&!LS){location.hash='course';return}
   if(v==='course')renderCourse();
   if(v==='welcome'){PT=null;welcome()}
