@@ -1,6 +1,7 @@
 // Addım service worker: tətbiqi oflayn işlədir
-const CACHE = 'addim-v23';
+const CACHE = 'addim-v24';
 const AUDIO = 'addim-audio-v2';
+const INFLIGHT = new Map();
 const FILES = ['./', './index.html', './course.js', './course-extra.js', './a1-more.js', './a1-examples.js', './practice.js', './avatars.js', './config.js', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
@@ -17,7 +18,13 @@ self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   // Təbii səs faylları: əvvəl yaddaş (dəyişmir), yoxdursa şəbəkə — internetsiz də işləsin
   if (url.pathname === '/api/tts') {
-    e.respondWith(caches.open(AUDIO).then(c => c.match(e.request).then(m => m || fetch(e.request).then(r => { if (r.ok) c.put(e.request, r.clone()); return r; }))));
+    // Eyni səs faylı üçün eyni anda iki sorğu getməsin (önyükləmə + düymə)
+    e.respondWith(caches.open(AUDIO).then(c => c.match(e.request.url).then(m => {
+      if (m) return m;
+      let p = INFLIGHT.get(e.request.url);
+      if (!p) { p = fetch(e.request.url).then(r => { if (r.ok) return c.put(e.request.url, r.clone()).then(() => r); return r; }).finally(() => INFLIGHT.delete(e.request.url)); INFLIGHT.set(e.request.url, p); }
+      return p.then(r => r.clone());
+    })));
     return;
   }
   if (url.pathname.startsWith('/api/')) return;

@@ -257,6 +257,7 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 #tr .line{border-radius:12px;transition:background .2s;padding:4px 8px;margin:0 -8px}#tr .line.cur{background:#fff3c4}
 
 /* dairələr */
+@media(prefers-reduced-motion:no-preference){.node.pulse .c{animation:npulse .8s ease-in-out 3}@keyframes npulse{50%{transform:scale(1.12)}}}
 .node.circ{position:relative}.node .ring{position:absolute;top:-9px;left:50%;width:90px;height:90px;margin-left:-45px;pointer-events:none}
 .node.gold .c{box-shadow:0 5px 0 #c98a00,0 0 18px #ffd24a99}.node.gold .c svg{filter:drop-shadow(0 1px 0 #fff8)}
 .cring{width:96px;height:96px;margin:10px auto 0}.cring .ring{width:96px;height:96px}
@@ -764,7 +765,7 @@ function openEp(kind,id){stopSpeech();const e=PRAC[kind].find(x=>x.id===id);if(!
    `<div class="card" style="background:var(--rdb);border-color:${k.bd}"><div class="text" id="rText">${e.text.split(/(\s+)/).map(w=>{const kk=w.replace(/[.,()!?:;]/g,'').toLowerCase();return e.gl[kk]?`<button class="w" data-k="${esc(kk)}">${esc(w)}</button>`:esc(w)}).join('')}</div></div><div class="tip" id="tip"></div>`)+
    `<h2 style="margin-top:22px">Suallar</h2><div id="epQs"></div><div id="epEnd"></div>`;
   $('epBack').onclick=()=>{stopSpeech();PCUR[kind]=null;packList(kind);window.scrollTo(0,0)};
-  if(lines){let pos=0;const trs=()=>[...$('tr').querySelectorAll('.line')];
+  if(lines){prefetchAudio(lines.slice(1));let pos=0;const trs=()=>[...$('tr').querySelectorAll('.line')];
     const hl=i=>{trs().forEach((d,k)=>d.classList.toggle('cur',k===i));$('lsPos').textContent=i<0?'':`Replika ${i+1} / ${lines.length}`};
     const setLbl=(b,t)=>{if(!b||!b.isConnected)return;b.dataset.l0=t;if(SPK_BTN!==b)b.innerHTML=t};
     const run=(btn,rate)=>{const from=pos>=lines.length?0:pos;playBtn(btn,lines.slice(from),rate,{onLine:i=>{pos=from+i;hl(pos)},
@@ -805,15 +806,24 @@ Object.defineProperty(window,'S',{get:()=>S,configurable:true});window.today=tod
 const aiOn=()=>S.voiceSrc!=='device'&&location.protocol==='https:'||S.voiceSrc!=='device'&&/^(localhost|127\.)/.test(location.hostname);
 function playOne(url,rate,tok){return new Promise((res,rej)=>{if(!AEL){AEL=new Audio();AEL.preload='auto'}const a=AEL;let started=false;
   const done=()=>{clearTimeout(t);a.onended=a.onerror=a.onplaying=null;a._stop=null};
-  const t=setTimeout(()=>{if(!started){done();rej(new Error('timeout'))}},9000);
+  const t=setTimeout(()=>{if(!started){done();try{a.pause();a.removeAttribute('src');a.load()}catch(e){}rej(new Error('slow'))}},2500);
   a._stop=()=>{done();res()};a.onplaying=()=>{started=true};a.onended=()=>{done();res()};a.onerror=()=>{done();rej(new Error('audio'))};
   a.src=url;try{a.playbackRate=Math.max(.5,Math.min(1.5,rate*(S.rate||1)));a.preservesPitch=true}catch(e){}
   const p=a.play();if(p&&p.catch)p.catch(e=>{done();rej(e)})})}
+window.__speak=(l,r)=>speak(l,r);const ttsUrl=(text,voice)=>'/api/tts?m=3&v='+(voice==='rounded'?'orion':'asteria')+'&t='+encodeURIComponent(text);
+// Səsləri əvvəlcədən yüklə: dərs açılan kimi bütün cümlələr arxa planda gətirilir və telefonda saxlanılır — düyməyə toxunanda dərhal səslənir
+let PF_TOK=0;const PF_DONE=new Set();
+function prefetchAudio(list){if(!aiOn()||Date.now()<AI_DOWN_UNTIL)return;const tok=++PF_TOK,q=list.filter(l=>l&&l.text&&!PF_DONE.has(ttsUrl(l.text,l.voice)));
+  const worker=async()=>{while(q.length&&tok===PF_TOK){const l=q.shift(),u=ttsUrl(l.text,l.voice);if(PF_DONE.has(u))continue;PF_DONE.add(u);try{const r=await fetch(u);if(r.status===503){AI_DOWN_UNTIL=Date.now()+10*60e3;return}await r.arrayBuffer()}catch(e){}}};
+  worker();worker()}
+function lessonAudio(items){const out=[];for(const it of items){if(it.t==='learn')it.ex.forEach(r=>out.push({text:r[0].replace(/ \/ /g,', ')}));
+  else if(it.t==='listen'||it.t==='dict'||it.t==='speak')out.push({text:it.en});else if(it.t==='order')out.push({text:[].concat(it.en)[0]})}
+  return out}
 async function speakAI(lines,rate,tok,onLine){for(let i=0;i<lines.length;i++){const l=lines[i];if(tok!==SPEAK_TOKEN)return;if(onLine)onLine(i);
-  await playOne('/api/tts?m=3&v='+(l.voice==='rounded'?'orion':'asteria')+'&t='+encodeURIComponent(l.text),rate,tok)}}
+  await playOne(ttsUrl(l.text,l.voice),rate,tok)}}
 async function speak(lines,rate=1,onLine){const tok=++SPEAK_TOKEN;
   if(TTS){try{await TTS.speak(lines.map(l=>({text:l.text,voice:l.voice||'buttery',language:'en',rate:rate*(S.rate||1)})));return}catch(e){if(e&&e.code==='busy')return}}
-  if(aiOn()&&Date.now()>AI_DOWN_UNTIL){let at=0;try{await speakAI(lines,rate,tok,i=>{at=i;onLine&&onLine(i)});return}catch(e){if(tok!==SPEAK_TOKEN)return;AI_DOWN_UNTIL=Date.now()+10*60e3;
+  if(aiOn()&&Date.now()>AI_DOWN_UNTIL){let at=0;try{await speakAI(lines,rate,tok,i=>{at=i;onLine&&onLine(i)});return}catch(e){if(tok!==SPEAK_TOKEN)return;if(!(e&&e.message==='slow'))AI_DOWN_UNTIL=Date.now()+10*60e3;else prefetchAudio(lines.slice(at));
     if(at>0){lines=lines.slice(at);const base=at,o=onLine;onLine=o&&(i=>o(base+i))}}}
   if(!window.speechSynthesis){toast('Bu brauzerdə səsləndirmə işləmir — mətni oxu.');return}
   await speakNative(lines,rate,onLine);
@@ -958,7 +968,7 @@ const toks=s=>s.split(' ').map(w=>w.replace(/[.,!?]/g,'')).filter(Boolean);
 function renderNext(){const n=nextLesson(),el=$('nextCard');
   if(!n){el.innerHTML=`<div class="lv">${IC.course}</div><span><small>Kurs</small><strong>Bütün dərsləri keçdin! Yeni bölmələr tezliklə.</strong></span>`;el.onclick=null;return}
   el.innerHTML=`<div class="lv" style="background:${n.lv.color}">${esc(n.lv.name)}</div><span><small>${ALL.some(a=>isDone(a.x.id))?'Növbəti dərs':'İlk dərsin'} · Bölmə ${n.ui+1}: ${esc(n.u.title)}</small><strong>${esc(n.x.title)}${isCircle(n)?` <span style="font-weight:800;color:var(--mut);font-size:14px">· Dərs ${partsDone(n.x.id)+1}/4</span>`:''}</strong>${isPrem()?'<span class="lim">Premium · limitsiz dərs</span>':`<span class="lim">Bu gün ${lessonsLeft()} pulsuz dərs qalıb</span>`}</span><span class="go">›</span>`;
-  el.onclick=e=>{e.preventDefault();startLesson(n.x.id)}}
+  el.onclick=e=>{e.preventDefault();if(S.lvl!==n.lv.id){S.lvl=n.lv.id;save()}location.hash='course';setTimeout(()=>{const c=document.querySelector('#units .node.cur');if(c){c.scrollIntoView({behavior:'smooth',block:'center'});c.classList.add('pulse');setTimeout(()=>c.classList.remove('pulse'),2600)}},120)}}
 function renderCourse(){
   const C=window.COURSE||[],lv=C.find(l=>l.id===S.lvl)||C[0];if(!lv)return;
   $('lvls').innerHTML=C.map(l=>`<button class="lvl" data-l="${l.id}" aria-pressed="${l.id===lv.id}" style="${l.id===lv.id?'background:'+l.color:''}">${esc(l.name)} · ${esc(l.title)}</button>`).join('');
@@ -1033,7 +1043,7 @@ function startLesson(id,part){const a=ALL.find(z=>z.x.id===id);if(!a)return;
   if(!a.x.review&&!isPrem()&&fresh&&lessonsLeft()<=0){play('down');track('limit_hit');return sheet('Bugünlük pulsuz dərslər bitdi',`<p>Bu gün ${CFG.freeLessonsPerDay||3} yeni dərs keçdin — əla iş! Sabah yenə ${CFG.freeLessonsPerDay||3} dərs açılacaq. Keçdiyin dərsləri təkrarlamaq, günün quizi və məşqlər isə limitsizdir.</p><p><b>Premium</b> ilə istədiyin qədər dərs keç və hər dərsdə +50% XP qazan.</p>`,'<a class="btn sun" href="#premium" id="goPrem">Premium-a bax</a><button class="btn ghost" id="shClose">Sabah davam edərəm</button>')||($('shClose').onclick=closeSheet,$('goPrem').onclick=closeSheet)}
   const items=circ?circleItems(a.x,part):a.x.review?reviewItems(a):itemsOf(a.x);if(a.x.review)track('review',a.x.id);
   if(!circ&&!a.x.review&&!items.some(i=>i.t==='speak')){const o=items.find(i=>i.t==='order');if(o)items.splice(items.length-1,0,{t:'speak',en:[].concat(o.en)[0],az:o.az})}
-  LS={a,items,i:0,ok:0,scored:0,xp:0,part:circ?part:null,fresh};location.hash='lesson';if(location.hash==='#lesson')route();renderStep()}
+  LS={a,items,i:0,ok:0,scored:0,xp:0,part:circ?part:null,fresh};prefetchAudio(lessonAudio(items));location.hash='lesson';if(location.hash==='#lesson')route();renderStep()}
 function fbBox(ok,title,body){return `<div class="fb ${ok?'ok':'no'}"><b>${esc(title)}</b>${body?'<div>'+esc(body)+'</div>':''}<button class="btn ${ok?'':'sun'}" id="lNext">Davam et</button></div>`}
 function answered(ok,right,e,el){const it=LS.items[LS.i];
   if(!it.re){LS.scored++;if(ok)LS.ok++}

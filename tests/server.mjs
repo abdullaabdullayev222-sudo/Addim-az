@@ -11,10 +11,10 @@ function wav(sec = 1.5, rate = 8000) { const n = Math.floor(sec * rate), b = Buf
   b.writeUInt32LE(16, 16); b.writeUInt16LE(1, 20); b.writeUInt16LE(1, 22); b.writeUInt32LE(rate, 24); b.writeUInt32LE(rate, 28); b.writeUInt16LE(1, 32); b.writeUInt16LE(8, 34); b.write('data', 36); b.writeUInt32LE(n, 40); b.fill(128, 44); return b; }
 // Saxta MP3: 50 kadr, MPEG-2 Layer III, 24 kHz, 48 kbps (hər kadr 144 bayt)
 const mp3 = () => { const f = 144, b = new Uint8Array(50 * f); for (let i = 0; i < 50; i++) { b.set([0xff, 0xf3, 0x64, 0xc4], i * f); for (let j = 4; j < f; j++) b[i * f + j] = (i + j) & 0x7f; } return b; };
-const AI = { async run(model, input, opt) { aiCalls++; if (aiFail) throw new Error('quota');
+const AI = { async run(model, input, opt) { aiCalls++; if (aiFail) throw new Error('quota'); if (aiDelay && !model.includes('whisper')) await new Promise(r => setTimeout(r, aiDelay));
   if (model.includes('whisper')) return { text: aiGarble ? 'Dice to meet you.' : lastSay };
   lastModel = model + ':' + input.speaker; lastSay = input.text; return new Response(aiMp3 ? mp3() : wav(), { headers: { 'content-type': 'audio/mpeg' } }); } };
-let lastModel = '', aiMp3 = false, aiGarble = false, lastSay = '';
+let lastModel = '', aiMp3 = false, aiGarble = false, lastSay = '', aiDelay = 0;
 // Bildiriş serverinin təqlidi: https://push.test/<ad> ünvanına gələn sorğuları yadda saxla; «gone» ilə bitən ünvan 410 qaytarır
 const pushLog = []; const realFetch = globalThis.fetch;
 globalThis.fetch = async (url, o) => { if (String(url).startsWith('https://push.test/')) { pushLog.push({ url: String(url), auth: o.headers.Authorization, enc: o.headers['Content-Encoding'], len: o.body.length }); return { status: String(url).endsWith('gone') ? 410 : 201 }; } return realFetch(url, o); };
@@ -46,7 +46,7 @@ http.createServer(async (req, res) => {
     res.writeHead(200, { 'content-type': 'application/json' }); res.end(JSON.stringify({ week: wk })); return; }
   if (u.pathname === '/__test/pushsub') { res.writeHead(200, { 'content-type': 'application/json' }); res.end(JSON.stringify(await fakeSub(u.searchParams.get('n') || 'x'))); return; }
   if (u.pathname === '/__test/pushlog') { res.writeHead(200, { 'content-type': 'application/json' }); res.end(JSON.stringify(pushLog)); return; }
-  if (u.pathname === '/__test/ai') { if (u.searchParams.has('fail')) aiFail = u.searchParams.get('fail') === '1'; if (u.searchParams.has('mp3')) aiMp3 = u.searchParams.get('mp3') === '1'; if (u.searchParams.has('garble')) aiGarble = u.searchParams.get('garble') === '1'; res.writeHead(200, { 'content-type': 'application/json' }); res.end(JSON.stringify({ aiCalls, aiFail, lastModel })); return; }
+  if (u.pathname === '/__test/ai') { if (u.searchParams.has('fail')) aiFail = u.searchParams.get('fail') === '1'; if (u.searchParams.has('mp3')) aiMp3 = u.searchParams.get('mp3') === '1'; if (u.searchParams.has('garble')) aiGarble = u.searchParams.get('garble') === '1'; if (u.searchParams.has('delay')) aiDelay = +u.searchParams.get('delay'); res.writeHead(200, { 'content-type': 'application/json' }); res.end(JSON.stringify({ aiCalls, aiFail, lastModel })); return; }
   const m = u.pathname.match(/^\/api\/(board|premium|admin|track|ttscheck|tts|push|push-run)$/);
   if (m) {
     let body = ''; for await (const c of req) body += c;
