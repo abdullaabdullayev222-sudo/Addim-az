@@ -205,6 +205,9 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 .next{display:flex;align-items:center;gap:14px;background:var(--wrb);border:2px solid #b8e6cf;border-radius:22px;padding:16px 18px;text-decoration:none;color:var(--ink);margin-bottom:12px;box-shadow:0 4px 0 #a5dcc0}
 .next .lv{width:52px;height:52px;border-radius:16px;background:var(--wr);color:#fff;display:grid;place-items:center;font-weight:900;font-size:18px;flex:none}
 .next small{display:block;color:var(--mut);font-weight:800}.next strong{display:block;font-size:19px;font-weight:900;line-height:1.2}.next .go{margin-left:auto;font-size:28px;font-weight:900;color:var(--wr)}
+.shr{margin-top:14px;padding:14px;border-radius:18px;background:linear-gradient(135deg,#fff7d6,#ffe9f2);border:1.5px solid #ffd84d}.shr b{display:block;font-size:17px}.shr span{display:block;color:var(--mut);font-size:14px;margin-top:2px}
+.shrb{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center}.shrb .btn{width:auto;margin:0;flex:1 1 100%}.shrb .sb{flex:1 1 0;min-width:96px;text-align:center;padding:10px 8px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);font-weight:800;font-size:14px;color:var(--ink);text-decoration:none;cursor:pointer;font-family:inherit}
+.shrb .sb.wa{background:#25d366;border-color:#1fb457;color:#fff}.shrb .sb.tg{background:#2aa3e0;border-color:#1f8cc3;color:#fff}
 .lvls{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 8px}
 .lvl{flex:none;min-height:44px;padding:8px 16px;border-radius:99px;border:2px solid var(--line);background:var(--card);font-weight:900;cursor:pointer}
 .lvl[aria-pressed=true]{color:#fff;border-color:transparent}
@@ -1138,10 +1141,18 @@ function drawVoice(){const c=$('voiceCard');if(!c)return;
   <div class="row" style="margin-top:10px"><select id="vSel" style="flex:1 1 200px;min-height:46px;border-radius:14px;border:2px solid var(--line);font:16px Nunito,sans-serif;padding:8px 10px;background:#fbfdfb">${VOICES.map(v=>`<option value="${esc(v.name)}" ${cur&&v.name===cur.name?'selected':''}>${esc(v.name.replace(/Microsoft |Google /,''))} · ${esc(v.lang)}${rankVoice(v)>=10?' ★':''}</option>`).join('')}</select></div>`+rateRow+`
   <p class="note">★ — daha təbii səslər. iPhone-da «Enhanced / Premium» səsləri Parametrlər → Əlçatanlıq → Danışıq məzmunu → Səslər bölməsindən pulsuz yükləmək olar.</p>`;
   $('vSel').onchange=e=>{S.voice=e.target.value;save()};wire()}
+const SHR_I='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-4px"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>';
+const shareUrl=()=>location.origin+'/?ref=share';
+function shareText(){const n=streak(),xp=Object.values(S.days||{}).reduce((a,b)=>a+b,0),lv=(S.lvl||'a1').toUpperCase();
+  return n>1?`Mən Addım-da ${n} gündür ardıcıl ingilis dili öyrənirəm ⚡ (${lv} səviyyəsi, ${xp} XP). Azərbaycan dilində, pulsuz — sən də qoşul:`
+   :xp?`Addım-da ingilis dili öyrənirəm ⚡ (${lv} səviyyəsi, ${xp} XP). Azərbaycan dilində, pulsuz — sən də qoşul:`
+   :'Addım — Azərbaycan dilində pulsuz ingilis dili tətbiqi ⚡ Gündə 5 dəqiqə ilə A1-dən C1-ə qədər. Sən də qoşul:'}
 function renderProfile(){drawVoice();drawNotif();const P=isPrem(),L=S.look,b=$('pBox'),nm=S.me?S.me.name:'',AV=window.AVATARS||[],FREE=window.FREE_AVATARS||6;
   b.innerHTML=`<h2>Profilim ${P?CROWN:''}</h2>
   <div class="preview">${avatar(nm||'?',S.me?S.me.color:0,L)}<div style="min-width:0;flex:1"><div class="nm">${nm?nameHTML(nm,L,P):'<span style="color:var(--mut)">Adın burada görünəcək</span>'}</div><span class="lim">Liqada belə görünəcəksən</span>${S.medals&&(S.medals[0]+S.medals[1]+S.medals[2])?`<div class="lim" style="margin-top:4px">Medallarım: ${medalsHTML(S.medals)}</div>`:''}</div></div>
   <div class="row" style="margin-top:12px"><input type="text" id="pName" maxlength="20" placeholder="Adın və ya ləqəbin" value="${esc(nm)}" style="flex:1 1 180px"><button class="btn" id="pSave" style="flex:0 0 auto;width:auto;margin:0">Yadda saxla</button></div>
+  <div class="shr"><div><b>Dostlarınla paylaş</b><span>Addımı dostlarına göndər — birlikdə öyrənmək daha maraqlıdır</span></div>
+    <div class="shrb"><button class="btn sun" id="shGo">${SHR_I} Paylaş</button><a class="sb wa" id="shWa" target="_blank" rel="noopener">WhatsApp</a><a class="sb tg" id="shTg" target="_blank" rel="noopener">Telegram</a><button class="sb" id="shCp">Kopyala</button></div></div>
   <h3>Avatar</h3><div class="avg">${AV.map((a,i)=>{const lock=i>=FREE&&!P;return `<button class="avb" data-a="${a[0]}" aria-label="${esc(a[1])}" aria-pressed="${L.avatar===a[0]}" ${lock?'data-lock="1"':''}><svg viewBox="0 0 64 64">${a[2]}</svg>${lock?`<span class="lk">${LOCKI}</span>`:''}</button>`}).join('')}</div>
   <h3>Adının rəngi ${P?'':'<span class="badge">Premium</span>'}</h3><div class="chipsx" id="pCol">${(window.NAME_COLORS||[]).map((c,i)=>`<button class="chipx" data-i="${i}" aria-pressed="${(L.ncolor||0)===i}" ${i&&!P?'data-lock="1"':''}><span class="sw2" style="background:${c[1]}"></span>${esc(c[0])}${i&&!P?' '+LOCKI.replace('<svg','<svg width="14" height="14"'):''}</button>`).join('')}</div>
   <h3>Adının forması</h3><div class="chipsx" id="pSty">${(window.NAME_STYLES||[]).map((c,i)=>`<button class="chipx ns${i}" data-i="${i}" aria-pressed="${(L.nstyle||0)===i}" ${i&&!P?'data-lock="1"':''}>${esc(c)}</button>`).join('')}</div>
@@ -1152,6 +1163,10 @@ function renderProfile(){drawVoice();drawNotif();const P=isPrem(),L=S.look,b=$('
   b.querySelectorAll('#pCol .chipx').forEach(x=>x.onclick=()=>{if(x.dataset.lock)return lockedTap();S.look.ncolor=+x.dataset.i;play('xp');apply()});
   b.querySelectorAll('#pSty .chipx').forEach(x=>x.onclick=()=>{if(x.dataset.lock)return lockedTap();S.look.nstyle=+x.dataset.i;play('xp');apply()});
   b.querySelectorAll('#pFr .chipx').forEach(x=>x.onclick=()=>{if(x.dataset.lock)return lockedTap();S.look.frame=+x.dataset.i;play('xp');apply()});
+  {const T=shareText(),U=shareUrl();$('shWa').href='https://wa.me/?text='+encodeURIComponent(T+' '+U);$('shTg').href='https://t.me/share/url?url='+encodeURIComponent(U)+'&text='+encodeURIComponent(T);
+   $('shWa').onclick=()=>track('share','wa');$('shTg').onclick=()=>track('share','tg');
+   $('shCp').onclick=()=>{track('share','copy');(navigator.clipboard?navigator.clipboard.writeText(T+' '+U):Promise.reject()).then(()=>toast('Link kopyalandı — istədiyin yerə yapışdır')).catch(()=>toast(U))};
+   $('shGo').onclick=async()=>{track('share','native');if(navigator.share){try{await navigator.share({title:'Addım — ingilis dili',text:T,url:U})}catch(e){}}else $('shCp').onclick()}}
   $('pSave').onclick=()=>{const v=$('pName').value.trim().replace(/\s+/g,' ');if(v.length<2){toast('Ən azı 2 hərf yaz.');return}
     S.me={id:S.uid,name:v,color:S.me?S.me.color:Math.floor(Math.random()*COLORS.length)};play('ok');toast('Yadda saxlanıldı');BOARD=null;apply();sync()};
 }
