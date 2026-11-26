@@ -9,6 +9,7 @@ window.ADDIM_CONFIG = {
   energyPerMistake: 1,       // hər səhv cavab neçə şimşəkcik aparır
   adEvery: 3,                // pulsuz istifadəçiyə hər neçə dərsdən bir Premium reklamı göstərilsin
   premiumXpBonus: 0.5,       // Premium-da dərs XP bonusu (0.5 = +50%)
+  premiumXpLessons: 4,       // XP bonusu gündə neçə dərsə tətbiq olunsun (liqada ədalət üçün)
 
   // Kartla ödəniş məlumatı — boş qalarsa, tətbiq "tezliklə" yazır
   card: '4098 5844 7384 5319',

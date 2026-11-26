@@ -648,7 +648,8 @@ function enSheet(empty){const n=enNow(),inf=n===Infinity,mx=EN_MAX(),left=enLeft
   sheet(empty?'Şimşəkciklər bitdi ⚡':'Şimşəkciklər',body,inf?'<button class="btn" id="shClose">Bağla</button>':`<a class="btn sun" href="#premium" id="goPrem">Premium — limitsiz şimşəkcik</a><button class="btn ghost" id="shClose">${empty?'Gözləyərəm':'Bağla'}</button>`);
   $('shClose').onclick=closeSheet;if($('goPrem'))$('goPrem').onclick=closeSheet}
 
-const bonusXP=n=>isPrem()?Math.round(n*(1+(CFG.premiumXpBonus||0))):n;
+const PXL=()=>CFG.premiumXpLessons||4,boostOn=()=>isPrem()&&((S.pbd||{})[today()]||0)<PXL();
+const bonusXP=n=>boostOn()?Math.round(n*(1+(CFG.premiumXpBonus||0))):n;window.bonusXP=bonusXP;
 const CROWN='<svg class="crown" viewBox="0 0 24 24" aria-label="Premium"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z" fill="#f5b800" stroke="#c98a00" stroke-width="1.2" stroke-linejoin="round"/></svg>';
 const LOCKI='<svg viewBox="0 0 24 24" fill="none" stroke="#c98a00" stroke-width="2.6" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
 const active=k=>S.days[k]>0||S.frozen[k];
@@ -750,7 +751,7 @@ let FW_SHOWN=false;window.medalsHTML=medalsHTML;window.medalCeremony=medalCeremo
 let STRIKE=null;
 const STRIKE_MSG=['Elektrikləndin! Bu enerjini sabaha da saxla.','Gurultunu eşitdin? İngilis dili səndən qorxmağa başlayıb.','Şimşək kimi sürətlisən — seriyanı qoru!','Batareya 100%. Sabah yenidən doldur.','Bu gün də çaxdı! Ardıcıllıq — sehrin özüdür.','Göy guruldadı, sən öyrəndin. Əla iş!','Enerji axını davam edir — dayanmaq yoxdur!'];
 function strikeSoon(){const v=location.hash.slice(1);if(v==='lesson'||v==='quiz')return;setTimeout(showStrike,v==='home'?250:500)}
-function showStrike(){if(!STRIKE)return;const {n,gift}=STRIKE;STRIKE=null;const el=$('strike');
+function showStrike(){if(!STRIKE)return;if(LS&&location.hash==='#lesson')return;const {n,gift}=STRIKE;STRIKE=null;const el=$('strike');
   $('stkN').textContent=n;$('stkT').textContent=n===1?'Şimşək çaxdı!':n+' günlük seriya!';
   $('stkM').innerHTML=n===1?'İlk şimşəyin çaxdı! Sabah da gəl ki, ikincisi çaxsın.':gift?'Bir həftə ardıcıl! Hədiyyə: <b>seriya qoruyucusu</b> — bir gün buraxsan, şimşəyin sönməyəcək.':esc(STRIKE_MSG[n%STRIKE_MSG.length]);
   el.classList.remove('on');void el.offsetWidth;el.classList.add('on');play('thunder');try{navigator.vibrate&&navigator.vibrate([25,40,90])}catch(e){}
@@ -1266,6 +1267,7 @@ function finishLesson(){const a=LS.a,circ=LS.part!=null,part=LS.part,acc=LS.scor
   if(circ){S.parts=S.parts||{};if(LS.fresh)S.parts[a.x.id]=Math.max(partsDone(a.x.id),part+1);if(partsDone(a.x.id)>=4)S.course[a.x.id]=Math.max(S.course[a.x.id]||0,acc)}
   else if(!a.mist)S.course[a.x.id]=Math.max(S.course[a.x.id]||0,acc);
   save();renderMist();addXP(bonus,null,null);LS.xp+=bonus;
+  if(isPrem()){const t=today();S.pbd={[t]:((S.pbd||{})[t]||0)+1};save()}
   const pdn=circ?partsDone(a.x.id):0,inCirc=circ&&pdn<4,nx=inCirc?null:nextLesson();
   $('lBox').innerHTML=`<div class="res"><svg width="120" height="120" viewBox="0 0 64 64"><use href="#boltI"/></svg><h2 style="margin-top:8px">${circDone?'Dairə tamamlandı! 🏆':a.mist?'Səhvlər təkrarlandı!':a.x.review?'Təkrar tamamlandı!':circ?(part<4?'Dərs '+(part+1)+' tamamlandı!':'Praktika tamamlandı!'):'Dərs tamamlandı!'}</h2><p style="margin:0">${esc(a.x.title)}${circ?' · '+Math.min(pdn,5)+' / 5':''}</p>${circ?`<div class="cring">${ringSVG(Math.min(pdn,5),a.lv.color,pdn>=5)}</div>`:''}<div class="row" style="justify-content:center;gap:28px;margin:18px 0"><div><div class="score">${acc}%</div><div class="hint">düzgün</div></div><div><div class="score" style="color:var(--star)">+${LS.xp}</div><div class="hint">XP</div></div></div>${inCirc?`<button class="btn" id="lGoPart">Növbəti: Dərs ${pdn+1} — ${PART_NAMES[pdn]}</button>`:''}${circ&&pdn===4?`<button class="btn sun" id="lGoPrac">★ Ümumi praktika — dairəni tamamla</button>`:''}${nx?`<button class="btn ${circ&&pdn===4?'ghost':''}" id="lGoNext">Növbəti dairə: ${esc(nx.x.title)}</button>`:''}<a class="btn ghost" href="#course">Kursa qayıt</a></div>`;
   $('lBox').insertAdjacentHTML('beforeend','<div id="vidLesson" style="margin-top:8px"></div>');renderVideo($('vidLesson'),'Dərsdən sonra bax');
@@ -1278,7 +1280,7 @@ $('lQuit').onclick=()=>sheet('Dərsdən çıxırsan?','<p>Bu dərsdəki proqresi
 /* ---------- Premium reklamı: hər 3 dərsdən bir, qısa izah ---------- */
 function premAd(n){if(isPrem())return;if(LS){S.adDue=1;save();return}const v=location.hash.slice(1);if(!['lesson','home','course'].includes(v))return;S.adDue=0;save();
   if(['sheet','cel','strike'].some(i=>$(i)&&$(i).classList.contains('on'))){if(n<15)setTimeout(()=>premAd(n+1),1000);return}
-  track('ad','show');const L=[['∞','Limitsiz şimşəkcik','Gözləmədən istədiyin qədər dərs keç'],['+50%','Daha çox XP','Liqada daha sürətli qalx'],['👑','VIP görünüş','Tac, rəngli ad, xüsusi avatarlar'],['😎','VIP şimşək','Tac, qara eynək və qızıl əsa']];
+  track('ad','show');const L=[['∞','Limitsiz şimşəkcik','Gözləmədən istədiyin qədər dərs keç'],['+50%','Daha çox XP','Gündə ilk 4 dərsdə +50% XP'],['👑','VIP görünüş','Tac, rəngli ad, xüsusi avatarlar'],['😎','VIP şimşək','Tac, qara eynək və qızıl əsa']];
   sheet('Addım Premium',`<div class="adtag">Reklam</div><div class="adl">${L.map(x=>`<div><i>${x[0]}</i><span><b>${esc(x[1])}</b><small>${esc(x[2])}</small></span></div>`).join('')}</div><p class="adp">Cəmi <b>${esc(CFG.price||'5,9 AZN')}</b> / ${esc(CFG.period||'ay')}</p>`,
    '<a class="btn sun" href="#premium" id="adGo">Premium-a bax 👑</a><button class="btn ghost" id="adNo">Sonra</button>');
   $('adGo').onclick=()=>{track('ad','click');closeSheet()};$('adNo').onclick=closeSheet}
@@ -1330,7 +1332,7 @@ function renderProfile(){drawVoice();drawNotif();drawRoam();const P=isPrem(),L=S
     S.me={id:S.uid,name:v,color:S.me?S.me.color:Math.floor(Math.random()*COLORS.length)};play('ok');toast('Yadda saxlanıldı');BOARD=null;apply();sync()};
 }
 async function fetchPrem(){try{const r=await fetch('/api/premium?id='+encodeURIComponent(S.uid));if(!r.ok)return;const d=await r.json();S.prem={until:d.until||0};save();drawHeader();renderNext()}catch(e){}}
-const BEN=[['Limitsiz şimşəkcik ∞',`Pulsuzda ${CFG.energyRefillHours||12} saatda ${CFG.energyMax||20} şimşəkcik (təxminən 3–4 dərs), Premium-da istədiyin qədər dərs keç, səhv etməkdən qorxma`,'#16956a'],['+50% XP','Hər dərsdə daha çox XP — liqada daha sürətli qalx','#f5b800'],['6 xüsusi avatar','Şir, panda, robot, təkbuynuz, əjdaha, astronavt','#7b56d6'],['Adın fərqlənsin','Rəngli ad (qızıl, göy qurşağı…), kursiv, BÖYÜK, neon forma','#2f7de1'],['Liqada parlayan çərçivə və tac','Qızıl parıltı, göy qurşağı və alov çərçivələri','#ef5d5d'],['VIP şimşək','Şimşəyin başında tac, gözündə qara eynək, əlində qızıl əsa','#c2366f']];
+const BEN=[['Limitsiz şimşəkcik ∞',`Pulsuzda ${CFG.energyRefillHours||12} saatda ${CFG.energyMax||20} şimşəkcik (təxminən 3–4 dərs), Premium-da istədiyin qədər dərs keç, səhv etməkdən qorxma`,'#16956a'],['+50% XP',`Gündə ilk ${CFG.premiumXpLessons||4} dərsdə +50% XP — liqada daha sürətli qalx`,'#f5b800'],['6 xüsusi avatar','Şir, panda, robot, təkbuynuz, əjdaha, astronavt','#7b56d6'],['Adın fərqlənsin','Rəngli ad (qızıl, göy qurşağı…), kursiv, BÖYÜK, neon forma','#2f7de1'],['Liqada parlayan çərçivə və tac','Qızıl parıltı, göy qurşağı və alov çərçivələri','#ef5d5d'],['VIP şimşək','Şimşəyin başında tac, gözündə qara eynək, əlində qızıl əsa','#c2366f']];
 function renderPremium(){const b=$('prBox'),P=isPrem(),card=(CFG.card||'').trim();track('premium_view');
   const contact=[CFG.whatsapp?`<a href="https://wa.me/${encodeURIComponent(CFG.whatsapp)}" target="_blank" rel="noopener">WhatsApp</a>`:'',CFG.instagram?`<a href="https://instagram.com/${encodeURIComponent(CFG.instagram)}" target="_blank" rel="noopener">Instagram</a>`:''].filter(Boolean).join(' və ya ');
   b.innerHTML=`<div class="ph"><svg width="64" height="64" viewBox="0 0 24 24"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z" fill="#f5b800" stroke="#c98a00" stroke-width="1.2" stroke-linejoin="round"/></svg><h1>Addım Premium</h1><div class="price">${esc(CFG.price||'5,9 AZN')} <small>/ ${esc(CFG.period||'ay')}</small></div>${P?`<p style="margin:10px 0 0;font-weight:800">Premium aktivdir — ${new Date(S.prem.until).toLocaleDateString('az-AZ')} tarixinədək. Təşəkkürlər!</p>`:''}</div>
@@ -1344,7 +1346,7 @@ function renderPremium(){const b=$('prBox'),P=isPrem(),card=(CFG.card||'').trim(
   $('prGo').onclick=async()=>{const code=$('prCode').value.trim().toUpperCase();if(!/^ADDIM-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code)){$('prMsg').textContent='Kod ADDIM-XXXX-XXXX formasında olmalıdır.';return}
     $('prGo').disabled=true;$('prMsg').textContent='Yoxlanılır…';
     try{const r=await fetch('/api/premium',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({id:S.uid,code})}),d=await r.json();
-      if(d.ok){S.prem={until:d.until};save();drawHeader();renderNext();renderPremium();play('rank');confettiOnly();sheet('Premium aktivdir!','<p>Xoş gəldin! İndi limitsiz dərs keçə, hər dərsdə +50% XP qazana və profilini istədiyin kimi bəzəyə bilərsən.</p>','<a class="btn sun" href="#profile" id="goProf">Profilimi bəzə</a>')||($('goProf').onclick=closeSheet)}
+      if(d.ok){S.prem={until:d.until};save();drawHeader();renderNext();renderPremium();play('rank');confettiOnly();sheet('Premium aktivdir!','<p>Xoş gəldin! İndi limitsiz dərs keçə, gündə ilk 4 dərsdə +50% XP qazana və profilini istədiyin kimi bəzəyə bilərsən.</p>','<a class="btn sun" href="#profile" id="goProf">Profilimi bəzə</a>')||($('goProf').onclick=closeSheet)}
       else $('prMsg').textContent=d.error==='used'?'Bu kod artıq istifadə olunub.':'Kod tapılmadı. Düzgün yazdığını yoxla.'}
     catch(e){$('prMsg').textContent='İnternet bağlantısını yoxla və yenidən cəhd et.'}
     $('prGo').disabled=false};
