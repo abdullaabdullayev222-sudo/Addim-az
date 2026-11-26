@@ -7,6 +7,7 @@ window.ADDIM_CONFIG = {
   energyRefillHours: 12,     // ilk xərcləmədən neçə saat sonra yenidən dolur
   energyPerLesson: 2,        // hər YENİ dərsin başlanğıcı neçə şimşəkcik aparır
   energyPerMistake: 1,       // hər səhv cavab neçə şimşəkcik aparır
+  adEvery: 3,                // pulsuz istifadəçiyə hər neçə dərsdən bir Premium reklamı göstərilsin
   premiumXpBonus: 0.5,       // Premium-da dərs XP bonusu (0.5 = +50%)
 
   // Kartla ödəniş məlumatı — boş qalarsa, tətbiq "tezliklə" yazır

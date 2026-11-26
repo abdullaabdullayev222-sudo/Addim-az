@@ -3,7 +3,7 @@
 // Ad, e-poçt və ya şəxsi məlumat saxlanılmır — yalnız təsadüfi cihaz id-si və hadisə növü.
 import { json, validId, ensureSchema, bakuDay } from '../_shared.js';
 
-const EVENTS = ['open', 'lesson', 'placement', 'quiz', 'premium_view', 'install', 'limit_hit', 'install_help', 'practice', 'review', 'share'];
+const EVENTS = ['open', 'lesson', 'placement', 'quiz', 'premium_view', 'install', 'limit_hit', 'install_help', 'practice', 'review', 'share', 'ad'];
 const LEVELS = ['a1', 'a2', 'b1', 'b2', 'c1'];
 
 export async function onRequest({ request, env }) {

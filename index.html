@@ -243,6 +243,10 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 .pill.en.bump{animation:enb .5s}@keyframes enb{30%{transform:scale(1.18)}}
 .engrid{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;margin:8px 0 12px}.engrid svg{width:100%;height:auto;aspect-ratio:1}
 .enfly{position:fixed;z-index:80;font-weight:900;color:#4338ca;font-size:18px;pointer-events:none;animation:enfly 1s ease-out forwards}@keyframes enfly{to{transform:translateY(-40px);opacity:0}}
+.adtag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);border:1px solid var(--line);border-radius:6px;padding:1px 6px;margin:-4px 0 10px}
+.adl{display:grid;gap:8px}.adl>div{display:flex;gap:12px;align-items:center;padding:10px 12px;border-radius:14px;background:linear-gradient(135deg,#fff8e1,#fff0f6);border:1px solid #ffe3a3}
+.adl i{font-style:normal;font-weight:900;font-size:16px;min-width:58px;height:40px;display:grid;place-items:center;border-radius:12px;background:#fff;color:#b45309;box-shadow:0 2px 6px #0001}
+.adl b{display:block}.adl small{color:var(--mut);font-size:13px}.adp{margin:12px 0 0;text-align:center}
 .lvls{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 8px}
 .lvl{flex:none;min-height:44px;padding:8px 16px;border-radius:99px;border:2px solid var(--line);background:var(--card);font-weight:900;cursor:pointer}
 .lvl[aria-pressed=true]{color:#fff;border-color:transparent}
@@ -700,13 +704,43 @@ const MEDAL_COL=[['#ffe27a','#f5b301','#b7791f','Qızıl'],['#f1f5f9','#b8c4d1',
 const medalSVG=(p,w=16)=>{const c=MEDAL_COL[p-1];return `<svg viewBox="0 0 40 52" width="${w}" height="${w*1.3}" aria-label="${c[3]} medal"><path d="M10 0h8l6 18h-8zM30 0h-8l-6 18h8z" fill="${p===1?'#ef4444':p===2?'#3b82f6':'#16a34a'}"/><circle cx="20" cy="34" r="15" fill="${c[1]}" stroke="${c[2]}" stroke-width="2.5"/><circle cx="20" cy="34" r="10" fill="${c[0]}"/><text x="20" y="39" text-anchor="middle" font-size="13" font-weight="900" fill="${c[2]}" font-family="sans-serif">${p}</text></svg>`};
 const medalsHTML=m=>!m||!(m[0]+m[1]+m[2])?'':`<span class="mdl">${m.map((n,i)=>n?`<i>${medalSVG(i+1,14)}${n>1?'×'+n:''}</i>`:'').join('')}</span>`;
 function fireworks(ms=3500){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const c=document.createElement('canvas');c.className='fwc';document.body.appendChild(c);
-  const dpr=Math.min(2,devicePixelRatio||1),W=c.width=innerWidth*dpr,H=c.height=innerHeight*dpr,x=c.getContext('2d'),P=[],COL=['#ffd24a','#ff6b6b','#5eead4','#a78bfa','#60a5fa','#f472b6','#fde68a'];
-  const burst=()=>{const bx=W*(.15+Math.random()*.7),by=H*(.12+Math.random()*.35),col=COL[Math.floor(Math.random()*COL.length)],n=46;
-    for(let i=0;i<n;i++){const a=i/n*Math.PI*2,v=(2+Math.random()*3.5)*dpr;P.push({x:bx,y:by,vx:Math.cos(a)*v,vy:Math.sin(a)*v,l:1,c:col})}play('pop')};
-  const t0=performance.now();let last=0;
-  (function f(t){if(t-last>420&&t-t0<ms-900){burst();last=t}x.globalCompositeOperation='destination-out';x.fillStyle='rgba(0,0,0,.22)';x.fillRect(0,0,W,H);x.globalCompositeOperation='lighter';
-    for(const p of P){p.x+=p.vx;p.y+=p.vy;p.vy+=.045*dpr;p.vx*=.985;p.l-=.012;if(p.l>0){x.globalAlpha=p.l;x.fillStyle=p.c;x.beginPath();x.arc(p.x,p.y,2.2*dpr,0,7);x.fill()}}
-    if(t-t0<ms)requestAnimationFrame(f);else c.remove()})(t0)}
+  const dpr=Math.min(2,devicePixelRatio||1),W=c.width=innerWidth*dpr,H=c.height=innerHeight*dpr,x=c.getContext('2d'),P=[],R=[],G=.05*dpr,
+    COL=['#ffd24a','#ff6b6b','#5eead4','#a78bfa','#60a5fa','#f472b6','#fde68a','#86efac','#fb923c'];
+  const snd=(k,...a)=>{if(S&&S.sound&&FWS[k])try{FWS[k](...a)}catch(e){}},pan=px=>Math.max(-1,Math.min(1,px/W*2-1));
+  const launch=()=>{const lx=W*(.12+Math.random()*.76),ty=H*(.1+Math.random()*.32),vy=-Math.sqrt(2*G*(H-ty));
+    R.push({x:lx,y:H+4,vx:(Math.random()-.5)*1.2*dpr,vy,col:COL[Math.random()*COL.length|0],kind:['ring','peony','willow','crackle','peony'][Math.random()*5|0]});snd('whistle',pan(lx),Math.abs(vy)/G/60)};
+  const burst=r=>{const n=r.kind==='ring'?54:r.kind==='willow'?70:64,col2=COL[Math.random()*COL.length|0];
+    for(let i=0;i<n;i++){const a=i/n*Math.PI*2+Math.random()*.1,sp=(r.kind==='ring'?3.6:1+Math.random()*3.4)*dpr*(r.kind==='willow'?.8:1);
+      P.push({x:r.x,y:r.y,vx:Math.cos(a)*sp+r.vx*.3,vy:Math.sin(a)*sp,l:1,d:r.kind==='willow'?.006:.011+Math.random()*.006,c:i%3===0&&r.kind!=='ring'?col2:r.col,fl:r.kind==='crackle',sz:(r.kind==='willow'?1.7:2.2)*dpr})}
+    for(let i=0;i<14;i++)P.push({x:r.x,y:r.y,vx:(Math.random()-.5)*1.2*dpr,vy:(Math.random()-.5)*1.2*dpr,l:.9,d:.03,c:'#fff',sz:3*dpr});
+    const far=.08+Math.random()*.25;snd('boom',pan(r.x),far);if(r.kind==='crackle')snd('crackle',pan(r.x),far+.35)};
+  const t0=performance.now();let last=-1e9;
+  (function f(t){if(t-last>(R.length?650:350)+Math.random()*300&&t-t0<ms-1400){launch();if(Math.random()<.35)setTimeout(launch,140);last=t}
+    x.globalCompositeOperation='destination-out';x.fillStyle='rgba(0,0,0,.2)';x.fillRect(0,0,W,H);x.globalCompositeOperation='lighter';
+    for(let k=R.length-1;k>=0;k--){const r=R[k];r.x+=r.vx;r.y+=r.vy;r.vy+=G;
+      for(let q=0;q<2;q++)P.push({x:r.x+(Math.random()-.5)*3*dpr,y:r.y+(3+q*3)*dpr,vx:(Math.random()-.5)*.5*dpr,vy:.8*dpr,l:.8,d:.075,c:q?'#ff8a00':r.col,sz:2.3*dpr});
+      x.globalAlpha=1;x.fillStyle=r.col;x.beginPath();x.arc(r.x,r.y,4*dpr,0,7);x.fill();x.fillStyle='#fff';x.beginPath();x.arc(r.x,r.y,1.8*dpr,0,7);x.fill();
+      if(r.vy>=-.6*dpr){burst(r);R.splice(k,1)}}
+    for(let k=P.length-1;k>=0;k--){const p=P[k];p.x+=p.vx;p.y+=p.vy;p.vy+=G*.55;p.vx*=.982;p.vy*=.985;p.l-=p.d;if(p.l<=0){P.splice(k,1);continue}
+      if(p.fl&&p.l<.55&&Math.random()<.5)continue;x.globalAlpha=Math.min(1,p.l*1.3);x.fillStyle=p.c;x.beginPath();x.arc(p.x,p.y,p.sz*(.6+p.l*.4),0,7);x.fill()}
+    if(t-t0<ms||R.length||P.length&&t-t0<ms+2500)requestAnimationFrame(f);else c.remove()})(t0)}
+/* fişəng səsləri: fit səsi ilə qalxan raket, uzaqdan gələn partlayış, çırtıltı */
+const FWS={
+  noise:(a,sec)=>{const len=Math.max(1,a.sampleRate*sec|0),b=a.createBuffer(1,len,a.sampleRate),d=b.getChannelData(0);for(let i=0;i<len;i++)d[i]=Math.random()*2-1;const s=a.createBufferSource();s.buffer=b;return s},
+  out:(a,p)=>{if(a.createStereoPanner){const n=a.createStereoPanner();n.pan.value=p*.8;n.connect(a.destination);return n}return a.destination},
+  whistle:(p,dur)=>{const a=ac();if(!a)return;const t=a.currentTime,d=Math.max(.6,Math.min(1.6,dur||1)),o=a.createOscillator(),lfo=a.createOscillator(),lg=a.createGain(),g=a.createGain(),out=FWS.out(a,p);
+    o.type='sine';o.frequency.setValueAtTime(700+Math.random()*200,t);o.frequency.exponentialRampToValueAtTime(2300+Math.random()*700,t+d);lfo.frequency.value=22;lg.gain.value=35;lfo.connect(lg).connect(o.frequency);
+    g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.035,t+.12);g.gain.setValueAtTime(.035,t+d*.75);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g).connect(out);
+    const n=FWS.noise(a,d),bp=a.createBiquadFilter(),ng=a.createGain();bp.type='bandpass';bp.Q.value=1.2;bp.frequency.setValueAtTime(1800,t);bp.frequency.exponentialRampToValueAtTime(5000,t+d);
+    ng.gain.setValueAtTime(.0001,t);ng.gain.exponentialRampToValueAtTime(.05,t+.08);ng.gain.exponentialRampToValueAtTime(.0001,t+d);n.connect(bp).connect(ng).connect(out);
+    o.start(t);lfo.start(t);n.start(t);o.stop(t+d+.05);lfo.stop(t+d+.05)},
+  boom:(p,far=.1)=>{const a=ac();if(!a)return;const t=a.currentTime+far,out=FWS.out(a,p);
+    const n=FWS.noise(a,2.2),lp=a.createBiquadFilter(),g=a.createGain();lp.type='lowpass';lp.frequency.setValueAtTime(2600,t);lp.frequency.exponentialRampToValueAtTime(140,t+1.6);
+    g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.5,t+.008);g.gain.exponentialRampToValueAtTime(.12,t+.25);g.gain.exponentialRampToValueAtTime(.0001,t+2);n.connect(lp).connect(g).connect(out);n.start(t);n.stop(t+2.2);
+    const o=a.createOscillator(),og=a.createGain();o.type='sine';o.frequency.setValueAtTime(95,t);o.frequency.exponentialRampToValueAtTime(38,t+.5);og.gain.setValueAtTime(.0001,t);og.gain.exponentialRampToValueAtTime(.45,t+.01);og.gain.exponentialRampToValueAtTime(.0001,t+.7);o.connect(og).connect(out);o.start(t);o.stop(t+.75)},
+  crackle:(p,at=.4)=>{const a=ac();if(!a)return;const out=FWS.out(a,p),t0=a.currentTime+at;for(let i=0;i<34;i++){const t=t0+Math.random()*1.1,n=FWS.noise(a,.012),hp=a.createBiquadFilter(),g=a.createGain();hp.type='highpass';hp.frequency.value=2500+Math.random()*3000;
+    g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.18*Math.random()+.05,t+.001);g.gain.exponentialRampToValueAtTime(.0001,t+.012);n.connect(hp).connect(g).connect(out);n.start(t);n.stop(t+.015)}}
+};window.FWS=FWS;
 function medalCeremony(m){const LG=m.league.toUpperCase(),pl=m.place,txt=['Çempion!','Gümüş medal!','Bürünc medal!'][pl-1];
   $('celBox').innerHTML=`<div class="medal-cer"><div class="medal-big">${medalSVG(pl,150).replace('<svg ','<svg class="mdsvg" ')}</div><h2>${txt}</h2><p>Keçən həftə <b>${LG} liqasında ${pl}-ci yeri</b> tutdun — ${m.xp} XP! Medal profilinə və liqadakı adının yanına əlavə olundu.</p><button class="btn sun" id="celOk">Super ⚡</button></div>`;
   $('cel').classList.add('on','dark');play('rank');fireworks(4500);confettiOnly();$('celOk').onclick=()=>$('cel').classList.remove('on','dark');S.medalSeen=m.week;save()}
@@ -1225,9 +1259,18 @@ function finishLesson(){const a=LS.a,circ=LS.part!=null,part=LS.part,acc=LS.scor
   $('lBox').innerHTML=`<div class="res"><svg width="120" height="120" viewBox="0 0 64 64"><use href="#boltI"/></svg><h2 style="margin-top:8px">${circDone?'Dairə tamamlandı! 🏆':a.mist?'Səhvlər təkrarlandı!':a.x.review?'Təkrar tamamlandı!':circ?(part<4?'Dərs '+(part+1)+' tamamlandı!':'Praktika tamamlandı!'):'Dərs tamamlandı!'}</h2><p style="margin:0">${esc(a.x.title)}${circ?' · '+Math.min(pdn,5)+' / 5':''}</p>${circ?`<div class="cring">${ringSVG(Math.min(pdn,5),a.lv.color,pdn>=5)}</div>`:''}<div class="row" style="justify-content:center;gap:28px;margin:18px 0"><div><div class="score">${acc}%</div><div class="hint">düzgün</div></div><div><div class="score" style="color:var(--star)">+${LS.xp}</div><div class="hint">XP</div></div></div>${inCirc?`<button class="btn" id="lGoPart">Növbəti: Dərs ${pdn+1} — ${PART_NAMES[pdn]}</button>`:''}${circ&&pdn===4?`<button class="btn sun" id="lGoPrac">★ Ümumi praktika — dairəni tamamla</button>`:''}${nx?`<button class="btn ${circ&&pdn===4?'ghost':''}" id="lGoNext">Növbəti dairə: ${esc(nx.x.title)}</button>`:''}<a class="btn ghost" href="#course">Kursa qayıt</a></div>`;
   $('lBox').insertAdjacentHTML('beforeend','<div id="vidLesson" style="margin-top:8px"></div>');renderVideo($('vidLesson'),'Dərsdən sonra bax');
   play('done');$('lBar').style.width='100%';if(circDone){fireworks(2500);confettiOnly()}if(nx)$('lGoNext').onclick=()=>startLesson(nx.x.id);if($('lGoPart'))$('lGoPart').onclick=()=>startLesson(a.x.id,pdn);if($('lGoPrac'))$('lGoPrac').onclick=()=>startLesson(a.x.id,4);LS=null;renderNext();if(STRIKE)setTimeout(showStrike,1300);
+  S.adN=(S.adN||0)+1;save();if(!isPrem()&&(S.adN%(CFG.adEvery||3)===0||S.adDue))setTimeout(()=>premAd(0),STRIKE?2600:1500);
 }
 $('lQuit').onclick=()=>sheet('Dərsdən çıxırsan?','<p>Bu dərsdəki proqresin yadda qalmayacaq. Qazandığın XP isə səndə qalır.</p>','<button class="btn" id="qStay">Davam et</button><button class="btn ghost" id="qLeave">Çıx</button>')||($('qStay').onclick=closeSheet,$('qLeave').onclick=()=>{closeSheet();LS=null;location.hash='course'});
 
+
+/* ---------- Premium reklamı: hər 3 dərsdən bir, qısa izah ---------- */
+function premAd(n){if(isPrem())return;if(LS){S.adDue=1;save();return}const v=location.hash.slice(1);if(!['lesson','home','course'].includes(v))return;S.adDue=0;save();
+  if(['sheet','cel','strike'].some(i=>$(i)&&$(i).classList.contains('on'))){if(n<15)setTimeout(()=>premAd(n+1),1000);return}
+  track('ad','show');const L=[['∞','Limitsiz şimşəkcik','Gözləmədən istədiyin qədər dərs keç'],['+50%','Daha çox XP','Liqada daha sürətli qalx'],['👑','VIP görünüş','Tac, rəngli ad, xüsusi avatarlar'],['😎','VIP şimşək','Tac, qara eynək və qızıl əsa']];
+  sheet('Addım Premium',`<div class="adtag">Reklam</div><div class="adl">${L.map(x=>`<div><i>${x[0]}</i><span><b>${esc(x[1])}</b><small>${esc(x[2])}</small></span></div>`).join('')}</div><p class="adp">Cəmi <b>${esc(CFG.price||'5,9 AZN')}</b> / ${esc(CFG.period||'ay')}</p>`,
+   '<a class="btn sun" href="#premium" id="adGo">Premium-a bax 👑</a><button class="btn ghost" id="adNo">Sonra</button>');
+  $('adGo').onclick=()=>{track('ad','click');closeSheet()};$('adNo').onclick=closeSheet}
 /* ---------- header, profile studio, premium ---------- */
 function drawHeader(){premLook();drawEnergy();$('hdAv').innerHTML=avatar(S.me?S.me.name:'?',S.me?S.me.color:0,S.look.avatar||S.look.frame?S.look:{avatar:'cat',frame:S.look.frame})+(isPrem()?'<svg class="cr" viewBox="0 0 24 24"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z" fill="#f5b800" stroke="#c98a00" stroke-width="1.2" stroke-linejoin="round"/></svg>':'');
   const pr=$('promo');pr.hidden=isPrem();if(!isPrem())pr.innerHTML=`<svg viewBox="0 0 24 24"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z" fill="#f5b800" stroke="#c98a00" stroke-width="1.2" stroke-linejoin="round"/></svg><span><b>Addım Premium</b> — limitsiz dərs, +50% XP, xüsusi avatarlar və liqada parlayan adın</span>`}
@@ -1276,7 +1319,7 @@ function renderProfile(){drawVoice();drawNotif();drawRoam();const P=isPrem(),L=S
     S.me={id:S.uid,name:v,color:S.me?S.me.color:Math.floor(Math.random()*COLORS.length)};play('ok');toast('Yadda saxlanıldı');BOARD=null;apply();sync()};
 }
 async function fetchPrem(){try{const r=await fetch('/api/premium?id='+encodeURIComponent(S.uid));if(!r.ok)return;const d=await r.json();S.prem={until:d.until||0};save();drawHeader();renderNext()}catch(e){}}
-const BEN=[['Limitsiz şimşəkcik ∞',`Pulsuzda ${CFG.energyRefillHours||12} saatda ${CFG.energyMax||20} şimşəkcik (təxminən 3–4 dərs), Premium-da istədiyin qədər dərs keç, səhv etməkdən qorxma`,'#16956a'],['+50% XP','Hər dərsdə daha çox XP — liqada daha sürətli qalx','#f5b800'],['6 xüsusi avatar','Şir, panda, robot, təkbuynuz, əjdaha, astronavt','#7b56d6'],['Adın fərqlənsin','Rəngli ad (qızıl, göy qurşağı…), kursiv, BÖYÜK, neon forma','#2f7de1'],['Liqada parlayan çərçivə və tac','Qızıl parıltı, göy qurşağı və alov çərçivələri','#ef5d5d']];
+const BEN=[['Limitsiz şimşəkcik ∞',`Pulsuzda ${CFG.energyRefillHours||12} saatda ${CFG.energyMax||20} şimşəkcik (təxminən 3–4 dərs), Premium-da istədiyin qədər dərs keç, səhv etməkdən qorxma`,'#16956a'],['+50% XP','Hər dərsdə daha çox XP — liqada daha sürətli qalx','#f5b800'],['6 xüsusi avatar','Şir, panda, robot, təkbuynuz, əjdaha, astronavt','#7b56d6'],['Adın fərqlənsin','Rəngli ad (qızıl, göy qurşağı…), kursiv, BÖYÜK, neon forma','#2f7de1'],['Liqada parlayan çərçivə və tac','Qızıl parıltı, göy qurşağı və alov çərçivələri','#ef5d5d'],['VIP şimşək','Şimşəyin başında tac, gözündə qara eynək, əlində qızıl əsa','#c2366f']];
 function renderPremium(){const b=$('prBox'),P=isPrem(),card=(CFG.card||'').trim();track('premium_view');
   const contact=[CFG.whatsapp?`<a href="https://wa.me/${encodeURIComponent(CFG.whatsapp)}" target="_blank" rel="noopener">WhatsApp</a>`:'',CFG.instagram?`<a href="https://instagram.com/${encodeURIComponent(CFG.instagram)}" target="_blank" rel="noopener">Instagram</a>`:''].filter(Boolean).join(' və ya ');
   b.innerHTML=`<div class="ph"><svg width="64" height="64" viewBox="0 0 24 24"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z" fill="#f5b800" stroke="#c98a00" stroke-width="1.2" stroke-linejoin="round"/></svg><h1>Addım Premium</h1><div class="price">${esc(CFG.price||'5,9 AZN')} <small>/ ${esc(CFG.period||'ay')}</small></div>${P?`<p style="margin:10px 0 0;font-weight:800">Premium aktivdir — ${new Date(S.prem.until).toLocaleDateString('az-AZ')} tarixinədək. Təşəkkürlər!</p>`:''}</div>
