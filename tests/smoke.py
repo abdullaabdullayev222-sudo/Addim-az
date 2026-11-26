@@ -92,8 +92,11 @@ with sync_playwright() as p:
     check('kurs səhifəsi açıldı', m.evaluate('location.hash') == '#course')
 
     print('3. Dərslər (A1 və B2)')
-    m.click('#units .node.cur'); seen = play_lesson(m)
+    m.click('#units .node.cur'); m.wait_for_timeout(200)
+    check('dairəyə toxunanda 4 dərs + ümumi praktika görünür', m.locator('.prts .prt').count() == 5 and m.locator('.prt.cur').count() == 1)
+    m.click('.prt.cur'); seen = play_lesson(m)
     check('A1 dərsi sona çatdı', m.locator('.res').count() == 1)
+    check('dairə: 1/4 dərs keçildi, «Növbəti: Dərs 2» düyməsi', m.evaluate("partsDone('a1-u1-l1')") == 1 and m.locator('#lGoPart').count() == 1)
     check('A1 dərsində danışma tapşırığı', 'speak' in seen, str(seen))
     check('dərs sonunda video kartı', m.locator('#vidLesson .vid').count() == 1)
     m.wait_for_timeout(1600)
@@ -107,6 +110,19 @@ with sync_playwright() as p:
     m.evaluate("location.hash='course'"); m.wait_for_timeout(200); m.click('.lvl[data-l="b2"]'); m.wait_for_timeout(200)
     nodes = m.locator('#units .node:not(.lock)').count()
     check('B2 dərsləri görünür', nodes >= 1, str(nodes))
+
+    m.evaluate("location.hash='course'"); m.wait_for_timeout(200); m.click('.lvl[data-l="a1"]'); m.wait_for_timeout(200)
+    check('növbəti dairə hələ bağlıdır (4 dərs bitməyib)', m.locator('#units .node[data-id="a1-u1-l2"].lock').count() == 1)
+    m.evaluate("S.goalDone[today()]=1;save()"); close_overlays(m)
+    for part in (1, 2, 3):
+        m.evaluate(f"startLesson('a1-u1-l1',{part})"); m.wait_for_timeout(200); play_lesson(m); close_overlays(m)
+    check('4 dərsdən sonra növbəti dairə açılır', m.evaluate("partsDone('a1-u1-l1')") == 4 and m.locator('#lGoPrac').count() == 1)
+    m.evaluate("startLesson('a1-u1-l1',4)"); m.wait_for_timeout(200)
+    check('ümumi praktika: qarışıq tapşırıqlar, izah kartı yoxdur', m.evaluate("LS.items.length>=8&&!LS.items.some(i=>i.t==='learn')"))
+    play_lesson(m); close_overlays(m)
+    check('praktikadan sonra dairə tamamlanır (5/5)', m.evaluate("partsDone('a1-u1-l1')") == 5 and 'Dairə tamamlandı' in m.locator('#lBox').inner_text())
+    m.evaluate("location.hash='course'"); m.wait_for_timeout(300)
+    check('tamamlanmış dairənin rəngi dəyişir (qızılı)', m.locator('#units .node.gold[data-id="a1-u1-l1"]').count() == 1 and m.locator('#units .node[data-id="a1-u1-l2"].lock').count() == 0)
 
     lc = m.evaluate("(()=>{const c=window.COURSE;return c.map(l=>l.units.reduce((a,u)=>a+u.lessons.length,0))})()")
     check('A1: 16 bölmə, 136 dərs (120 məzmun dərsi); digər səviyyələr 48', lc == [136, 48, 48, 48], str(lc))
@@ -219,7 +235,7 @@ with sync_playwright() as p:
     m.evaluate("location.hash='profile'"); m.wait_for_timeout(300)
     check('profildə səs bölməsi var', 'Səsləndirmə' in m.locator('#voiceCard').inner_text())
     check('ən təbii səs ilk seçilib (★)', 'Samantha' in m.locator('#vSel').input_value())
-    m.evaluate("location.hash='course'"); m.wait_for_timeout(200); m.click('#units .node:not(.lock) >> nth=0'); m.wait_for_timeout(200)
+    m.evaluate("S.prem={until:Date.now()+1e9};save();startLesson('a1-u1-l1',2)"); m.wait_for_timeout(400)
     for _ in range(12):
         if m.locator('#lPlay').count(): break
         close_overlays(m)

@@ -4,13 +4,15 @@
 import fs from 'node:fs'; import path from 'node:path'; import crypto from 'node:crypto'; import vm from 'node:vm';
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const ctx = { window: {} }; vm.createContext(ctx);
-for (const f of ['course.js', 'course-extra.js', 'a1-more.js', 'practice.js']) vm.runInContext(fs.readFileSync(path.join(root, f), 'utf8'), ctx);
+for (const f of ['course.js', 'course-extra.js', 'a1-more.js', 'a1-examples.js', 'practice.js']) vm.runInContext(fs.readFileSync(path.join(root, f), 'utf8'), ctx);
 const texts = new Set();
 for (const l of ctx.window.COURSE) for (const u of l.units) for (const x of (u.lessons || [])) for (const it of x.items) {
   if (it.t === 'learn') it.ex.forEach(r => texts.add(r[0].replace(/ \/ /g, ', ')));
   if (it.t === 'listen' || it.t === 'speak') texts.add(it.en);
   if (it.t === 'dict' || it.t === 'order') texts.add([].concat(it.en)[0]);
 }
+// A1 əlavə nümunələri (dairə dərsləri)
+for (const k in ctx.window.A1_EX) ctx.window.A1_EX[k].forEach(e => texts.add(e[0]));
 // Dinləmə epizodları (practice.js)
 for (const e of ctx.window.PRAC.listening) e.lines.forEach(l => texts.add(l[1]));
 // index.html-dəki danışıq məşqi (SP) və səs sınağı cümlələri

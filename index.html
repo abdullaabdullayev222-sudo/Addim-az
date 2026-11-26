@@ -255,6 +255,17 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 .ptbars{max-width:420px;margin:10px auto 14px;display:grid;gap:8px}.ptb{display:grid;grid-template-columns:34px 1fr 44px;gap:10px;align-items:center;font-weight:800}.ptb .bar{margin:0}
 
 #tr .line{border-radius:12px;transition:background .2s;padding:4px 8px;margin:0 -8px}#tr .line.cur{background:#fff3c4}
+
+/* dairələr */
+.node.circ{position:relative}.node .ring{position:absolute;top:-9px;left:50%;width:90px;height:90px;margin-left:-45px;pointer-events:none}
+.node.gold .c{box-shadow:0 5px 0 #c98a00,0 0 18px #ffd24a99}.node.gold .c svg{filter:drop-shadow(0 1px 0 #fff8)}
+.cring{width:96px;height:96px;margin:10px auto 0}.cring .ring{width:96px;height:96px}
+.prts{display:grid;gap:8px}.prt{display:flex;align-items:center;gap:12px;text-align:left;background:#fff;border:2px solid var(--line);border-radius:16px;padding:10px 12px;font:inherit;color:inherit;cursor:pointer}
+.prt .pn{flex:0 0 36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:900;background:#efedff;color:var(--brand)}
+.prt>span:nth-child(2){flex:1;display:flex;flex-direction:column}.prt small{color:var(--mut);font-size:13px}.prt em{font-style:normal;font-size:12px;color:var(--mut);font-weight:800}
+.prt.ok .pn{background:#dcf7ea;color:#16a36a}.prt.cur{border-color:var(--sun);box-shadow:0 0 0 3px #ffe3a3}.prt.cur .pn{background:var(--sun);color:#fff}
+.prt[disabled]{opacity:.55;cursor:default}
+@media(prefers-reduced-motion:no-preference){.node.gold .c{animation:gshine 2.6s ease-in-out infinite}@keyframes gshine{50%{box-shadow:0 5px 0 #c98a00,0 0 26px #ffd24acc}}}
 /* medallar, fişənglər */
 .cel.dark{background:radial-gradient(circle at 50% 40%,#2b2f6b 0,#14163a 70%)}
 .mdl{display:inline-flex;gap:2px;margin-left:4px;vertical-align:middle;font-size:12px;font-weight:900}.mdl i{font-style:normal;display:inline-flex;align-items:center;gap:1px}.mdl svg{width:16px;height:16px}
@@ -532,6 +543,7 @@ nav.tabs a.on .tib{transform:translateY(-2px) scale(1.12)}
 <script src="course.js"></script>
 <script src="course-extra.js"></script>
 <script src="a1-more.js"></script>
+<script src="a1-examples.js"></script>
 <script src="practice.js"></script>
 <script src="avatars.js"></script>
 <script src="config.js"></script>
@@ -945,7 +957,7 @@ const norm2=s=>String(s).toLowerCase().replace(/[’`]/g,"'").replace(/[^a-z0-9'
 const toks=s=>s.split(' ').map(w=>w.replace(/[.,!?]/g,'')).filter(Boolean);
 function renderNext(){const n=nextLesson(),el=$('nextCard');
   if(!n){el.innerHTML=`<div class="lv">${IC.course}</div><span><small>Kurs</small><strong>Bütün dərsləri keçdin! Yeni bölmələr tezliklə.</strong></span>`;el.onclick=null;return}
-  el.innerHTML=`<div class="lv" style="background:${n.lv.color}">${esc(n.lv.name)}</div><span><small>${ALL.some(a=>isDone(a.x.id))?'Növbəti dərs':'İlk dərsin'} · Bölmə ${n.ui+1}: ${esc(n.u.title)}</small><strong>${esc(n.x.title)}</strong>${isPrem()?'<span class="lim">Premium · limitsiz dərs</span>':`<span class="lim">Bu gün ${lessonsLeft()} pulsuz dərs qalıb</span>`}</span><span class="go">›</span>`;
+  el.innerHTML=`<div class="lv" style="background:${n.lv.color}">${esc(n.lv.name)}</div><span><small>${ALL.some(a=>isDone(a.x.id))?'Növbəti dərs':'İlk dərsin'} · Bölmə ${n.ui+1}: ${esc(n.u.title)}</small><strong>${esc(n.x.title)}${isCircle(n)?` <span style="font-weight:800;color:var(--mut);font-size:14px">· Dərs ${partsDone(n.x.id)+1}/4</span>`:''}</strong>${isPrem()?'<span class="lim">Premium · limitsiz dərs</span>':`<span class="lim">Bu gün ${lessonsLeft()} pulsuz dərs qalıb</span>`}</span><span class="go">›</span>`;
   el.onclick=e=>{e.preventDefault();startLesson(n.x.id)}}
 function renderCourse(){
   const C=window.COURSE||[],lv=C.find(l=>l.id===S.lvl)||C[0];if(!lv)return;
@@ -955,27 +967,73 @@ function renderCourse(){
   $('units').innerHTML=lv.units.map((u,ui)=>{
     const head=`<div class="uhead" style="background:${u.lessons?lv.color:'#9aa8b6'}"><small>${esc(lv.name)} · Bölmə ${ui+1}</small><b>${esc(u.title)}</b><span>${esc(u.grammar)}</span></div>`;
     if(!u.lessons)return `<div class="unit">${head}<div class="soon">Tezliklə əlavə olunacaq</div></div>`;
-    const nodes=u.lessons.map((x,i)=>{const d=isDone(x.id),op=unlocked(x.id),cur=nx&&nx.x.id===x.id;
-      return `<button class="node ${op?'':'lock'} ${cur?'cur':''}" data-id="${x.id}" style="transform:translateX(${off[i%off.length]}px)" ${op?'':'disabled'}><span class="c" style="background:${d?'#fff4d6':cur?lv.color:'#fff'};border:3px solid ${d?'#ffd66b':lv.color}">${d?'<svg viewBox="0 0 64 64"><use href="#boltI"/></svg>':op?(x.review?'<svg viewBox="0 0 24 24" fill="none" stroke="'+(cur?'#fff':lv.color)+'" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg>':'<svg viewBox="0 0 24 24"><use href="#starI"/></svg>'):LOCK}</span><span class="t">${esc(x.title)}${x.review?'<small class="hint" style="display:block">qarışıq tapşırıqlar</small>':''}</span>${cur?'<span class="badge">Başla</span>':d?`<span class="hint">${S.course[x.id]}% düzgün</span>`:''}</button>`}).join('');
+    const nodes=u.lessons.map((x,i)=>{const d=isDone(x.id),op=unlocked(x.id),cur=nx&&nx.x.id===x.id,circ=lv.id==='a1'&&!x.review,pd=circ?partsDone(x.id):0,gold=circ&&pd>=5;
+      return `<button class="node ${op?'':'lock'} ${cur?'cur':''} ${gold?'gold':''} ${circ?'circ':''}" data-id="${x.id}" style="transform:translateX(${off[i%off.length]}px)" ${op?'':'disabled'}>${circ&&op?ringSVG(pd,lv.color,gold):''}<span class="c" style="background:${gold?'linear-gradient(160deg,#ffe27a,#f5a800)':d?'#fff4d6':cur?lv.color:'#fff'};border:3px solid ${gold?'#e0a100':d?'#ffd66b':lv.color}">${d?'<svg viewBox="0 0 64 64"><use href="#boltI"/></svg>':op?(x.review?'<svg viewBox="0 0 24 24" fill="none" stroke="'+(cur?'#fff':lv.color)+'" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg>':'<svg viewBox="0 0 24 24"><use href="#starI"/></svg>'):LOCK}</span><span class="t">${esc(x.title)}${x.review?'<small class="hint" style="display:block">qarışıq tapşırıqlar</small>':''}</span>${cur?`<span class="badge">${circ?'Dərs '+(pd+1)+' / 4':'Başla'}</span>`:circ&&op?`<span class="hint">${gold?'🏆 tamamlandı':pd>=4?'★ praktika qalıb':pd+' / 4 dərs'}</span>`:d?`<span class="hint">${S.course[x.id]}% düzgün</span>`:''}</button>`}).join('');
     return `<div class="unit">${head}<div class="path">${nodes}</div></div>`}).join('');
-  $('units').querySelectorAll('.node:not(.lock)').forEach(b=>b.onclick=()=>startLesson(b.dataset.id));
+  $('units').querySelectorAll('.node:not(.lock)').forEach(b=>b.onclick=()=>b.classList.contains('circ')?openCircle(b.dataset.id):startLesson(b.dataset.id));
 }
+
+/* ---------- Dairələr (A1): hər dairə = 4 dərs + ümumi praktika ---------- */
+const PART_NAMES=['Öyrən','Məşq et','Dinlə','Danış və yaz','Ümumi praktika'];
+const isCircle=a=>a&&a.lv&&a.lv.id==='a1'&&!a.x.review;
+const partsDone=id=>{S.parts=S.parts||{};return S.parts[id]!=null?S.parts[id]:(S.course[id]!=null?4:0)};window.partsDone=partsDone;
+function circlePool(x){
+  const learns=x.items.filter(i=>i.t==='learn'),mcs=x.items.filter(i=>i.t==='mc');
+  const okS=t=>t&&!/[\/→—(]/.test(t);
+  const vocab=[],sents=[],seen=new Set();
+  const addS=(en,az)=>{en=String(en).trim();if(!okS(en)||seen.has(en))return;seen.add(en);(en.split(' ').length<=2&&!/[.?!]$/.test(en)?vocab:sents).push({en,az:az||''})};
+  learns.forEach(l=>l.ex.forEach(e=>addS(e[0],e[1])));
+  x.items.forEach(i=>{if(i.t==='order'||i.t==='speak')addS([].concat(i.en)[0],i.az);if(i.t==='listen'||i.t==='dict')addS(i.en,'')});
+  ((window.A1_EX||{})[x.id]||[]).forEach(e=>addS(e[0],e[1]));
+  return {learns,mcs,vocab,sents}}
+function circleItems(x,part){const P=circlePool(x),S2=P.sents,V=P.vocab,az=S2.filter(s=>s.az);
+  const at=(arr,i)=>arr.length?arr[((i%arr.length)+arr.length)%arr.length]:null;
+  const others=(arr,cur,k,f)=>arr.filter(o=>o!==cur).map(f).filter((v,i,a)=>v&&v!==f(cur)&&a.indexOf(v)===i).slice(0,k);
+  const ok2=i=>i&&i.o&&i.o.length>=2?i:null;
+  const toks2=s=>new Set(s.toLowerCase().replace(/[.,!?]/g,'').split(/\s+/));
+  const extra=s=>{const t=toks2(s.en);return S2.filter(o=>o!==s).flatMap(o=>o.en.replace(/[.,!?]/g,'').split(/\s+/)).map(w=>w.toLowerCase()).filter((w,i,a)=>w.length>2&&!t.has(w)&&a.indexOf(w)===i).slice(0,2)};
+  const listenS=s=>ok2(s&&{t:'listen',en:s.en,o:[s.en].concat(others(S2,s,2,o=>o.en))});
+  const orderS=s=>s&&(s.az?{t:'order',az:s.az,en:s.en,extra:extra(s)}:{t:'dict',en:s.en,extra:extra(s)});
+  const dictS=s=>s&&{t:'dict',en:s.en,extra:extra(s)};
+  const speakS=s=>s&&s.az&&{t:'speak',en:s.en,az:s.az};
+  const trAz=s=>ok2(s&&s.az&&{t:'mc',q:'«'+s.az+'» ingiliscə necədir?',o:[s.en].concat(others(az.filter(o=>o===s||o.az!==s.az),s,3,o=>o.en)),e:s.en+' — '+s.az});
+  const trEn=s=>ok2(s&&s.az&&{t:'mc',q:'«'+s.en+'» nə deməkdir?',o:[s.az].concat(others(az,s,3,o=>o.az)),e:s.en+' — '+s.az});
+  const vAz=w=>ok2(w&&w.az&&{t:'mc',q:'«'+w.az+'» ingiliscə necədir?',o:[w.en].concat(others(V.filter(o=>o===w||o.az!==w.az),w,3,o=>o.en)),e:w.en+' — '+w.az});
+  const vEn=w=>ok2(w&&w.az&&{t:'mc',q:'«'+w.en+'» nə deməkdir?',o:[w.az].concat(others(V,w,3,o=>o.az)),e:w.en+' — '+w.az});
+  const vListen=w=>ok2(w&&V.length>=3&&{t:'listen',en:w.en,o:[w.en].concat(others(V,w,2,o=>o.en))});
+  const M=P.mcs,n=S2.length;let it=[];
+  if(part===0)it=[...P.learns,at(M,0),at(M,1),vAz(at(V,0)),vAz(at(V,1)),listenS(at(S2,0)),orderS(at(az,0)),speakS(at(az,0))];
+  if(part===1)it=[vEn(at(V,2)),vEn(at(V,3)),at(M,2),at(M,3),trAz(at(az,1)),orderS(at(az,2)),listenS(at(S2,3)),orderS(at(az,3)),speakS(at(az,2))];
+  if(part===2)it=[vListen(at(V,4)),vListen(at(V,5)),listenS(at(S2,n-1)),listenS(at(S2,n-2)),dictS(at(S2,4)),dictS(at(S2,5)),at(M,4),trEn(at(az,4))];
+  if(part===3)it=[orderS(at(az,5)),orderS(at(az,6)),trEn(at(az,7)),dictS(at(S2,n-3)),speakS(at(az,n-1)),speakS(at(az,5)),at(M,0),vAz(at(V,4))];
+  if(part===4){const all=[0,1,2,3].flatMap(p=>circleItems(x,p)).filter(i=>i.t!=='learn');const pick=[],sn=new Set();for(const i of shuffle(all)){const k=i.t+(i.q||i.en);if(sn.has(k))continue;sn.add(k);pick.push(i);if(pick.length>=12)break}return pick}
+  const out=[],sn=new Set();for(const i of it){if(!i)continue;const k=i.t+(i.q||i.title||[].concat(i.en)[0]);if(sn.has(k))continue;sn.add(k);out.push({...i,src:i.t==='learn'?undefined:x.id+'@'+part+'#'+out.length})}
+  return out}
+function ringSVG(done,col,gold){const R=44,C=2*Math.PI*R,seg=C/5,gap=5;return `<svg class="ring" viewBox="0 0 100 100" aria-hidden="true">${[0,1,2,3,4].map(i=>`<circle cx="50" cy="50" r="${R}" fill="none" stroke="${gold?'#f5b301':i<done?col:'#e3e0ef'}" stroke-width="6" stroke-linecap="round" stroke-dasharray="${seg-gap} ${C-seg+gap}" stroke-dashoffset="${-i*seg}" transform="rotate(-90 50 50)"/>`).join('')}</svg>`}
+function openCircle(id){const a=ALL.find(z=>z.x.id===id);if(!a)return;const d=partsDone(id);
+  const rows=PART_NAMES.map((n,i)=>{const ok=i<d,curp=i===Math.min(d,4)&&d<5,lock=i>d||(i===4&&d<4);
+    return `<button class="prt ${ok?'ok':''} ${curp?'cur':''}" data-p="${i}" ${lock?'disabled':''}><span class="pn">${ok?'✓':lock?LOCK.replace('<svg','<svg width="18" height="18"'):i===4?'★':i+1}</span><span><b>${i<4?'Dərs '+(i+1)+': ':''}${n}</b><small>${i===4?'Bütün dairədən qarışıq 12 tapşırıq — dairəni qızılı edir':['Yeni sözlər, qayda və ilk cümlələr','Söz və qrammatika məşqi, cümlə qurmaq','Dinləyib seçmək və diktə','Cümlə qurmaq, tərcümə və danışmaq'][i]}</small></span>${ok?'<em>təkrarla</em>':''}</button>`}).join('');
+  sheet(a.x.title,`<div class="note" style="margin:-6px 0 10px">${d>=5?'Dairə tamamlandı 🏆':d>=4?'4 dərs keçildi — ümumi praktika dairəni tamamlayır':'Dərs '+(d+1)+' / 4'}</div><div class="prts">${rows}</div>`,'<button class="btn ghost" id="shClose">Bağla</button>');
+  document.querySelectorAll('.prt:not([disabled])').forEach(b=>b.onclick=()=>{closeSheet();startLesson(id,+b.dataset.p)})}
 let LS=null;
 const lessonsLeft=()=>Math.max(0,(CFG.freeLessonsPerDay||3)-(S.lday[today()]||0));
 const itemsOf=x=>x.items.map((it,k)=>({...it,src:x.id+'#'+k}));
-function itemBySrc(src){const [lid,k]=src.split('#'),a=ALL.find(z=>z.x.id===lid);return a&&a.x.items[+k]?{...a.x.items[+k],src}:null}
+function itemBySrc(src){const [lid,k]=src.split('#');if(lid.includes('@')){const [cid,pp]=lid.split('@'),c=ALL.find(z=>z.x.id===cid);const it=c&&circleItems(c.x,+pp)[+k];return it&&it.src===src?it:null}
+  const a=ALL.find(z=>z.x.id===lid);return a&&a.x.items[+k]?{...a.x.items[+k],src}:null}
 function reviewItems(a){const pool=shuffle(a.u.lessons.filter(l=>!l.review&&(isDone(l.id)||l===a.u.lessons[0])).flatMap(itemsOf).filter(i=>i.t!=='learn'));
   const pick=[],seen=new Set();for(const it of pool){const k=it.t+(it.q||[].concat(it.en)[0]);if(seen.has(k))continue;seen.add(k);pick.push(it);if(pick.length>=12)break}return pick}
-function startMistakes(){const items=shuffle((S.mist||[]).map(itemBySrc).filter(Boolean)).slice(0,12);if(!items.length)return;
+function startMistakes(){const items=shuffle((S.mist||[]).map(itemBySrc).filter(Boolean).slice(0,12));if(!items.length)return;
   LS={a:{x:{id:'__mist',title:'Səhvlərin üzərində iş'},mist:1},items:items.map(i=>({...i,fix:1})),i:0,ok:0,scored:0,xp:0};track('review','mist');location.hash='lesson';if(location.hash==='#lesson')route();renderStep()}
 function renderMist(){const el=$('mistCard');if(!el)return;const n=(S.mist||[]).filter(itemBySrc).length;
   el.innerHTML=n?`<button class="ep" id="mistGo" style="width:100%;margin-bottom:14px;border-color:#fbd8c5;background:#fff7f2"><span class="n" style="background:#ffe3d3;color:#c2410c">${n}</span><span><b>Səhvlərin üzərində iş</b><small>Səhv cavab verdiyin tapşırıqları təkrarla — düzgün cavab verdikcə siyahıdan silinir.</small></span><span class="go">›</span></button>`:'';
   if(n)$('mistGo').onclick=startMistakes}
-function startLesson(id){const a=ALL.find(z=>z.x.id===id);if(!a)return;
-  if(!a.x.review&&!isPrem()&&!isDone(id)&&lessonsLeft()<=0){play('down');track('limit_hit');return sheet('Bugünlük pulsuz dərslər bitdi',`<p>Bu gün ${CFG.freeLessonsPerDay||3} yeni dərs keçdin — əla iş! Sabah yenə ${CFG.freeLessonsPerDay||3} dərs açılacaq. Keçdiyin dərsləri təkrarlamaq, günün quizi və məşqlər isə limitsizdir.</p><p><b>Premium</b> ilə istədiyin qədər dərs keç və hər dərsdə +50% XP qazan.</p>`,'<a class="btn sun" href="#premium" id="goPrem">Premium-a bax</a><button class="btn ghost" id="shClose">Sabah davam edərəm</button>')||($('shClose').onclick=closeSheet,$('goPrem').onclick=closeSheet)}
-  const items=a.x.review?reviewItems(a):itemsOf(a.x);if(a.x.review)track('review',a.x.id);
-  if(!a.x.review&&!items.some(i=>i.t==='speak')){const o=items.find(i=>i.t==='order');if(o)items.splice(items.length-1,0,{t:'speak',en:[].concat(o.en)[0],az:o.az})}
-  LS={a,items,i:0,ok:0,scored:0,xp:0};location.hash='lesson';if(location.hash==='#lesson')route();renderStep()}
+function startLesson(id,part){const a=ALL.find(z=>z.x.id===id);if(!a)return;
+  const circ=isCircle(a),pd=circ?partsDone(id):0;if(circ){if(part==null){if(pd>=5)return openCircle(id);part=Math.min(pd,4)}}
+  const fresh=circ?part>=pd&&part<5:!isDone(id);
+  if(!a.x.review&&!isPrem()&&fresh&&lessonsLeft()<=0){play('down');track('limit_hit');return sheet('Bugünlük pulsuz dərslər bitdi',`<p>Bu gün ${CFG.freeLessonsPerDay||3} yeni dərs keçdin — əla iş! Sabah yenə ${CFG.freeLessonsPerDay||3} dərs açılacaq. Keçdiyin dərsləri təkrarlamaq, günün quizi və məşqlər isə limitsizdir.</p><p><b>Premium</b> ilə istədiyin qədər dərs keç və hər dərsdə +50% XP qazan.</p>`,'<a class="btn sun" href="#premium" id="goPrem">Premium-a bax</a><button class="btn ghost" id="shClose">Sabah davam edərəm</button>')||($('shClose').onclick=closeSheet,$('goPrem').onclick=closeSheet)}
+  const items=circ?circleItems(a.x,part):a.x.review?reviewItems(a):itemsOf(a.x);if(a.x.review)track('review',a.x.id);
+  if(!circ&&!a.x.review&&!items.some(i=>i.t==='speak')){const o=items.find(i=>i.t==='order');if(o)items.splice(items.length-1,0,{t:'speak',en:[].concat(o.en)[0],az:o.az})}
+  LS={a,items,i:0,ok:0,scored:0,xp:0,part:circ?part:null,fresh};location.hash='lesson';if(location.hash==='#lesson')route();renderStep()}
 function fbBox(ok,title,body){return `<div class="fb ${ok?'ok':'no'}"><b>${esc(title)}</b>${body?'<div>'+esc(body)+'</div>':''}<button class="btn ${ok?'':'sun'}" id="lNext">Davam et</button></div>`}
 function answered(ok,right,e,el){const it=LS.items[LS.i];
   if(!it.re){LS.scored++;if(ok)LS.ok++}
@@ -1029,12 +1087,16 @@ function renderStep(){
     return}
   LS.i++;renderStep();
 }
-function finishLesson(){const a=LS.a,first=!a.mist&&!isDone(a.x.id),acc=LS.scored?Math.round(LS.ok/LS.scored*100):100,bonus=bonusXP(first?15:5);if(first&&!a.x.review){const t=today();S.lday={[t]:(S.lday[t]||0)+1};track('lesson',a.x.id)}
-  if(!a.mist)S.course[a.x.id]=Math.max(S.course[a.x.id]||0,acc);save();renderMist();addXP(bonus,null,null);LS.xp+=bonus;
-  const nx=nextLesson();
-  $('lBox').innerHTML=`<div class="res"><svg width="120" height="120" viewBox="0 0 64 64"><use href="#boltI"/></svg><h2 style="margin-top:8px">${a.mist?'Səhvlər təkrarlandı!':a.x.review?'Təkrar tamamlandı!':'Dərs tamamlandı!'}</h2><p style="margin:0">${esc(a.x.title)}</p><div class="row" style="justify-content:center;gap:28px;margin:18px 0"><div><div class="score">${acc}%</div><div class="hint">düzgün</div></div><div><div class="score" style="color:var(--star)">+${LS.xp}</div><div class="hint">XP</div></div></div>${nx?`<button class="btn" id="lGoNext">Növbəti dərs: ${esc(nx.x.title)}</button>`:''}<a class="btn ghost" href="#course">Kursa qayıt</a></div>`;
+function finishLesson(){const a=LS.a,circ=LS.part!=null,part=LS.part,acc=LS.scored?Math.round(LS.ok/LS.scored*100):100;
+  const first=circ?LS.fresh:!a.mist&&!isDone(a.x.id),circDone=circ&&part===4&&LS.fresh,bonus=bonusXP(circDone?30:first?15:5);
+  if(first&&!a.x.review){const t=today();S.lday={[t]:(S.lday[t]||0)+1};track('lesson',a.x.id+(circ?'#'+part:''))}
+  if(circ){S.parts=S.parts||{};if(LS.fresh)S.parts[a.x.id]=Math.max(partsDone(a.x.id),part+1);if(partsDone(a.x.id)>=4)S.course[a.x.id]=Math.max(S.course[a.x.id]||0,acc)}
+  else if(!a.mist)S.course[a.x.id]=Math.max(S.course[a.x.id]||0,acc);
+  save();renderMist();addXP(bonus,null,null);LS.xp+=bonus;
+  const pdn=circ?partsDone(a.x.id):0,inCirc=circ&&pdn<4,nx=inCirc?null:nextLesson();
+  $('lBox').innerHTML=`<div class="res"><svg width="120" height="120" viewBox="0 0 64 64"><use href="#boltI"/></svg><h2 style="margin-top:8px">${circDone?'Dairə tamamlandı! 🏆':a.mist?'Səhvlər təkrarlandı!':a.x.review?'Təkrar tamamlandı!':circ?(part<4?'Dərs '+(part+1)+' tamamlandı!':'Praktika tamamlandı!'):'Dərs tamamlandı!'}</h2><p style="margin:0">${esc(a.x.title)}${circ?' · '+Math.min(pdn,5)+' / 5':''}</p>${circ?`<div class="cring">${ringSVG(Math.min(pdn,5),a.lv.color,pdn>=5)}</div>`:''}<div class="row" style="justify-content:center;gap:28px;margin:18px 0"><div><div class="score">${acc}%</div><div class="hint">düzgün</div></div><div><div class="score" style="color:var(--star)">+${LS.xp}</div><div class="hint">XP</div></div></div>${inCirc?`<button class="btn" id="lGoPart">Növbəti: Dərs ${pdn+1} — ${PART_NAMES[pdn]}</button>`:''}${circ&&pdn===4?`<button class="btn sun" id="lGoPrac">★ Ümumi praktika — dairəni tamamla</button>`:''}${nx?`<button class="btn ${circ&&pdn===4?'ghost':''}" id="lGoNext">Növbəti dairə: ${esc(nx.x.title)}</button>`:''}<a class="btn ghost" href="#course">Kursa qayıt</a></div>`;
   $('lBox').insertAdjacentHTML('beforeend','<div id="vidLesson" style="margin-top:8px"></div>');renderVideo($('vidLesson'),'Dərsdən sonra bax');
-  play('done');$('lBar').style.width='100%';if(nx)$('lGoNext').onclick=()=>startLesson(nx.x.id);LS=null;renderNext();if(STRIKE)setTimeout(showStrike,1300);
+  play('done');$('lBar').style.width='100%';if(circDone){fireworks(2500);confettiOnly()}if(nx)$('lGoNext').onclick=()=>startLesson(nx.x.id);if($('lGoPart'))$('lGoPart').onclick=()=>startLesson(a.x.id,pdn);if($('lGoPrac'))$('lGoPrac').onclick=()=>startLesson(a.x.id,4);LS=null;renderNext();if(STRIKE)setTimeout(showStrike,1300);
 }
 $('lQuit').onclick=()=>sheet('Dərsdən çıxırsan?','<p>Bu dərsdəki proqresin yadda qalmayacaq. Qazandığın XP isə səndə qalır.</p>','<button class="btn" id="qStay">Davam et</button><button class="btn ghost" id="qLeave">Çıx</button>')||($('qStay').onclick=closeSheet,$('qLeave').onclick=()=>{closeSheet();LS=null;location.hash='course'});
 
@@ -1157,7 +1219,8 @@ addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet()});
 const VIEWS=['welcome','profile','premium','home','course','league','practice','quiz','lesson','reading','listening','speaking','writing'];
 const TABI={'home': '<svg viewBox="0 0 32 32" class="ti"><path d="M4 15L16 5l12 10" fill="none" stroke="#5b4ee6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 14v12a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V14L16 7z" fill="#e9e6ff" stroke="#5b4ee6" stroke-width="2.4" stroke-linejoin="round"/><path d="M17.5 13l-5 7h4l-1.5 6 5-7.5h-4z" fill="#ffb703" stroke="#d97706" stroke-width="1.2" stroke-linejoin="round"/></svg>', 'course': '<svg viewBox="0 0 32 32" class="ti"><path d="M16 9c-3-2.4-7-3-11-2.4v18c4-.6 8 0 11 2.4 3-2.4 7-3 11-2.4v-18C23 6 19 6.6 16 9z" fill="#dcf7ea" stroke="#16a36a" stroke-width="2.4" stroke-linejoin="round"/><path d="M16 9v18" stroke="#16a36a" stroke-width="2.2"/><path d="M8.5 12.5c2-.2 3.6.2 5 1M8.5 17c2-.2 3.6.2 5 1M18.5 13.5c1.4-.8 3-1.2 5-1" stroke="#34d399" stroke-width="2" stroke-linecap="round"/><circle cx="23.5" cy="19" r="3.2" fill="#ffb703" stroke="#d97706" stroke-width="1.2"/></svg>', 'league': '<svg viewBox="0 0 32 32" class="ti"><path d="M10 5h12v6a6 6 0 0 1-12 0z" fill="#ffd54a" stroke="#d97706" stroke-width="2.2" stroke-linejoin="round"/><path d="M10 7H6a4 4 0 0 0 4.4 5M22 7h4a4 4 0 0 1-4.4 5" fill="none" stroke="#d97706" stroke-width="2.2" stroke-linecap="round"/><path d="M16 17v4" stroke="#d97706" stroke-width="2.4"/><rect x="10" y="21" width="12" height="6" rx="2" fill="#a78bfa" stroke="#6d4bdc" stroke-width="2"/><path d="M16 6.8l1.1 2.2 2.4.3-1.8 1.6.5 2.4-2.2-1.2-2.2 1.2.5-2.4-1.8-1.6 2.4-.3z" fill="#fff"/></svg>', 'practice': '<svg viewBox="0 0 32 32" class="ti"><circle cx="16" cy="16" r="12" fill="#ffe4e6" stroke="#f43f5e" stroke-width="2.4"/><circle cx="16" cy="16" r="7.5" fill="#fff" stroke="#fb7185" stroke-width="2.2"/><circle cx="16" cy="16" r="3" fill="#f43f5e"/><path d="M16 16l9-9" stroke="#5b4ee6" stroke-width="2.4" stroke-linecap="round"/><path d="M22.5 6.5l3.5-1-1 3.5" fill="#5b4ee6" stroke="#5b4ee6" stroke-width="2" stroke-linejoin="round"/></svg>'};
 $('tabs').innerHTML=[['home','Bu gün'],['course','Kurs'],['league','Liqa'],['practice','Məşq']].map(([k,n])=>`<a href="#${k}" data-k="${k}"><i class="tib">${TABI[k]}</i><span>${n}</span></a>`).join('');
-function route(){stopSpeech();let v=location.hash.slice(1);if(STRIKE&&v!=='lesson'&&v!=='quiz')setTimeout(showStrike,400);if(!VIEWS.includes(v))v='home';if(v==='quiz'&&!QZ.length){startQuiz();return}
+let LAST_V='';
+function route(){let v=location.hash.slice(1);if(v==='lesson'&&LAST_V==='lesson'&&LS)return;LAST_V=v;stopSpeech();if(STRIKE&&v!=='lesson'&&v!=='quiz')setTimeout(showStrike,400);if(!VIEWS.includes(v))v='home';if(v==='quiz'&&!QZ.length){startQuiz();return}
   if(v==='lesson'&&!LS){location.hash='course';return}
   if(v==='course')renderCourse();
   if(v==='welcome'){PT=null;welcome()}
