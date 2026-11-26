@@ -251,6 +251,10 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 .adl{display:grid;gap:8px}.adl>div{display:flex;gap:12px;align-items:center;padding:10px 12px;border-radius:14px;background:linear-gradient(135deg,#fff8e1,#fff0f6);border:1px solid #ffe3a3}
 .adl i{font-style:normal;font-weight:900;font-size:16px;min-width:58px;height:40px;display:grid;place-items:center;border-radius:12px;background:#fff;color:#b45309;box-shadow:0 2px 6px #0001}
 .adl b{display:block}.adl small{color:var(--mut);font-size:13px}.adp{margin:12px 0 0;text-align:center}
+.gset{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-weight:800}.gset svg{opacity:.55}.gset:focus-visible{outline:2px solid #f59e0b;border-radius:6px}
+.gx{font-style:normal;color:#16956a;font-weight:900;margin-left:4px}#goalBar.over{background:linear-gradient(90deg,#16956a,#f5b800)!important}
+.gopts{display:grid;grid-template-columns:1fr 1fr;gap:10px}.gopt{display:flex;flex-direction:column;align-items:center;gap:1px;padding:14px 8px;border-radius:16px;border:2px solid var(--line);background:var(--card);font:inherit;color:var(--ink);cursor:pointer}
+.gopt b{font-size:16px}.gopt span{font-size:22px;font-weight:900}.gopt small{color:var(--mut);font-weight:700}.gopt.on{border-color:#f59e0b;background:#fffbeb;box-shadow:0 0 0 3px #fde68a}
 .lvls{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 8px}
 .lvl{flex:none;min-height:44px;padding:8px 16px;border-radius:99px;border:2px solid var(--line);background:var(--card);font-weight:900;cursor:pointer}
 .lvl[aria-pressed=true]{color:#fff;border-color:transparent}
@@ -474,7 +478,7 @@ nav.tabs a.on .tib{transform:translateY(-2px) scale(1.12)}
       <div><div class="big" id="streak">0</div><div class="sub">günlük seriya</div><div class="hint" id="best"></div></div>
     </div>
     <div class="week" id="week"></div>
-    <div class="goal"><span>Günlük hədəf</span><span id="goalTxt">0 / 50 XP</span></div>
+    <div class="goal"><button class="gset" id="goalSet" aria-label="Günlük hədəfi dəyiş">Günlük hədəf <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button><span id="goalTxt">0 / 50 XP</span></div>
     <div class="bar"><i id="goalBar" style="width:0"></i></div>
   </div>
   <section class="band">
@@ -625,7 +629,8 @@ const ord=n=>{const l=n%10,t=n%100;let s;if(n%100===0)s='cü';else if(l===0)s={1
 const COLORS=['#2f7de1','#7b56d6','#e0662f','#16956a','#d6336c','#0e9aa7'];
 
 /* ---------- state ---------- */
-const GOAL=50;let S;
+const GOALS=[[20,'Yüngül','~5 dəq'],[50,'Normal','~10–15 dəq'],[100,'Ciddi','~25 dəq'],[150,'Güclü','~40 dəq']];let S;
+const goalXP=()=>(S&&S.goal)||50;
 const blank=()=>({days:{},freeze:0,frozen:{},skills:{reading:0,listening:0,speaking:0,writing:0},quiz:{},goalDone:{},me:null,course:{},lvl:'a1',onboarded:0,placed:null,sound:1,lastRank:{},uid:'',look:{avatar:'',ncolor:0,nstyle:0,frame:0},prem:{until:0},lday:{},prac:{},mist:[],notif:1,nHour:20});
 const load=()=>{try{S=JSON.parse(localStorage.getItem('addim2')||'null')}catch(e){S=null}if(!S)S=blank();for(const k in blank())if(S[k]===undefined)S[k]=blank()[k]};
 const save=()=>{try{localStorage.setItem('addim2',JSON.stringify(S))}catch(e){}};window.save=save;
@@ -669,12 +674,12 @@ function addXP(n,skill,el){
   if(skill)S.skills[skill]=Math.min(100,(S.skills[skill]||0)+n);
   const st=streak();
   if(st>before){let gift=false;if(st%7===0&&S.freeze<2){S.freeze++;gift=true}STRIKE={n:st,gift};strikeSoon()}
-  if(was<GOAL&&S.days[t]>=GOAL&&!S.goalDone[t]){S.goalDone[t]=1;confetti();}
+  if(was<goalXP()&&S.days[t]>=goalXP()&&!S.goalDone[t]){S.goalDone[t]=1;confetti();}
   save();renderHome();if(el)floatXP(el,n);syncSoon();
 }
 function floatXP(el,n){setTimeout(()=>play('xp'),160);const r=el.getBoundingClientRect(),f=document.createElement('div');f.className='float';f.textContent='+'+n+' XP';f.style.left=(r.left+r.width/2-30)+'px';f.style.top=(r.top-10)+'px';document.body.appendChild(f);setTimeout(()=>f.remove(),1100);const p=$('xpTot').parentElement;p.classList.remove('pop');void p.offsetWidth;p.classList.add('pop')}
 function confetti(){play('rank');const c=['#ffc83d','#ff9f1c','#2f7de1','#7b56d6','#16956a','#ef5d5d'];for(let i=0;i<60;i++){const d=document.createElement('div');d.className='conf';d.style.left=Math.random()*100+'vw';d.style.background=c[i%c.length];d.style.setProperty('--x',(Math.random()*160-80)+'px');d.style.setProperty('--r',(Math.random()*720)+'deg');d.style.setProperty('--d',(1.6+Math.random()*1.4)+'s');document.body.appendChild(d);setTimeout(()=>d.remove(),3200)}
-  setTimeout(()=>sheet('Günlük hədəf tamamlandı!','<p>Bu gün <b>50 XP</b> topladın. Enerjin tam doludur — sabah da qayıt ki, seriyan böyüsün.</p>'),700)}
+  setTimeout(()=>sheet('Günlük hədəf tamamlandı!',`<p>Bu gün <b>${goalXP()} XP</b> hədəfinə çatdın. Enerjin tam doludur — sabah da qayıt ki, seriyan böyüsün.</p><p class="lim">Davam etdikcə XP-n sayılmağa davam edir.</p>`),700)}
 
 
 
@@ -779,9 +784,13 @@ function boltTap(){const now=Date.now();BT.n=now-BT.last<4000?BT.n+1:1;BT.last=n
   if(!xp){if(BT.n>=6){play('grumble');boltAnim('grr','r-shake',1800);boltSay('Yaxşı da… gəl bir dərs keçək? Cəmi 3 dəqiqə! ⚡',true);BT.n=0;setTimeout(()=>{const n=nextLesson();if(n)sheet('Şimşək xahiş edir…','<p>«Bir dərs keç, mən də yenidən çaxım!» — 3–5 dəqiqə çəkir.</p>','<button class="btn sun" id="bGo">Dərsə başla ⚡</button><button class="btn ghost" id="shClose">Sonra</button>')||($('bGo').onclick=()=>{closeSheet();startLesson(n.x.id)},$('shClose').onclick=closeSheet)},1500);return}
     if(BT.n>=3){play('grumble');boltAnim('angry','r-shake');boltSay(pick(BOLT_TALK.rage),true);return}
     play('boing');boltAnim('grr','r-squish');boltSay(pick(BOLT_TALK.lazy),true);return}
-  if(xp<GOAL){const m=pick(['wink','laugh']);play(m==='laugh'?'giggle':'boing');boltAnim(m,pick(['r-jump','r-wiggle']));boltSay(BT.n%3===2?'Hədəfə '+(GOAL-xp)+' XP qalıb — bir dərs də! 💪':pick(BOLT_TALK.ok));if(m==='laugh')hearts(3,['⚡','✨']);return}
+  if(xp<goalXP()){const m=pick(['wink','laugh']);play(m==='laugh'?'giggle':'boing');boltAnim(m,pick(['r-jump','r-wiggle']));boltSay(BT.n%3===2?'Hədəfə '+(goalXP()-xp)+' XP qalıb — bir dərs də! 💪':pick(BOLT_TALK.ok));if(m==='laugh')hearts(3,['⚡','✨']);return}
   const m=pick(['love','laugh','wink']);play(m==='love'?'kiss':'giggle');boltAnim(m,pick(['r-spin','r-jump','r-wiggle']),1600);boltSay(pick(BOLT_TALK.star));hearts(m==='love'?6:4,m==='love'?['💛','❤️','💖']:['⚡','✨','⭐'])}
 $('boltBtn').onclick=boltTap;
+$('goalSet').onclick=goalSheet;
+function goalSheet(){const g=goalXP();sheet('Günlük hədəf',`<p style="margin-top:0">Hər gün neçə XP toplamaq istəyirsən? Hədəfə çatanda şənlik olur, sonra da XP sayılmağa davam edir.</p><div class="gopts">${GOALS.map(([v,n,t])=>`<button class="gopt ${v===g?'on':''}" data-v="${v}" aria-pressed="${v===g}"><b>${n}</b><span>${v} XP</span><small>${t}</small></button>`).join('')}</div>`,'<button class="btn ghost" id="shClose">Bağla</button>');
+  $('shClose').onclick=closeSheet;document.querySelectorAll('.gopt').forEach(b=>b.onclick=()=>{S.goal=+b.dataset.v;const t=today();if((S.days[t]||0)>=S.goal)S.goalDone[t]=1;save();play('ok');closeSheet();renderHome();toast('Günlük hədəf: '+S.goal+' XP')})}
+
 $('enPill').onclick=()=>{play('tap');enSheet(false)};setInterval(()=>{if(typeof S!=='undefined'&&S)drawEnergy()},60000);
 /* ---------- gəzən şimşək: arabir ekranda gəzir ---------- */
 const WALK_TALK={lazy:['Bu gün hələ dərs yoxdur… 👀','Gəl bir dərs edək? Cəmi 3 dəqiqə!','Mən gəzirəm, sən isə dərsə başla 😉','Şimşəyin sönməsin! ⚡'],
@@ -839,10 +848,10 @@ function renderHome(){
   const mood=lit?'happy':st>0?(hr>=18?'angry':'worried'):ever?'sad':'sleep';
   $('bigBolt').setAttribute('class','bigsun bolt m-'+mood);$('stIco').setAttribute('href',st||lit?'#boltI':'#boltOff');$('stPill').parentElement.classList.toggle('dim',!(st||lit));
   const MH={worried:'Şimşəyin narahatdır — bu gün hələ dərs keçməmisən.',angry:'Şimşək əsəbiləşib! Gün bitmədən bir dərs keç, yoxsa seriya sönəcək.',sad:'Şimşəyin söndü… Bir dərs keç — yenidən çaxsın.',sleep:'İlk dərsini keç və şimşəyi çaxdır'};
-  $('best').textContent=xp>=GOAL?'Bugünkü hədəf tamamlandı':xp>0?'Hədəfə '+(GOAL-xp)+' XP qalıb':MH[mood];$('best').className='hint '+(xp>0?'':'mood-hint mood-'+mood);
+  $('best').textContent=xp>=goalXP()?'Bugünkü hədəf tamamlandı':xp>0?'Hədəfə '+(goalXP()-xp)+' XP qalıb':MH[mood];$('best').className='hint '+(xp>0?'':'mood-hint mood-'+mood);
   $('xpTot').textContent=weekXP();
-  $('goalTxt').textContent=Math.min(xp,GOAL)+' / '+GOAL+' XP';
-  $('goalBar').style.width=Math.min(100,xp/GOAL*100)+'%';
+  {const g=goalXP(),ex=xp-g;$('goalTxt').innerHTML=`${xp} / ${g} XP${ex>0?` <em class="gx">+${ex} əlavə</em>`:''}`;
+  $('goalBar').style.width=Math.min(100,xp/g*100)+'%';$('goalBar').classList.toggle('over',ex>0)}
   $('week').innerHTML=[6,5,4,3,2,1,0].map(n=>{const k=shiftDay(t,-n),d=new Date(k+'T12:00:00Z').getUTCDay(),on=S.days[k]>0,fr=!on&&S.frozen[k];
     return `<div class="day">${WD[d]}<div class="dot ${on||fr?'on':''} ${n===0?'today':''}">${on?'<svg viewBox="0 0 64 64"><use href="#boltI"/></svg>':fr?'<svg viewBox="0 0 64 64"><use href="#boltIce"/></svg>':''}</div></div>`}).join('');
   $('skills').innerHTML=SK.map(([id,n,d,c,b])=>`<a class="skill" href="#${id}" style="background:var(${b})"><div class="ic" style="color:var(${c})">${IC[id]}</div><b>${n}</b><span>${d}</span><div class="mini"><i style="width:${S.skills[id]||0}%;background:var(${c})"></i></div></a>`).join('');
