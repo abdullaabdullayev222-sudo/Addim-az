@@ -1,5 +1,5 @@
 // Addım service worker: tətbiqi oflayn işlədir
-const CACHE = 'addim-v35';
+const CACHE = 'addim-v36';
 const AUDIO = 'addim-audio-v2';
 const INFLIGHT = new Map();
 const FILES = ['./', './index.html', './course.js', './course-extra.js', './a1-more.js', './a1-examples.js', './examples-more.js', './more-lib.js', './more-a2.js', './more-a2b.js', './more-b1.js', './more-b1b.js', './more-b2.js', './more-b2b.js', './more-c1a.js', './more-c1b.js', './more-c1c.js', './practice.js', './practice-more.js', './practice-c1.js', './avatars.js', './config.js', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png'];

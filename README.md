@@ -9,3 +9,5 @@ Azərbaycan dilində danışanlar üçün ingilis dili öyrənmə tətbiqi (PWA)
 - Premium: `functions/api/premium.js` (aktivasiya kodu), `functions/api/admin.js` + `admin.html` (kod yaratmaq). Cloudflare-də `ADMIN_KEY` dəyişəni (ən azı 12 simvol) lazımdır.
 - Qiymət, kart nömrəsi, əlaqə və gündəlik pulsuz dərs limiti: `config.js`.
 - Avatarlar, ad rəngləri, formalar, çərçivələr: `avatars.js` (ilk 6 avatar pulsuz).
+
+- Şimşəkciklər (enerji): `config.js`-də `energyMax` (20), `energyRefillHours` (12), `energyPerLesson` (2), `energyPerMistake` (1). Premium-da limitsizdir.

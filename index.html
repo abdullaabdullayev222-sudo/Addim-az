@@ -239,6 +239,10 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
  .walker.run .ll,.walker.run .lr,.walker.run .al,.walker.run .ar{animation-duration:.2s!important}
  .walker.hop svg .wb{animation:whop .5s cubic-bezier(.3,1.6,.5,1)}@keyframes whop{40%{transform:translateY(-18px)}}
 }
+.pill.en{cursor:pointer;font:inherit;font-weight:800;background:linear-gradient(#eef6ff,#dfe9ff);border-color:#b9cdfb;color:#3730a3;-webkit-tap-highlight-color:transparent}.pill.en.low{background:linear-gradient(#fff1f1,#ffe0e0);border-color:#fbb;color:#b91c1c}.pill.en.inf{background:linear-gradient(#fffbe0,#fff1b8);border-color:#ffd84d;color:#92400e}
+.pill.en.bump{animation:enb .5s}@keyframes enb{30%{transform:scale(1.18)}}
+.engrid{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;margin:8px 0 12px}.engrid svg{width:100%;height:auto;aspect-ratio:1}
+.enfly{position:fixed;z-index:80;font-weight:900;color:#4338ca;font-size:18px;pointer-events:none;animation:enfly 1s ease-out forwards}@keyframes enfly{to{transform:translateY(-40px);opacity:0}}
 .lvls{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 8px}
 .lvl{flex:none;min-height:44px;padding:8px 16px;border-radius:99px;border:2px solid var(--line);background:var(--card);font-weight:900;cursor:pointer}
 .lvl[aria-pressed=true]{color:#fff;border-color:transparent}
@@ -430,6 +434,7 @@ nav.tabs a.on .tib{transform:translateY(-2px) scale(1.12)}
   <div class="logo"><svg width="30" height="30" viewBox="0 0 64 64"><use href="#boltI"/></svg><span>Ad<b>dım</b></span></div>
   <div class="pills">
     <div class="pill stk" title="Günlük seriya"><svg viewBox="0 0 64 64"><use href="#boltI" id="stIco"/></svg><span id="stPill">0</span></div>
+    <button class="pill en" id="enPill" title="Şimşəkciklər" aria-label="Şimşəkciklər"><svg viewBox="0 0 64 64"><use href="#boltE"/></svg><span id="enN">20</span></button>
     <div class="pill" title="Bu həftə qazanılan ulduzlar (XP)"><svg viewBox="0 0 24 24"><use href="#starI"/></svg><span id="xpTot">0</span></div>
     <a class="hdav" href="#profile" id="hdAv" aria-label="Profil"></a>
   </div>
@@ -569,7 +574,7 @@ nav.tabs a.on .tib{transform:translateY(-2px) scale(1.12)}
   <symbol id="sunI" viewBox="0 0 64 64"><g fill="#ffc94a"><path d="M32 2l5 12h-10zM32 62l-5-12h10zM2 32l12-5v10zM62 32l-12 5V27zM10.8 10.8l11.9 5-7 7zM53.2 53.2l-11.9-5 7-7zM10.8 53.2l5-11.9 7 7zM53.2 10.8l-5 11.9-7-7z"/></g><circle cx="32" cy="32" r="15" fill="#ff9f1c"/><circle cx="29" cy="29" r="9" fill="#ffc233"/></symbol>
   <linearGradient id="bg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe46b"/><stop offset=".55" stop-color="#ffc21a"/><stop offset="1" stop-color="#ff8a00"/></linearGradient>
   <linearGradient id="bgA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffb36b"/><stop offset=".6" stop-color="#ff7a1a"/><stop offset="1" stop-color="#e2420f"/></linearGradient>
-  <symbol id="boltI" viewBox="0 0 64 64"><path d="M38 3L12 37h17l-5 24 28-36H35z" fill="url(#bg1)" stroke="#d97706" stroke-width="3" stroke-linejoin="round"/><path d="M33 10L19 31" stroke="#fff6c4" stroke-width="3" stroke-linecap="round" opacity=".8"/></symbol>
+  <linearGradient id="bgE" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7dd3fc"/><stop offset="1" stop-color="#6366f1"/></linearGradient><symbol id="boltE" viewBox="0 0 64 64"><path d="M38 3L12 37h17l-5 24 28-36H35z" fill="url(#bgE)" stroke="#4338ca" stroke-width="3.5" stroke-linejoin="round"/><path d="M33 10L19 31" stroke="#e0f2fe" stroke-width="3" stroke-linecap="round" opacity=".85"/></symbol><symbol id="boltE0" viewBox="0 0 64 64"><path d="M38 3L12 37h17l-5 24 28-36H35z" fill="#eceaf5" stroke="#cfcbe3" stroke-width="3.5" stroke-linejoin="round"/></symbol><symbol id="boltI" viewBox="0 0 64 64"><path d="M38 3L12 37h17l-5 24 28-36H35z" fill="url(#bg1)" stroke="#d97706" stroke-width="3" stroke-linejoin="round"/><path d="M33 10L19 31" stroke="#fff6c4" stroke-width="3" stroke-linecap="round" opacity=".8"/></symbol>
   <symbol id="boltOff" viewBox="0 0 64 64"><path d="M38 3L12 37h17l-5 24 28-36H35z" fill="#e6e1d6" stroke="#c9c2b3" stroke-width="3" stroke-linejoin="round"/></symbol>
   <symbol id="boltIce" viewBox="0 0 64 64"><path d="M38 3L12 37h17l-5 24 28-36H35z" fill="#cfe9ff" stroke="#7cc0f5" stroke-width="3" stroke-linejoin="round"/><path d="M30 26l8 6M38 26l-8 6" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></symbol>
   <symbol id="sunOff" viewBox="0 0 64 64"><circle cx="32" cy="32" r="14" fill="#e9dcc0"/></symbol>
@@ -620,6 +625,25 @@ const newId=()=>crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+'-
 const CFG=window.ADDIM_CONFIG||{};
 const track=(ev,data)=>{try{if(!S||!S.uid)return;fetch('/api/track',{method:'POST',headers:{'content-type':'application/json'},keepalive:true,body:JSON.stringify({uid:S.uid,ev,data:data||undefined,lvl:S.lvl,standalone:matchMedia('(display-mode: standalone)').matches||navigator.standalone===true})}).catch(()=>{})}catch(e){}};
 const isPrem=()=>!!(S&&S.prem&&S.prem.until>Date.now());
+/* ---------- şimşəkciklər (enerji): 12 saatdan bir dolur, Premium-da limitsiz ---------- */
+const EN_MAX=()=>CFG.energyMax||20,EN_H=()=>CFG.energyRefillHours||12,EN_LES=()=>CFG.energyPerLesson||2,EN_MIS=()=>CFG.energyPerMistake||1;
+function enNow(){if(isPrem())return Infinity;if(!S.en||typeof S.en.n!=='number')S.en={n:EN_MAX(),t0:0};
+  if(S.en.t0&&Date.now()>=S.en.t0+EN_H()*3600e3){S.en={n:EN_MAX(),t0:0};save()}return S.en.n}
+function enLeft(){enNow();return S.en&&S.en.t0?Math.max(0,S.en.t0+EN_H()*3600e3-Date.now()):0}
+const fmtLeft=ms=>{const m=Math.ceil(ms/60000),h=Math.floor(m/60);return h?`${h} saat ${m%60} dəq`:`${m} dəq`};
+function enSpend(k,el){if(isPrem()||!k)return;const n=enNow();if(n>=EN_MAX()||!S.en.t0)S.en.t0=S.en.t0||Date.now();S.en.n=Math.max(0,n-k);save();drawEnergy(true);
+  const p=$('enPill');if(p){const r=(el||p).getBoundingClientRect(),f=document.createElement('div');f.className='enfly';f.textContent='−'+k+' ⚡';f.style.left=(r.left+r.width/2-16)+'px';f.style.top=(r.top-4)+'px';document.body.appendChild(f);setTimeout(()=>f.remove(),1000)}}
+function drawEnergy(bump){const p=$('enPill');if(!p)return;const n=enNow(),inf=n===Infinity;$('enN').textContent=inf?'∞':n;p.classList.toggle('inf',inf);p.classList.toggle('low',!inf&&n<EN_LES()*2);
+  p.title=inf?'Premium: limitsiz şimşəkcik':`${n} / ${EN_MAX()} şimşəkcik`;if(bump){p.classList.remove('bump');void p.offsetWidth;p.classList.add('bump')}}
+function enSheet(empty){const n=enNow(),inf=n===Infinity,mx=EN_MAX(),left=enLeft();
+  const grid=inf?'':`<div class="engrid">${Array.from({length:mx},(_,i)=>`<svg viewBox="0 0 64 64"><use href="#${i<n?'boltE':'boltE0'}"/></svg>`).join('')}</div>`;
+  const body=inf?'<p><b>Premium aktivdir — şimşəkciklər limitsizdir ∞.</b> İstədiyin qədər dərs keç, səhv etməkdən qorxma!</p>'
+   :`${grid}<p style="margin-top:0"><b>${n} / ${mx}</b> şimşəkcik. Hər yeni dərs <b>${EN_LES()}</b>, hər səhv cavab <b>${EN_MIS()}</b> şimşəkcik aparır — orta hesabla 3–4 dərsə çatır.</p>
+     <p>${left?`Tam dolmasına: <b>${fmtLeft(left)}</b>`:`Şimşəkciklər doludur. Xərcləməyə başlayandan ${EN_H()} saat sonra yenidən tam dolur.`}</p>
+     <p class="lim">Keçdiyin dərsləri təkrarlamaq, «Səhvlərim», dinləmə, oxu və günün quizi şimşəkcik aparmır.</p>`;
+  sheet(empty?'Şimşəkciklər bitdi ⚡':'Şimşəkciklər',body,inf?'<button class="btn" id="shClose">Bağla</button>':`<a class="btn sun" href="#premium" id="goPrem">Premium — limitsiz şimşəkcik</a><button class="btn ghost" id="shClose">${empty?'Gözləyərəm':'Bağla'}</button>`);
+  $('shClose').onclick=closeSheet;if($('goPrem'))$('goPrem').onclick=closeSheet}
+
 const bonusXP=n=>isPrem()?Math.round(n*(1+(CFG.premiumXpBonus||0))):n;
 const CROWN='<svg class="crown" viewBox="0 0 24 24" aria-label="Premium"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z" fill="#f5b800" stroke="#c98a00" stroke-width="1.2" stroke-linejoin="round"/></svg>';
 const LOCKI='<svg viewBox="0 0 24 24" fill="none" stroke="#c98a00" stroke-width="2.6" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
@@ -719,6 +743,7 @@ function boltTap(){const now=Date.now();BT.n=now-BT.last<4000?BT.n+1:1;BT.last=n
   if(xp<GOAL){const m=pick(['wink','laugh']);play(m==='laugh'?'giggle':'boing');boltAnim(m,pick(['r-jump','r-wiggle']));boltSay(BT.n%3===2?'Hədəfə '+(GOAL-xp)+' XP qalıb — bir dərs də! 💪':pick(BOLT_TALK.ok));if(m==='laugh')hearts(3,['⚡','✨']);return}
   const m=pick(['love','laugh','wink']);play(m==='love'?'kiss':'giggle');boltAnim(m,pick(['r-spin','r-jump','r-wiggle']),1600);boltSay(pick(BOLT_TALK.star));hearts(m==='love'?6:4,m==='love'?['💛','❤️','💖']:['⚡','✨','⭐'])}
 $('boltBtn').onclick=boltTap;
+$('enPill').onclick=()=>{play('tap');enSheet(false)};setInterval(()=>{if(typeof S!=='undefined'&&S)drawEnergy()},60000);
 /* ---------- gəzən şimşək: arabir ekranda gəzir ---------- */
 const WALK_TALK={lazy:['Bu gün hələ dərs yoxdur… 👀','Gəl bir dərs edək? Cəmi 3 dəqiqə!','Mən gəzirəm, sən isə dərsə başla 😉','Şimşəyin sönməsin! ⚡'],
   ok:['Salam! Mən gəzintidəyəm ⚡','Əla gedirsən! 💪','Bir dərs də? Enerjim artır!','Hi-hi, məni tutmağa çalış! 😆','Sözləri təkrarlamağı unutma!'],
@@ -1056,7 +1081,7 @@ const norm2=s=>String(s).toLowerCase().replace(/[’`]/g,"'").replace(/[^a-z0-9'
 const toks=s=>s.split(' ').map(w=>w.replace(/[.,!?]/g,'')).filter(Boolean);
 function renderNext(){const n=nextLesson(),el=$('nextCard');
   if(!n){el.innerHTML=`<div class="lv">${IC.course}</div><span><small>Kurs</small><strong>Bütün dərsləri keçdin! Yeni bölmələr tezliklə.</strong></span>`;el.onclick=null;return}
-  el.innerHTML=`<div class="lv" style="background:${n.lv.color}">${esc(n.lv.name)}</div><span><small>${ALL.some(a=>isDone(a.x.id))?'Növbəti dərs':'İlk dərsin'} · Bölmə ${n.ui+1}: ${esc(n.u.title)}</small><strong>${esc(n.x.title)}${isCircle(n)?` <span style="font-weight:800;color:var(--mut);font-size:14px">· Dərs ${partsDone(n.x.id)+1}/4</span>`:''}</strong>${isPrem()?'<span class="lim">Premium · limitsiz dərs</span>':`<span class="lim">Bu gün ${lessonsLeft()} pulsuz dərs qalıb</span>`}</span><span class="go">›</span>`;
+  el.innerHTML=`<div class="lv" style="background:${n.lv.color}">${esc(n.lv.name)}</div><span><small>${ALL.some(a=>isDone(a.x.id))?'Növbəti dərs':'İlk dərsin'} · Bölmə ${n.ui+1}: ${esc(n.u.title)}</small><strong>${esc(n.x.title)}${isCircle(n)?` <span style="font-weight:800;color:var(--mut);font-size:14px">· Dərs ${partsDone(n.x.id)+1}/4</span>`:''}</strong>${isPrem()?'<span class="lim">Premium · limitsiz şimşəkcik ∞</span>':`<span class="lim">${enNow()} / ${EN_MAX()} şimşəkcik${enNow()<EN_LES()?' · '+fmtLeft(enLeft())+' sonra dolacaq':''}</span>`}</span><span class="go">›</span>`;
   el.onclick=e=>{e.preventDefault();if(S.lvl!==n.lv.id){S.lvl=n.lv.id;save()}location.hash='course';setTimeout(()=>{const c=document.querySelector('#units .node.cur');if(c){c.scrollIntoView({behavior:'smooth',block:'center'});c.classList.add('pulse');setTimeout(()=>c.classList.remove('pulse'),2600)}},120)}}
 function renderCourse(){
   const C=window.COURSE||[],lv=C.find(l=>l.id===S.lvl)||C[0];if(!lv)return;
@@ -1118,7 +1143,6 @@ function openCircle(id){const a=ALL.find(z=>z.x.id===id);if(!a)return;const d=pa
   sheet(a.x.title,`<div class="note" style="margin:-6px 0 10px">${d>=5?'Dairə tamamlandı 🏆':d>=4?'4 dərs keçildi — ümumi praktika dairəni tamamlayır':'Dərs '+(d+1)+' / 4'}</div><div class="prts">${rows}</div>`,'<button class="btn ghost" id="shClose">Bağla</button>');
   document.querySelectorAll('.prt:not([disabled])').forEach(b=>b.onclick=()=>{closeSheet();startLesson(id,+b.dataset.p)})}
 let LS=null;
-const lessonsLeft=()=>Math.max(0,(CFG.freeLessonsPerDay||3)-(S.lday[today()]||0));
 const itemsOf=x=>x.items.map((it,k)=>({...it,src:x.id+'#'+k}));
 function itemBySrc(src){const [lid,k]=src.split('#');if(lid.includes('@')){const [cid,pp]=lid.split('@'),c=ALL.find(z=>z.x.id===cid);const it=c&&circleItems(c.x,+pp)[+k];return it&&it.src===src?it:null}
   const a=ALL.find(z=>z.x.id===lid);return a&&a.x.items[+k]?{...a.x.items[+k],src}:null}
@@ -1132,16 +1156,18 @@ function renderMist(){const el=$('mistCard');if(!el)return;const n=(S.mist||[]).
 function startLesson(id,part){const a=ALL.find(z=>z.x.id===id);if(!a)return;
   const circ=isCircle(a),pd=circ?partsDone(id):0;if(circ){if(part==null){if(pd>=5)return openCircle(id);part=Math.min(pd,4)}}
   const fresh=circ?part>=pd&&part<5:!isDone(id);
-  if(!a.x.review&&!isPrem()&&fresh&&lessonsLeft()<=0){play('down');track('limit_hit');return sheet('Bugünlük pulsuz dərslər bitdi',`<p>Bu gün ${CFG.freeLessonsPerDay||3} yeni dərs keçdin — əla iş! Sabah yenə ${CFG.freeLessonsPerDay||3} dərs açılacaq. Keçdiyin dərsləri təkrarlamaq, günün quizi və məşqlər isə limitsizdir.</p><p><b>Premium</b> ilə istədiyin qədər dərs keç və hər dərsdə +50% XP qazan.</p>`,'<a class="btn sun" href="#premium" id="goPrem">Premium-a bax</a><button class="btn ghost" id="shClose">Sabah davam edərəm</button>')||($('shClose').onclick=closeSheet,$('goPrem').onclick=closeSheet)}
+  const costly=!a.x.review&&!isPrem()&&fresh;
+  if(costly&&enNow()<EN_LES()){play('down');track('limit_hit');return enSheet(true)}
+  if(costly)enSpend(EN_LES());
   const items=circ?circleItems(a.x,part):a.x.review?reviewItems(a):itemsOf(a.x);if(a.x.review)track('review',a.x.id);
   if(!circ&&!a.x.review&&!items.some(i=>i.t==='speak')){const o=items.find(i=>i.t==='order');if(o)items.splice(items.length-1,0,{t:'speak',en:[].concat(o.en)[0],az:o.az})}
-  LS={a,items,i:0,ok:0,scored:0,xp:0,part:circ?part:null,fresh};prefetchAudio(lessonAudio(items));location.hash='lesson';if(location.hash==='#lesson')route();renderStep()}
+  LS={a,items,i:0,ok:0,scored:0,xp:0,part:circ?part:null,fresh,costly};prefetchAudio(lessonAudio(items));location.hash='lesson';if(location.hash==='#lesson')route();renderStep()}
 function fbBox(ok,title,body){return `<div class="fb ${ok?'ok':'no'}"><b>${esc(title)}</b>${body?'<div>'+esc(body)+'</div>':''}<button class="btn ${ok?'':'sun'}" id="lNext">Davam et</button></div>`}
 function answered(ok,right,e,el){const it=LS.items[LS.i];
   if(!it.re){LS.scored++;if(ok)LS.ok++}
   play(ok?'ok':'no');
   if(ok){const g=bonusXP(5);addXP(g,null,el);LS.xp+=g;if(it.fix&&it.src){S.mist=(S.mist||[]).filter(x=>x!==it.src);save()}}
-  else{if(!it.re)LS.items.push({...it,re:1});if(it.src&&!it.fix){S.mist=[it.src].concat((S.mist||[]).filter(x=>x!==it.src)).slice(0,40);save()}}
+  else{if(LS.costly&&!isPrem()){const was=enNow();enSpend(EN_MIS(),el);if(was>0&&enNow()===0)setTimeout(()=>toast('Şimşəkciklər bitdi — bu dərsi sona qədər keçə bilərsən'),700)}if(!it.re)LS.items.push({...it,re:1});if(it.src&&!it.fix){S.mist=[it.src].concat((S.mist||[]).filter(x=>x!==it.src)).slice(0,40);save()}}
   const f=document.createElement('div');f.innerHTML=fbBox(ok,ok?['Əla!','Düzgündür!','Bravo!','Tam doğru!'][LS.i%4]:'Düzgün cavab: '+right,ok?'':e||'');$('lBox').appendChild(f.firstElementChild);
   $('lNext').onclick=()=>{LS.i++;renderStep()};$('lNext').focus({preventScroll:true});$('lNext').scrollIntoView({block:'nearest'})}
 function renderStep(){
@@ -1203,7 +1229,7 @@ function finishLesson(){const a=LS.a,circ=LS.part!=null,part=LS.part,acc=LS.scor
 $('lQuit').onclick=()=>sheet('Dərsdən çıxırsan?','<p>Bu dərsdəki proqresin yadda qalmayacaq. Qazandığın XP isə səndə qalır.</p>','<button class="btn" id="qStay">Davam et</button><button class="btn ghost" id="qLeave">Çıx</button>')||($('qStay').onclick=closeSheet,$('qLeave').onclick=()=>{closeSheet();LS=null;location.hash='course'});
 
 /* ---------- header, profile studio, premium ---------- */
-function drawHeader(){premLook();$('hdAv').innerHTML=avatar(S.me?S.me.name:'?',S.me?S.me.color:0,S.look.avatar||S.look.frame?S.look:{avatar:'cat',frame:S.look.frame})+(isPrem()?'<svg class="cr" viewBox="0 0 24 24"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z" fill="#f5b800" stroke="#c98a00" stroke-width="1.2" stroke-linejoin="round"/></svg>':'');
+function drawHeader(){premLook();drawEnergy();$('hdAv').innerHTML=avatar(S.me?S.me.name:'?',S.me?S.me.color:0,S.look.avatar||S.look.frame?S.look:{avatar:'cat',frame:S.look.frame})+(isPrem()?'<svg class="cr" viewBox="0 0 24 24"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z" fill="#f5b800" stroke="#c98a00" stroke-width="1.2" stroke-linejoin="round"/></svg>':'');
   const pr=$('promo');pr.hidden=isPrem();if(!isPrem())pr.innerHTML=`<svg viewBox="0 0 24 24"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z" fill="#f5b800" stroke="#c98a00" stroke-width="1.2" stroke-linejoin="round"/></svg><span><b>Addım Premium</b> — limitsiz dərs, +50% XP, xüsusi avatarlar və liqada parlayan adın</span>`}
 function lockedTap(){play('down');location.hash='premium'}
 const RATES=[['Yavaş',0.8],['Normal',1],['Sürətli',1.15]];
@@ -1250,7 +1276,7 @@ function renderProfile(){drawVoice();drawNotif();drawRoam();const P=isPrem(),L=S
     S.me={id:S.uid,name:v,color:S.me?S.me.color:Math.floor(Math.random()*COLORS.length)};play('ok');toast('Yadda saxlanıldı');BOARD=null;apply();sync()};
 }
 async function fetchPrem(){try{const r=await fetch('/api/premium?id='+encodeURIComponent(S.uid));if(!r.ok)return;const d=await r.json();S.prem={until:d.until||0};save();drawHeader();renderNext()}catch(e){}}
-const BEN=[['Limitsiz dərs',`Pulsuzda gündə ${CFG.freeLessonsPerDay||3} yeni dərs, Premium-da istədiyin qədər`,'#16956a'],['+50% XP','Hər dərsdə daha çox XP — liqada daha sürətli qalx','#f5b800'],['6 xüsusi avatar','Şir, panda, robot, təkbuynuz, əjdaha, astronavt','#7b56d6'],['Adın fərqlənsin','Rəngli ad (qızıl, göy qurşağı…), kursiv, BÖYÜK, neon forma','#2f7de1'],['Liqada parlayan çərçivə və tac','Qızıl parıltı, göy qurşağı və alov çərçivələri','#ef5d5d']];
+const BEN=[['Limitsiz şimşəkcik ∞',`Pulsuzda ${CFG.energyRefillHours||12} saatda ${CFG.energyMax||20} şimşəkcik (təxminən 3–4 dərs), Premium-da istədiyin qədər dərs keç, səhv etməkdən qorxma`,'#16956a'],['+50% XP','Hər dərsdə daha çox XP — liqada daha sürətli qalx','#f5b800'],['6 xüsusi avatar','Şir, panda, robot, təkbuynuz, əjdaha, astronavt','#7b56d6'],['Adın fərqlənsin','Rəngli ad (qızıl, göy qurşağı…), kursiv, BÖYÜK, neon forma','#2f7de1'],['Liqada parlayan çərçivə və tac','Qızıl parıltı, göy qurşağı və alov çərçivələri','#ef5d5d']];
 function renderPremium(){const b=$('prBox'),P=isPrem(),card=(CFG.card||'').trim();track('premium_view');
   const contact=[CFG.whatsapp?`<a href="https://wa.me/${encodeURIComponent(CFG.whatsapp)}" target="_blank" rel="noopener">WhatsApp</a>`:'',CFG.instagram?`<a href="https://instagram.com/${encodeURIComponent(CFG.instagram)}" target="_blank" rel="noopener">Instagram</a>`:''].filter(Boolean).join(' və ya ');
   b.innerHTML=`<div class="ph"><svg width="64" height="64" viewBox="0 0 24 24"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z" fill="#f5b800" stroke="#c98a00" stroke-width="1.2" stroke-linejoin="round"/></svg><h1>Addım Premium</h1><div class="price">${esc(CFG.price||'5,9 AZN')} <small>/ ${esc(CFG.period||'ay')}</small></div>${P?`<p style="margin:10px 0 0;font-weight:800">Premium aktivdir — ${new Date(S.prem.until).toLocaleDateString('az-AZ')} tarixinədək. Təşəkkürlər!</p>`:''}</div>
