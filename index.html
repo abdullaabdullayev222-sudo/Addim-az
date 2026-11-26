@@ -254,6 +254,7 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 .tgl{flex:none;width:54px;height:32px;border-radius:99px;border:0;background:#cfd6de;position:relative;cursor:pointer;transition:background .2s}.tgl i{position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:0 1px 3px #0003;transition:transform .2s}.tgl.on{background:#f59e0b}.tgl.on i{transform:translateX(22px)}
 .ptbars{max-width:420px;margin:10px auto 14px;display:grid;gap:8px}.ptb{display:grid;grid-template-columns:34px 1fr 44px;gap:10px;align-items:center;font-weight:800}.ptb .bar{margin:0}
 
+#tr .line{border-radius:12px;transition:background .2s;padding:4px 8px;margin:0 -8px}#tr .line.cur{background:#fff3c4}
 /* medallar, fişənglər */
 .cel.dark{background:radial-gradient(circle at 50% 40%,#2b2f6b 0,#14163a 70%)}
 .mdl{display:inline-flex;gap:2px;margin-left:4px;vertical-align:middle;font-size:12px;font-weight:900}.mdl i{font-style:normal;display:inline-flex;align-items:center;gap:1px}.mdl svg{width:16px;height:16px}
@@ -322,6 +323,41 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 }
 
 @media(max-width:380px){.sunbox{grid-template-columns:96px 1fr}.bigsun{width:96px;height:96px}.dot{width:30px;height:30px}.dot svg{width:26px;height:26px}.pill{padding:5px 9px;font-size:14px}}
+
+/* ===== Görünüş 2.0: şimşək palitrası (açıq, yumşaq, keyfiyyətli) ===== */
+:root{--bg:#f6f5fc;--ink:#1e1b3a;--mut:#625f7a;--line:#e8e5f5;--blue:#5b4ee6;--brand:#5b4ee6;--brand2:#8b5cf6;--sun:#ff9f1c;--sun2:#ffcf3f;
+ --sh1:0 1px 2px rgba(30,27,58,.05),0 4px 14px rgba(30,27,58,.06);--sh2:0 2px 4px rgba(30,27,58,.06),0 12px 28px rgba(30,27,58,.10)}
+body{background:radial-gradient(1200px 500px at 10% -10%,#ece9ff 0,transparent 60%),radial-gradient(900px 500px at 110% 10%,#fff3d6 0,transparent 55%),var(--bg);background-attachment:fixed}
+.logo{color:var(--ink)}.logo b{background:linear-gradient(90deg,#ff9f1c,#ffb703);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pill{border-color:transparent;box-shadow:var(--sh1)}
+.hero{background:linear-gradient(155deg,#ecebff 0%,#f6f1ff 38%,#fff6e3 78%,#ffedcf 100%);border:1px solid #ebe6ff;box-shadow:var(--sh2)}
+.hero::before{content:'';position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,#ffe58a66,transparent 65%);pointer-events:none}
+.hero::after{content:'';position:absolute;left:-50px;bottom:-70px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,#c7bfff55,transparent 65%);pointer-events:none}
+.hero>*{position:relative;z-index:1}
+.dot{border-color:#d9d2f5;background:#ffffffc8}.dot.today{outline-color:#ffb703}
+.bar{border-color:#ece6fb}.bar i{background:linear-gradient(90deg,#ffcf3f,#ff9f1c,#ff7a1a)}
+.card,.league,.ep{border-color:var(--line);box-shadow:var(--sh1)}
+.btn{background:linear-gradient(180deg,#6b5ff0,#5246dc);box-shadow:0 4px 0 #3d33b5,0 8px 18px rgba(91,78,230,.25)}
+.btn:active{box-shadow:0 2px 0 #3d33b5}
+.btn.sun{background:linear-gradient(180deg,#ffb53a,#ff9512);box-shadow:0 4px 0 #d07400,0 8px 18px rgba(255,149,18,.28);color:#fff}
+.btn.ghost{background:#fff;color:var(--brand);border:2px solid var(--line);box-shadow:0 3px 0 var(--line)}
+.skill{box-shadow:var(--sh1);border:1px solid #ffffff80}
+.skill .ic{background:#fff;box-shadow:0 2px 8px rgba(30,27,58,.08)}
+.skill[href="#reading"]{background:linear-gradient(150deg,#e4efff,#d3e5ff)}.skill[href="#listening"]{background:linear-gradient(150deg,#f1eaff,#e4d8ff)}
+.skill[href="#speaking"]{background:linear-gradient(150deg,#ffeee4,#ffdccb)}.skill[href="#writing"]{background:linear-gradient(150deg,#e2f7ec,#cdf0dd)}
+.daily{background:linear-gradient(150deg,#fff6c9,#ffe8a3);box-shadow:0 4px 0 #f0c94a,var(--sh1)}
+/* alt menyu: üzən, rəngli ikonlar */
+nav.tabs{left:10px;right:10px;bottom:calc(8px + env(safe-area-inset-bottom));padding:6px;border:1px solid #ffffff;border-radius:24px;background:rgba(255,255,255,.88);backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);box-shadow:0 10px 30px rgba(30,27,58,.16),0 2px 6px rgba(30,27,58,.06);padding-bottom:6px}
+nav.tabs div{gap:4px}
+nav.tabs a{min-height:58px;border-radius:18px;padding:6px 0 5px;color:var(--mut);transition:background .2s,color .2s}
+nav.tabs a .tib{display:grid;place-items:center;width:34px;height:30px;font-style:normal;transition:transform .25s cubic-bezier(.3,1.6,.5,1),filter .2s}
+nav.tabs a svg.ti{width:30px;height:30px}
+nav.tabs a:not(.on) .tib{filter:saturate(.55) opacity(.8)}
+nav.tabs a.on{color:var(--ink)}
+nav.tabs a.on[data-k=home]{background:#efedff}nav.tabs a.on[data-k=course]{background:#e3f8ee}nav.tabs a.on[data-k=league]{background:#fff4d1}nav.tabs a.on[data-k=practice]{background:#ffe9ec}
+nav.tabs a.on .tib{transform:translateY(-2px) scale(1.12)}
+.shell{padding-bottom:120px}
+@media(prefers-reduced-motion:no-preference){nav.tabs a.on .tib{animation:tpop .4s}@keyframes tpop{40%{transform:translateY(-5px) scale(1.2)}}}
 </style>
 </head>
 <body>
@@ -712,11 +748,18 @@ let tipT;
 function openEp(kind,id){stopSpeech();const e=PRAC[kind].find(x=>x.id===id);if(!e)return packList(kind);PCUR[kind]=id;const k=PK[kind],box=$(k.box),eps=PRAC[kind].filter(x=>x.lvl===e.lvl),n=eps.indexOf(e);
   const lines=kind==='listening'?e.lines.map(l=>({text:l[1],voice:l[2]})):null;
   box.innerHTML=`<button class="back" id="epBack">‹ Siyahı</button><h2>${k.name} · ${esc(e.title)}</h2><div class="note" style="margin:-6px 0 10px">${e.lvl.toUpperCase()} · ${n+1} / ${eps.length}</div>`+(kind==='listening'?
-   `<div class="card" style="background:var(--lsb);border-color:${k.bd}"><p style="margin:0">Əvvəlcə mətnə baxmadan dinlə. Çətin olsa, yavaş dinlə və ya transkripti aç.</p><div class="row"><button class="btn" id="play">▶ Dinlə</button><button class="btn ghost" id="slow">Yavaş</button></div><button class="btn ghost" id="showTr">Transkripti göstər</button><div id="tr" hidden style="margin-top:12px">${e.lines.map(l=>`<div class="line"><b>${esc(l[0])}</b><span>${esc(l[1])}</span></div>`).join('')}</div></div>`:
+   `<div class="card" style="background:var(--lsb);border-color:${k.bd}"><p style="margin:0">Dialoq özü başlayır. İstədiyin an dayandır və «Davam et» ilə qaldığın yerdən davam et.</p><div class="row"><button class="btn" id="play">▶ Dinlə</button><button class="btn ghost" id="slow">Yavaş</button></div><div class="row" style="justify-content:space-between;align-items:center;margin-top:-4px"><span class="note" id="lsPos" style="margin:0"></span><button class="w" id="restart" style="font-weight:800">↺ Əvvəldən</button></div><button class="btn ghost" id="showTr">Transkripti göstər</button><div id="tr" hidden style="margin-top:12px">${e.lines.map(l=>`<div class="line"><b>${esc(l[0])}</b><span>${esc(l[1])}</span></div>`).join('')}</div></div>`:
    `<div class="card" style="background:var(--rdb);border-color:${k.bd}"><div class="text" id="rText">${e.text.split(/(\s+)/).map(w=>{const kk=w.replace(/[.,()!?:;]/g,'').toLowerCase();return e.gl[kk]?`<button class="w" data-k="${esc(kk)}">${esc(w)}</button>`:esc(w)}).join('')}</div></div><div class="tip" id="tip"></div>`)+
    `<h2 style="margin-top:22px">Suallar</h2><div id="epQs"></div><div id="epEnd"></div>`;
   $('epBack').onclick=()=>{stopSpeech();PCUR[kind]=null;packList(kind);window.scrollTo(0,0)};
-  if(lines){$('play').onclick=()=>playBtn($('play'),lines,1);$('slow').onclick=()=>playBtn($('slow'),lines,0.75);
+  if(lines){let pos=0;const trs=()=>[...$('tr').querySelectorAll('.line')];
+    const hl=i=>{trs().forEach((d,k)=>d.classList.toggle('cur',k===i));$('lsPos').textContent=i<0?'':`Replika ${i+1} / ${lines.length}`};
+    const setLbl=(b,t)=>{if(!b||!b.isConnected)return;b.dataset.l0=t;if(SPK_BTN!==b)b.innerHTML=t};
+    const run=(btn,rate)=>{const from=pos>=lines.length?0:pos;playBtn(btn,lines.slice(from),rate,{onLine:i=>{pos=from+i;hl(pos)},
+      onEnd:fin=>{if(fin){pos=0;hl(-1);setLbl($('play'),'▶ Yenidən dinlə');setLbl($('slow'),'Yavaş')}else{const t=pos>0?'▶ Davam et':'▶ Dinlə';setLbl($('play'),t);setLbl($('slow'),pos>0?'Yavaş davam et':'Yavaş')}}})};
+    $('play').onclick=()=>run($('play'),1);$('slow').onclick=()=>run($('slow'),0.75);
+    $('restart').onclick=()=>{stopSpeech();pos=0;run($('play'),1)};
+    setTimeout(()=>{if($('play')&&!SPEAKING)run($('play'),1)},350);
     $('showTr').onclick=()=>{$('tr').hidden=!$('tr').hidden;$('showTr').textContent=$('tr').hidden?'Transkripti göstər':'Transkripti gizlət'}}
   else $('rText').querySelectorAll('.w').forEach(b=>b.onclick=()=>{const t=$('tip');t.textContent=b.dataset.k+' — '+e.gl[b.dataset.k];t.style.display='block';clearTimeout(tipT);tipT=setTimeout(()=>t.style.display='none',3500)});
   mcq($('epQs'),e.qs,kind,ok=>{const pct=Math.round(ok/e.qs.length*100),first=!pDone(e.id);S.prac=S.prac||{};S.prac[e.id]=Math.max(S.prac[e.id]||0,pct);save();
@@ -738,8 +781,8 @@ function loadVoices(){try{VOICES=speechSynthesis.getVoices().filter(v=>/^en([-_]
 if(window.speechSynthesis){loadVoices();try{speechSynthesis.addEventListener('voiceschanged',loadVoices)}catch(e){speechSynthesis.onvoiceschanged=loadVoices}}
 function voicePair(){const first=(S.voice&&VOICES.find(v=>v.name===S.voice))||VOICES[0]||null;
   const second=VOICES.find(v=>v!==first&&first&&FEMALE.test(v.name)!==FEMALE.test(first.name))||VOICES.find(v=>v!==first)||first;return [first,second]}
-const speakNative=(lines,rate)=>new Promise(res=>{const ss=window.speechSynthesis;if(!ss)return res(false);ss.cancel();const [v1,v2]=voicePair();
-  lines.forEach((l,i)=>{const u=new SpeechSynthesisUtterance(l.text),v=l.voice==='rounded'?v2:v1;u.lang=v?v.lang:'en-US';if(v)try{u.voice=v}catch(e){}u.rate=Math.max(.5,Math.min(1.5,rate*(S.rate||1)*0.95));u.pitch=1;
+const speakNative=(lines,rate,onLine)=>new Promise(res=>{const ss=window.speechSynthesis;if(!ss)return res(false);ss.cancel();const [v1,v2]=voicePair();
+  lines.forEach((l,i)=>{const u=new SpeechSynthesisUtterance(l.text),v=l.voice==='rounded'?v2:v1;u.lang=v?v.lang:'en-US';if(v)try{u.voice=v}catch(e){}u.rate=Math.max(.5,Math.min(1.5,rate*(S.rate||1)*0.95));u.pitch=1;if(onLine)u.onstart=()=>onLine(i);
     if(i===lines.length-1){u.onend=()=>res(true);u.onerror=()=>res(true)}ss.speak(u)});
   setTimeout(()=>{if(ss.paused)ss.resume()},250)});
 /* Təbii səs: serverdə süni intellektlə yaradılmış və keşlənmiş mp3 (Deepgram Aura).
@@ -754,21 +797,22 @@ function playOne(url,rate,tok){return new Promise((res,rej)=>{if(!AEL){AEL=new A
   a._stop=()=>{done();res()};a.onplaying=()=>{started=true};a.onended=()=>{done();res()};a.onerror=()=>{done();rej(new Error('audio'))};
   a.src=url;try{a.playbackRate=Math.max(.5,Math.min(1.5,rate*(S.rate||1)));a.preservesPitch=true}catch(e){}
   const p=a.play();if(p&&p.catch)p.catch(e=>{done();rej(e)})})}
-async function speakAI(lines,rate,tok){for(const l of lines){if(tok!==SPEAK_TOKEN)return;
+async function speakAI(lines,rate,tok,onLine){for(let i=0;i<lines.length;i++){const l=lines[i];if(tok!==SPEAK_TOKEN)return;if(onLine)onLine(i);
   await playOne('/api/tts?m=3&v='+(l.voice==='rounded'?'orion':'asteria')+'&t='+encodeURIComponent(l.text),rate,tok)}}
-async function speak(lines,rate=1){const tok=++SPEAK_TOKEN;
+async function speak(lines,rate=1,onLine){const tok=++SPEAK_TOKEN;
   if(TTS){try{await TTS.speak(lines.map(l=>({text:l.text,voice:l.voice||'buttery',language:'en',rate:rate*(S.rate||1)})));return}catch(e){if(e&&e.code==='busy')return}}
-  if(aiOn()&&Date.now()>AI_DOWN_UNTIL){try{await speakAI(lines,rate,tok);return}catch(e){if(tok!==SPEAK_TOKEN)return;AI_DOWN_UNTIL=Date.now()+10*60e3}}
+  if(aiOn()&&Date.now()>AI_DOWN_UNTIL){let at=0;try{await speakAI(lines,rate,tok,i=>{at=i;onLine&&onLine(i)});return}catch(e){if(tok!==SPEAK_TOKEN)return;AI_DOWN_UNTIL=Date.now()+10*60e3;
+    if(at>0){lines=lines.slice(at);const base=at,o=onLine;onLine=o&&(i=>o(base+i))}}}
   if(!window.speechSynthesis){toast('Bu brauzerdə səsləndirmə işləmir — mətni oxu.');return}
-  await speakNative(lines,rate);
+  await speakNative(lines,rate,onLine);
 }
 const STOP_SVG='<svg viewBox="0 0 24 24" fill="currentColor" style="width:44%;height:44%"><rect x="5" y="5" width="14" height="14" rx="3"/></svg>';
 function markBtn(b,on){if(!b||!b.isConnected)return;if(b.dataset.l0===undefined)b.dataset.l0=b.innerHTML;
   b.classList.toggle('playing',on);b.setAttribute('aria-pressed',on?'true':'false');
   b.innerHTML=on?(b.classList.contains('bigplay')||b.classList.contains('spk')?STOP_SVG:'■ Dayandır'):b.dataset.l0}
 function stopSpeech(){SPEAK_TOKEN++;if(AEL){try{AEL.pause();const st=AEL._stop;st&&st()}catch(e){}}try{TTS&&TTS.stop()}catch(e){}try{window.speechSynthesis&&speechSynthesis.cancel()}catch(e){}const b=SPK_BTN;SPK_BTN=null;SPEAKING=false;markBtn(b,false)}
-function playBtn(btn,lines,rate=1){if(SPEAKING&&SPK_BTN===btn){stopSpeech();return}stopSpeech();SPK_BTN=btn;SPEAKING=true;markBtn(btn,true);
-  speak(lines,rate).catch(()=>{}).finally(()=>{if(SPK_BTN===btn){SPEAKING=false;SPK_BTN=null;markBtn(btn,false)}})}
+function playBtn(btn,lines,rate=1,o={}){if(SPEAKING&&SPK_BTN===btn){stopSpeech();return}stopSpeech();SPK_BTN=btn;SPEAKING=true;markBtn(btn,true);
+  speak(lines,rate,o.onLine).catch(()=>{}).finally(()=>{const fin=SPK_BTN===btn;if(fin){SPEAKING=false;SPK_BTN=null;markBtn(btn,false)}if(o.onEnd)o.onEnd(fin)})}
 /* ---------- speaking ---------- */
 const SP=[["Nice to meet you.","Tanış olmağıma şadam.","«Meet» sözündə uzun «i:» səsi var — «mit» yox, «mii:t»."],
 ["I study economics at university.","Universitetdə iqtisadiyyat oxuyuram.","«University» — «yu-ni-VÖR-si-ti». Vurğu üçüncü hecaya düşür."],
@@ -1111,7 +1155,8 @@ addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet()});
 
 /* ---------- routing ---------- */
 const VIEWS=['welcome','profile','premium','home','course','league','practice','quiz','lesson','reading','listening','speaking','writing'];
-$('tabs').innerHTML=[['home','Bu gün'],['course','Kurs'],['league','Liqa'],['practice','Məşq']].map(([k,n])=>`<a href="#${k}" data-k="${k}">${IC[k]}<span>${n}</span></a>`).join('');
+const TABI={'home': '<svg viewBox="0 0 32 32" class="ti"><path d="M4 15L16 5l12 10" fill="none" stroke="#5b4ee6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 14v12a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V14L16 7z" fill="#e9e6ff" stroke="#5b4ee6" stroke-width="2.4" stroke-linejoin="round"/><path d="M17.5 13l-5 7h4l-1.5 6 5-7.5h-4z" fill="#ffb703" stroke="#d97706" stroke-width="1.2" stroke-linejoin="round"/></svg>', 'course': '<svg viewBox="0 0 32 32" class="ti"><path d="M16 9c-3-2.4-7-3-11-2.4v18c4-.6 8 0 11 2.4 3-2.4 7-3 11-2.4v-18C23 6 19 6.6 16 9z" fill="#dcf7ea" stroke="#16a36a" stroke-width="2.4" stroke-linejoin="round"/><path d="M16 9v18" stroke="#16a36a" stroke-width="2.2"/><path d="M8.5 12.5c2-.2 3.6.2 5 1M8.5 17c2-.2 3.6.2 5 1M18.5 13.5c1.4-.8 3-1.2 5-1" stroke="#34d399" stroke-width="2" stroke-linecap="round"/><circle cx="23.5" cy="19" r="3.2" fill="#ffb703" stroke="#d97706" stroke-width="1.2"/></svg>', 'league': '<svg viewBox="0 0 32 32" class="ti"><path d="M10 5h12v6a6 6 0 0 1-12 0z" fill="#ffd54a" stroke="#d97706" stroke-width="2.2" stroke-linejoin="round"/><path d="M10 7H6a4 4 0 0 0 4.4 5M22 7h4a4 4 0 0 1-4.4 5" fill="none" stroke="#d97706" stroke-width="2.2" stroke-linecap="round"/><path d="M16 17v4" stroke="#d97706" stroke-width="2.4"/><rect x="10" y="21" width="12" height="6" rx="2" fill="#a78bfa" stroke="#6d4bdc" stroke-width="2"/><path d="M16 6.8l1.1 2.2 2.4.3-1.8 1.6.5 2.4-2.2-1.2-2.2 1.2.5-2.4-1.8-1.6 2.4-.3z" fill="#fff"/></svg>', 'practice': '<svg viewBox="0 0 32 32" class="ti"><circle cx="16" cy="16" r="12" fill="#ffe4e6" stroke="#f43f5e" stroke-width="2.4"/><circle cx="16" cy="16" r="7.5" fill="#fff" stroke="#fb7185" stroke-width="2.2"/><circle cx="16" cy="16" r="3" fill="#f43f5e"/><path d="M16 16l9-9" stroke="#5b4ee6" stroke-width="2.4" stroke-linecap="round"/><path d="M22.5 6.5l3.5-1-1 3.5" fill="#5b4ee6" stroke="#5b4ee6" stroke-width="2" stroke-linejoin="round"/></svg>'};
+$('tabs').innerHTML=[['home','Bu gün'],['course','Kurs'],['league','Liqa'],['practice','Məşq']].map(([k,n])=>`<a href="#${k}" data-k="${k}"><i class="tib">${TABI[k]}</i><span>${n}</span></a>`).join('');
 function route(){stopSpeech();let v=location.hash.slice(1);if(STRIKE&&v!=='lesson'&&v!=='quiz')setTimeout(showStrike,400);if(!VIEWS.includes(v))v='home';if(v==='quiz'&&!QZ.length){startQuiz();return}
   if(v==='lesson'&&!LS){location.hash='course';return}
   if(v==='course')renderCourse();
