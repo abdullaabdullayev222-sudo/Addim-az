@@ -226,7 +226,8 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 .bolt.m-angry .al{transform:rotate(-58deg)}
 .bolt.m-sad .al{transform:rotate(-40deg)}.bolt.m-sad .ar{transform:rotate(55deg)}
 .bolt.m-sleep .al{transform:rotate(-35deg)}.bolt.m-sleep .ar{transform:rotate(50deg)}
-.walker{position:fixed;left:0;bottom:calc(env(safe-area-inset-bottom) + 92px);z-index:45;width:84px;height:84px;padding:0;border:0;background:none;cursor:pointer;display:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.walker{position:fixed;left:0;top:0;z-index:45;width:84px;height:84px;padding:0;border:0;background:none;cursor:pointer;display:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.bolt .acc,.boltbtn .acc,.walker .acc{display:none}.prem .acc{display:inline}.prem .bolt .face .drop{display:none}
 .walker.on{display:block}.walker svg{width:84px;height:84px;display:block;transition:transform .2s}.walker.left svg{transform:scaleX(-1)}
 .walker .wsay{position:absolute;bottom:88px;left:50%;transform:translateX(calc(-50% + var(--dx,0px)));white-space:nowrap;background:#fff;border:2px solid #ffd84d;color:#3b2a00;font-weight:800;font-size:14px;line-height:1.25;padding:7px 11px;border-radius:14px;box-shadow:0 6px 16px #0002;opacity:0;transition:opacity .25s;pointer-events:none;max-width:min(260px,78vw);white-space:normal;width:max-content;text-align:center}
 .walker .wsay.on{opacity:1}
@@ -235,6 +236,7 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
  .walker.walk .al{animation:wswing .42s ease-in-out infinite}.walker.walk .ar{animation:wswing .42s ease-in-out .21s infinite}@keyframes wswing{0%,100%{transform:rotate(-18deg)}50%{transform:rotate(18deg)}}
  .walker.walk svg .wb{animation:wbob .21s ease-in-out infinite alternate}@keyframes wbob{to{transform:translateY(-3px)}}
  .walker.wave .ar{animation:awave2 .5s ease-in-out 3}@keyframes awave2{50%{transform:rotate(-45deg)}}
+ .walker.run .ll,.walker.run .lr,.walker.run .al,.walker.run .ar{animation-duration:.2s!important}
  .walker.hop svg .wb{animation:whop .5s cubic-bezier(.3,1.6,.5,1)}@keyframes whop{40%{transform:translateY(-18px)}}
 }
 .lvls{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 8px}
@@ -405,7 +407,7 @@ nav.tabs a.on .tib{transform:translateY(-2px) scale(1.12)}
 </style>
 </head>
 <body>
-<button class="walker" id="walker" aria-label="Gəzən şimşək"><span class="wsay" id="wSay"></span><svg viewBox="0 0 128 128" class="bolt m-happy" aria-hidden="true"><g class="wb"><g class="limbs"><g class="leg ll"><path d="M53 99L46 118" stroke="#b45309" stroke-width="6.5" stroke-linecap="round"/><ellipse cx="42" cy="121.5" rx="8.5" ry="4.5" fill="#92400e"/></g><g class="leg lr"><path d="M64 97L71 118" stroke="#b45309" stroke-width="6.5" stroke-linecap="round"/><ellipse cx="75" cy="121.5" rx="8.5" ry="4.5" fill="#92400e"/></g><g class="arm al"><path d="M45 53Q31 55 23 65" stroke="#b45309" stroke-width="6.5" fill="none" stroke-linecap="round"/><circle cx="21" cy="67.5" r="6" fill="#ffd34d" stroke="#d97706" stroke-width="2.5"/></g><g class="arm ar"><path d="M88 60Q100 57 107 47" stroke="#b45309" stroke-width="6.5" fill="none" stroke-linecap="round"/><circle cx="108.5" cy="44.5" r="6" fill="#ffd34d" stroke="#d97706" stroke-width="2.5"/></g></g><path d="M76 6L26 72h32l-10 50 54-70H68z" fill="url(#bg1)" stroke="#d97706" stroke-width="5" stroke-linejoin="round"/><path d="M68 18L42 56" stroke="#fff6c4" stroke-width="5" stroke-linecap="round" opacity=".75"/><circle cx="58" cy="66" r="4.5" fill="#5a3300"/><circle cx="74" cy="66" r="4.5" fill="#5a3300"/><circle cx="59.5" cy="64.5" r="1.5" fill="#fff"/><circle cx="75.5" cy="64.5" r="1.5" fill="#fff"/><path d="M58 76q8 7 16 0" stroke="#5a3300" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="51" cy="74" r="4" fill="#ff7a59" opacity=".45"/><circle cx="81" cy="74" r="4" fill="#ff7a59" opacity=".45"/></g></svg></button>
+<button class="walker" id="walker" aria-label="Gəzən şimşək"><span class="wsay" id="wSay"></span><svg viewBox="0 0 128 128" class="bolt m-happy" aria-hidden="true"><g class="wb"><g class="limbs"><g class="leg ll"><path d="M53 99L46 118" stroke="#b45309" stroke-width="6.5" stroke-linecap="round"/><ellipse cx="42" cy="121.5" rx="8.5" ry="4.5" fill="#92400e"/></g><g class="leg lr"><path d="M64 97L71 118" stroke="#b45309" stroke-width="6.5" stroke-linecap="round"/><ellipse cx="75" cy="121.5" rx="8.5" ry="4.5" fill="#92400e"/></g><g class="arm al"><path d="M45 53Q31 55 23 65" stroke="#b45309" stroke-width="6.5" fill="none" stroke-linecap="round"/><circle cx="21" cy="67.5" r="6" fill="#ffd34d" stroke="#d97706" stroke-width="2.5"/></g><g class="arm ar"><path d="M88 60Q100 57 107 47" stroke="#b45309" stroke-width="6.5" fill="none" stroke-linecap="round"/><g class="acc"><path d="M107 30L113 99" stroke="#a16207" stroke-width="6" stroke-linecap="round"/><path d="M107 30L113 99" stroke="#ffd34d" stroke-width="2.5" stroke-linecap="round"/><circle cx="106.5" cy="25.5" r="7" fill="#f5b800" stroke="#a16207" stroke-width="2.2"/><circle cx="106.5" cy="25.5" r="2.8" fill="#ef4444"/></g><circle cx="108.5" cy="44.5" r="6" fill="#ffd34d" stroke="#d97706" stroke-width="2.5"/></g></g><path d="M76 6L26 72h32l-10 50 54-70H68z" fill="url(#bg1)" stroke="#d97706" stroke-width="5" stroke-linejoin="round"/><path d="M68 18L42 56" stroke="#fff6c4" stroke-width="5" stroke-linecap="round" opacity=".75"/><circle cx="58" cy="66" r="4.5" fill="#5a3300"/><circle cx="74" cy="66" r="4.5" fill="#5a3300"/><circle cx="59.5" cy="64.5" r="1.5" fill="#fff"/><circle cx="75.5" cy="64.5" r="1.5" fill="#fff"/><path d="M58 76q8 7 16 0" stroke="#5a3300" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="51" cy="74" r="4" fill="#ff7a59" opacity=".45"/><circle cx="81" cy="74" r="4" fill="#ff7a59" opacity=".45"/><g class="acc"><g transform="rotate(14 76 -2)"><path d="M61 5L63-12 69-2 76-17 83-2 89-12 91 5Z" fill="#f5b800" stroke="#a16207" stroke-width="2.5" stroke-linejoin="round"/><rect x="61" y="1" width="30" height="4.5" rx="1" fill="#e0a100"/><circle cx="76" cy="-17" r="2.8" fill="#ef4444"/><circle cx="63" cy="-12" r="2.3" fill="#3b82f6"/><circle cx="89" cy="-12" r="2.3" fill="#3b82f6"/></g><g class="shades"><path d="M45 60L50 62M87 59L82 62" stroke="#111" stroke-width="2.5" stroke-linecap="round"/><path d="M50 60H64V63Q64 72 57 72Q50 72 50 63Z" fill="#111"/><path d="M68 60H82V63Q82 72 75 72Q68 72 68 63Z" fill="#111"/><path d="M64 62.5H68" stroke="#111" stroke-width="2.5"/><path d="M53 63l3-2M71 63l3-2" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".8"/></g></g></g></svg></button>
 <div class="install" id="install" hidden>
   <img src="icon-192.png" alt="">
   <div><b>Addım tətbiqini yüklə</b><span>Pulsuz · ana ekrandan bir toxunuşla aç</span></div>
@@ -442,7 +444,7 @@ nav.tabs a.on .tib{transform:translateY(-2px) scale(1.12)}
       <button class="boltbtn" id="boltBtn" aria-label="Şimşəyə toxun"><span class="say" id="boltSay" aria-live="polite"></span>
       <svg class="bigsun bolt" id="bigBolt" viewBox="0 0 128 128" aria-hidden="true">
         <g class="spark" stroke="#ffb703" stroke-width="4" stroke-linecap="round" fill="none"><path d="M14 30l9 4-5 6 9 3"/><path d="M110 22l-8 6 6 4-8 6"/><path d="M112 96l-9-2 3 7-9-1"/><path d="M18 100l8-5 1 7 8-5"/></g>
-        <g class="limbs"><g class="leg ll"><path d="M53 99L46 118" stroke="#b45309" stroke-width="6.5" stroke-linecap="round"/><ellipse cx="42" cy="121.5" rx="8.5" ry="4.5" fill="#92400e"/></g><g class="leg lr"><path d="M64 97L71 118" stroke="#b45309" stroke-width="6.5" stroke-linecap="round"/><ellipse cx="75" cy="121.5" rx="8.5" ry="4.5" fill="#92400e"/></g><g class="arm al"><path d="M45 53Q31 55 23 65" stroke="#b45309" stroke-width="6.5" fill="none" stroke-linecap="round"/><circle cx="21" cy="67.5" r="6" fill="#ffd34d" stroke="#d97706" stroke-width="2.5"/></g><g class="arm ar"><path d="M88 60Q100 57 107 47" stroke="#b45309" stroke-width="6.5" fill="none" stroke-linecap="round"/><circle cx="108.5" cy="44.5" r="6" fill="#ffd34d" stroke="#d97706" stroke-width="2.5"/></g></g>
+        <g class="limbs"><g class="leg ll"><path d="M53 99L46 118" stroke="#b45309" stroke-width="6.5" stroke-linecap="round"/><ellipse cx="42" cy="121.5" rx="8.5" ry="4.5" fill="#92400e"/></g><g class="leg lr"><path d="M64 97L71 118" stroke="#b45309" stroke-width="6.5" stroke-linecap="round"/><ellipse cx="75" cy="121.5" rx="8.5" ry="4.5" fill="#92400e"/></g><g class="arm al"><path d="M45 53Q31 55 23 65" stroke="#b45309" stroke-width="6.5" fill="none" stroke-linecap="round"/><circle cx="21" cy="67.5" r="6" fill="#ffd34d" stroke="#d97706" stroke-width="2.5"/></g><g class="arm ar"><path d="M88 60Q100 57 107 47" stroke="#b45309" stroke-width="6.5" fill="none" stroke-linecap="round"/><g class="acc"><path d="M107 30L113 99" stroke="#a16207" stroke-width="6" stroke-linecap="round"/><path d="M107 30L113 99" stroke="#ffd34d" stroke-width="2.5" stroke-linecap="round"/><circle cx="106.5" cy="25.5" r="7" fill="#f5b800" stroke="#a16207" stroke-width="2.2"/><circle cx="106.5" cy="25.5" r="2.8" fill="#ef4444"/></g><circle cx="108.5" cy="44.5" r="6" fill="#ffd34d" stroke="#d97706" stroke-width="2.5"/></g></g>
         <path class="body" d="M76 6L26 72h32l-10 50 54-70H68z" fill="url(#bg1)" stroke="#d97706" stroke-width="5" stroke-linejoin="round"/>
         <path d="M68 18L42 56" stroke="#fff6c4" stroke-width="5" stroke-linecap="round" opacity=".75"/>
         <g class="face f-happy"><circle cx="58" cy="66" r="4.5" fill="#5a3300"/><circle cx="74" cy="66" r="4.5" fill="#5a3300"/><circle cx="59.5" cy="64.5" r="1.5" fill="#fff"/><circle cx="75.5" cy="64.5" r="1.5" fill="#fff"/><path d="M58 76q8 7 16 0" stroke="#5a3300" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="51" cy="74" r="4" fill="#ff7a59" opacity=".45"/><circle cx="81" cy="74" r="4" fill="#ff7a59" opacity=".45"/></g>
@@ -455,7 +457,7 @@ nav.tabs a.on .tib{transform:translateY(-2px) scale(1.12)}
         <g class="face f-laugh"><path d="M53 66q5-5 10 0M69 66q5-5 10 0" stroke="#5a3300" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M56 73h20q-2 11-10 11t-10-11z" fill="#7a2e00"/><path d="M60 80q6 4 12 0" fill="#ff8a8a"/><circle cx="50" cy="73" r="5" fill="#ff7a59" opacity=".6"/><circle cx="82" cy="73" r="5" fill="#ff7a59" opacity=".6"/></g>
         <g class="face f-grr"><path d="M52 58l10 4M80 58l-10 4" stroke="#4a1d00" stroke-width="4" stroke-linecap="round"/><path d="M54 67h8M70 67h8" stroke="#4a1d00" stroke-width="4" stroke-linecap="round"/><path d="M58 79h16" stroke="#4a1d00" stroke-width="4" stroke-linecap="round"/><path d="M60 77v4M64 77v4M68 77v4M72 77v4" stroke="#4a1d00" stroke-width="1.5"/></g>
         <g class="zz" fill="#9aa5b1" font-weight="900" font-family="sans-serif"><text x="92" y="40" font-size="16">z</text><text x="102" y="26" font-size="12">z</text></g>
-      </svg></button>
+      <g class="acc"><g transform="rotate(14 76 -2)"><path d="M61 5L63-12 69-2 76-17 83-2 89-12 91 5Z" fill="#f5b800" stroke="#a16207" stroke-width="2.5" stroke-linejoin="round"/><rect x="61" y="1" width="30" height="4.5" rx="1" fill="#e0a100"/><circle cx="76" cy="-17" r="2.8" fill="#ef4444"/><circle cx="63" cy="-12" r="2.3" fill="#3b82f6"/><circle cx="89" cy="-12" r="2.3" fill="#3b82f6"/></g><g class="shades"><path d="M45 60L50 62M87 59L82 62" stroke="#111" stroke-width="2.5" stroke-linecap="round"/><path d="M50 60H64V63Q64 72 57 72Q50 72 50 63Z" fill="#111"/><path d="M68 60H82V63Q82 72 75 72Q68 72 68 63Z" fill="#111"/><path d="M64 62.5H68" stroke="#111" stroke-width="2.5"/><path d="M53 63l3-2M71 63l3-2" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".8"/></g></g></svg></button>
       <div><div class="big" id="streak">0</div><div class="sub">günlük seriya</div><div class="hint" id="best"></div></div>
     </div>
     <div class="week" id="week"></div>
@@ -720,26 +722,46 @@ $('boltBtn').onclick=boltTap;
 /* ---------- gəzən şimşək: arabir ekranda gəzir ---------- */
 const WALK_TALK={lazy:['Bu gün hələ dərs yoxdur… 👀','Gəl bir dərs edək? Cəmi 3 dəqiqə!','Mən gəzirəm, sən isə dərsə başla 😉','Şimşəyin sönməsin! ⚡'],
   ok:['Salam! Mən gəzintidəyəm ⚡','Əla gedirsən! 💪','Bir dərs də? Enerjim artır!','Hi-hi, məni tutmağa çalış! 😆','Sözləri təkrarlamağı unutma!'],
-  tap:['Ay! Qıdıqlanıram! 😆','Tutdun məni! ⚡','Hop! 🦘','Bu gün də öyrənirik!','Sən əlasan! 💛']};
+  tap:['Ay! Qıdıqlanıram! 😆','Tutdun məni! ⚡','Hop! 🦘','Bu gün də öyrənirik!','Sən əlasan! 💛','Bir dəqiqə dincəlim… 😮‍💨'],
+  prem:['Mən VIP şimşəyəm 😎','Tac yaraşır, eləmi? 👑','Premium enerji! ⚡⚡','Qızıl əsa ilə gəzirəm 🪄']};
 let WK={t:0,busy:false,anim:null};
 const roamOn=()=>typeof S!=='undefined'&&S&&S.roam!==false&&!matchMedia('(prefers-reduced-motion: reduce)').matches;
 function wSay(t,ms=2200){const b=$('wSay');b.textContent=t;b.style.setProperty('--dx','0px');const r=b.getBoundingClientRect(),dx=r.right>innerWidth-10?innerWidth-10-r.right:r.left<10?10-r.left:0;b.style.setProperty('--dx',dx+'px');b.classList.add('on');clearTimeout(b._t);b._t=setTimeout(()=>b.classList.remove('on'),ms)}
 function walkSoon(ms){clearTimeout(WK.t);if(!roamOn())return;WK.t=setTimeout(walkGo,ms==null?60000+Math.random()*60000:ms)}
 function walkBlocked(){const v=location.hash.slice(1)||'home';return document.hidden||['lesson','quiz','welcome','premium'].includes(v)||['sheet','strike','cel'].some(i=>{const e=$(i);return e&&e.classList.contains('on')})||(window.matchMedia&&matchMedia('(min-width:1000px)').matches&&false)}
+function wkSet(x,y){$('walker').style.transform=`translate(${x}px,${y}px)`;WK.pos={x,y}}
+function wkNow(){const m=new DOMMatrix(getComputedStyle($('walker')).transform);return {x:m.m41,y:m.m42}}
+function wkMove(x,y,speed){const w=$('walker'),p=WK.pos||{x:0,y:0},d=Math.hypot(x-p.x,y-p.y);if(d<2)return Promise.resolve(true);
+  if(Math.abs(x-p.x)>6)w.classList.toggle('left',x<p.x);
+  return new Promise(r=>{const a=w.animate([{transform:`translate(${p.x}px,${p.y}px)`},{transform:`translate(${x}px,${y}px)`}],{duration:d/speed*1000,easing:'linear'});WK.anim=a;
+    a.onfinish=()=>{WK.anim=null;wkSet(x,y);r(true)};a.oncancel=()=>{WK.anim=null;r(false)}})}
+const wkBox=()=>{const sz=84,W=innerWidth,H=innerHeight;return {x0:6,x1:W-sz-6,y0:110,y1:Math.max(130,H-sz-110)}};
+const rnd=(a,b)=>a+Math.random()*(b-a);
+const wPause=ms=>new Promise(r=>setTimeout(r,ms));
+async function wkReact(){const w=$('walker'),k=WK.intr;WK.intr=null;
+  if(k==='dodge'){const B=wkBox(),p=WK.pos,dx=(Math.random()<.5?-1:1)*rnd(110,160),dy=rnd(-90,90);let tx=Math.min(B.x1,Math.max(B.x0,p.x+dx)),ty=Math.min(B.y1,Math.max(B.y0,p.y+dy));
+    if(Math.abs(tx-p.x)<60)tx=Math.min(B.x1,Math.max(B.x0,p.x-dx));
+    wSay(pick(['Tuta bilməzsən! 😜','Vıjjj! ⚡','Hop, qaçdım! 😆','Ha-ha, buradayam!']),1500);w.classList.add('walk','run');await wkMove(tx,ty,420);w.classList.remove('walk','run');await wPause(500)}
+  else{w.classList.remove('walk');w.classList.add('wave');await wPause(rnd(1600,2600));w.classList.remove('wave')}}
 async function walkGo(){if(WK.busy||!roamOn())return walkSoon();if(walkBlocked())return walkSoon(15000);
-  WK.busy=true;const w=$('walker'),W=innerWidth,sz=84,fromLeft=Math.random()<.5,x0=fromLeft?-sz:W,x1=fromLeft?W:-sz,mid=W*(.3+Math.random()*.4)-sz/2;
-  const xp=S.days[today()]||0,style=Math.random();
-  w.classList.toggle('left',!fromLeft);w.classList.add('on','walk');w.style.transform=`translateX(${x0}px)`;
-  const go=(a,b)=>new Promise(r=>{const d=Math.abs(b-a)/W*5200;WK.anim=w.animate([{transform:`translateX(${a}px)`},{transform:`translateX(${b}px)`}],{duration:d,easing:'linear',fill:'forwards'});WK.anim.onfinish=r;WK.anim.oncancel=r});
-  const pause=ms=>new Promise(r=>setTimeout(r,ms));
-  if(style<.35){await go(x0,x1)}
-  else{await go(x0,mid);w.classList.remove('walk');w.classList.add('wave');wSay(pick(xp?WALK_TALK.ok:WALK_TALK.lazy));if(Math.random()<.4)play('boing');await pause(2300);w.classList.remove('wave');
-    const back=style>.8;if(back)w.classList.toggle('left');w.classList.add('walk');await go(mid,back?x0:x1)}
-  w.classList.remove('on','walk','wave','hop');WK.busy=false;walkSoon()}
-$('walker').onclick=e=>{e.stopPropagation();const w=$('walker'),xp=S.days[today()]||0;try{navigator.vibrate&&navigator.vibrate(15)}catch(e){}
+  WK.busy=true;premLook();const w=$('walker'),B=wkBox(),fromLeft=Math.random()<.5,xp=S.days[today()]||0;
+  wkSet(fromLeft?-90:innerWidth+6,rnd(B.y0,B.y1));w.classList.add('on');
+  const pts=[];const n=2+Math.floor(Math.random()*3);for(let i=0;i<n;i++)pts.push({x:rnd(B.x0,B.x1),y:rnd(B.y0,B.y1)});
+  pts.push({x:Math.random()<.5?-90:innerWidth+6,y:rnd(B.y0,B.y1)});const talkAt=Math.floor(Math.random()*n);
+  for(let i=0;i<pts.length;i++){let ok=false;
+    while(!ok){w.classList.add('walk');ok=await wkMove(pts[i].x,pts[i].y,85);w.classList.remove('walk');if(!WK.busy)return;if(!ok&&WK.intr)await wkReact();else if(!ok)break}
+    if(i===talkAt){w.classList.add('wave');wSay(pick(isPrem()&&Math.random()<.4?WALK_TALK.prem:xp?WALK_TALK.ok:WALK_TALK.lazy));if(Math.random()<.4)play('boing');await wPause(2300);w.classList.remove('wave')}
+    else if(i<pts.length-1)await wPause(rnd(300,1100));
+    while(WK.intr)await wkReact()}
+  w.classList.remove('on','walk','wave','hop','run');WK.busy=false;walkSoon()}
+$('walker').onclick=e=>{e.stopPropagation();const w=$('walker'),xp=S.days[today()]||0;if(!WK.busy)return;try{navigator.vibrate&&navigator.vibrate(15)}catch(e){}
   play(xp?'giggle':'boing');w.classList.remove('hop');void w.offsetWidth;w.classList.add('hop');setTimeout(()=>w.classList.remove('hop'),550);
-  if(!xp&&Math.random()<.5){wSay('Gəl dərsə! Kursa aparıram ⚡',1800);setTimeout(()=>{if(location.hash!=='#lesson')location.hash='course'},900)}else wSay(pick(WALK_TALK.tap),1600)};
+  if(WK.intr)return;const dodge=Math.random()<.4;
+  if(!dodge){if(!xp&&Math.random()<.25){wSay('Gəl dərsə! Kursa aparıram ⚡',1800);setTimeout(()=>{if(location.hash!=='#lesson')location.hash='course'},900)}else wSay(pick(isPrem()&&Math.random()<.35?WALK_TALK.prem:WALK_TALK.tap),1800)}
+  if(WK.anim){WK.intr=dodge?'dodge':'stop';const p=wkNow();WK.anim.cancel();wkSet(p.x,p.y)}
+  else WK.intr=dodge?'dodge':'stop'};
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&WK.anim){WK.anim.finish()}});
+function premLook(){const P=typeof isPrem==='function'&&isPrem();['boltBtn','walker'].forEach(id=>{const e=$(id);if(!e)return;e.classList.toggle('prem',P);const v=e.querySelector('svg.bolt');if(v)v.setAttribute('viewBox',P?'-10 -20 148 148':'0 0 128 128')})}
 window.walkGo=walkGo;setTimeout(()=>walkSoon(25000+Math.random()*15000),0);
 
 
@@ -1181,7 +1203,7 @@ function finishLesson(){const a=LS.a,circ=LS.part!=null,part=LS.part,acc=LS.scor
 $('lQuit').onclick=()=>sheet('Dərsdən çıxırsan?','<p>Bu dərsdəki proqresin yadda qalmayacaq. Qazandığın XP isə səndə qalır.</p>','<button class="btn" id="qStay">Davam et</button><button class="btn ghost" id="qLeave">Çıx</button>')||($('qStay').onclick=closeSheet,$('qLeave').onclick=()=>{closeSheet();LS=null;location.hash='course'});
 
 /* ---------- header, profile studio, premium ---------- */
-function drawHeader(){$('hdAv').innerHTML=avatar(S.me?S.me.name:'?',S.me?S.me.color:0,S.look.avatar||S.look.frame?S.look:{avatar:'cat',frame:S.look.frame})+(isPrem()?'<svg class="cr" viewBox="0 0 24 24"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z" fill="#f5b800" stroke="#c98a00" stroke-width="1.2" stroke-linejoin="round"/></svg>':'');
+function drawHeader(){premLook();$('hdAv').innerHTML=avatar(S.me?S.me.name:'?',S.me?S.me.color:0,S.look.avatar||S.look.frame?S.look:{avatar:'cat',frame:S.look.frame})+(isPrem()?'<svg class="cr" viewBox="0 0 24 24"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z" fill="#f5b800" stroke="#c98a00" stroke-width="1.2" stroke-linejoin="round"/></svg>':'');
   const pr=$('promo');pr.hidden=isPrem();if(!isPrem())pr.innerHTML=`<svg viewBox="0 0 24 24"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z" fill="#f5b800" stroke="#c98a00" stroke-width="1.2" stroke-linejoin="round"/></svg><span><b>Addım Premium</b> — limitsiz dərs, +50% XP, xüsusi avatarlar və liqada parlayan adın</span>`}
 function lockedTap(){play('down');location.hash='premium'}
 const RATES=[['Yavaş',0.8],['Normal',1],['Sürətli',1.15]];
