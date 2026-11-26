@@ -4,7 +4,7 @@
 import fs from 'node:fs'; import path from 'node:path'; import crypto from 'node:crypto'; import vm from 'node:vm';
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const ctx = { window: {} }; vm.createContext(ctx);
-for (const f of ['course.js', 'course-extra.js', 'a1-more.js', 'a1-examples.js', 'examples-more.js', 'more-lib.js', 'more-a2.js', 'more-a2b.js', 'practice.js']) vm.runInContext(fs.readFileSync(path.join(root, f), 'utf8'), ctx);
+for (const f of ['course.js', 'course-extra.js', 'a1-more.js', 'a1-examples.js', 'examples-more.js', 'more-lib.js', 'more-a2.js', 'more-a2b.js', 'more-b1.js', 'more-b1b.js', 'more-b2.js', 'more-b2b.js', 'practice.js']) vm.runInContext(fs.readFileSync(path.join(root, f), 'utf8'), ctx);
 const texts = new Set();
 for (const l of ctx.window.COURSE) for (const u of l.units) for (const x of (u.lessons || [])) for (const it of x.items) {
   if (it.t === 'learn') it.ex.forEach(r => texts.add(r[0].replace(/ \/ /g, ', ')));

@@ -125,7 +125,7 @@ with sync_playwright() as p:
     check('tamamlanmış dairənin rəngi dəyişir (qızılı)', m.locator('#units .node.gold[data-id="a1-u1-l1"]').count() == 1 and m.locator('#units .node[data-id="a1-u1-l2"].lock').count() == 0)
 
     lc = m.evaluate("(()=>{const c=window.COURSE;return c.map(l=>l.units.reduce((a,u)=>a+u.lessons.length,0))})()")
-    check('dərs sayları: A1 və A2 136, B1 və B2 48', lc == [136, 136, 48, 48], str(lc))
+    check('dərs sayları: hər səviyyə 136', lc == [136, 136, 136, 136], str(lc))
     # Səhv cavab → «Səhvlərim»; bölmə təkrarı
     m.evaluate("location.hash='course'"); m.wait_for_timeout(200); m.click('.lvl[data-l="a1"]'); m.wait_for_timeout(200)
     m.evaluate("COURSE[0].units[0].lessons.filter(l=>!l.review).forEach(l=>S.course[l.id]=90);save();renderCourse()")
@@ -134,13 +134,13 @@ with sync_playwright() as p:
     wrong = m.evaluate("(()=>{const it=LS.items.find(i=>i.t==='mc');return it?it.src:null})()")
     m.evaluate("(()=>{const k=LS.items.findIndex(i=>i.t==='mc');LS.i=k;renderStep()})()"); m.wait_for_timeout(150)
     right = m.evaluate("LS.items[LS.i].o[0]")
-    m.locator('#lBox .opt', has_not_text=right).first.click(); m.wait_for_timeout(200)
+    m.evaluate("(r)=>[...document.querySelectorAll('#lBox .opt')].find(b=>b.textContent.trim()!==r).click()", right); m.wait_for_timeout(200)
     check('səhv cavab «Səhvlərim» siyahısına düşür', m.evaluate(f"S.mist.includes({wrong!r})"))
     m.evaluate("LS=null;location.hash='practice'"); m.wait_for_timeout(300)
     check('Məşq səhifəsində «Səhvlərin üzərində iş» kartı', m.locator('#mistGo').is_visible())
     m.click('#mistGo'); m.wait_for_timeout(300)
     m.evaluate("(()=>{const k=LS.items.findIndex(i=>i.src===%r);LS.i=k;renderStep()})()" % wrong); m.wait_for_timeout(150)
-    m.locator('#lBox .opt', has_text=right).first.click(); m.wait_for_timeout(200)
+    m.evaluate("(r)=>[...document.querySelectorAll('#lBox .opt')].find(b=>b.textContent.trim()===r).click()", right); m.wait_for_timeout(200)
     check('düzgün cavab verəndə səhv siyahıdan silinir', not m.evaluate(f"S.mist.includes({wrong!r})"))
     m.evaluate("LS=null;location.hash='practice'"); m.wait_for_timeout(200)
 
