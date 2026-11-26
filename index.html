@@ -170,6 +170,10 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 .ben{display:grid;gap:10px;margin:16px 0 0;padding:0;list-style:none}
 .ben li{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px}
 .ben li svg{width:26px;height:26px;flex:none}.ben b{display:block}.ben span{color:var(--mut);font-size:14px}
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 4px}.plan{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:16px 8px 12px;border-radius:18px;border:2px solid #f3d49a;background:#fffdf6;cursor:pointer;font:inherit;color:var(--ink);transition:transform .15s,box-shadow .15s}
+.plan.on{border-color:#f59e0b;background:#fff;box-shadow:0 0 0 3px #fde68a,0 8px 20px #f59e0b33;transform:translateY(-2px)}.plan b{font-size:16px}.plan .pp{font-size:24px;font-weight:900;line-height:1.1}.plan .pp small{font-size:14px;color:var(--mut);font-weight:800}.plan .pn{font-size:12.5px;color:var(--mut);font-weight:700}
+.ptag{position:absolute;top:-11px;left:50%;transform:translateX(-50%);white-space:nowrap;background:#16956a;color:#fff;font-size:12px;font-weight:900;padding:3px 9px;border-radius:999px}
+.pwarn{font-size:13px;color:#92400e;margin:8px 0 0;font-weight:700}
 .pay{margin-top:16px}.pay ol{padding-left:20px}.pay li{margin:8px 0}
 .cardno{font-size:22px;font-weight:900;letter-spacing:.06em;white-space:nowrap}
 .promo{display:flex;align-items:center;gap:12px;background:linear-gradient(120deg,#fff1c1,#ffe0d0);border:1px solid #f3d49a;border-radius:18px;padding:12px 14px;margin-top:12px;text-decoration:none;color:var(--ink)}
@@ -1281,7 +1285,7 @@ $('lQuit').onclick=()=>sheet('Dərsdən çıxırsan?','<p>Bu dərsdəki proqresi
 function premAd(n){if(isPrem())return;if(LS){S.adDue=1;save();return}const v=location.hash.slice(1);if(!['lesson','home','course'].includes(v))return;S.adDue=0;save();
   if(['sheet','cel','strike'].some(i=>$(i)&&$(i).classList.contains('on'))){if(n<15)setTimeout(()=>premAd(n+1),1000);return}
   track('ad','show');const L=[['∞','Limitsiz şimşəkcik','Gözləmədən istədiyin qədər dərs keç'],['+50%','Daha çox XP','Gündə ilk 4 dərsdə +50% XP'],['👑','VIP görünüş','Tac, rəngli ad, xüsusi avatarlar'],['😎','VIP şimşək','Tac, qara eynək və qızıl əsa']];
-  sheet('Addım Premium',`<div class="adtag">Reklam</div><div class="adl">${L.map(x=>`<div><i>${x[0]}</i><span><b>${esc(x[1])}</b><small>${esc(x[2])}</small></span></div>`).join('')}</div><p class="adp">Cəmi <b>${esc(CFG.price||'5,9 AZN')}</b> / ${esc(CFG.period||'ay')}</p>`,
+  sheet('Addım Premium',`<div class="adtag">Reklam</div><div class="adl">${L.map(x=>`<div><i>${x[0]}</i><span><b>${esc(x[1])}</b><small>${esc(x[2])}</small></span></div>`).join('')}</div><p class="adp"><b>${esc(CFG.price||'5,9 AZN')}</b>/${esc(CFG.period||'ay')} və ya <b>${esc(CFG.priceYear||'49,9 AZN')}</b>/il</p>`,
    '<a class="btn sun" href="#premium" id="adGo">Premium-a bax 👑</a><button class="btn ghost" id="adNo">Sonra</button>');
   $('adGo').onclick=()=>{track('ad','click');closeSheet()};$('adNo').onclick=closeSheet}
 /* ---------- header, profile studio, premium ---------- */
@@ -1333,15 +1337,21 @@ function renderProfile(){drawVoice();drawNotif();drawRoam();const P=isPrem(),L=S
 }
 async function fetchPrem(){try{const r=await fetch('/api/premium?id='+encodeURIComponent(S.uid));if(!r.ok)return;const d=await r.json();S.prem={until:d.until||0};save();drawHeader();renderNext()}catch(e){}}
 const BEN=[['Limitsiz şimşəkcik ∞',`Pulsuzda ${CFG.energyRefillHours||12} saatda ${CFG.energyMax||20} şimşəkcik (təxminən 3–4 dərs), Premium-da istədiyin qədər dərs keç, səhv etməkdən qorxma`,'#16956a'],['+50% XP',`Gündə ilk ${CFG.premiumXpLessons||4} dərsdə +50% XP — liqada daha sürətli qalx`,'#f5b800'],['6 xüsusi avatar','Şir, panda, robot, təkbuynuz, əjdaha, astronavt','#7b56d6'],['Adın fərqlənsin','Rəngli ad (qızıl, göy qurşağı…), kursiv, BÖYÜK, neon forma','#2f7de1'],['Liqada parlayan çərçivə və tac','Qızıl parıltı, göy qurşağı və alov çərçivələri','#ef5d5d'],['VIP şimşək','Şimşəyin başında tac, gözündə qara eynək, əlində qızıl əsa','#c2366f']];
+let PLAN='y';
+const azn=v=>String(v).replace(/[^\d,.]/g,'').replace(',','.')*1,fmtAzn=n=>(Math.round(n*100)/100).toFixed(2).replace(/\.?0+$/,'').replace('.',',');
+function PLANS(){const m=CFG.price||'5,9 AZN',y=CFG.priceYear||'49,9 AZN',mv=azn(m),yv=azn(y),save=mv&&yv?Math.round((1-yv/(mv*12))*100):0;
+  return [{k:'m',name:'Aylıq',price:m,per:CFG.period||'ay',note:'İstədiyin vaxt dayandır',tag:''},
+          {k:'y',name:'İllik',price:y,per:'il',note:`Ayda cəmi ~${fmtAzn(yv/12)} AZN`,tag:save>0?`${save}% qənaət`:'Sərfəli'}]}
 function renderPremium(){const b=$('prBox'),P=isPrem(),card=(CFG.card||'').trim();track('premium_view');
   const contact=[CFG.whatsapp?`<a href="https://wa.me/${encodeURIComponent(CFG.whatsapp)}" target="_blank" rel="noopener">WhatsApp</a>`:'',CFG.instagram?`<a href="https://instagram.com/${encodeURIComponent(CFG.instagram)}" target="_blank" rel="noopener">Instagram</a>`:''].filter(Boolean).join(' və ya ');
-  b.innerHTML=`<div class="ph"><svg width="64" height="64" viewBox="0 0 24 24"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z" fill="#f5b800" stroke="#c98a00" stroke-width="1.2" stroke-linejoin="round"/></svg><h1>Addım Premium</h1><div class="price">${esc(CFG.price||'5,9 AZN')} <small>/ ${esc(CFG.period||'ay')}</small></div>${P?`<p style="margin:10px 0 0;font-weight:800">Premium aktivdir — ${new Date(S.prem.until).toLocaleDateString('az-AZ')} tarixinədək. Təşəkkürlər!</p>`:''}</div>
+  b.innerHTML=`<div class="ph"><svg width="64" height="64" viewBox="0 0 24 24"><path d="M3 8l4.5 4L12 5l4.5 7L21 8l-2 11H5z" fill="#f5b800" stroke="#c98a00" stroke-width="1.2" stroke-linejoin="round"/></svg><h1>Addım Premium</h1><div class="plans">${PLANS().map(p=>`<button class="plan ${PLAN===p.k?'on':''}" data-k="${p.k}" aria-pressed="${PLAN===p.k}">${p.tag?`<span class="ptag">${esc(p.tag)}</span>`:''}<b>${esc(p.name)}</b><span class="pp">${esc(p.price)}<small>/${esc(p.per)}</small></span><span class="pn">${esc(p.note)}</span></button>`).join('')}</div><p class="pwarn">Qiymətlər sonradan qalxa bilər. İndi qoşulanlar abunəni vaxtında uzatdıqca bu qiymətlə davam edir.</p>${P?`<p style="margin:10px 0 0;font-weight:800">Premium aktivdir — ${new Date(S.prem.until).toLocaleDateString('az-AZ')} tarixinədək. Təşəkkürlər!</p>`:''}</div>
   <ul class="ben">${BEN.map(x=>`<li><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="${x[2]}"/><path d="M7 12.5l3.2 3.2L17 9" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>${esc(x[0])}</b><span>${esc(x[1])}</span></span></li>`).join('')}</ul>
   <div class="card pay"><h2 style="margin:0">${P?'Müddəti uzat':'Necə qoşulmaq olar?'}</h2>
-    <ol><li>${card?`<b>${esc(CFG.price||'5,9 AZN')}</b> məbləğini bu karta köçür:<div class="cardno" id="cardNo">${esc(card)}</div>${CFG.cardHolder?`<span class="lim">${esc(CFG.cardHolder)}</span>`:''}<button class="w" id="cpCard" style="font-weight:800">Nömrəni kopyala</button>`:'Ödəniş məlumatı tezliklə əlavə olunacaq.'}</li>
+    <ol><li>${card?`<b>${esc(PLANS().find(p=>p.k===PLAN).price)}</b> (${esc(PLANS().find(p=>p.k===PLAN).name.toLocaleLowerCase('az'))} plan) məbləğini bu karta köçür:<div class="cardno" id="cardNo">${esc(card)}</div>${CFG.cardHolder?`<span class="lim">${esc(CFG.cardHolder)}</span>`:''}<button class="w" id="cpCard" style="font-weight:800">Nömrəni kopyala</button>`:'Ödəniş məlumatı tezliklə əlavə olunacaq.'}</li>
     <li>Ödəniş qəbzinin şəklini ${contact||'bizə'} göndər.</li>
-    <li>Sənə göndərilən aktivasiya kodunu aşağıya yaz — Premium dərhal 30 gün açılacaq.</li></ol>
+    <li>Sənə göndərilən aktivasiya kodunu aşağıya yaz — Premium dərhal açılacaq (aylıq plan — 30 gün, illik — 365 gün).</li></ol>
     <div class="row"><input type="text" id="prCode" placeholder="ADDIM-XXXX-XXXX" autocomplete="off" autocapitalize="characters" style="flex:1 1 200px;text-transform:uppercase"><button class="btn sun" id="prGo" style="flex:0 0 auto;width:auto;margin:0">Aktivləşdir</button></div><p class="note" id="prMsg"></p></div>`;
+  b.querySelectorAll('.plan').forEach(x=>x.onclick=()=>{PLAN=x.dataset.k;renderPremium()});
   if($('cpCard'))$('cpCard').onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(card.replace(/\s/g,'')).then(()=>toast('Kart nömrəsi kopyalandı')).catch(()=>toast('Kopyalamaq alınmadı — əl ilə yaz'))};
   $('prGo').onclick=async()=>{const code=$('prCode').value.trim().toUpperCase();if(!/^ADDIM-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code)){$('prMsg').textContent='Kod ADDIM-XXXX-XXXX formasında olmalıdır.';return}
     $('prGo').disabled=true;$('prMsg').textContent='Yoxlanılır…';

@@ -2,6 +2,7 @@
 window.ADDIM_CONFIG = {
   price: '5,9 AZN',          // Premium qiyməti
   period: 'ay',              // ödəniş dövrü
+  priceYear: '49,9 AZN',     // illik plan qiyməti (qənaət faizi avtomatik hesablanır)
   // Şimşəkciklər (enerji) — pulsuz istifadəçi üçün. Premium-da limitsizdir.
   energyMax: 20,             // tam dolu olanda neçə şimşəkcik
   energyRefillHours: 12,     // ilk xərcləmədən neçə saat sonra yenidən dolur
