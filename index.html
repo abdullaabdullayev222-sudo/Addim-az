@@ -545,6 +545,7 @@ nav.tabs a.on .tib{transform:translateY(-2px) scale(1.12)}
 <script src="course-extra.js"></script>
 <script src="a1-more.js"></script>
 <script src="a1-examples.js"></script>
+<script src="examples-more.js"></script>
 <script src="practice.js"></script>
 <script src="avatars.js"></script>
 <script src="config.js"></script>
@@ -977,15 +978,15 @@ function renderCourse(){
   $('units').innerHTML=lv.units.map((u,ui)=>{
     const head=`<div class="uhead" style="background:${u.lessons?lv.color:'#9aa8b6'}"><small>${esc(lv.name)} · Bölmə ${ui+1}</small><b>${esc(u.title)}</b><span>${esc(u.grammar)}</span></div>`;
     if(!u.lessons)return `<div class="unit">${head}<div class="soon">Tezliklə əlavə olunacaq</div></div>`;
-    const nodes=u.lessons.map((x,i)=>{const d=isDone(x.id),op=unlocked(x.id),cur=nx&&nx.x.id===x.id,circ=lv.id==='a1'&&!x.review,pd=circ?partsDone(x.id):0,gold=circ&&pd>=5;
+    const nodes=u.lessons.map((x,i)=>{const d=isDone(x.id),op=unlocked(x.id),cur=nx&&nx.x.id===x.id,circ=!x.review,pd=circ?partsDone(x.id):0,gold=circ&&pd>=5;
       return `<button class="node ${op?'':'lock'} ${cur?'cur':''} ${gold?'gold':''} ${circ?'circ':''}" data-id="${x.id}" style="transform:translateX(${off[i%off.length]}px)" ${op?'':'disabled'}>${circ&&op?ringSVG(pd,lv.color,gold):''}<span class="c" style="background:${gold?'linear-gradient(160deg,#ffe27a,#f5a800)':d?'#fff4d6':cur?lv.color:'#fff'};border:3px solid ${gold?'#e0a100':d?'#ffd66b':lv.color}">${d?'<svg viewBox="0 0 64 64"><use href="#boltI"/></svg>':op?(x.review?'<svg viewBox="0 0 24 24" fill="none" stroke="'+(cur?'#fff':lv.color)+'" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg>':'<svg viewBox="0 0 24 24"><use href="#starI"/></svg>'):LOCK}</span><span class="t">${esc(x.title)}${x.review?'<small class="hint" style="display:block">qarışıq tapşırıqlar</small>':''}</span>${cur?`<span class="badge">${circ?'Dərs '+(pd+1)+' / 4':'Başla'}</span>`:circ&&op?`<span class="hint">${gold?'🏆 tamamlandı':pd>=4?'★ praktika qalıb':pd+' / 4 dərs'}</span>`:d?`<span class="hint">${S.course[x.id]}% düzgün</span>`:''}</button>`}).join('');
     return `<div class="unit">${head}<div class="path">${nodes}</div></div>`}).join('');
   $('units').querySelectorAll('.node:not(.lock)').forEach(b=>b.onclick=()=>b.classList.contains('circ')?openCircle(b.dataset.id):startLesson(b.dataset.id));
 }
 
-/* ---------- Dairələr (A1): hər dairə = 4 dərs + ümumi praktika ---------- */
+/* ---------- Dairələr (bütün səviyyələr): hər dairə = 4 dərs + ümumi praktika ---------- */
 const PART_NAMES=['Öyrən','Məşq et','Dinlə','Danış və yaz','Ümumi praktika'];
-const isCircle=a=>a&&a.lv&&a.lv.id==='a1'&&!a.x.review;
+const isCircle=a=>a&&a.lv&&!a.x.review;
 const partsDone=id=>{S.parts=S.parts||{};return S.parts[id]!=null?S.parts[id]:(S.course[id]!=null?4:0)};window.partsDone=partsDone;
 function circlePool(x){
   const learns=x.items.filter(i=>i.t==='learn'),mcs=x.items.filter(i=>i.t==='mc');
@@ -994,7 +995,7 @@ function circlePool(x){
   const addS=(en,az)=>{en=String(en).trim();if(!okS(en)||seen.has(en))return;seen.add(en);(en.split(' ').length<=2&&!/[.?!]$/.test(en)?vocab:sents).push({en,az:az||''})};
   learns.forEach(l=>l.ex.forEach(e=>addS(e[0],e[1])));
   x.items.forEach(i=>{if(i.t==='order'||i.t==='speak')addS([].concat(i.en)[0],i.az);if(i.t==='listen'||i.t==='dict')addS(i.en,'')});
-  ((window.A1_EX||{})[x.id]||[]).forEach(e=>addS(e[0],e[1]));
+  ((window.A1_EX||{})[x.id]||(window.EX_MORE||{})[x.id]||[]).forEach(e=>addS(e[0],e[1]));
   return {learns,mcs,vocab,sents}}
 function circleItems(x,part){const P=circlePool(x),S2=P.sents,V=P.vocab,az=S2.filter(s=>s.az);
   const at=(arr,i)=>arr.length?arr[((i%arr.length)+arr.length)%arr.length]:null;
