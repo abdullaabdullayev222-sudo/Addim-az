@@ -1017,11 +1017,13 @@ function circleItems(x,part){const P=circlePool(x),S2=P.sents,V=P.vocab,az=S2.fi
   const vAz=w=>ok2(w&&w.az&&{t:'mc',q:'«'+w.az+'» ingiliscə necədir?',o:[w.en].concat(others(V.filter(o=>o===w||o.az!==w.az),w,3,o=>o.en)),e:w.en+' — '+w.az});
   const vEn=w=>ok2(w&&w.az&&{t:'mc',q:'«'+w.en+'» nə deməkdir?',o:[w.az].concat(others(V,w,3,o=>o.az)),e:w.en+' — '+w.az});
   const vListen=w=>ok2(w&&V.length>=3&&{t:'listen',en:w.en,o:[w.en].concat(others(V,w,2,o=>o.en))});
-  const M=P.mcs,n=S2.length;let it=[];
-  if(part===0)it=[...P.learns,at(M,0),at(M,1),vAz(at(V,0)),vAz(at(V,1)),listenS(at(S2,0)),orderS(at(az,0)),speakS(at(az,0))];
-  if(part===1)it=[vEn(at(V,2)),vEn(at(V,3)),at(M,2),at(M,3),trAz(at(az,1)),orderS(at(az,2)),listenS(at(S2,3)),orderS(at(az,3)),speakS(at(az,2))];
-  if(part===2)it=[vListen(at(V,4)),vListen(at(V,5)),listenS(at(S2,n-1)),listenS(at(S2,n-2)),dictS(at(S2,4)),dictS(at(S2,5)),at(M,4),trEn(at(az,4))];
-  if(part===3)it=[orderS(at(az,5)),orderS(at(az,6)),trEn(at(az,7)),dictS(at(S2,n-3)),speakS(at(az,n-1)),speakS(at(az,5)),at(M,0),vAz(at(V,4))];
+  const M=P.mcs,used=new Set();let it=[],ca=part*3,cs=part*3+1;
+  const pick=(arr,st)=>{if(!arr.length)return null;for(let j=0;j<arr.length;j++){const s=arr[(st+j)%arr.length];if(!used.has(s.en)){used.add(s.en);return s}}return arr[st%arr.length]};
+  const A=()=>pick(az,ca++),Sx=()=>pick(S2,cs++);
+  if(part===0)it=[...P.learns,at(M,0),at(M,1),vAz(at(V,0)),vAz(at(V,1)),listenS(Sx()),orderS(A()),speakS(A())];
+  if(part===1)it=[vEn(at(V,2)),vEn(at(V,3)),at(M,2),at(M,3),trAz(A()),orderS(A()),listenS(Sx()),orderS(A()),speakS(A())];
+  if(part===2)it=[vListen(at(V,4)),vListen(at(V,5)),listenS(Sx()),listenS(Sx()),dictS(Sx()),dictS(Sx()),at(M,4),trEn(A())];
+  if(part===3)it=[orderS(A()),orderS(A()),trEn(A()),dictS(Sx()),speakS(A()),speakS(A()),at(M,5),vAz(at(V,5))];
   if(part===4){const all=[0,1,2,3].flatMap(p=>circleItems(x,p)).filter(i=>i.t!=='learn');const pick=[],sn=new Set();for(const i of shuffle(all)){const k=i.t+(i.q||i.en);if(sn.has(k))continue;sn.add(k);pick.push(i);if(pick.length>=12)break}return pick}
   const out=[],sn=new Set();for(const i of it){if(!i)continue;const k=i.t+(i.q||i.title||[].concat(i.en)[0]);if(sn.has(k))continue;sn.add(k);out.push({...i,src:i.t==='learn'?undefined:x.id+'@'+part+'#'+out.length})}
   return out}
