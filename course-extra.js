@@ -248,7 +248,7 @@ window.COURSE_EXTRA = {
     {t:'mc', q:'«Have you got anything for a cold?» harada deyilir?', o:['Aptekdə','Restoranda','Bankda','Hava limanında'], e:'Cold — soyuqdəymə.'},
     {t:'listen', en:'Take one tablet twice a day after meals.', o:['Take one tablet twice a day after meals.','Take two tablets once a day before meals.','Take one tablet three times a day.']},
     {t:'order', az:'Həkimə getməlisən.', en:['You should see a doctor.','You should go to a doctor.','You should go to the doctor.'], extra:['must','to']},
-    {t:'dict', en:'Have you got anything for a sore throat?', extra:['something','have']},
+    {t:'dict', en:'Have you got anything for a sore throat?', extra:['something','has']},
     {t:'speak', en:'How often should I take this medicine?', az:'Bu dərmanı nə qədər tez-tez qəbul etməliyəm?'}
   ]}],
 'a2-u6':[

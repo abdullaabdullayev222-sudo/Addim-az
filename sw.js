@@ -1,8 +1,8 @@
 // Addım service worker: tətbiqi oflayn işlədir
-const CACHE = 'addim-v25';
+const CACHE = 'addim-v26';
 const AUDIO = 'addim-audio-v2';
 const INFLIGHT = new Map();
-const FILES = ['./', './index.html', './course.js', './course-extra.js', './a1-more.js', './a1-examples.js', './examples-more.js', './practice.js', './avatars.js', './config.js', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png'];
+const FILES = ['./', './index.html', './course.js', './course-extra.js', './a1-more.js', './a1-examples.js', './examples-more.js', './more-lib.js', './more-a2.js', './more-a2b.js', './practice.js', './avatars.js', './config.js', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));

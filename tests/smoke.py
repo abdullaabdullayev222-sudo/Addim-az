@@ -125,7 +125,7 @@ with sync_playwright() as p:
     check('tamamlanmış dairənin rəngi dəyişir (qızılı)', m.locator('#units .node.gold[data-id="a1-u1-l1"]').count() == 1 and m.locator('#units .node[data-id="a1-u1-l2"].lock').count() == 0)
 
     lc = m.evaluate("(()=>{const c=window.COURSE;return c.map(l=>l.units.reduce((a,u)=>a+u.lessons.length,0))})()")
-    check('A1: 16 bölmə, 136 dərs (120 məzmun dərsi); digər səviyyələr 48', lc == [136, 48, 48, 48], str(lc))
+    check('dərs sayları: A1 və A2 136, B1 və B2 48', lc == [136, 136, 48, 48], str(lc))
     # Səhv cavab → «Səhvlərim»; bölmə təkrarı
     m.evaluate("location.hash='course'"); m.wait_for_timeout(200); m.click('.lvl[data-l="a1"]'); m.wait_for_timeout(200)
     m.evaluate("COURSE[0].units[0].lessons.filter(l=>!l.review).forEach(l=>S.course[l.id]=90);save();renderCourse()")
