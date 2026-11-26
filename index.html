@@ -864,8 +864,19 @@ const BANK=[
 ["«Həftəsonu» ingiliscə necədir?",["weekend","weekday","week","holiday"],"Weekend — həftəsonu, weekday — iş günü, holiday — bayram / tətil."]];
 const seeded=(seed)=>()=>{seed=(seed*9301+49297)%233280;return seed/233280};
 const shuffle=(a,r=Math.random)=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
-let QZ=[],qi=0,qok=0,qStreak=0;
-function startQuiz(){const r=seeded(+today().replace(/-/g,''));QZ=shuffle(BANK,r).slice(0,8).map(([q,o,e])=>({q,a:o[0],o:shuffle(o),e}));qi=0;qok=0;qStreak=0;location.hash='quiz';showQ()}
+let QZ=[],qi=0,qok=0,qStreak=0;Object.defineProperty(window,'QZ',{get:()=>QZ});
+const mulberry=a=>()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+const hashStr=s=>{let h=2166136261;for(const c of s)h=Math.imul(h^c.charCodeAt(0),16777619);return h>>>0};
+// Günün quizi: istifadəçinin səviyyəsindəki keçdiyi bölmələrdən (+1 irəli) suallar; hər gün fərqli 8 sual
+function quizPool(){const lv=S.lvl||'a1',L=(window.COURSE||[]).find(l=>l.id===lv)||COURSE[0];let reach=0;
+  L.units.forEach((u,ui)=>{if(u.lessons.some(x=>isDone(x.id)||(S.parts||{})[x.id]))reach=ui});
+  const out=[],seen=new Set();
+  L.units.slice(0,Math.max(reach+2,3)).forEach(u=>u.lessons.forEach(x=>{if(x.review)return;(x.items||[]).forEach(i=>{
+    if(i.t!=='mc'||!i.o||i.o.length<3||seen.has(i.q))return;seen.add(i.q);out.push([i.q,i.o,i.e||''])})}));
+  if(out.length<24)BANK.forEach(b=>{if(!seen.has(b[0]))out.push(b)});return {lv,reach,out}}
+function startQuiz(){const {lv,reach,out}=quizPool(),n=out.length,day=Math.floor(Date.parse(today()+'T00:00:00Z')/864e5);
+  const perm=shuffle(out.map((_,i)=>i),mulberry(hashStr(lv+'|'+n))),r=mulberry(day),K=Math.min(8,n);
+  QZ=Array.from({length:K},(_,k)=>out[perm[(day*K+k)%n]]).map(([q,o,e])=>({q,a:o[0],o:shuffle(o,r),e}));qi=0;qok=0;qStreak=0;location.hash='quiz';showQ()}
 function showQ(){
   $('qBar').style.width=(qi/QZ.length*100)+'%';
   if(qi>=QZ.length){S.quiz[today()]=qok;save();renderHome();track('quiz');if(STRIKE)setTimeout(showStrike,1200);
