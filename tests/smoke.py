@@ -86,7 +86,7 @@ with sync_playwright() as p:
         if not m.locator('#wBox .opt').count(): break
         m.click('#wBox .opt >> nth=0'); m.wait_for_timeout(230); asked += 1
     check('adaptiv test: səhvlər çox olanda tez bitir və ya 24 sual', 6 <= asked <= 24, str(asked))
-    check('nəticədə səviyyə qrafiki göstərilir', m.locator('.ptbars .ptb').count() == 4)
+    check('nəticədə səviyyə qrafiki göstərilir', m.locator('.ptbars .ptb').count() == 5)
     check('test nəticəsi və tövsiyə', m.locator('.lvopt.rec').count() == 1)
     m.click('.lvopt[data-l="a1"]'); m.wait_for_timeout(500)
     check('kurs səhifəsi açıldı', m.evaluate('location.hash') == '#course')
@@ -125,7 +125,7 @@ with sync_playwright() as p:
     check('tamamlanmış dairənin rəngi dəyişir (qızılı)', m.locator('#units .node.gold[data-id="a1-u1-l1"]').count() == 1 and m.locator('#units .node[data-id="a1-u1-l2"].lock').count() == 0)
 
     lc = m.evaluate("(()=>{const c=window.COURSE;return c.map(l=>l.units.reduce((a,u)=>a+u.lessons.length,0))})()")
-    check('dərs sayları: hər səviyyə 136', lc == [136, 136, 136, 136], str(lc))
+    check('dərs sayları: hər səviyyə 136 (A1–C1)', lc == [136, 136, 136, 136, 136], str(lc))
     # Səhv cavab → «Səhvlərim»; bölmə təkrarı
     m.evaluate("location.hash='course'"); m.wait_for_timeout(200); m.click('.lvl[data-l="a1"]'); m.wait_for_timeout(200)
     m.evaluate("COURSE[0].units[0].lessons.filter(l=>!l.review).forEach(l=>S.course[l.id]=90);save();renderCourse()")
@@ -158,9 +158,9 @@ with sync_playwright() as p:
     check('XP yığılıb: şirin reaksiya (sevgi / gülüş / göz vurma)', any(x in cls for x in ['m-love','m-laugh','m-wink']) and m.locator('#boltSay.mad').count() == 0, cls)
     m.wait_for_timeout(1800)
     n_pl = m.evaluate('PLACEMENT.length')
-    check('səviyyə testində 24 sual (hər səviyyədə 6)', n_pl == 24 and m.evaluate("['a1','a2','b1','b2'].every(l=>PLACEMENT.filter(q=>q.lv===l).length===6)"))
-    recs = m.evaluate("""(()=>{const r=[];for(const sc of [{a1:1,a2:0,b1:0,b2:0},{a1:6,a2:2,b1:0,b2:0},{a1:6,a2:5,b1:3,b2:0},{a1:6,a2:6,b1:5,b2:2},{a1:6,a2:6,b1:6,b2:6}]){r.push(ptResult({score:sc,seen:{a1:6,a2:sc.a1>=3?6:0,b1:sc.a2>=3?6:0,b2:sc.b1>=3?6:0}}))}return r})()""")
-    check('nəticəyə görə fərqli səviyyə tövsiyə olunur', recs == ['a1','a2','b1','b2','b2'], str(recs))
+    check('səviyyə testində 30 sual (hər səviyyədə 6)', n_pl == 30 and m.evaluate("['a1','a2','b1','b2','c1'].every(l=>PLACEMENT.filter(q=>q.lv===l).length===6)"))
+    recs = m.evaluate("""(()=>{const r=[];for(const sc of [{a1:1,a2:0,b1:0,b2:0,c1:0},{a1:6,a2:2,b1:0,b2:0,c1:0},{a1:6,a2:5,b1:3,b2:0,c1:0},{a1:6,a2:6,b1:5,b2:2,c1:0},{a1:6,a2:6,b1:6,b2:5,c1:2},{a1:6,a2:6,b1:6,b2:6,c1:6}]){r.push(ptResult({score:sc,seen:{a1:6,a2:sc.a1>=3?6:0,b1:sc.a2>=3?6:0,b2:sc.b1>=3?6:0,c1:sc.b2>=3?6:0}}))}return r})()""")
+    check('nəticəyə görə fərqli səviyyə tövsiyə olunur', recs == ['a1','a2','b1','b2','c1','c1'], str(recs))
     check('medal nişanı qurulur', 'Qızıl medal' in m.evaluate("medalsHTML([2,0,1])"))
 
     print('3b. Dinləmə və oxu: epizodlar, tamamlama, növbəti')

@@ -550,8 +550,8 @@ nav.tabs a.on .tib{transform:translateY(-2px) scale(1.12)}
 <script src="more-a2.js"></script>
 <script src="more-a2b.js"></script>
 <script src="more-b1.js"></script>
-<script src="more-b1b.js"></script><script src="more-b2.js"></script><script src="more-b2b.js"></script>
-<script src="practice.js"></script><script src="practice-more.js"></script>
+<script src="more-b1b.js"></script><script src="more-b2.js"></script><script src="more-b2b.js"></script><script src="more-c1a.js"></script><script src="more-c1b.js"></script><script src="more-c1c.js"></script>
+<script src="practice.js"></script><script src="practice-more.js"></script><script src="practice-c1.js"></script>
 <script src="avatars.js"></script>
 <script src="config.js"></script>
 <script>
@@ -925,18 +925,19 @@ function renderVideo(el,title){const V=window.VIDEOS||{},list=V[S.lvl]||V.a1;if(
   el.querySelector('.th').onclick=function(){this.outerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(v[0])}?autoplay=1" title="${esc(v[1])}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`}}
 
 /* ---------- welcome & placement test ---------- */
-const LVINFO={a1:['Başlanğıc','Sıfırdan və ya çox az bilirəm'],a2:['Elementar','Sadə söhbət edə bilirəm'],b1:['Orta','Gündəlik mövzularda rahat danışıram'],b2:['Yüksək','Mürəkkəb mövzuları anlayıram, rəsmi və akademik dildə işləyirəm']};
-const LVCOL={a1:'#16956a',a2:'#2f7de1',b1:'#7b56d6',b2:'#e0662f'};
+const LVINFO={a1:['Başlanğıc','Sıfırdan və ya çox az bilirəm'],a2:['Elementar','Sadə söhbət edə bilirəm'],b1:['Orta','Gündəlik mövzularda rahat danışıram'],b2:['Yüksək','Mürəkkəb mövzuları anlayıram, rəsmi və akademik dildə işləyirəm'],c1:['Qabaqcıl','İş və təhsildə ingiliscə sərbəst, incə və rəsmi ifadə edirəm']};
+const LVCOL={a1:'#16956a',a2:'#2f7de1',b1:'#7b56d6',b2:'#e0662f',c1:'#c2366f'};
 let PT=null;
+function lvScroll(){const bx=$('lvls'),on=bx&&bx.querySelector('.lvl[aria-pressed="true"]');if(on&&bx.clientWidth)bx.scrollLeft=Math.max(0,on.offsetLeft-bx.offsetLeft-(bx.clientWidth-on.offsetWidth)/2)}
 function welcome(){const w=$('wBox');
-  w.innerHTML=`<div class="wel"><svg width="110" height="110" viewBox="0 0 64 64"><use href="#boltI"/></svg><h1>Addıma xoş gəldin!</h1><p style="margin:0 auto;max-width:420px;color:var(--mut)">İngilis dilini hansı səviyyədən başlamaq sənin üçün daha uyğundur? Qısa testlə yoxla — 24 suala qədər, təxminən 5 dəqiqə. Suallar asandan çətinə gedir; çətin gəlsə, test tez bitir.</p><button class="btn sun" id="ptGo">Səviyyə testinə başla</button><button class="btn ghost" id="ptA1">Testsiz, sıfırdan başla (A1)</button><button class="w" id="ptPick" style="margin-top:14px;font-weight:800">Səviyyəmi özüm seçəcəm</button></div>`;
-  $('ptGo').onclick=()=>{PT={i:0,score:{a1:0,a2:0,b1:0,b2:0},seen:{},items:(window.PLACEMENT||[]).map(q=>({...q,sh:shuffle(q.o)}))};ptStep()};
+  w.innerHTML=`<div class="wel"><svg width="110" height="110" viewBox="0 0 64 64"><use href="#boltI"/></svg><h1>Addıma xoş gəldin!</h1><p style="margin:0 auto;max-width:420px;color:var(--mut)">İngilis dilini hansı səviyyədən başlamaq sənin üçün daha uyğundur? Qısa testlə yoxla — 30 suala qədər, təxminən 5 dəqiqə. Suallar asandan çətinə gedir; çətin gəlsə, test tez bitir.</p><button class="btn sun" id="ptGo">Səviyyə testinə başla</button><button class="btn ghost" id="ptA1">Testsiz, sıfırdan başla (A1)</button><button class="w" id="ptPick" style="margin-top:14px;font-weight:800">Səviyyəmi özüm seçəcəm</button></div>`;
+  $('ptGo').onclick=()=>{PT={i:0,score:{a1:0,a2:0,b1:0,b2:0,c1:0},seen:{},items:(window.PLACEMENT||[]).map(q=>({...q,sh:shuffle(q.o)}))};ptStep()};
   $('ptA1').onclick=()=>chooseLevel('a1');
   $('ptPick').onclick=()=>levelPicker(null)}
 const PT_PER=6,PT_PASS=4;
-function ptResult(P=PT){const order=['a1','a2','b1','b2'],sc=P.score;let rec='a1';
-  for(const l of order){if(!P.seen[l])break;if(sc[l]>=PT_PASS){rec=order[Math.min(order.indexOf(l)+1,3)];continue}rec=l;break}
-  // B2-də də yüksək nəticə — B2 (ən yüksək səviyyə)
+function ptResult(P=PT){const order=LVORD,sc=P.score;let rec='a1';
+  for(const l of order){if(!P.seen[l])break;if(sc[l]>=PT_PASS){rec=order[Math.min(order.indexOf(l)+1,order.length-1)];continue}rec=l;break}
+  // C1-də də yüksək nəticə — C1 (ən yüksək səviyyə)
   return rec}
 function ptStep(){const w=$('wBox'),n=PT.items.length;
   // Adaptiv: bir səviyyədə 3-dən az düzgün cavab varsa, daha çətin suallara keçmirik
@@ -950,12 +951,13 @@ function ptStep(){const w=$('wBox'),n=PT.items.length;
 const PT_WHY={a1:['Əsaslardan başlamaq ən doğru seçimdir: «to be», sadə indiki zaman və gündəlik sözlər möhkəm olsun.','A1-in bəzi mövzularını bilirsən, amma əsas qrammatikada boşluqlar var — A1-i tez keçəcək, möhkəm bünövrə quracaqsan.'],
   a2:['A1 əsaslarını yaxşı bilirsən. İndi keçmiş zaman, müqayisə və planlar üzərində işləmək vaxtıdır.','Əsasları bilirsən, A2-də keçmiş zaman və gündəlik ünsiyyəti gücləndirəcəksən.'],
   b1:['Gündəlik ingilis dilini bilirsən. B1-də şərt cümlələri, passiv və iş dili səni növbəti mərhələyə aparacaq.','A2-ni yaxşı bilirsən — B1 mövzuları sənin üçün ən faydalı olacaq.'],
-  b2:['Güclü nəticə! B2-də akademik yazı, müzakirə və müsahibə dili üzərində işləyəcəksən.','Orta-yuxarı səviyyədəsən — B2 mövzuları dilini daha incə və peşəkar edəcək.']};
+  b2:['Güclü nəticə! B2-də akademik yazı, müzakirə və müsahibə dili üzərində işləyəcəksən.','Orta-yuxarı səviyyədəsən — B2 mövzuları dilini daha incə və peşəkar edəcək.'],
+  c1:['Əla nəticə! C1-də inversion, akademik üslub, danışıqlar və peşəkar ünsiyyətin incəlikləri üzərində işləyəcəksən.','Yüksək səviyyədəsən — C1 mövzuları dilini daha incə, rəsmi və inandırıcı edəcək.']};
 function levelPicker(rec,score,n,sc,seen){const w=$('wBox');
-  const bars=sc?`<div class="ptbars">${['a1','a2','b1','b2'].map(l=>{const k=seen[l]||0,v=sc[l]||0;return `<div class="ptb"><span>${l.toUpperCase()}</span><div class="bar"><i style="width:${k?v/k*100:0}%;background:${LVCOL[l]}"></i></div><b>${k?v+'/'+k:'—'}</b></div>`}).join('')}</div>`:'';
+  const bars=sc?`<div class="ptbars">${LVORD.map(l=>{const k=seen[l]||0,v=sc[l]||0;return `<div class="ptb"><span>${l.toUpperCase()}</span><div class="bar"><i style="width:${k?v/k*100:0}%;background:${LVCOL[l]}"></i></div><b>${k?v+'/'+k:'—'}</b></div>`}).join('')}</div>`:'';
   const why=rec&&sc?PT_WHY[rec][(sc[rec]||0)>=2||rec!=='a1'&&(sc[rec]||0)>=3?1:0]:'';
   w.innerHTML=`<div class="wel">${rec?`<h1>Nəticən: ${score} / ${n}</h1>${bars}<p style="margin:0 auto;max-width:440px">Sənə <b>${rec.toUpperCase()} · ${LVINFO[rec][0]}</b> səviyyəsindən başlamağı tövsiyə edirik. ${esc(why)}</p><p class="note" style="margin-top:6px">Seçim sənindir — istədiyin səviyyəni seç.</p>`:`<h1>Səviyyəni seç</h1><p style="margin:0;color:var(--mut)">Sonra Kurs bölməsindən istənilən vaxt dəyişə bilərsən.</p>`}</div>
-  <div class="lvpick">${['a1','a2','b1','b2'].map(l=>`<button class="lvopt ${l===rec?'rec':''}" data-l="${l}"><span class="tg" style="background:${LVCOL[l]}">${l.toUpperCase()}</span><span><b>${LVINFO[l][0]}</b><span>${LVINFO[l][1]}</span></span>${l===rec?'<span class="rectag">Tövsiyə</span>':''}</button>`).join('')}</div><p class="note">Testin nəticəsi təxminidir, rəsmi CEFR qiymətləndirməsi deyil.</p>`;
+  <div class="lvpick">${LVORD.map(l=>`<button class="lvopt ${l===rec?'rec':''}" data-l="${l}"><span class="tg" style="background:${LVCOL[l]}">${l.toUpperCase()}</span><span><b>${LVINFO[l][0]}</b><span>${LVINFO[l][1]}</span></span>${l===rec?'<span class="rectag">Tövsiyə</span>':''}</button>`).join('')}</div><p class="note">Testin nəticəsi təxminidir, rəsmi CEFR qiymətləndirməsi deyil.</p>`;
   w.querySelectorAll('.lvopt').forEach(b=>b.onclick=()=>chooseLevel(b.dataset.l,rec))}
 function chooseLevel(l,rec){S.lvl=l;S.placed=l;S.onboarded=1;save();track('open');BOARD=null;renderHome();sync();
   const has=(window.COURSE||[]).find(c=>c.id===l)?.units.some(u=>u.lessons);
@@ -966,7 +968,7 @@ function chooseLevel(l,rec){S.lvl=l;S.placed=l;S.onboarded=1;save();track('open'
 const LOCK='<svg viewBox="0 0 24 24" fill="none" stroke="#9aa59a" stroke-width="2.4" stroke-linecap="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
 const ALL=(window.COURSE||[]).flatMap(l=>l.units.flatMap((u,ui)=>(u.lessons||[]).map((x,xi)=>({lv:l,u,ui,x,xi}))));
 const isDone=id=>S.course[id]!=null;
-const LVORD=['a1','a2','b1','b2'];
+const LVORD=['a1','a2','b1','b2','c1'];
 const unlocked=id=>{const lvid=ALL.find(b=>b.x.id===id).lv.id;if(S.placed&&LVORD.indexOf(lvid)<LVORD.indexOf(S.placed))return true;const seq=ALL.filter(a=>a.lv.id===ALL.find(b=>b.x.id===id).lv.id),i=seq.findIndex(a=>a.x.id===id);return i===0||isDone(id)||isDone(seq[i-1].x.id)};
 const nextLesson=()=>ALL.find(a=>a.lv.id===S.lvl&&!isDone(a.x.id))||ALL.find(a=>!isDone(a.x.id))||null;
 const norm2=s=>String(s).toLowerCase().replace(/[’`]/g,"'").replace(/[^a-z0-9' ]/g,' ').replace(/\s+/g,' ').trim();
@@ -979,6 +981,7 @@ function renderCourse(){
   const C=window.COURSE||[],lv=C.find(l=>l.id===S.lvl)||C[0];if(!lv)return;
   $('lvls').innerHTML=C.map(l=>`<button class="lvl" data-l="${l.id}" aria-pressed="${l.id===lv.id}" style="${l.id===lv.id?'background:'+l.color:''}">${esc(l.name)} · ${esc(l.title)}</button>`).join('');
   $('lvls').querySelectorAll('.lvl').forEach(b=>b.onclick=()=>{S.lvl=b.dataset.l;save();renderCourse();BOARD=null;renderBoards();sync();renderVideo($('vidHome'))});
+  requestAnimationFrame(lvScroll);
   const nx=nextLesson(),off=[0,70,-70,40,-40];
   $('units').innerHTML=lv.units.map((u,ui)=>{
     const head=`<div class="uhead" style="background:${u.lessons?lv.color:'#9aa8b6'}"><small>${esc(lv.name)} · Bölmə ${ui+1}</small><b>${esc(u.title)}</b><span>${esc(u.grammar)}</span></div>`;
@@ -1240,7 +1243,7 @@ $('tabs').innerHTML=[['home','Bu gün'],['course','Kurs'],['league','Liqa'],['pr
 let LAST_V='';
 function route(){let v=location.hash.slice(1);if(v==='lesson'&&LAST_V==='lesson'&&LS)return;LAST_V=v;stopSpeech();if(STRIKE&&v!=='lesson'&&v!=='quiz')setTimeout(showStrike,400);if(!VIEWS.includes(v))v='home';if(v==='quiz'&&!QZ.length){startQuiz();return}
   if(v==='lesson'&&!LS){location.hash='course';return}
-  if(v==='course')renderCourse();
+  if(v==='course'){renderCourse();setTimeout(lvScroll,30)}
   if(v==='welcome'){PT=null;welcome()}
   if(v==='profile')renderProfile();
   if(v==='premium')renderPremium();

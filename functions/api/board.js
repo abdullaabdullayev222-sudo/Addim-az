@@ -8,7 +8,7 @@ const SCHEMA = `CREATE TABLE IF NOT EXISTS scores_v2 (
   id TEXT NOT NULL, week TEXT NOT NULL, league TEXT NOT NULL DEFAULT 'a1', name TEXT NOT NULL,
   color INTEGER NOT NULL DEFAULT 0, xp INTEGER NOT NULL DEFAULT 0,
   updated INTEGER NOT NULL, PRIMARY KEY (id, week))`;
-const LEAGUES = ['a1', 'a2', 'b1', 'b2'];
+const LEAGUES = ['a1', 'a2', 'b1', 'b2', 'c1'];
 const MAX_WEEK_XP = 3000; // real istifadə üçün kifayət, saxta böyük rəqəmlərin qarşısını alır
 
 import { json, ensureSchema, premiumUntil, cleanCosmetics } from '../_shared.js';

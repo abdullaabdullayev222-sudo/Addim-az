@@ -4,7 +4,7 @@
 import { json, validId, ensureSchema, bakuDay } from '../_shared.js';
 
 const EVENTS = ['open', 'lesson', 'placement', 'quiz', 'premium_view', 'install', 'limit_hit', 'install_help', 'practice', 'review'];
-const LEVELS = ['a1', 'a2', 'b1', 'b2'];
+const LEVELS = ['a1', 'a2', 'b1', 'b2', 'c1'];
 
 export async function onRequest({ request, env }) {
   if (request.method !== 'POST') return json({ error: 'method' }, 405);
