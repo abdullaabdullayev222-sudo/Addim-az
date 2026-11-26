@@ -196,6 +196,7 @@ with sync_playwright() as p:
     check('səhv admin açarı rədd olunur', post('/api/admin', {'key': 'wrong', 'action': 'list'}).get('error') == 'forbidden')
     m.evaluate("location.hash='league'"); m.wait_for_timeout(800)
     check('liqa cədvəli yükləndi', 'liqası' in m.locator('#boardM').inner_text())
+    check('gəzən şimşək: qol-ayaqlı element var', m.evaluate("!!document.querySelector('#walker .arm.ar') && !!document.querySelector('#bigBolt .leg.ll')"))
 
     pj0 = json.load(urllib.request.urlopen(BASE + '/__test/prevweek'))
     # Diqqət: medallar həftənin ilk sorğusunda bir dəfə hesablanır — testdə bu, keçən həftə əlavə edildikdən sonra baş verməlidir

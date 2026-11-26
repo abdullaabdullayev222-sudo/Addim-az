@@ -208,6 +208,35 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 .shr{margin-top:14px;padding:14px;border-radius:18px;background:linear-gradient(135deg,#fff7d6,#ffe9f2);border:1.5px solid #ffd84d}.shr b{display:block;font-size:17px}.shr span{display:block;color:var(--mut);font-size:14px;margin-top:2px}
 .shrb{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center}.shrb .btn{width:auto;margin:0;flex:1 1 100%}.shrb .sb{flex:1 1 0;min-width:96px;text-align:center;padding:10px 8px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);font-weight:800;font-size:14px;color:var(--ink);text-decoration:none;cursor:pointer;font-family:inherit}
 .shrb .sb.wa{background:#25d366;border-color:#1fb457;color:#fff}.shrb .sb.tg{background:#2aa3e0;border-color:#1f8cc3;color:#fff}
+/* şimşəyin qol-ayaqları və gəzən şimşək */
+.bolt .arm,.bolt .leg{transform-box:view-box}
+.bolt .al{transform-origin:45px 53px}.bolt .ar{transform-origin:88px 60px}.bolt .ll{transform-origin:53px 99px}.bolt .lr{transform-origin:64px 97px}
+@media (prefers-reduced-motion:no-preference){
+ .bigsun.bolt:not(.m-sleep){animation:bbob 2.6s ease-in-out infinite}@keyframes bbob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+ .bigsun.bolt.m-happy .al{animation:aswing 2.6s ease-in-out infinite}@keyframes aswing{0%,100%{transform:rotate(0)}50%{transform:rotate(-10deg)}}
+ .bigsun.bolt.m-happy .ar{animation:awave 4s ease-in-out infinite}@keyframes awave{0%,55%,100%{transform:rotate(0)}62%{transform:rotate(-38deg)}70%{transform:rotate(-8deg)}78%{transform:rotate(-38deg)}86%{transform:rotate(-8deg)}}
+ .bigsun.bolt.m-happy .ll{animation:tap 1.3s ease-in-out infinite}.bigsun.bolt.m-happy .lr{animation:tap 1.3s ease-in-out .65s infinite}@keyframes tap{0%,60%,100%{transform:rotate(0)}30%{transform:rotate(-12deg)}}
+ .bolt.m-worried .al,.bolt.m-worried .ar{animation:fidget 1.2s ease-in-out infinite}@keyframes fidget{0%,100%{transform:rotate(0)}50%{transform:rotate(14deg)}}
+ .bolt.m-angry .ar{animation:fist .35s ease-in-out infinite}@keyframes fist{0%,100%{transform:rotate(-20deg)}50%{transform:rotate(-45deg)}}
+ .bolt.m-angry .ll{animation:stomp .5s ease-in-out infinite}@keyframes stomp{50%{transform:rotate(-16deg)}}
+ .bolt.r-jump .ll{animation:kick .55s}.bolt.r-jump .lr{animation:kick .55s reverse}@keyframes kick{40%{transform:rotate(25deg)}}
+ .bolt.r-jump .al,.bolt.r-spin .al{animation:up .55s}.bolt.r-jump .ar,.bolt.r-spin .ar{animation:up2 .55s}@keyframes up{40%{transform:rotate(55deg)}}@keyframes up2{40%{transform:rotate(-55deg)}}
+ .bolt.r-wiggle .al,.bolt.r-wiggle .ar{animation:fidget .3s 2}
+}
+.bolt.m-angry .al{transform:rotate(-58deg)}
+.bolt.m-sad .al{transform:rotate(-40deg)}.bolt.m-sad .ar{transform:rotate(55deg)}
+.bolt.m-sleep .al{transform:rotate(-35deg)}.bolt.m-sleep .ar{transform:rotate(50deg)}
+.walker{position:fixed;left:0;bottom:calc(env(safe-area-inset-bottom) + 92px);z-index:45;width:84px;height:84px;padding:0;border:0;background:none;cursor:pointer;display:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.walker.on{display:block}.walker svg{width:84px;height:84px;display:block;transition:transform .2s}.walker.left svg{transform:scaleX(-1)}
+.walker .wsay{position:absolute;bottom:88px;left:50%;transform:translateX(calc(-50% + var(--dx,0px)));white-space:nowrap;background:#fff;border:2px solid #ffd84d;color:#3b2a00;font-weight:800;font-size:14px;line-height:1.25;padding:7px 11px;border-radius:14px;box-shadow:0 6px 16px #0002;opacity:0;transition:opacity .25s;pointer-events:none;max-width:min(260px,78vw);white-space:normal;width:max-content;text-align:center}
+.walker .wsay.on{opacity:1}
+@media (prefers-reduced-motion:no-preference){
+ .walker.walk .ll{animation:wstep .42s ease-in-out infinite}.walker.walk .lr{animation:wstep .42s ease-in-out .21s infinite}@keyframes wstep{0%,100%{transform:rotate(22deg)}50%{transform:rotate(-22deg)}}
+ .walker.walk .al{animation:wswing .42s ease-in-out infinite}.walker.walk .ar{animation:wswing .42s ease-in-out .21s infinite}@keyframes wswing{0%,100%{transform:rotate(-18deg)}50%{transform:rotate(18deg)}}
+ .walker.walk svg .wb{animation:wbob .21s ease-in-out infinite alternate}@keyframes wbob{to{transform:translateY(-3px)}}
+ .walker.wave .ar{animation:awave2 .5s ease-in-out 3}@keyframes awave2{50%{transform:rotate(-45deg)}}
+ .walker.hop svg .wb{animation:whop .5s cubic-bezier(.3,1.6,.5,1)}@keyframes whop{40%{transform:translateY(-18px)}}
+}
 .lvls{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 8px}
 .lvl{flex:none;min-height:44px;padding:8px 16px;border-radius:99px;border:2px solid var(--line);background:var(--card);font-weight:900;cursor:pointer}
 .lvl[aria-pressed=true]{color:#fff;border-color:transparent}
@@ -376,6 +405,7 @@ nav.tabs a.on .tib{transform:translateY(-2px) scale(1.12)}
 </style>
 </head>
 <body>
+<button class="walker" id="walker" aria-label="Gəzən şimşək"><span class="wsay" id="wSay"></span><svg viewBox="0 0 128 128" class="bolt m-happy" aria-hidden="true"><g class="wb"><g class="limbs"><g class="leg ll"><path d="M53 99L46 118" stroke="#b45309" stroke-width="6.5" stroke-linecap="round"/><ellipse cx="42" cy="121.5" rx="8.5" ry="4.5" fill="#92400e"/></g><g class="leg lr"><path d="M64 97L71 118" stroke="#b45309" stroke-width="6.5" stroke-linecap="round"/><ellipse cx="75" cy="121.5" rx="8.5" ry="4.5" fill="#92400e"/></g><g class="arm al"><path d="M45 53Q31 55 23 65" stroke="#b45309" stroke-width="6.5" fill="none" stroke-linecap="round"/><circle cx="21" cy="67.5" r="6" fill="#ffd34d" stroke="#d97706" stroke-width="2.5"/></g><g class="arm ar"><path d="M88 60Q100 57 107 47" stroke="#b45309" stroke-width="6.5" fill="none" stroke-linecap="round"/><circle cx="108.5" cy="44.5" r="6" fill="#ffd34d" stroke="#d97706" stroke-width="2.5"/></g></g><path d="M76 6L26 72h32l-10 50 54-70H68z" fill="url(#bg1)" stroke="#d97706" stroke-width="5" stroke-linejoin="round"/><path d="M68 18L42 56" stroke="#fff6c4" stroke-width="5" stroke-linecap="round" opacity=".75"/><circle cx="58" cy="66" r="4.5" fill="#5a3300"/><circle cx="74" cy="66" r="4.5" fill="#5a3300"/><circle cx="59.5" cy="64.5" r="1.5" fill="#fff"/><circle cx="75.5" cy="64.5" r="1.5" fill="#fff"/><path d="M58 76q8 7 16 0" stroke="#5a3300" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="51" cy="74" r="4" fill="#ff7a59" opacity=".45"/><circle cx="81" cy="74" r="4" fill="#ff7a59" opacity=".45"/></g></svg></button>
 <div class="install" id="install" hidden>
   <img src="icon-192.png" alt="">
   <div><b>Addım tətbiqini yüklə</b><span>Pulsuz · ana ekrandan bir toxunuşla aç</span></div>
@@ -412,6 +442,7 @@ nav.tabs a.on .tib{transform:translateY(-2px) scale(1.12)}
       <button class="boltbtn" id="boltBtn" aria-label="Şimşəyə toxun"><span class="say" id="boltSay" aria-live="polite"></span>
       <svg class="bigsun bolt" id="bigBolt" viewBox="0 0 128 128" aria-hidden="true">
         <g class="spark" stroke="#ffb703" stroke-width="4" stroke-linecap="round" fill="none"><path d="M14 30l9 4-5 6 9 3"/><path d="M110 22l-8 6 6 4-8 6"/><path d="M112 96l-9-2 3 7-9-1"/><path d="M18 100l8-5 1 7 8-5"/></g>
+        <g class="limbs"><g class="leg ll"><path d="M53 99L46 118" stroke="#b45309" stroke-width="6.5" stroke-linecap="round"/><ellipse cx="42" cy="121.5" rx="8.5" ry="4.5" fill="#92400e"/></g><g class="leg lr"><path d="M64 97L71 118" stroke="#b45309" stroke-width="6.5" stroke-linecap="round"/><ellipse cx="75" cy="121.5" rx="8.5" ry="4.5" fill="#92400e"/></g><g class="arm al"><path d="M45 53Q31 55 23 65" stroke="#b45309" stroke-width="6.5" fill="none" stroke-linecap="round"/><circle cx="21" cy="67.5" r="6" fill="#ffd34d" stroke="#d97706" stroke-width="2.5"/></g><g class="arm ar"><path d="M88 60Q100 57 107 47" stroke="#b45309" stroke-width="6.5" fill="none" stroke-linecap="round"/><circle cx="108.5" cy="44.5" r="6" fill="#ffd34d" stroke="#d97706" stroke-width="2.5"/></g></g>
         <path class="body" d="M76 6L26 72h32l-10 50 54-70H68z" fill="url(#bg1)" stroke="#d97706" stroke-width="5" stroke-linejoin="round"/>
         <path d="M68 18L42 56" stroke="#fff6c4" stroke-width="5" stroke-linecap="round" opacity=".75"/>
         <g class="face f-happy"><circle cx="58" cy="66" r="4.5" fill="#5a3300"/><circle cx="74" cy="66" r="4.5" fill="#5a3300"/><circle cx="59.5" cy="64.5" r="1.5" fill="#fff"/><circle cx="75.5" cy="64.5" r="1.5" fill="#fff"/><path d="M58 76q8 7 16 0" stroke="#5a3300" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="51" cy="74" r="4" fill="#ff7a59" opacity=".45"/><circle cx="81" cy="74" r="4" fill="#ff7a59" opacity=".45"/></g>
@@ -446,7 +477,7 @@ nav.tabs a.on .tib{transform:translateY(-2px) scale(1.12)}
 
 <!-- PROFILE STUDIO -->
 <main class="view" id="v-profile"><section class="band studio" id="pBox"></section>
-  <section class="band" style="padding-top:0"><div class="card" id="pInstallCard" style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px"><span><b>Tətbiqi telefona yüklə</b><span class="lim">Ana ekrandan bir toxunuşla aç</span></span><button class="btn sun" id="pInstall" style="width:auto;margin:0">Yüklə</button></div><div class="card" id="notifCard" style="margin-bottom:12px"></div><div class="card" id="voiceCard" style="margin-bottom:12px"></div><div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:12px"><span><b>Səs effektləri</b><span class="lim">Toxunuş, düzgün cavab, XP səsləri</span></span><button class="pill" id="sndBtn" aria-label="Səs effektləri"></button></div><p class="note">Tətbiqi yaxşılaşdırmaq üçün anonim istifadə statistikası toplanır: neçə dərs keçildiyi, hansı səviyyə seçildiyi. Adın, e-poçtun və ya şəxsi məlumatın toplanmır.</p></section>
+  <section class="band" style="padding-top:0"><div class="card" id="pInstallCard" style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px"><span><b>Tətbiqi telefona yüklə</b><span class="lim">Ana ekrandan bir toxunuşla aç</span></span><button class="btn sun" id="pInstall" style="width:auto;margin:0">Yüklə</button></div><div class="card" id="notifCard" style="margin-bottom:12px"></div><div class="card" id="voiceCard" style="margin-bottom:12px"></div><div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:12px"><span><b>Səs effektləri</b><span class="lim">Toxunuş, düzgün cavab, XP səsləri</span></span><button class="pill" id="sndBtn" aria-label="Səs effektləri"></button></div><div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:12px"><span><b>Gəzən şimşək</b><span class="lim">Şimşək arabir ekranda gəzsin, salam versin</span></span><button class="tgl" id="roamTgl" role="switch" aria-checked="true" aria-label="Gəzən şimşək"><i></i></button></div><p class="note">Tətbiqi yaxşılaşdırmaq üçün anonim istifadə statistikası toplanır: neçə dərs keçildiyi, hansı səviyyə seçildiyi. Adın, e-poçtun və ya şəxsi məlumatın toplanmır.</p></section>
 </main>
 
 <!-- PREMIUM -->
@@ -686,6 +717,31 @@ function boltTap(){const now=Date.now();BT.n=now-BT.last<4000?BT.n+1:1;BT.last=n
   if(xp<GOAL){const m=pick(['wink','laugh']);play(m==='laugh'?'giggle':'boing');boltAnim(m,pick(['r-jump','r-wiggle']));boltSay(BT.n%3===2?'Hədəfə '+(GOAL-xp)+' XP qalıb — bir dərs də! 💪':pick(BOLT_TALK.ok));if(m==='laugh')hearts(3,['⚡','✨']);return}
   const m=pick(['love','laugh','wink']);play(m==='love'?'kiss':'giggle');boltAnim(m,pick(['r-spin','r-jump','r-wiggle']),1600);boltSay(pick(BOLT_TALK.star));hearts(m==='love'?6:4,m==='love'?['💛','❤️','💖']:['⚡','✨','⭐'])}
 $('boltBtn').onclick=boltTap;
+/* ---------- gəzən şimşək: arabir ekranda gəzir ---------- */
+const WALK_TALK={lazy:['Bu gün hələ dərs yoxdur… 👀','Gəl bir dərs edək? Cəmi 3 dəqiqə!','Mən gəzirəm, sən isə dərsə başla 😉','Şimşəyin sönməsin! ⚡'],
+  ok:['Salam! Mən gəzintidəyəm ⚡','Əla gedirsən! 💪','Bir dərs də? Enerjim artır!','Hi-hi, məni tutmağa çalış! 😆','Sözləri təkrarlamağı unutma!'],
+  tap:['Ay! Qıdıqlanıram! 😆','Tutdun məni! ⚡','Hop! 🦘','Bu gün də öyrənirik!','Sən əlasan! 💛']};
+let WK={t:0,busy:false,anim:null};
+const roamOn=()=>typeof S!=='undefined'&&S&&S.roam!==false&&!matchMedia('(prefers-reduced-motion: reduce)').matches;
+function wSay(t,ms=2200){const b=$('wSay');b.textContent=t;b.style.setProperty('--dx','0px');const r=b.getBoundingClientRect(),dx=r.right>innerWidth-10?innerWidth-10-r.right:r.left<10?10-r.left:0;b.style.setProperty('--dx',dx+'px');b.classList.add('on');clearTimeout(b._t);b._t=setTimeout(()=>b.classList.remove('on'),ms)}
+function walkSoon(ms){clearTimeout(WK.t);if(!roamOn())return;WK.t=setTimeout(walkGo,ms==null?60000+Math.random()*60000:ms)}
+function walkBlocked(){const v=location.hash.slice(1)||'home';return document.hidden||['lesson','quiz','welcome','premium'].includes(v)||['sheet','strike','cel'].some(i=>{const e=$(i);return e&&e.classList.contains('on')})||(window.matchMedia&&matchMedia('(min-width:1000px)').matches&&false)}
+async function walkGo(){if(WK.busy||!roamOn())return walkSoon();if(walkBlocked())return walkSoon(15000);
+  WK.busy=true;const w=$('walker'),W=innerWidth,sz=84,fromLeft=Math.random()<.5,x0=fromLeft?-sz:W,x1=fromLeft?W:-sz,mid=W*(.3+Math.random()*.4)-sz/2;
+  const xp=S.days[today()]||0,style=Math.random();
+  w.classList.toggle('left',!fromLeft);w.classList.add('on','walk');w.style.transform=`translateX(${x0}px)`;
+  const go=(a,b)=>new Promise(r=>{const d=Math.abs(b-a)/W*5200;WK.anim=w.animate([{transform:`translateX(${a}px)`},{transform:`translateX(${b}px)`}],{duration:d,easing:'linear',fill:'forwards'});WK.anim.onfinish=r;WK.anim.oncancel=r});
+  const pause=ms=>new Promise(r=>setTimeout(r,ms));
+  if(style<.35){await go(x0,x1)}
+  else{await go(x0,mid);w.classList.remove('walk');w.classList.add('wave');wSay(pick(xp?WALK_TALK.ok:WALK_TALK.lazy));if(Math.random()<.4)play('boing');await pause(2300);w.classList.remove('wave');
+    const back=style>.8;if(back)w.classList.toggle('left');w.classList.add('walk');await go(mid,back?x0:x1)}
+  w.classList.remove('on','walk','wave','hop');WK.busy=false;walkSoon()}
+$('walker').onclick=e=>{e.stopPropagation();const w=$('walker'),xp=S.days[today()]||0;try{navigator.vibrate&&navigator.vibrate(15)}catch(e){}
+  play(xp?'giggle':'boing');w.classList.remove('hop');void w.offsetWidth;w.classList.add('hop');setTimeout(()=>w.classList.remove('hop'),550);
+  if(!xp&&Math.random()<.5){wSay('Gəl dərsə! Kursa aparıram ⚡',1800);setTimeout(()=>{if(location.hash!=='#lesson')location.hash='course'},900)}else wSay(pick(WALK_TALK.tap),1600)};
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&WK.anim){WK.anim.finish()}});
+window.walkGo=walkGo;setTimeout(()=>walkSoon(25000+Math.random()*15000),0);
+
 
 /* ---------- home ---------- */
 const SK=[['reading','Reading','Oxu və anla','--rd','--rdb'],['listening','Listening','Dinlə və anla','--ls','--lsb'],['speaking','Speaking','Danış, tələffüzü yoxla','--sp','--spb'],['writing','Writing','Yaz, rəy al','--wr','--wrb']];
@@ -1147,7 +1203,8 @@ function shareText(){const n=streak(),xp=Object.values(S.days||{}).reduce((a,b)=
   return n>1?`Mən Addım-da ${n} gündür ardıcıl ingilis dili öyrənirəm ⚡ (${lv} səviyyəsi, ${xp} XP). Azərbaycan dilində, pulsuz — sən də qoşul:`
    :xp?`Addım-da ingilis dili öyrənirəm ⚡ (${lv} səviyyəsi, ${xp} XP). Azərbaycan dilində, pulsuz — sən də qoşul:`
    :'Addım — Azərbaycan dilində pulsuz ingilis dili tətbiqi ⚡ Gündə 5 dəqiqə ilə A1-dən C1-ə qədər. Sən də qoşul:'}
-function renderProfile(){drawVoice();drawNotif();const P=isPrem(),L=S.look,b=$('pBox'),nm=S.me?S.me.name:'',AV=window.AVATARS||[],FREE=window.FREE_AVATARS||6;
+function drawRoam(){const t=$('roamTgl');if(!t)return;const on=S.roam!==false;t.classList.toggle('on',on);t.setAttribute('aria-checked',on);t.onclick=()=>{S.roam=!on;save();drawRoam();if(S.roam!==false){walkSoon(1500)}else{clearTimeout(WK.t)}}}
+function renderProfile(){drawVoice();drawNotif();drawRoam();const P=isPrem(),L=S.look,b=$('pBox'),nm=S.me?S.me.name:'',AV=window.AVATARS||[],FREE=window.FREE_AVATARS||6;
   b.innerHTML=`<h2>Profilim ${P?CROWN:''}</h2>
   <div class="preview">${avatar(nm||'?',S.me?S.me.color:0,L)}<div style="min-width:0;flex:1"><div class="nm">${nm?nameHTML(nm,L,P):'<span style="color:var(--mut)">Adın burada görünəcək</span>'}</div><span class="lim">Liqada belə görünəcəksən</span>${S.medals&&(S.medals[0]+S.medals[1]+S.medals[2])?`<div class="lim" style="margin-top:4px">Medallarım: ${medalsHTML(S.medals)}</div>`:''}</div></div>
   <div class="row" style="margin-top:12px"><input type="text" id="pName" maxlength="20" placeholder="Adın və ya ləqəbin" value="${esc(nm)}" style="flex:1 1 180px"><button class="btn" id="pSave" style="flex:0 0 auto;width:auto;margin:0">Yadda saxla</button></div>
