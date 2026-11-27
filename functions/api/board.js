@@ -12,6 +12,7 @@ const LEAGUES = ['a1', 'a2', 'b1', 'b2', 'c1'];
 const MAX_WEEK_XP = 3000; // real istifadə üçün kifayət, saxta böyük rəqəmlərin qarşısını alır
 
 import { json, ensureSchema, premiumUntil, cleanCosmetics } from '../_shared.js';
+import { botsFor } from '../_bots.js';
 
 // Həftə bazar ertəsi Bakı vaxtı ilə (UTC+4) başlayır
 function weekKey(ms = Date.now()) {
@@ -27,9 +28,12 @@ async function finalizeWeek(DB, prev) {
   for (const s of MEDAL_SCHEMA) await DB.prepare(s).run();
   if (await DB.prepare('SELECT 1 FROM medal_weeks WHERE week = ?1').bind(prev).first()) return;
   for (const lg of LEAGUES) {
-    const { results } = await DB.prepare('SELECT id, xp FROM scores_v2 WHERE week = ?1 AND league = ?2 AND xp > 0 ORDER BY xp DESC, updated ASC LIMIT 3').bind(prev, lg).all();
-    for (let i = 0; i < results.length; i++)
-      await DB.prepare('INSERT OR IGNORE INTO medals (id, week, league, place, xp) VALUES (?1, ?2, ?3, ?4, ?5)').bind(results[i].id, prev, lg, i + 1, results[i].xp).run();
+    const { results } = await DB.prepare('SELECT id, xp, updated FROM scores_v2 WHERE week = ?1 AND league = ?2 AND xp > 0 ORDER BY xp DESC, updated ASC LIMIT 3').bind(prev, lg).all();
+    const real = (await DB.prepare('SELECT COUNT(*) AS n FROM scores_v2 WHERE week = ?1 AND league = ?2').bind(prev, lg).first()).n;
+    // Virtual iştirakçılar da yer tutur, amma medal yalnız real istifadəçilərə yazılır
+    const all = results.concat(botsFor(prev, lg, real, Date.parse(prev + 'T00:00:00Z') + 8 * 864e5)).sort((x, y) => y.xp - x.xp || x.updated - y.updated).slice(0, 3);
+    for (let i = 0; i < all.length; i++) if (!all[i].bot)
+      await DB.prepare('INSERT OR IGNORE INTO medals (id, week, league, place, xp) VALUES (?1, ?2, ?3, ?4, ?5)').bind(all[i].id, prev, lg, i + 1, all[i].xp).run();
   }
   await DB.prepare('INSERT OR IGNORE INTO medal_weeks (week, done) VALUES (?1, ?2)').bind(prev, Date.now()).run();
 }
@@ -82,7 +86,11 @@ export async function onRequest({ request, env }) {
       look: cleanCosmetics({ avatar: r.avatar, ncolor: r.ncolor, nstyle: r.nstyle, frame: r.frame }, prem) };
   });
 
-  const total = (await env.DB.prepare('SELECT COUNT(*) AS n FROM scores_v2 WHERE week = ?1 AND league = ?2').bind(week, league).first()).n;
+  const realTotal = (await env.DB.prepare('SELECT COUNT(*) AS n FROM scores_v2 WHERE week = ?1 AND league = ?2').bind(week, league).first()).n;
+  const bots = botsFor(week, league, realTotal, now);
+  const total = realTotal + bots.length;
+  const botRows = bots.filter(b => b.xp > 0).map(b => ({ name: b.name, color: b.color, xp: b.xp, me: false, prem: false, medals: [0, 0, 0], look: cleanCosmetics({ avatar: b.avatar }, false), _u: b.updated }));
+  const topAll = top.concat(botRows).sort((x, y) => y.xp - x.xp || (x._u || 0) - (y._u || 0)).slice(0, 30).map(({ _u, ...r }) => r);
 
   let me = null, above = null;
   if (validId(id)) {
@@ -91,9 +99,11 @@ export async function onRequest({ request, env }) {
       const better = (await env.DB.prepare(
         'SELECT COUNT(*) AS n FROM scores_v2 WHERE week = ?1 AND league = ?4 AND (xp > ?2 OR (xp = ?2 AND updated < ?3 AND ?2 > 0))'
       ).bind(week, row.xp, row.updated, league).first()).n;
-      me = { rank: better + 1, xp: row.xp };
+      const bBetter = bots.filter(b => b.xp > row.xp || (b.xp === row.xp && b.updated < row.updated && row.xp > 0)).length;
+      me = { rank: better + bBetter + 1, xp: row.xp };
       const a = await env.DB.prepare('SELECT xp FROM scores_v2 WHERE week = ?1 AND league = ?3 AND xp > ?2 ORDER BY xp ASC LIMIT 1').bind(week, row.xp, league).first();
-      if (a) above = { xp: a.xp };
+      const ab = [a && a.xp].concat(bots.filter(b => b.xp > row.xp).map(b => b.xp)).filter(Boolean);
+      if (ab.length) above = { xp: Math.min(...ab) };
     }
   }
   // Keçən həftə medal qazanmısansa — mərasim üçün
@@ -104,5 +114,5 @@ export async function onRequest({ request, env }) {
     const { results } = await env.DB.prepare('SELECT place, COUNT(*) AS n FROM medals WHERE id = ?1 GROUP BY place').bind(id).all();
     for (const r of results) medals[r.place - 1] = r.n;
   }
-  return json({ week, league, total, top, me, above, medal, medals });
+  return json({ week, league, total, top: topAll, me, above, medal, medals, virtual: bots.length });
 }

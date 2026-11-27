@@ -632,7 +632,7 @@ const ord=n=>{const l=n%10,t=n%100;let s;if(n%100===0)s='cü';else if(l===0)s={1
 const COLORS=['#2f7de1','#7b56d6','#e0662f','#16956a','#d6336c','#0e9aa7'];
 
 /* ---------- state ---------- */
-const GOALS=[[20,'Yüngül','~5 dəq'],[50,'Normal','~10–15 dəq'],[100,'Ciddi','~25 dəq'],[150,'Güclü','~40 dəq']];let S;
+const GOALS=[[20,'Həvəskar','~5–10 dəq · yarım dərs'],[50,'Orta','~15 dəq · 1 dərs'],[100,'Ciddi','~30 dəq · 2 dərs'],[150,'Pro','~45 dəq · 3 dərs']];let S;
 const goalXP=()=>(S&&S.goal)||50;
 const blank=()=>({days:{},freeze:0,frozen:{},skills:{reading:0,listening:0,speaking:0,writing:0},quiz:{},goalDone:{},me:null,course:{},lvl:'a1',onboarded:0,placed:null,sound:1,lastRank:{},uid:'',look:{avatar:'',ncolor:0,nstyle:0,frame:0},prem:{until:0},lday:{},prac:{},mist:[],notif:1,nHour:20});
 const load=()=>{try{S=JSON.parse(localStorage.getItem('addim2')||'null')}catch(e){S=null}if(!S)S=blank();for(const k in blank())if(S[k]===undefined)S[k]=blank()[k]};
@@ -1125,6 +1125,7 @@ function levelPicker(rec,score,n,sc,seen){const w=$('wBox');
 function chooseLevel(l,rec){S.lvl=l;S.placed=l;S.onboarded=1;save();track('open');BOARD=null;renderHome();sync();
   const has=(window.COURSE||[]).find(c=>c.id===l)?.units.some(u=>u.lessons);
   location.hash='course';
+  if(!S.goalAsked)setTimeout(()=>{if(S.goalAsked||$('sheet').classList.contains('on')||LS)return;S.goalAsked=1;save();goalSheet()},600)
   if(!has)setTimeout(()=>sheet(l.toUpperCase()+' səviyyəsi seçildi',`<p>Bu səviyyənin dərsləri hazırlanır və tezliklə əlavə olunacaq. Hələlik A1 dərslərini təkrar kimi keçə bilərsən — hamısı sənin üçün açıqdır. Liqada isə <b>${l.toUpperCase()} liqasında</b> yarışırsan.</p>`),400)}
 
 /* ---------- course ---------- */
@@ -1186,17 +1187,20 @@ function circleItems(x,part){const P=circlePool(x),S2=P.sents,V=P.vocab,az=S2.fi
   const M=P.mcs,used=new Set();let it=[],ca=part*3,cs=part*3+1;
   const pick=(arr,st)=>{if(!arr.length)return null;for(let j=0;j<arr.length;j++){const s=arr[(st+j)%arr.length];if(!used.has(s.en)){used.add(s.en);return s}}return arr[st%arr.length]};
   const A=()=>pick(az,ca++),Sx=()=>pick(S2,cs++);
-  if(part===0)it=[...P.learns,at(M,0),at(M,1),vAz(at(V,0)),vAz(at(V,1)),listenS(Sx()),orderS(A()),speakS(A())];
-  if(part===1)it=[vEn(at(V,2)),vEn(at(V,3)),at(M,2),at(M,3),trAz(A()),orderS(A()),listenS(Sx()),orderS(A()),speakS(A())];
-  if(part===2)it=[vListen(at(V,4)),vListen(at(V,5)),listenS(Sx()),listenS(Sx()),dictS(Sx()),dictS(Sx()),at(M,4),trEn(A())];
-  if(part===3)it=[orderS(A()),orderS(A()),trEn(A()),dictS(Sx()),speakS(A()),speakS(A()),at(M,5),vAz(at(V,5))];
-  if(part===4){const all=[0,1,2,3].flatMap(p=>circleItems(x,p)).filter(i=>i.t!=='learn');const pick=[],sn=new Set();for(const i of shuffle(all)){const k=i.t+(i.q||i.en);if(sn.has(k))continue;sn.add(k);pick.push(i);if(pick.length>=12)break}return pick}
+  if(part===0)it=[...P.learns,at(M,0),vAz(at(V,0)),at(M,1),vAz(at(V,1)),vListen(at(V,0)),listenS(Sx()),vEn(at(V,2)),orderS(A()),trEn(A()),dictS(Sx()),vAz(at(V,3)),orderS(A()),speakS(A())];
+  if(part===1)it=[vEn(at(V,2)),vEn(at(V,3)),at(M,2),vListen(at(V,1)),trAz(A()),at(M,3),orderS(A()),vAz(at(V,4)),listenS(Sx()),trEn(A()),orderS(A()),dictS(Sx()),speakS(A())];
+  if(part===2)it=[vListen(at(V,4)),vListen(at(V,5)),listenS(Sx()),vEn(at(V,0)),listenS(Sx()),dictS(Sx()),at(M,4),trEn(A()),dictS(Sx()),trAz(A()),listenS(Sx()),orderS(A()),speakS(A())];
+  if(part===3)it=[orderS(A()),trEn(A()),vAz(at(V,5)),orderS(A()),dictS(Sx()),at(M,5),trAz(A()),speakS(A()),vEn(at(V,1)),listenS(Sx()),orderS(A()),at(M,1),dictS(Sx()),speakS(A())];
+  if(part===4){const all=[0,1,2,3].flatMap(p=>circleItems(x,p)).filter(i=>i.t!=='learn');const pick=[],sn=new Set();for(const i of shuffle(all)){const k=i.t+(i.q||i.en);if(sn.has(k))continue;sn.add(k);pick.push(i);if(pick.length>=15)break}return pick}
   const out=[],sn=new Set();for(const i of it){if(!i)continue;const k=i.t+(i.q||i.title||[].concat(i.en)[0]);if(sn.has(k))continue;sn.add(k);out.push({...i,src:i.t==='learn'?undefined:x.id+'@'+part+'#'+out.length})}
+  // Dərs ən az 12 tapşırıq olsun: az materiallı dairələrdə ehtiyat tapşırıqlarla tamamla
+  const real=()=>out.filter(i=>i.t!=='learn').length,add=i=>{if(!i)return;const k=i.t+(i.q||i.title||[].concat(i.en)[0]);if(sn.has(k))return;sn.add(k);out.push({...i,src:x.id+'@'+part+'#'+out.length})};
+  for(let k=0;real()<12&&k<14;k++){const o=k+part*2;[trAz(at(az,o)),listenS(at(S2,o+1)),vEn(at(V,o)),trEn(at(az,o+2)),orderS(at(az,o+3)),vAz(at(V,o+1)),at(M,o),dictS(at(S2,o+4)),vListen(at(V,o+2))].forEach(i=>{if(real()<12)add(i)})}
   return out}
 function ringSVG(done,col,gold){const R=44,C=2*Math.PI*R,seg=C/5,gap=5;return `<svg class="ring" viewBox="0 0 100 100" aria-hidden="true">${[0,1,2,3,4].map(i=>`<circle cx="50" cy="50" r="${R}" fill="none" stroke="${gold?'#f5b301':i<done?col:'#e3e0ef'}" stroke-width="6" stroke-linecap="round" stroke-dasharray="${seg-gap} ${C-seg+gap}" stroke-dashoffset="${-i*seg}" transform="rotate(-90 50 50)"/>`).join('')}</svg>`}
 function openCircle(id){const a=ALL.find(z=>z.x.id===id);if(!a)return;const d=partsDone(id);
   const rows=PART_NAMES.map((n,i)=>{const ok=i<d,curp=i===Math.min(d,4)&&d<5,lock=i>d||(i===4&&d<4);
-    return `<button class="prt ${ok?'ok':''} ${curp?'cur':''}" data-p="${i}" ${lock?'disabled':''}><span class="pn">${ok?'✓':lock?LOCK.replace('<svg','<svg width="18" height="18"'):i===4?'★':i+1}</span><span><b>${i<4?'Dərs '+(i+1)+': ':''}${n}</b><small>${i===4?'Bütün dairədən qarışıq 12 tapşırıq — dairəni qızılı edir':['Yeni sözlər, qayda və ilk cümlələr','Söz və qrammatika məşqi, cümlə qurmaq','Dinləyib seçmək və diktə','Cümlə qurmaq, tərcümə və danışmaq'][i]}</small></span>${ok?'<em>təkrarla</em>':''}</button>`}).join('');
+    return `<button class="prt ${ok?'ok':''} ${curp?'cur':''}" data-p="${i}" ${lock?'disabled':''}><span class="pn">${ok?'✓':lock?LOCK.replace('<svg','<svg width="18" height="18"'):i===4?'★':i+1}</span><span><b>${i<4?'Dərs '+(i+1)+': ':''}${n}</b><small>${i===4?'Bütün dairədən qarışıq 15 tapşırıq — dairəni qızılı edir':['Yeni sözlər, qayda və ilk cümlələr','Söz və qrammatika məşqi, cümlə qurmaq','Dinləyib seçmək və diktə','Cümlə qurmaq, tərcümə və danışmaq'][i]}</small></span>${ok?'<em>təkrarla</em>':''}</button>`}).join('');
   sheet(a.x.title,`<div class="note" style="margin:-6px 0 10px">${d>=5?'Dairə tamamlandı 🏆':d>=4?'4 dərs keçildi — ümumi praktika dairəni tamamlayır':'Dərs '+(d+1)+' / 4'}</div><div class="prts">${rows}</div>`,'<button class="btn ghost" id="shClose">Bağla</button>');
   document.querySelectorAll('.prt:not([disabled])').forEach(b=>b.onclick=()=>{closeSheet();startLesson(id,+b.dataset.p)})}
 let LS=null;
@@ -1385,7 +1389,7 @@ function renderBoard(el){
   else if(me&&me.rank===1)msg='Liderlik səndədir! Yerini qorumaq üçün hər gün qayıt.';
   else if(me&&BOARD.above)msg=`${BOARD.above.xp-me.xp+1} XP qazan və ${ord(me.rank-1)} yerə qalx.`;
   if(me&&me.rank===1&&me.xp>0&&!FW_SHOWN&&el.offsetParent&&location.hash==='#league'){FW_SHOWN=true;setTimeout(()=>fireworks(3000),400)}
-  el.innerHTML=head+podium+rest+meRow+(msg?`<div class="lmsg">${esc(msg)}</div>`:'')+`<p class="note">Bu həftə ${BOARD.total} iştirakçı · <a class="w" href="#profile" style="text-decoration:none">Profilimi bəzə</a></p>`;
+  el.innerHTML=head+podium+rest+meRow+(msg?`<div class="lmsg">${esc(msg)}</div>`:'')+`<p class="note">Bu həftə ${BOARD.total} iştirakçı${BOARD.virtual?' (liqa boş qalmasın deyə bəziləri virtual oyunçudur)':''} · <a class="w" href="#profile" style="text-decoration:none">Profilimi bəzə</a></p>`;
 }
 function renderBoards(){renderBoard($('boardD'));renderBoard($('boardM'));
   const n=$('nudgeM');if(!S.me){n.innerHTML=`${IC.league}<span><b>Həftəlik liqaya qoşul</b> — digər öyrənənlərlə yarış</span>`}else if(BOARD&&BOARD.me){n.innerHTML=`${IC.league}<span>Liqada <b>${ord(BOARD.me.rank)} yerdəsən</b> · ${BOARD.me.xp} XP</span>`}else n.innerHTML=`${IC.league}<span>Həftəlik liqa</span>`}
