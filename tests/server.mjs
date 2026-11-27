@@ -1,8 +1,17 @@
 import http from 'node:http'; import fs from 'node:fs'; import path from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 const root = process.argv[2];
+// Saxta Google: öz RSA açarı ilə ID token imzalayır (/__test/gtoken?sub=..&email=..)
+const GCID = 'test-client.apps.googleusercontent.com';
+const GKEY = await crypto.subtle.generateKey({ name: 'RSASSA-PKCS1-v1_5', modulusLength: 2048, publicExponent: new Uint8Array([1, 0, 1]), hash: 'SHA-256' }, true, ['sign', 'verify']);
+const TEST_JWKS = [{ ...(await crypto.subtle.exportKey('jwk', GKEY.publicKey)), kid: 'test-kid', alg: 'RS256', use: 'sig' }];
+const b64url = b => Buffer.from(b).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+async function gToken(sub, email, aud = GCID, exp = Math.floor(Date.now() / 1000) + 3600) {
+  const h = b64url(JSON.stringify({ alg: 'RS256', kid: 'test-kid', typ: 'JWT' })), p = b64url(JSON.stringify({ iss: 'https://accounts.google.com', aud, sub, email, name: email.split('@')[0], exp, iat: exp - 3600 }));
+  const sig = await crypto.subtle.sign('RSASSA-PKCS1-v1_5', GKEY.privateKey, new TextEncoder().encode(h + '.' + p));
+  return h + '.' + p + '.' + b64url(new Uint8Array(sig)); }
 const routes = {};
-for (const n of ['board','premium','admin','track','tts','ttscheck','push','push-run','feedback','stt']) routes[n] = (await import(path.join(root, 'functions/api/'+n+'.js'))).onRequest;
+for (const n of ['board','premium','admin','track','tts','ttscheck','push','push-run','feedback','stt','auth','sync']) routes[n] = (await import(path.join(root, 'functions/api/'+n+'.js'))).onRequest;
 const onRequest = routes.board;
 const db = new DatabaseSync(':memory:');
 // Workers AI təqlidi: 1.5 saniyəlik səssiz WAV qaytarır, çağırışları sayır
@@ -44,13 +53,14 @@ http.createServer(async (req, res) => {
     [['medal-gold-0001', 1500], ['medal-silv-0002', 1300], ['medal-bron-0003', 1200], ['medal-four-0004', 100]].forEach(([id, xp], i) => db.prepare('INSERT OR REPLACE INTO scores_v2 VALUES (?,?,?,?,?,?,?)').run(id, wk, 'a1', 'U' + i, 0, xp, i));
     try { db.exec('DELETE FROM medal_weeks'); } catch (e) {}
     res.writeHead(200, { 'content-type': 'application/json' }); res.end(JSON.stringify({ week: wk })); return; }
+  if (u.pathname === '/__test/gtoken') { res.writeHead(200, { 'content-type': 'application/json' }); res.end(JSON.stringify({ token: await gToken(u.searchParams.get('sub') || '111', u.searchParams.get('email') || 'test@gmail.com', u.searchParams.get('aud') || GCID, u.searchParams.has('expired') ? Math.floor(Date.now() / 1000) - 7200 : undefined) })); return; }
   if (u.pathname === '/__test/pushsub') { res.writeHead(200, { 'content-type': 'application/json' }); res.end(JSON.stringify(await fakeSub(u.searchParams.get('n') || 'x'))); return; }
   if (u.pathname === '/__test/pushlog') { res.writeHead(200, { 'content-type': 'application/json' }); res.end(JSON.stringify(pushLog)); return; }
   if (u.pathname === '/__test/ai') { if (u.searchParams.has('fail')) aiFail = u.searchParams.get('fail') === '1'; if (u.searchParams.has('mp3')) aiMp3 = u.searchParams.get('mp3') === '1'; if (u.searchParams.has('garble')) aiGarble = u.searchParams.get('garble') === '1'; if (u.searchParams.has('delay')) aiDelay = +u.searchParams.get('delay'); res.writeHead(200, { 'content-type': 'application/json' }); res.end(JSON.stringify({ aiCalls, aiFail, lastModel })); return; }
-  const m = u.pathname.match(/^\/api\/(board|premium|admin|track|ttscheck|tts|push|push-run|feedback|stt)$/);
+  const m = u.pathname.match(/^\/api\/(board|premium|admin|track|ttscheck|tts|push|push-run|feedback|stt|auth|sync)$/);
   if (m) {
     const ch = []; for await (const c of req) ch.push(c); const body = Buffer.concat(ch);
-    const r = await routes[m[1]]({ request: new Request('http://x' + req.url, { method: req.method, body: req.method === 'POST' ? body : undefined, headers: req.headers }), env: { DB: D1, AI, ADMIN_KEY: 'test-admin-key-123', PUSH_TEST: 1 } });
+    const r = await routes[m[1]]({ request: new Request('http://x' + req.url, { method: req.method, body: req.method === 'POST' ? body : undefined, headers: req.headers }), env: { DB: D1, AI, ADMIN_KEY: 'test-admin-key-123', PUSH_TEST: 1, GOOGLE_CLIENT_ID: GCID, TEST_JWKS } });
     res.writeHead(r.status, Object.fromEntries(r.headers)); res.end(Buffer.from(await r.arrayBuffer())); return;
   }
   let f = path.join(root, u.pathname === '/' ? 'index.html' : u.pathname);

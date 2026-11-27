@@ -214,6 +214,15 @@ with sync_playwright() as p:
     check('boş təklif qəbul olunmur', post('/api/feedback', {'uid': m.evaluate('S.uid'), 'kind': 'general', 'text': ' '}).get('error') == 'empty')
     bd = json.load(urllib.request.urlopen(BASE + '/api/board?league=c1'))
     check('boş liqada da ən az 12 iştirakçı görünür (virtual)', bd['total'] >= 12 and len(bd['top']) >= 10 and bd.get('virtual', 0) >= 10, str(bd['total']))
+    gt = json.load(urllib.request.urlopen(BASE + '/__test/gtoken?sub=smoke-1&email=smoke@gmail.com'))['token']
+    au = post('/api/auth', {'credential': gt, 'uid': 'smoke-device-0001'})
+    check('Google ilə giriş: hesab yaranır, cihazın uid-si qalır', au.get('isNew') is True and au.get('uid') == 'smoke-device-0001', str(au)[:120])
+    sy = post('/api/sync', {'token': au.get('token'), 'state': {'days': {'2026-01-01': 5}}})
+    gs = json.load(urllib.request.urlopen(BASE + '/api/sync?token=' + au.get('token', '')))
+    check('irəliləyiş hesabda saxlanılır və geri gəlir', sy.get('ok') and gs.get('state', {}).get('days', {}).get('2026-01-01') == 5)
+    bad = json.load(urllib.request.urlopen(BASE + '/__test/gtoken?sub=smoke-1&email=x@gmail.com&aud=other'))['token']
+    check('başqa Client ID üçün token rədd olunur', post('/api/auth', {'credential': bad}).get('error') == 'bad_token')
+    check('saxta sessiya ilə yazmaq olmur', post('/api/sync', {'token': 'a' * 48, 'state': {}}).get('error') == 'auth')
     check('gəzən şimşək: qol-ayaqlı element var', m.evaluate("!!document.querySelector('#walker .arm.ar') && !!document.querySelector('#bigBolt .leg.ll')"))
 
     pj0 = json.load(urllib.request.urlopen(BASE + '/__test/prevweek'))
