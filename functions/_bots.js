@@ -1,7 +1,7 @@
 // Addım — liqa boş görünməsin deyə virtual iştirakçılar.
 // Hər liqada hər həftə 12 virtual iştirakçı (deterministik — eyni həftədə adlar və XP sabitdir).
 // Real istifadəçi qoşulduqca virtual iştirakçıların sayı azalır (cəmi ən az 12 nəfər görünür).
-// Gündəlik XP: hər iştirakçının öz «minimum»u (10–50) və «maksimum»u (100–150) var; hər gün bu aralıqda qazanır.
+// Gündəlik XP: bir dərs 15–20 XP verir. Hər iştirakçının öz «minimum»u (5–15) və «maksimum»u (30–60) var — yəni gündə ~0.5–3 dərs.
 const NAMES = ['Aysel M.', 'Elvin Q.', 'Nərmin H.', 'Tural Ə.', 'Günay R.', 'Orxan S.', 'Lalə K.', 'Rauf İ.', 'Səbinə C.', 'Kənan N.',
   'Fidan T.', 'Emil B.', 'Aytən Z.', 'Ramil V.', 'Nigar Ş.', 'Ülvi D.', 'Könül A.', 'Fərid Y.', 'Zəhra M.', 'Cavid H.', 'Sevinc Q.',
   'Elnur R.', 'Ləman S.', 'Anar K.', 'Gülnar İ.', 'Vüsal N.', 'Aydan T.', 'Nihad B.', 'Xədicə Z.', 'Ruslan V.', 'Arzu Ş.', 'Samir D.',
@@ -24,7 +24,7 @@ export function botsFor(week, league, realCount, now = Date.now()) {
   const out = [];
   for (let i = 0; i < BOTS_PER_LEAGUE; i++) {
     const r = rng(hash(week + '|' + league + '|' + i));
-    const lo = 10 + Math.round(r() * 40), hi = 100 + Math.round(r() * 50);
+    const lo = 5 + Math.round(r() * 10), hi = 30 + Math.round(r() * 30);
     let xp = 0;
     for (let d = 0; d < 7; d++) {
       const day = lo + Math.round(r() * (hi - lo));

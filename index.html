@@ -481,13 +481,13 @@ nav.tabs a.on .tib{transform:translateY(-2px) scale(1.12)}
       <div><div class="big" id="streak">0</div><div class="sub">günlük seriya</div><div class="hint" id="best"></div></div>
     </div>
     <div class="week" id="week"></div>
-    <div class="goal"><button class="gset" id="goalSet" aria-label="Günlük hədəfi dəyiş">Günlük hədəf <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button><span id="goalTxt">0 / 50 XP</span></div>
+    <div class="goal"><button class="gset" id="goalSet" aria-label="Günlük hədəfi dəyiş">Günlük hədəf <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button><span id="goalTxt">0 / 40 XP</span></div>
     <div class="bar"><i id="goalBar" style="width:0"></i></div>
   </div>
   <section class="band">
     <a class="next" href="#course" id="nextCard"></a>
     <button class="daily" id="startQuiz"><svg width="46" height="46" viewBox="0 0 24 24"><use href="#starI"/></svg>
-      <span><strong>Günün quizi</strong><span id="quizState">8 sual · hər düzgün cavab +10 XP</span></span><span class="go">›</span></button>
+      <span><strong>Günün quizi</strong><span id="quizState">8 sual · hər düzgün cavab +2 XP</span></span><span class="go">›</span></button>
     <a class="nudge tab-league" href="#league" id="nudgeM"></a>
     <a class="promo" href="#premium" id="promo" hidden></a>
     <div id="vidHome"></div>
@@ -632,8 +632,8 @@ const ord=n=>{const l=n%10,t=n%100;let s;if(n%100===0)s='cü';else if(l===0)s={1
 const COLORS=['#2f7de1','#7b56d6','#e0662f','#16956a','#d6336c','#0e9aa7'];
 
 /* ---------- state ---------- */
-const GOALS=[[20,'Həvəskar','~5–10 dəq · yarım dərs'],[50,'Orta','~15 dəq · 1 dərs'],[100,'Ciddi','~30 dəq · 2 dərs'],[150,'Pro','~45 dəq · 3 dərs']];let S;
-const goalXP=()=>(S&&S.goal)||50;
+const GOALS=[[20,'Həvəskar','~5 dəq · 1 dərs'],[40,'Orta','~12 dəq · 2–3 dərs'],[60,'Ciddi','~20 dəq · 3–4 dərs'],[100,'Pro','~35 dəq · 6 dərs']];let S;
+const goalXP=()=>{if(!S)return 40;if(S.goal&&!S.goalV2){S.goal={20:20,50:40,100:60,150:100}[S.goal]||40;S.goalV2=1}return S.goal||40};
 const blank=()=>({days:{},freeze:0,frozen:{},skills:{reading:0,listening:0,speaking:0,writing:0},quiz:{},goalDone:{},me:null,course:{},lvl:'a1',onboarded:0,placed:null,sound:1,lastRank:{},uid:'',look:{avatar:'',ncolor:0,nstyle:0,frame:0},prem:{until:0},lday:{},prac:{},mist:[],notif:1,nHour:20});
 const load=()=>{try{S=JSON.parse(localStorage.getItem('addim2')||'null')}catch(e){S=null}if(!S)S=blank();for(const k in blank())if(S[k]===undefined)S[k]=blank()[k]};
 const save=()=>{try{localStorage.setItem('addim2',JSON.stringify(S))}catch(e){}};window.save=save;
@@ -682,7 +682,9 @@ function addXP(n,skill,el){
 }
 function floatXP(el,n){setTimeout(()=>play('xp'),160);const r=el.getBoundingClientRect(),f=document.createElement('div');f.className='float';f.textContent='+'+n+' XP';f.style.left=(r.left+r.width/2-30)+'px';f.style.top=(r.top-10)+'px';document.body.appendChild(f);setTimeout(()=>f.remove(),1100);const p=$('xpTot').parentElement;p.classList.remove('pop');void p.offsetWidth;p.classList.add('pop')}
 function confetti(){play('rank');const c=['#ffc83d','#ff9f1c','#2f7de1','#7b56d6','#16956a','#ef5d5d'];for(let i=0;i<60;i++){const d=document.createElement('div');d.className='conf';d.style.left=Math.random()*100+'vw';d.style.background=c[i%c.length];d.style.setProperty('--x',(Math.random()*160-80)+'px');d.style.setProperty('--r',(Math.random()*720)+'deg');d.style.setProperty('--d',(1.6+Math.random()*1.4)+'s');document.body.appendChild(d);setTimeout(()=>d.remove(),3200)}
-  setTimeout(()=>sheet('Günlük hədəf tamamlandı!',`<p>Bu gün <b>${goalXP()} XP</b> hədəfinə çatdın. Enerjin tam doludur — sabah da qayıt ki, seriyan böyüsün.</p><p class="lim">Davam etdikcə XP-n sayılmağa davam edir.</p>`),700)}
+  setTimeout(goalDoneSheet,700)}
+let GOALP=0;
+function goalDoneSheet(){if(LS&&location.hash==='#lesson'){GOALP=1;return}GOALP=0;sheet('Günlük hədəf tamamlandı!',`<p>Bu gün <b>${goalXP()} XP</b> hədəfinə çatdın. Enerjin tam doludur — sabah da qayıt ki, seriyan böyüsün.</p><p class="lim">Davam etdikcə XP-n sayılmağa davam edir.</p>`)}
 
 
 
@@ -793,7 +795,7 @@ $('boltBtn').onclick=boltTap;
 $('goalSet').onclick=goalSheet;
 $('fbOpen').onclick=fbSheet;
 function goalSheet(){const g=goalXP();sheet('Günlük hədəf',`<p style="margin-top:0">Hər gün neçə XP toplamaq istəyirsən? Hədəfə çatanda şənlik olur, sonra da XP sayılmağa davam edir.</p><div class="gopts">${GOALS.map(([v,n,t])=>`<button class="gopt ${v===g?'on':''}" data-v="${v}" aria-pressed="${v===g}"><b>${n}</b><span>${v} XP</span><small>${t}</small></button>`).join('')}</div>`,'<button class="btn ghost" id="shClose">Bağla</button>');
-  $('shClose').onclick=closeSheet;document.querySelectorAll('.gopt').forEach(b=>b.onclick=()=>{S.goal=+b.dataset.v;const t=today();if((S.days[t]||0)>=S.goal)S.goalDone[t]=1;save();play('ok');closeSheet();renderHome();toast('Günlük hədəf: '+S.goal+' XP')})}
+  $('shClose').onclick=closeSheet;document.querySelectorAll('.gopt').forEach(b=>b.onclick=()=>{S.goal=+b.dataset.v;S.goalV2=1;const t=today();if((S.days[t]||0)>=S.goal)S.goalDone[t]=1;save();play('ok');closeSheet();renderHome();toast('Günlük hədəf: '+S.goal+' XP')})}
 
 $('enPill').onclick=()=>{play('tap');enSheet(false)};setInterval(()=>{if(typeof S!=='undefined'&&S)drawEnergy()},60000);
 /* ---------- gəzən şimşək: arabir ekranda gəzir ---------- */
@@ -859,7 +861,7 @@ function renderHome(){
   $('week').innerHTML=[6,5,4,3,2,1,0].map(n=>{const k=shiftDay(t,-n),d=new Date(k+'T12:00:00Z').getUTCDay(),on=S.days[k]>0,fr=!on&&S.frozen[k];
     return `<div class="day">${WD[d]}<div class="dot ${on||fr?'on':''} ${n===0?'today':''}">${on?'<svg viewBox="0 0 64 64"><use href="#boltI"/></svg>':fr?'<svg viewBox="0 0 64 64"><use href="#boltIce"/></svg>':''}</div></div>`}).join('');
   $('skills').innerHTML=SK.map(([id,n,d,c,b])=>`<a class="skill" href="#${id}" style="background:var(${b})"><div class="ic" style="color:var(${c})">${IC[id]}</div><b>${n}</b><span>${d}</span><div class="mini"><i style="width:${S.skills[id]||0}%;background:var(${c})"></i></div></a>`).join('');
-  const q=S.quiz[t];$('quizState').textContent=q!=null?`Bu gün: ${q}/8 düzgün · yenidən keç`:'8 sual · hər düzgün cavab +10 XP';
+  const q=S.quiz[t];$('quizState').textContent=q!=null?`Bu gün: ${q}/8 düzgün · yenidən keç`:'8 sual · hər düzgün cavab +2 XP';
   if(typeof renderNext==='function')renderNext();
   $('freezeNote').textContent=S.freeze?`Seriya qoruyucusu: ${S.freeze} ədəd — bir gün buraxsan, seriyan sönməz.`:'Hər 7 günlük seriyada seriya qoruyucusu qazanırsan.';
 }
@@ -898,14 +900,14 @@ function startQuiz(){const {lv,reach,out}=quizPool(),n=out.length,day=Math.floor
 function showQ(){
   $('qBar').style.width=(qi/QZ.length*100)+'%';
   if(qi>=QZ.length){S.quiz[today()]=qok;save();renderHome();track('quiz');if(STRIKE)setTimeout(showStrike,1200);
-    $('quizBox').innerHTML=`<div class="res"><svg width="72" height="72" viewBox="0 0 24 24"><use href="#starI"/></svg><div class="score">${qok}/${QZ.length}</div><h2 style="margin-top:12px">${qok>=7?'Əla nəticə!':qok>=5?'Yaxşı iş!':'Yaxşı başlanğıc!'}</h2><p>+${qok*10} XP qazandın. Sabah yeni suallar olacaq.</p><a class="btn" href="#league">Liqada yerimə bax</a><a class="btn ghost" href="#home">Ana səhifə</a></div>`;return}
+    $('quizBox').innerHTML=`<div class="res"><svg width="72" height="72" viewBox="0 0 24 24"><use href="#starI"/></svg><div class="score">${qok}/${QZ.length}</div><h2 style="margin-top:12px">${qok>=7?'Əla nəticə!':qok>=5?'Yaxşı iş!':'Yaxşı başlanğıc!'}</h2><p>+${qok*2} XP qazandın. Sabah yeni suallar olacaq.</p><a class="btn" href="#league">Liqada yerimə bax</a><a class="btn ghost" href="#home">Ana səhifə</a></div>`;return}
   const it=QZ[qi];
   $('quizBox').innerHTML=`<div class="note" style="margin:0 0 6px">Sual ${qi+1} / ${QZ.length}${qStreak>=2?' · <b style="color:var(--sun)">'+qStreak+' ardıcıl düzgün!</b>':''}</div><p class="q">${esc(it.q)}</p><div class="opts">${it.o.map((o,i)=>`<button class="opt" data-i="${i}">${esc(o)}</button>`).join('')}</div><div id="qEx"></div>`;
   $('quizBox').querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
-    const ok=it.o[+b.dataset.i]===it.a;play(ok?'ok':'no');if(ok){qok++;qStreak++;addXP(10,null,b)}else qStreak=0;
+    const ok=it.o[+b.dataset.i]===it.a;play(ok?'ok':'no');if(ok){qok++;qStreak++;addXP(2,null,b)}else qStreak=0;
     $('quizBox').querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(it.o[+x.dataset.i]===it.a)x.classList.add('right')});
     if(!ok)b.classList.add('wrong');
-    $('qEx').innerHTML=`<div class="expl"><b style="color:${ok?'var(--ok)':'var(--coral)'}">${ok?['Düzgündür!','Əla!','Bravo!','Tam doğru!'][qi%4]+' +10 XP':'Düzgün cavab: '+esc(it.a)}</b>${esc(it.e)}</div><button class="btn" id="qNext">${qi+1<QZ.length?'Davam et':'Nəticəni gör'}</button>`;
+    $('qEx').innerHTML=`<div class="expl"><b style="color:${ok?'var(--ok)':'var(--coral)'}">${ok?['Düzgündür!','Əla!','Bravo!','Tam doğru!'][qi%4]+' +2 XP':'Düzgün cavab: '+esc(it.a)}</b>${esc(it.e)}</div><button class="btn" id="qNext">${qi+1<QZ.length?'Davam et':'Nəticəni gör'}</button>`;
     $('qNext').onclick=()=>{qi++;showQ()};$('qNext').focus({preventScroll:true});
   });
 }
@@ -916,7 +918,7 @@ function mcq(box,qs,skill,onDone){let cnt=0,good=0;
   box.innerHTML=qs.map((q,n)=>`<div class="card" style="margin-bottom:12px"><p class="q" style="font-size:18px">${n+1}. ${esc(q[0])}</p><div class="opts" data-n="${n}">${shuffle(q[1]).map(o=>`<button class="opt" data-v="${esc(o)}">${esc(o)}</button>`).join('')}</div><div class="ex"></div></div>`).join('');
   box.querySelectorAll('.opts').forEach(g=>{const q=qs[+g.dataset.n];g.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
     const ok=b.dataset.v===q[1][0];g.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(x.dataset.v===q[1][0])x.classList.add('right')});
-    play(ok?'ok':'no');if(!ok)b.classList.add('wrong');else addXP(5,skill,b);
+    play(ok?'ok':'no');if(!ok)b.classList.add('wrong');else addXP(1,skill,b);
     g.nextElementSibling.innerHTML=`<div class="expl"><b style="color:${ok?'var(--ok)':'var(--coral)'}">${ok?'Düzgün! +5 XP':'Diqqət:'}</b>${esc(q[2])}</div>`;
     cnt++;if(ok)good++;if(cnt===qs.length&&onDone)setTimeout(()=>onDone(good),350)})})
 }
@@ -951,7 +953,7 @@ function openEp(kind,id){stopSpeech();const e=PRAC[kind].find(x=>x.id===id);if(!
     $('showTr').onclick=()=>{$('tr').hidden=!$('tr').hidden;$('showTr').textContent=$('tr').hidden?'Transkripti göstər':'Transkripti gizlət'}}
   else $('rText').querySelectorAll('.w').forEach(b=>b.onclick=()=>{const t=$('tip');t.textContent=b.dataset.k+' — '+e.gl[b.dataset.k];t.style.display='block';clearTimeout(tipT);tipT=setTimeout(()=>t.style.display='none',3500)});
   mcq($('epQs'),e.qs,kind,ok=>{const pct=Math.round(ok/e.qs.length*100),first=!pDone(e.id);S.prac=S.prac||{};S.prac[e.id]=Math.max(S.prac[e.id]||0,pct);save();
-    const g=first?bonusXP(10):0;if(g)addXP(g,kind,null);track('practice',e.id);
+    const g=first?bonusXP(5):0;if(g)addXP(g,kind,null);track('practice',e.id);
     const nx=eps.slice(n+1).find(x=>!pDone(x.id))||eps.find(x=>!pDone(x.id)&&x!==e)||eps[n+1];
     play('done');$('epEnd').innerHTML=`<div class="res" style="margin-top:6px"><svg width="96" height="96" viewBox="0 0 64 64"><use href="#boltI"/></svg><h2 style="margin-top:6px">${kind==='listening'?'Dinləmə':'Oxu'} tamamlandı!</h2><div class="row" style="justify-content:center;gap:28px;margin:12px 0 16px"><div><div class="score">${ok}/${e.qs.length}</div><div class="hint">düzgün</div></div>${g?`<div><div class="score" style="color:var(--star)">+${g}</div><div class="hint">bonus XP</div></div>`:''}</div>${nx?`<button class="btn" id="epNext">Növbəti ${k.noun}: ${esc(nx.title)}</button>`:`<p class="note">Bu səviyyənin bütün ${kind==='listening'?'dinləmələrini':'mətnlərini'} keçdin! Yuxarıdan başqa səviyyə seç.</p>`}<button class="btn ghost" id="epList">Siyahıya qayıt</button></div>`;
     if(nx)$('epNext').onclick=()=>{openEp(kind,nx.id);window.scrollTo(0,0)};$('epList').onclick=()=>{PCUR[kind]=null;packList(kind);window.scrollTo(0,0)};
@@ -1019,8 +1021,8 @@ const SP=[["Nice to meet you.","Tanış olmağıma şadam.","«Meet» sözündə
 let si=0,DIC=null,heard='',MT=null;
 const norm=s=>s.toLowerCase().replace(/[^a-z' ]/g,' ').split(/\s+/).filter(Boolean);
 function showS(){const s=SP[si];$('sCount').textContent=`Cümlə ${si+1} / ${SP.length}`;$('sEn').textContent=s[0];$('sAz').textContent=s[1];$('sTip').textContent='Tələffüz məsləhəti: '+s[2];$('sOut').innerHTML='';heard=''}
-function grade(alts){const {pct,toks}=speechScore(SP[si][0],alts||[heard]);if(pct>=80)addXP(10,'speaking',$('sMic'));
-  $('sOut').innerHTML=`<div style="display:flex;gap:14px;align-items:center"><div class="score">${pct}%</div><div>${pct>=80?'Əla! +10 XP':'Qırmızı sözləri bir də dinlə və təkrar et.'}</div>${pct<80?'<button class="why" id="sWhy" aria-label="Niyə tanınmadı?">?</button>':''}</div><div style="margin-top:10px">${tokHTML(toks)}</div><p class="note">Eşidilən: «${esc(heard)}»</p>`;
+function grade(alts){const {pct,toks}=speechScore(SP[si][0],alts||[heard]);if(pct>=80)addXP(2,'speaking',$('sMic'));
+  $('sOut').innerHTML=`<div style="display:flex;gap:14px;align-items:center"><div class="score">${pct}%</div><div>${pct>=80?'Əla! +2 XP':'Qırmızı sözləri bir də dinlə və təkrar et.'}</div>${pct<80?'<button class="why" id="sWhy" aria-label="Niyə tanınmadı?">?</button>':''}</div><div style="margin-top:10px">${tokHTML(toks)}</div><p class="note">Eşidilən: «${esc(heard)}»</p>`;
   if($('sWhy'))$('sWhy').onclick=()=>whySheet({kind:'speech',type:'speak',q:SP[si][1],right:SP[si][0],mine:heard,ref:'speaking#'+si})}
 $('sHear').onclick=()=>playBtn($('sHear'),[{text:SP[si][0]}],0.9);
 $('sNext').onclick=()=>{stopSpeech();si=(si+1)%SP.length;showS()};
@@ -1042,7 +1044,7 @@ $('wCheck').onclick=async()=>{
     const r=await SAMPLE.json(`You are an English teacher for Azerbaijani-speaking learners. Task given to the learner: "${WP[wi]}". Learner's text is below between <text> tags. Return ONLY JSON: {"level":"estimated CEFR level like A2","corrected":"the full corrected English text","mistakes":[{"wrong":"exact wrong fragment","right":"correction","why":"short explanation IN AZERBAIJANI (Latin script)"}],"praise":"one sentence in Azerbaijani on what was good","tip":"one concrete next-step tip in Azerbaijani"}. Max 6 mistakes, most important first.\n<text>${txt}</text>`,{modelTier:'quick'});
     const m=Array.isArray(r.mistakes)?r.mistakes:[];
     $('wOut').innerHTML=`<div style="display:flex;gap:14px;align-items:center"><div class="score">${esc(r.level||'—')}</div><div>${esc(r.praise||'')}</div></div>${m.length?'<h3 style="margin:16px 0 4px">Səhvlər</h3>'+m.map(x=>`<div class="mist"><s>${esc(x.wrong)}</s> → <ins>${esc(x.right)}</ins><div style="font-size:15px">${esc(x.why)}</div></div>`).join(''):'<p><b>Səhv tapılmadı — əla!</b></p>'}<h3 style="margin:16px 0 4px">Düzəldilmiş mətn</h3><div class="expl" style="margin:0">${esc(r.corrected||'')}</div><p><b>Növbəti addım:</b> ${esc(r.tip||'')}</p><p class="note">Rəy təxminidir, rəsmi CEFR nəticəsi deyil.</p>`;
-    addXP(15,'writing',$('wCheck'));
+    addXP(5,'writing',$('wCheck'));
   }catch(e){$('wOut').innerHTML='<p class="note">Yoxlama alınmadı, yenidən cəhd et.</p>'}
   $('wCheck').disabled=false;
 };
@@ -1210,7 +1212,7 @@ function itemBySrc(src){const [lid,k]=src.split('#');if(lid.includes('@')){const
 function reviewItems(a){const pool=shuffle(a.u.lessons.filter(l=>!l.review&&(isDone(l.id)||l===a.u.lessons[0])).flatMap(itemsOf).filter(i=>i.t!=='learn'));
   const pick=[],seen=new Set();for(const it of pool){const k=it.t+(it.q||[].concat(it.en)[0]);if(seen.has(k))continue;seen.add(k);pick.push(it);if(pick.length>=12)break}return pick}
 function startMistakes(){const items=shuffle((S.mist||[]).map(itemBySrc).filter(Boolean).slice(0,12));if(!items.length)return;
-  LS={a:{x:{id:'__mist',title:'Səhvlərin üzərində iş'},mist:1},items:items.map(i=>({...i,fix:1})),i:0,ok:0,scored:0,xp:0};track('review','mist');location.hash='lesson';if(location.hash==='#lesson')route();renderStep()}
+  LS={a:{x:{id:'__mist',title:'Səhvlərin üzərində iş'},mist:1},items:items.map(i=>({...i,fix:1})),i:0,ok:0,scored:0,xp:0,xpf:0,xpg:0,plan:xpPlan(items,false)};track('review','mist');location.hash='lesson';if(location.hash==='#lesson')route();renderStep()}
 function renderMist(){const el=$('mistCard');if(!el)return;const n=(S.mist||[]).filter(itemBySrc).length;
   el.innerHTML=n?`<button class="ep" id="mistGo" style="width:100%;margin-bottom:14px;border-color:#fbd8c5;background:#fff7f2"><span class="n" style="background:#ffe3d3;color:#c2410c">${n}</span><span><b>Səhvlərin üzərində iş</b><small>Səhv cavab verdiyin tapşırıqları təkrarla — düzgün cavab verdikcə siyahıdan silinir.</small></span><span class="go">›</span></button>`:'';
   if(n)$('mistGo').onclick=startMistakes}
@@ -1222,12 +1224,18 @@ function startLesson(id,part){const a=ALL.find(z=>z.x.id===id);if(!a)return;
   if(costly)enSpend(EN_LES());
   const items=circ?circleItems(a.x,part):a.x.review?reviewItems(a):itemsOf(a.x);if(a.x.review)track('review',a.x.id);
   if(!circ&&!a.x.review&&!items.some(i=>i.t==='speak')){const o=items.find(i=>i.t==='order');if(o)items.splice(items.length-1,0,{t:'speak',en:[].concat(o.en)[0],az:o.az})}
-  LS={a,items,i:0,ok:0,scored:0,xp:0,part:circ?part:null,fresh,costly};prefetchAudio(lessonAudio(items));location.hash='lesson';if(location.hash==='#lesson')route();renderStep()}
+  LS={a,items,i:0,ok:0,scored:0,xp:0,xpf:0,xpg:0,part:circ?part:null,fresh,costly,plan:xpPlan(items,circ?fresh:!a.x.review&&!isDone(id))};prefetchAudio(lessonAudio(items));location.hash='lesson';if(location.hash==='#lesson')route();renderStep()}
 function fbBox(ok,title,body){return `<div class="fb ${ok?'ok':'no'}">${ok?'':'<button class="why" id="lWhy" aria-label="Niyə səhvdir? İzah və təklif">?</button>'}<b>${esc(title)}</b>${body?'<div>'+esc(body)+'</div>':''}<button class="btn ${ok?'':'sun'}" id="lNext">Davam et</button></div>`}
+/* XP: hər dərs cəmi 15–20 XP (tapşırıqların çətinliyinə görə); 80%-i düzgün cavablara çəkiyə görə, 20%-i dərsi bitirməyə.
+   Təkrar cəhd XP vermir; keçilmiş dərsin təkrarı yarı XP verir. */
+const XPW={mc:1,listen:1.2,order:1.5,dict:1.8,speak:2};
+function xpPlan(items,first){const sc=items.filter(i=>i.t!=='learn'&&!i.re),sum=sc.reduce((a,i)=>a+(XPW[i.t]||1),0)||1,avg=sum/(sc.length||1);
+  const T=Math.max(15,Math.min(20,Math.round(15+5*(avg-1)/0.8)))*(first?1:.5);return {T,unit:T*.8/sum}}
+function xpGive(el){const due=Math.round(LS.xpf)-LS.xpg;if(due>0){LS.xpg+=due;const g=bonusXP(due);addXP(g,null,el);LS.xp+=g}}
 function answered(ok,right,e,el,mine){const it=LS.items[LS.i];
   if(!it.re){LS.scored++;if(ok)LS.ok++}
   play(ok?'ok':'no');
-  if(ok){const g=bonusXP(5);addXP(g,null,el);LS.xp+=g;if(it.fix&&it.src){S.mist=(S.mist||[]).filter(x=>x!==it.src);save()}}
+  if(ok){if(!it.re){LS.xpf+=(XPW[it.t]||1)*LS.plan.unit;xpGive(el)}if(it.fix&&it.src){S.mist=(S.mist||[]).filter(x=>x!==it.src);save()}}
   else{if(LS.costly&&!isPrem()){const was=enNow();enSpend(EN_MIS(),el);if(was>0&&enNow()===0)setTimeout(()=>toast('Şimşəkciklər bitdi — bu dərsi sona qədər keçə bilərsən'),700)}if(!it.re)LS.items.push({...it,re:1});if(it.src&&!it.fix){S.mist=[it.src].concat((S.mist||[]).filter(x=>x!==it.src)).slice(0,40);save()}}
   const f=document.createElement('div');f.innerHTML=fbBox(ok,ok?['Əla!','Düzgündür!','Bravo!','Tam doğru!'][LS.i%4]:'Düzgün cavab: '+right,ok?'':e||'');$('lBox').appendChild(f.firstElementChild);
   $('lNext').onclick=()=>{LS.i++;renderStep()};if(!ok&&$('lWhy'))$('lWhy').onclick=()=>whySheet({kind:'item',type:it.t,q:it.t==='order'?it.az:it.t==='mc'?it.q:'',right,mine,e,ref:it.src||(LS.a&&LS.a.x.id)});$('lNext').focus({preventScroll:true});$('lNext').scrollIntoView({block:'nearest'})}
@@ -1262,7 +1270,7 @@ function renderStep(){
     $('kHear').onclick=()=>playBtn($('kHear'),[{text:it.en}],0.9);
     $('kSkip').onclick=()=>{if(DIC&&$('kMic').dataset.on)DIC.stop().catch(()=>{});if(RECN&&RECN.state!=='inactive'){RECN.onstop=()=>{};RECN.stop()}MT=null;LS.i++;renderStep()};
     const judge=(heard)=>{const {pct,toks}=speechScore(it.en,heard),tk=tokHTML(toks);
-      if(pct>=70){MT=null;play('ok');const g=bonusXP(5);addXP(g,null,$('kMic'));LS.xp+=g;$('kSkip').remove();$('kMic').remove();
+      if(pct>=70){MT=null;play('ok');if(!LS.items[LS.i].re){LS.xpf+=XPW.speak*LS.plan.unit;xpGive($('kMic'))}$('kSkip').remove();$('kMic').remove();
         $('kOut').innerHTML=`<div style="margin-bottom:6px">${tk}</div>`;const f=document.createElement('div');f.innerHTML=fbBox(true,pct+'% — əla tələffüz!','');box.appendChild(f.firstElementChild);$('lNext').onclick=()=>{LS.i++;renderStep()};$('lNext').focus({preventScroll:true})}
       else{play('no');$('kOut').innerHTML=`<div style="display:flex;align-items:center;gap:10px"><div class="score" style="font-size:36px">${pct}%</div><button class="why" id="kWhy" aria-label="Niyə tanınmadı? İzah və təklif">?</button></div><div style="margin:6px 0">${tk}</div><p class="note">Qırmızı sözləri bir də dinlə və yenidən de. «Eşidilən: ${esc(said)}»</p>`;
         $('kWhy').onclick=()=>whySheet({kind:'speech',type:'speak',q:it.az||'',right:it.en,mine:said,ref:it.src||(LS.a&&LS.a.x.id)})}};
@@ -1271,7 +1279,7 @@ function renderStep(){
   LS.i++;renderStep();
 }
 function finishLesson(){const a=LS.a,circ=LS.part!=null,part=LS.part,acc=LS.scored?Math.round(LS.ok/LS.scored*100):100;
-  const first=circ?LS.fresh:!a.mist&&!isDone(a.x.id),circDone=circ&&part===4&&LS.fresh,bonus=bonusXP(circDone?30:first?15:5);
+  const first=circ?LS.fresh:!a.mist&&!isDone(a.x.id),circDone=circ&&part===4&&LS.fresh;LS.xpf+=LS.plan.T*.2;const due=Math.max(0,Math.round(LS.xpf)-LS.xpg),bonus=bonusXP(due);LS.xpg+=due;
   if(first&&!a.x.review){const t=today();S.lday={[t]:(S.lday[t]||0)+1};track('lesson',a.x.id+(circ?'#'+part:''))}
   if(circ){S.parts=S.parts||{};if(LS.fresh)S.parts[a.x.id]=Math.max(partsDone(a.x.id),part+1);if(partsDone(a.x.id)>=4)S.course[a.x.id]=Math.max(S.course[a.x.id]||0,acc)}
   else if(!a.mist)S.course[a.x.id]=Math.max(S.course[a.x.id]||0,acc);
@@ -1280,7 +1288,7 @@ function finishLesson(){const a=LS.a,circ=LS.part!=null,part=LS.part,acc=LS.scor
   const pdn=circ?partsDone(a.x.id):0,inCirc=circ&&pdn<4,nx=inCirc?null:nextLesson();
   $('lBox').innerHTML=`<div class="res"><svg width="120" height="120" viewBox="0 0 64 64"><use href="#boltI"/></svg><h2 style="margin-top:8px">${circDone?'Dairə tamamlandı! 🏆':a.mist?'Səhvlər təkrarlandı!':a.x.review?'Təkrar tamamlandı!':circ?(part<4?'Dərs '+(part+1)+' tamamlandı!':'Praktika tamamlandı!'):'Dərs tamamlandı!'}</h2><p style="margin:0">${esc(a.x.title)}${circ?' · '+Math.min(pdn,5)+' / 5':''}</p>${circ?`<div class="cring">${ringSVG(Math.min(pdn,5),a.lv.color,pdn>=5)}</div>`:''}<div class="row" style="justify-content:center;gap:28px;margin:18px 0"><div><div class="score">${acc}%</div><div class="hint">düzgün</div></div><div><div class="score" style="color:var(--star)">+${LS.xp}</div><div class="hint">XP</div></div></div>${inCirc?`<button class="btn" id="lGoPart">Növbəti: Dərs ${pdn+1} — ${PART_NAMES[pdn]}</button>`:''}${circ&&pdn===4?`<button class="btn sun" id="lGoPrac">★ Ümumi praktika — dairəni tamamla</button>`:''}${nx?`<button class="btn ${circ&&pdn===4?'ghost':''}" id="lGoNext">Növbəti dairə: ${esc(nx.x.title)}</button>`:''}<a class="btn ghost" href="#course">Kursa qayıt</a></div>`;
   $('lBox').insertAdjacentHTML('beforeend','<div id="vidLesson" style="margin-top:8px"></div>');renderVideo($('vidLesson'),'Dərsdən sonra bax');
-  play('done');$('lBar').style.width='100%';if(circDone){fireworks(2500);confettiOnly()}if(nx)$('lGoNext').onclick=()=>startLesson(nx.x.id);if($('lGoPart'))$('lGoPart').onclick=()=>startLesson(a.x.id,pdn);if($('lGoPrac'))$('lGoPrac').onclick=()=>startLesson(a.x.id,4);LS=null;renderNext();if(STRIKE)setTimeout(showStrike,1300);
+  play('done');$('lBar').style.width='100%';if(circDone){fireworks(2500);confettiOnly()}if(nx)$('lGoNext').onclick=()=>startLesson(nx.x.id);if($('lGoPart'))$('lGoPart').onclick=()=>startLesson(a.x.id,pdn);if($('lGoPrac'))$('lGoPrac').onclick=()=>startLesson(a.x.id,4);LS=null;renderNext();if(STRIKE)setTimeout(showStrike,1300);if(GOALP)setTimeout(goalDoneSheet,STRIKE?2400:1100);
   S.adN=(S.adN||0)+1;save();if(!isPrem()&&(S.adN%(CFG.adEvery||3)===0||S.adDue))setTimeout(()=>premAd(0),STRIKE?2600:1500);
 }
 $('lQuit').onclick=()=>sheet('Dərsdən çıxırsan?','<p>Bu dərsdəki proqresin yadda qalmayacaq. Qazandığın XP isə səndə qalır.</p>','<button class="btn" id="qStay">Davam et</button><button class="btn ghost" id="qLeave">Çıx</button>')||($('qStay').onclick=closeSheet,$('qLeave').onclick=()=>{closeSheet();LS=null;location.hash='course'});
