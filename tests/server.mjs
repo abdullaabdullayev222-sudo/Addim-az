@@ -2,7 +2,7 @@ import http from 'node:http'; import fs from 'node:fs'; import path from 'node:p
 import { DatabaseSync } from 'node:sqlite';
 const root = process.argv[2];
 const routes = {};
-for (const n of ['board','premium','admin','track','tts','ttscheck','push','push-run']) routes[n] = (await import(path.join(root, 'functions/api/'+n+'.js'))).onRequest;
+for (const n of ['board','premium','admin','track','tts','ttscheck','push','push-run','feedback','stt']) routes[n] = (await import(path.join(root, 'functions/api/'+n+'.js'))).onRequest;
 const onRequest = routes.board;
 const db = new DatabaseSync(':memory:');
 // Workers AI təqlidi: 1.5 saniyəlik səssiz WAV qaytarır, çağırışları sayır
@@ -47,9 +47,9 @@ http.createServer(async (req, res) => {
   if (u.pathname === '/__test/pushsub') { res.writeHead(200, { 'content-type': 'application/json' }); res.end(JSON.stringify(await fakeSub(u.searchParams.get('n') || 'x'))); return; }
   if (u.pathname === '/__test/pushlog') { res.writeHead(200, { 'content-type': 'application/json' }); res.end(JSON.stringify(pushLog)); return; }
   if (u.pathname === '/__test/ai') { if (u.searchParams.has('fail')) aiFail = u.searchParams.get('fail') === '1'; if (u.searchParams.has('mp3')) aiMp3 = u.searchParams.get('mp3') === '1'; if (u.searchParams.has('garble')) aiGarble = u.searchParams.get('garble') === '1'; if (u.searchParams.has('delay')) aiDelay = +u.searchParams.get('delay'); res.writeHead(200, { 'content-type': 'application/json' }); res.end(JSON.stringify({ aiCalls, aiFail, lastModel })); return; }
-  const m = u.pathname.match(/^\/api\/(board|premium|admin|track|ttscheck|tts|push|push-run)$/);
+  const m = u.pathname.match(/^\/api\/(board|premium|admin|track|ttscheck|tts|push|push-run|feedback|stt)$/);
   if (m) {
-    let body = ''; for await (const c of req) body += c;
+    const ch = []; for await (const c of req) ch.push(c); const body = Buffer.concat(ch);
     const r = await routes[m[1]]({ request: new Request('http://x' + req.url, { method: req.method, body: req.method === 'POST' ? body : undefined, headers: req.headers }), env: { DB: D1, AI, ADMIN_KEY: 'test-admin-key-123', PUSH_TEST: 1 } });
     res.writeHead(r.status, Object.fromEntries(r.headers)); res.end(Buffer.from(await r.arrayBuffer())); return;
   }

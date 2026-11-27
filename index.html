@@ -255,6 +255,9 @@ nav.tabs a svg{width:24px;height:24px}nav.tabs a.on{color:var(--blue)}
 .gx{font-style:normal;color:#16956a;font-weight:900;margin-left:4px}#goalBar.over{background:linear-gradient(90deg,#16956a,#f5b800)!important}
 .gopts{display:grid;grid-template-columns:1fr 1fr;gap:10px}.gopt{display:flex;flex-direction:column;align-items:center;gap:1px;padding:14px 8px;border-radius:16px;border:2px solid var(--line);background:var(--card);font:inherit;color:var(--ink);cursor:pointer}
 .gopt b{font-size:16px}.gopt span{font-size:22px;font-weight:900}.gopt small{color:var(--mut);font-weight:700}.gopt.on{border-color:#f59e0b;background:#fffbeb;box-shadow:0 0 0 3px #fde68a}
+.why{float:right;width:30px;height:30px;border-radius:50%;border:2px solid currentColor;background:#fff;color:#c2410c;font:900 17px/1 inherit;font-family:inherit;cursor:pointer;display:grid;place-items:center;margin:-4px -4px 0 8px;flex:0 0 auto}.why:focus-visible{outline:3px solid #f59e0b}
+.whyr{display:flex;flex-direction:column;padding:10px 12px;border-radius:12px;margin:8px 0}.whyr small{font-weight:800;color:var(--mut);font-size:12px}.whyr b{font-size:17px}.whyr.no{background:#fff1f1;border:1px solid #fecaca}.whyr.ok{background:#ecfdf3;border:1px solid #bbf7d0}
+.whyf{margin-top:12px;border-top:1px solid var(--line);padding-top:10px}.whyf summary{cursor:pointer;font-weight:800;color:#4f46e5}.whyf textarea,#fbTx{width:100%;box-sizing:border-box;border:1.5px solid var(--line);border-radius:12px;padding:10px;font:inherit;font-size:16px;margin:6px 0 8px;resize:vertical}
 .lvls{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 8px}
 .lvl{flex:none;min-height:44px;padding:8px 16px;border-radius:99px;border:2px solid var(--line);background:var(--card);font-weight:900;cursor:pointer}
 .lvl[aria-pressed=true]{color:#fff;border-color:transparent}
@@ -496,7 +499,7 @@ nav.tabs a.on .tib{transform:translateY(-2px) scale(1.12)}
 
 <!-- PROFILE STUDIO -->
 <main class="view" id="v-profile"><section class="band studio" id="pBox"></section>
-  <section class="band" style="padding-top:0"><div class="card" id="pInstallCard" style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px"><span><b>Tətbiqi telefona yüklə</b><span class="lim">Ana ekrandan bir toxunuşla aç</span></span><button class="btn sun" id="pInstall" style="width:auto;margin:0">Yüklə</button></div><div class="card" id="notifCard" style="margin-bottom:12px"></div><div class="card" id="voiceCard" style="margin-bottom:12px"></div><div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:12px"><span><b>Səs effektləri</b><span class="lim">Toxunuş, düzgün cavab, XP səsləri</span></span><button class="pill" id="sndBtn" aria-label="Səs effektləri"></button></div><div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:12px"><span><b>Gəzən şimşək</b><span class="lim">Şimşək arabir ekranda gəzsin, salam versin</span></span><button class="tgl" id="roamTgl" role="switch" aria-checked="true" aria-label="Gəzən şimşək"><i></i></button></div><p class="note">Tətbiqi yaxşılaşdırmaq üçün anonim istifadə statistikası toplanır: neçə dərs keçildiyi, hansı səviyyə seçildiyi. Adın, e-poçtun və ya şəxsi məlumatın toplanmır.</p></section>
+  <section class="band" style="padding-top:0"><div class="card" id="pInstallCard" style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px"><span><b>Tətbiqi telefona yüklə</b><span class="lim">Ana ekrandan bir toxunuşla aç</span></span><button class="btn sun" id="pInstall" style="width:auto;margin:0">Yüklə</button></div><div class="card" id="notifCard" style="margin-bottom:12px"></div><div class="card" id="voiceCard" style="margin-bottom:12px"></div><div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:12px"><span><b>Səs effektləri</b><span class="lim">Toxunuş, düzgün cavab, XP səsləri</span></span><button class="pill" id="sndBtn" aria-label="Səs effektləri"></button></div><div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:12px"><span><b>Təklif və şikayət</b><span class="lim">Səhv tapdın və ya fikrin var? Bizə yaz</span></span><button class="btn ghost" id="fbOpen" style="width:auto;margin:0">Yaz</button></div><div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:12px"><span><b>Gəzən şimşək</b><span class="lim">Şimşək arabir ekranda gəzsin, salam versin</span></span><button class="tgl" id="roamTgl" role="switch" aria-checked="true" aria-label="Gəzən şimşək"><i></i></button></div><p class="note">Tətbiqi yaxşılaşdırmaq üçün anonim istifadə statistikası toplanır: neçə dərs keçildiyi, hansı səviyyə seçildiyi. Adın, e-poçtun və ya şəxsi məlumatın toplanmır.</p></section>
 </main>
 
 <!-- PREMIUM -->
@@ -788,6 +791,7 @@ function boltTap(){const now=Date.now();BT.n=now-BT.last<4000?BT.n+1:1;BT.last=n
   const m=pick(['love','laugh','wink']);play(m==='love'?'kiss':'giggle');boltAnim(m,pick(['r-spin','r-jump','r-wiggle']),1600);boltSay(pick(BOLT_TALK.star));hearts(m==='love'?6:4,m==='love'?['💛','❤️','💖']:['⚡','✨','⭐'])}
 $('boltBtn').onclick=boltTap;
 $('goalSet').onclick=goalSheet;
+$('fbOpen').onclick=fbSheet;
 function goalSheet(){const g=goalXP();sheet('Günlük hədəf',`<p style="margin-top:0">Hər gün neçə XP toplamaq istəyirsən? Hədəfə çatanda şənlik olur, sonra da XP sayılmağa davam edir.</p><div class="gopts">${GOALS.map(([v,n,t])=>`<button class="gopt ${v===g?'on':''}" data-v="${v}" aria-pressed="${v===g}"><b>${n}</b><span>${v} XP</span><small>${t}</small></button>`).join('')}</div>`,'<button class="btn ghost" id="shClose">Bağla</button>');
   $('shClose').onclick=closeSheet;document.querySelectorAll('.gopt').forEach(b=>b.onclick=()=>{S.goal=+b.dataset.v;const t=today();if((S.days[t]||0)>=S.goal)S.goalDone[t]=1;save();play('ok');closeSheet();renderHome();toast('Günlük hədəf: '+S.goal+' XP')})}
 
@@ -1015,18 +1019,12 @@ const SP=[["Nice to meet you.","Tanış olmağıma şadam.","«Meet» sözündə
 let si=0,DIC=null,heard='',MT=null;
 const norm=s=>s.toLowerCase().replace(/[^a-z' ]/g,' ').split(/\s+/).filter(Boolean);
 function showS(){const s=SP[si];$('sCount').textContent=`Cümlə ${si+1} / ${SP.length}`;$('sEn').textContent=s[0];$('sAz').textContent=s[1];$('sTip').textContent='Tələffüz məsləhəti: '+s[2];$('sOut').innerHTML='';heard=''}
-function grade(){const tgt=norm(SP[si][0]),got=new Set(norm(heard));let hit=0;
-  const toks=tgt.map(w=>{const ok=got.has(w);if(ok)hit++;return `<span class="tok ${ok?'hit':'miss'}">${esc(w)}</span>`}).join('');
-  const pct=Math.round(hit/tgt.length*100);if(pct>=80)addXP(10,'speaking',$('sMic'));
-  $('sOut').innerHTML=`<div style="display:flex;gap:14px;align-items:center"><div class="score">${pct}%</div><div>${pct>=80?'Əla! +10 XP':'Qırmızı sözləri bir də dinlə və təkrar et.'}</div></div><div style="margin-top:10px">${toks}</div><p class="note">Eşidilən: «${esc(heard)}»</p>`}
+function grade(alts){const {pct,toks}=speechScore(SP[si][0],alts||[heard]);if(pct>=80)addXP(10,'speaking',$('sMic'));
+  $('sOut').innerHTML=`<div style="display:flex;gap:14px;align-items:center"><div class="score">${pct}%</div><div>${pct>=80?'Əla! +10 XP':'Qırmızı sözləri bir də dinlə və təkrar et.'}</div>${pct<80?'<button class="why" id="sWhy" aria-label="Niyə tanınmadı?">?</button>':''}</div><div style="margin-top:10px">${tokHTML(toks)}</div><p class="note">Eşidilən: «${esc(heard)}»</p>`;
+  if($('sWhy'))$('sWhy').onclick=()=>whySheet({kind:'speech',type:'speak',q:SP[si][1],right:SP[si][0],mine:heard,ref:'speaking#'+si})}
 $('sHear').onclick=()=>playBtn($('sHear'),[{text:SP[si][0]}],0.9);
 $('sNext').onclick=()=>{stopSpeech();si=(si+1)%SP.length;showS()};
-$('sMic').onclick=()=>{MT=null;
-  if(!DIC){$('sNote').textContent='Mikrofonla yoxlama bu brauzerdə dəstəklənmir — Chrome-da aç. Nümunəni dinləyib ucadan təkrar edə bilərsən.';return}
-  if($('sMic').dataset.on){DIC.stop().catch(()=>{});return}
-  heard='';$('sOut').innerHTML='<p class="note">Dinləyirəm… cümləni oxu.</p>';
-  DIC.start().catch(e=>{$('sNote').textContent=e&&e.code==='not_granted'?'Mikrofona icazə verilmədi.':'Mikrofon başlamadı, yenidən cəhd et.'});
-};
+$('sMic').onclick=()=>{heard='';listenFor($('sMic'),$('sOut'),(t,alts)=>{heard=t;MT=null;grade(alts)})};
 showS();
 
 /* ---------- writing ---------- */
@@ -1221,14 +1219,14 @@ function startLesson(id,part){const a=ALL.find(z=>z.x.id===id);if(!a)return;
   const items=circ?circleItems(a.x,part):a.x.review?reviewItems(a):itemsOf(a.x);if(a.x.review)track('review',a.x.id);
   if(!circ&&!a.x.review&&!items.some(i=>i.t==='speak')){const o=items.find(i=>i.t==='order');if(o)items.splice(items.length-1,0,{t:'speak',en:[].concat(o.en)[0],az:o.az})}
   LS={a,items,i:0,ok:0,scored:0,xp:0,part:circ?part:null,fresh,costly};prefetchAudio(lessonAudio(items));location.hash='lesson';if(location.hash==='#lesson')route();renderStep()}
-function fbBox(ok,title,body){return `<div class="fb ${ok?'ok':'no'}"><b>${esc(title)}</b>${body?'<div>'+esc(body)+'</div>':''}<button class="btn ${ok?'':'sun'}" id="lNext">Davam et</button></div>`}
-function answered(ok,right,e,el){const it=LS.items[LS.i];
+function fbBox(ok,title,body){return `<div class="fb ${ok?'ok':'no'}">${ok?'':'<button class="why" id="lWhy" aria-label="Niyə səhvdir? İzah və təklif">?</button>'}<b>${esc(title)}</b>${body?'<div>'+esc(body)+'</div>':''}<button class="btn ${ok?'':'sun'}" id="lNext">Davam et</button></div>`}
+function answered(ok,right,e,el,mine){const it=LS.items[LS.i];
   if(!it.re){LS.scored++;if(ok)LS.ok++}
   play(ok?'ok':'no');
   if(ok){const g=bonusXP(5);addXP(g,null,el);LS.xp+=g;if(it.fix&&it.src){S.mist=(S.mist||[]).filter(x=>x!==it.src);save()}}
   else{if(LS.costly&&!isPrem()){const was=enNow();enSpend(EN_MIS(),el);if(was>0&&enNow()===0)setTimeout(()=>toast('Şimşəkciklər bitdi — bu dərsi sona qədər keçə bilərsən'),700)}if(!it.re)LS.items.push({...it,re:1});if(it.src&&!it.fix){S.mist=[it.src].concat((S.mist||[]).filter(x=>x!==it.src)).slice(0,40);save()}}
   const f=document.createElement('div');f.innerHTML=fbBox(ok,ok?['Əla!','Düzgündür!','Bravo!','Tam doğru!'][LS.i%4]:'Düzgün cavab: '+right,ok?'':e||'');$('lBox').appendChild(f.firstElementChild);
-  $('lNext').onclick=()=>{LS.i++;renderStep()};$('lNext').focus({preventScroll:true});$('lNext').scrollIntoView({block:'nearest'})}
+  $('lNext').onclick=()=>{LS.i++;renderStep()};if(!ok&&$('lWhy'))$('lWhy').onclick=()=>whySheet({kind:'item',type:it.t,q:it.t==='order'?it.az:it.t==='mc'?it.q:'',right,mine,e,ref:it.src||(LS.a&&LS.a.x.id)});$('lNext').focus({preventScroll:true});$('lNext').scrollIntoView({block:'nearest'})}
 function renderStep(){
   stopSpeech();if(!LS)return;const n=LS.items.length;$('lBar').style.width=(LS.i/n*100)+'%';
   if(LS.i>=n)return finishLesson();
@@ -1243,7 +1241,7 @@ function renderStep(){
     if(it.t==='listen'){const p=()=>playBtn($('lPlay'),[{text:it.en}],1);$('lPlay').onclick=p;$('lSlow').onclick=()=>playBtn($('lSlow'),[{text:it.en}],0.7);p()}
     box.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const ok=opts[+b.dataset.i]===right;
       box.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(opts[+x.dataset.i]===right)x.classList.add('right')});if(!ok)b.classList.add('wrong');
-      answered(ok,right,it.e,b)});return}
+      answered(ok,right,it.e,b,opts[+b.dataset.i])});return}
   if(it.t==='order'||it.t==='dict'){
     const vs=[].concat(it.en),bank=shuffle(toks(vs[0]).concat(it.extra||[])),ans=[],dict=it.t==='dict';
     box.innerHTML=(dict?`<p class="q">Dinlə və eşitdiyin cümləni qur</p><button class="bigplay" id="lPlay" aria-label="Dinlə">${IC.spk}</button><div class="row" style="justify-content:center;margin:-8px 0 0"><button class="w" id="lSlow">yavaş dinlə</button></div>`:`<p class="q">Bu cümləni ingiliscə qur</p><div class="card" style="background:var(--wrb);border-color:#c5ecd8;font-size:19px;font-weight:800">${esc(it.az)}</div>`)+`<div class="ans" id="oAns" aria-live="polite"></div><div class="bank" id="oBank">${bank.map((w,i)=>`<button class="chip" data-i="${i}">${esc(w)}</button>`).join('')}</div><button class="btn" id="oChk" disabled>Yoxla</button>`;
@@ -1253,24 +1251,18 @@ function renderStep(){
       $('oChk').disabled=!ans.length};
     $('oBank').querySelectorAll('.chip').forEach(c=>c.onclick=()=>{if(c.classList.contains('used')||$('oAns').dataset.lock)return;c.classList.add('used');ans.push(+c.dataset.i);draw()});
     $('oChk').onclick=()=>{const said=norm2(ans.map(i=>bank[i]).join(' ')),ok=vs.some(v=>norm2(v)===said);$('oAns').dataset.lock=1;$('oChk').remove();
-      if(ok)speak([{text:vs[0]}],1).catch(()=>{});answered(ok,vs[0],'',$('oAns'))};return}
+      if(ok)speak([{text:vs[0]}],1).catch(()=>{});answered(ok,vs[0],'',$('oAns'),ans.map(i=>bank[i]).join(' '))};return}
   if(it.t==='speak'){
     let said='';
     box.innerHTML=`<p class="q">Ucadan de</p><div class="card" style="background:var(--spb);border-color:#fbd8c5"><div class="say">${esc(it.en)}</div><div style="color:var(--mut)">${esc(it.az||'')}</div></div><div class="row"><button class="btn ghost" id="kHear">▶ Dinlə</button><button class="btn sun" id="kMic">● Danış</button></div><div id="kOut" style="margin-top:12px"></div><button class="w" id="kSkip" style="display:block;margin:16px auto 0;font-weight:800">İndi danışa bilmirəm — keç</button>`;
     $('kHear').onclick=()=>playBtn($('kHear'),[{text:it.en}],0.9);
-    $('kSkip').onclick=()=>{if(DIC&&$('kMic').dataset.on)DIC.stop().catch(()=>{});MT=null;LS.i++;renderStep()};
-    const judge=()=>{const tgt=norm(it.en),got=new Set(norm(said));let hit=0;const tk=tgt.map(w=>{const ok=got.has(w);if(ok)hit++;return `<span class="tok ${ok?'hit':'miss'}">${esc(w)}</span>`}).join('');
-      const pct=Math.round(hit/tgt.length*100);
+    $('kSkip').onclick=()=>{if(DIC&&$('kMic').dataset.on)DIC.stop().catch(()=>{});if(RECN&&RECN.state!=='inactive'){RECN.onstop=()=>{};RECN.stop()}MT=null;LS.i++;renderStep()};
+    const judge=(heard)=>{const {pct,toks}=speechScore(it.en,heard),tk=tokHTML(toks);
       if(pct>=70){MT=null;play('ok');const g=bonusXP(5);addXP(g,null,$('kMic'));LS.xp+=g;$('kSkip').remove();$('kMic').remove();
         $('kOut').innerHTML=`<div style="margin-bottom:6px">${tk}</div>`;const f=document.createElement('div');f.innerHTML=fbBox(true,pct+'% — əla tələffüz!','');box.appendChild(f.firstElementChild);$('lNext').onclick=()=>{LS.i++;renderStep()};$('lNext').focus({preventScroll:true})}
-      else{play('no');$('kOut').innerHTML=`<div class="score" style="font-size:36px">${pct}%</div><div style="margin:6px 0">${tk}</div><p class="note">Qırmızı sözləri bir də dinlə və yenidən de. «Eşidilən: ${esc(said)}»</p>`}};
-    $('kMic').onclick=()=>{
-      if(!DIC){$('kOut').innerHTML='<p class="note">Mikrofonla yoxlama bu brauzerdə işləmir — Chrome-da aç. İndi ucadan deyib «keç» düyməsinə basa bilərsən.</p>';return}
-      if($('kMic').dataset.on){DIC.stop().catch(()=>{});return}
-      said='';MT={partial:t=>{$('kOut').innerHTML=`<p class="note">${esc((said+' '+t).trim())}</p>`},final:t=>{said=(said+' '+t).trim()},
-        state:st=>{const on=st==='listening',b=$('kMic');if(!b)return;if(on)b.dataset.on='1';else delete b.dataset.on;b.textContent=on?'■ Dayandır':'● Danış';if(!on&&said)judge()}};
-      $('kOut').innerHTML='<p class="note">Dinləyirəm… cümləni ucadan de.</p>';
-      DIC.start().catch(e=>{$('kOut').innerHTML=`<p class="note">${e&&e.code==='not_granted'?'Mikrofona icazə verilmədi. «Keç» düyməsi ilə davam edə bilərsən.':'Mikrofon başlamadı, yenidən cəhd et.'}</p>`})};
+      else{play('no');$('kOut').innerHTML=`<div style="display:flex;align-items:center;gap:10px"><div class="score" style="font-size:36px">${pct}%</div><button class="why" id="kWhy" aria-label="Niyə tanınmadı? İzah və təklif">?</button></div><div style="margin:6px 0">${tk}</div><p class="note">Qırmızı sözləri bir də dinlə və yenidən de. «Eşidilən: ${esc(said)}»</p>`;
+        $('kWhy').onclick=()=>whySheet({kind:'speech',type:'speak',q:it.az||'',right:it.en,mine:said,ref:it.src||(LS.a&&LS.a.x.id)})}};
+    $('kMic').onclick=()=>listenFor($('kMic'),$('kOut'),(t,alts)=>{said=t;judge(alts)});
     return}
   LS.i++;renderStep();
 }
@@ -1486,21 +1478,83 @@ $('getApp').onclick=async()=>{
 $('pInstall').onclick=()=>deferred?$('getApp').onclick():showInstall();if(isStandalone)$('pInstallCard').style.display='none';
 if(IN_APP){const b=$('install');b.querySelector('b').textContent='Tətbiqi yükləmək üçün brauzerdə aç';b.querySelector('span').textContent=IN_APP+' daxilində yükləmək olmur';$('getApp').textContent='Necə?'}
 
+
+/* ---------- danışıq yoxlaması: daha ədalətli müqayisə ---------- */
+const NUMW=['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'],TENW=['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+const numW=n=>n<20?NUMW[n]:n<100?TENW[n/10|0]+(n%10?' '+NUMW[n%10]:''):n<1000?NUMW[n/100|0]+' hundred'+(n%100?' '+numW(n%100):''):n<2100&&n>=1900?numW(n/100|0)+' '+(n%100?(n%100<10?'oh '+NUMW[n%10]:numW(n%100)):'hundred'):String(n);
+const CONTR=[[/\bo'? ?clock\b/g,'oclock'],[/\bits\b/g,'it is'],[/\bcan't\b/g,'can not'],[/\bcannot\b/g,'can not'],[/\bwon't\b/g,'will not'],[/\bshan't\b/g,'shall not'],[/\bain't\b/g,'is not'],[/n't\b/g,' not'],[/'re\b/g,' are'],[/'m\b/g,' am'],[/'ll\b/g,' will'],[/'ve\b/g,' have'],[/'d\b/g,' would'],[/\b(he|she|it|that|what|where|who|there|here|how|let)'s\b/g,'$1 is']];
+const HOMO={two:'to',too:'to',four:'for',fore:'for',their:'there',theyre:'there',write:'right',here:'hear',no:'know',buy:'by',bye:'by',ate:'eight',won:'one',sea:'see',where:'wear',ok:'okay',hi:'hey',color:'colour',favorite:'favourite',center:'centre',theater:'theatre',realize:'realise',organize:'organise'};
+function spTok(t){let x=String(t).toLowerCase().replace(/[’`]/g,"'").replace(/(\d+)%/g,'$1 percent').replace(/\d+/g,d=>' '+numW(+d)+' ');CONTR.forEach(([r,v])=>x=x.replace(r,v));
+  return x.replace(/'s\b/g,'').replace(/[^a-z ]/g,' ').split(/\s+/).filter(Boolean).map(w=>HOMO[w]||w)}
+const lev=(a,b)=>{if(Math.abs(a.length-b.length)>2)return 9;const d=Array.from({length:a.length+1},(_,i)=>[i]);for(let j=1;j<=b.length;j++)d[0][j]=j;for(let i=1;i<=a.length;i++)for(let j=1;j<=b.length;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[a.length][b.length]};
+// target: düzgün cümlə; heard: eşidilən variantlar (massiv). Adlar avtomatik sayılır.
+function speechScore(target,heard){const names=new Set(String(target).split(/\s+/).slice(1).filter(w=>/^[A-ZƏÖÜÇŞĞI][a-z]/.test(w)).flatMap(w=>spTok(w)));
+  const got=new Set([].concat(heard).flatMap(spTok)),T=spTok(target);let hit=0;
+  const toks=T.map(w=>{const ok=names.has(w)||got.has(w)||(w.length>=4&&[...got].some(g=>lev(w,g)<=(w.length>=7?2:1)));if(ok)hit++;return {w,ok}});
+  return {pct:T.length?Math.round(hit/T.length*100):0,toks}}
+const tokHTML=toks=>toks.map(t=>`<span class="tok ${t.ok?'hit':'miss'}">${esc(t.w)}</span>`).join('');
+window.speechScore=speechScore;
+
+/* brauzer danışığı tanıya bilməyəndə: səsi yazıb serverdə (Whisper) mətnə çeviririk */
+const REC_OK=!!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia&&window.MediaRecorder);
+let RECN=null;
+function recordOnce(btn,out,maxMs=7000){return new Promise(async(res,rej)=>{let st;try{st=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}})}catch(e){return rej({code:'not_granted'})}
+  const mt=['audio/webm;codecs=opus','audio/webm','audio/mp4','audio/ogg'].find(t=>MediaRecorder.isTypeSupported&&MediaRecorder.isTypeSupported(t))||'';
+  const r=new MediaRecorder(st,mt?{mimeType:mt}:{}),ch=[];RECN=r;r.ondataavailable=e=>{if(e.data&&e.data.size)ch.push(e.data)};
+  const stop=()=>{if(r.state!=='inactive')r.stop()};const tm=setTimeout(stop,maxMs);
+  btn.dataset.on='1';btn.textContent='■ Bitirdim';btn.onclick=stop;out.innerHTML='<p class="note">Yazıram… cümləni de və «Bitirdim» bas.</p>';
+  r.onstop=async()=>{clearTimeout(tm);RECN=null;st.getTracks().forEach(t=>t.stop());delete btn.dataset.on;btn.textContent='● Danış';out.innerHTML='<p class="note">Yoxlanılır…</p>';
+    try{const blob=new Blob(ch,{type:r.mimeType||mt||'audio/webm'});const q=await fetch('/api/stt?uid='+encodeURIComponent(S.uid),{method:'POST',body:blob,headers:{'content-type':blob.type}});const d=await q.json();
+      if(!q.ok)return rej({code:d.error||'stt'});res(d.text||'')}catch(e){rej({code:'network'})}};r.start()})}
+const SR_FAIL=new Set(['network','service-not-allowed','audio-capture','language-not-supported','not-allowed-service']);
+// Ümumi mikrofon axını: əvvəl brauzerin tanıması, alınmasa — server.
+function listenFor(btn,out,onText){const noSpeech='<p class="note">Səsini eşitmədim 🤔 Mikrofonu ağzına yaxın tut və yenidən «Danış» bas.</p>';
+  const viaRec=()=>{if(!REC_OK){out.innerHTML='<p class="note">Bu brauzer mikrofonla yoxlamanı dəstəkləmir. Ucadan deyib «keç» düyməsinə bas.</p>';return}
+    recordOnce(btn,out).then(t=>{btn.onclick=()=>listenFor(btn,out,onText);t?onText(t,[t]):out.innerHTML=noSpeech}).catch(e=>{btn.onclick=()=>listenFor(btn,out,onText);out.innerHTML=`<p class="note">${e.code==='not_granted'?'Mikrofona icazə verilmədi — telefonun ayarlarından bu sayta mikrofon icazəsi ver.':e.code==='limit'?'Bugünkü danışıq yoxlaması limiti doldu. Sabah yenə yoxla.':'Bağlantı alınmadı, yenidən cəhd et.'}</p>`})};
+  if(!DIC||S.sttServer)return viaRec();
+  if(btn.dataset.on){DIC.stop().catch(()=>{});return}
+  let said='',alts=[],err='';
+  MT={partial:t=>{out.innerHTML=`<p class="note">${esc((said+' '+t).trim())}</p>`},final:(t,a)=>{said=(said+' '+t).trim();alts=alts.concat(a||[])},
+    state:(st,why)=>{const on=st==='listening';if(on)btn.dataset.on='1';else delete btn.dataset.on;btn.textContent=on?'■ Dayandır':'● Danış';
+      if(on)return;if(why)err=why;if(said){onText(said,[said].concat(alts));return}
+      if(SR_FAIL.has(err)){S.sttServer=1;save();return viaRec()}
+      out.innerHTML=err==='not-allowed'?'<p class="note">Mikrofona icazə verilmədi — telefonun ayarlarından bu sayta mikrofon icazəsi ver.</p>':noSpeech}};
+  out.innerHTML='<p class="note">Dinləyirəm… cümləni ucadan de.</p>';
+  DIC.start().catch(e=>{const c=e&&e.code;if(c==='not_granted'){out.innerHTML='<p class="note">Mikrofona icazə verilmədi — telefonun ayarlarından bu sayta mikrofon icazəsi ver.</p>';return}S.sttServer=1;save();viaRec()})}
+
+/* ---------- «?» — niyə səhvdir + təklif / şikayət ---------- */
+const WHY_T={mc:'Variantları bir də oxu: düzgün cavab qrammatika və mənaya ən uyğun olandır.',listen:'Səsi bir də, yavaş sürətdə dinlə. Oxşar səslənən sözlərə (məs: thirteen / thirty) diqqət et.',
+  order:'İngiliscədə adi söz sırası: kim + nə edir + nəyi + harada + nə vaxt. Məs: I + read + books + at home + every day.',dict:'Səsi yavaş sürətdə dinlə və sözləri ardıcıl qur. Kiçik sözlər (a, the, to) tez-tez qaçırılır.',
+  speak:'Proqram səsini mətnə çevirib müqayisə edir. Qırmızı sözlər tanınmadı. Səbəb həmişə tələffüz deyil: səs-küy, zəif mikrofon və ya çox sürətli danışıq da təsir edir. Sakit yerdə, telefonu ağzına yaxın tutub aydın de. Adlar (Leyla, Kamran) yoxlanmır.'};
+function whySheet(o){const tip=o.e||WHY_T[o.type]||'';track('why',o.type||'x');
+  sheet(o.kind==='speech'?'Niyə tanınmadı?':'Niyə səhvdir?',`${o.q?`<p class="lim" style="margin-top:0">${esc(o.q)}</p>`:''}
+   ${o.mine!=null&&o.mine!==''?`<div class="whyr no"><small>${o.kind==='speech'?'Proqram eşitdi':'Sənin cavabın'}</small><b>${esc(o.mine)}</b></div>`:o.kind==='speech'?'<div class="whyr no"><small>Proqram eşitdi</small><b>— heç nə</b></div>':''}
+   <div class="whyr ok"><small>Düzgün cavab</small><b>${esc(o.right)}</b></div>
+   ${tip?`<p>${esc(tip)}</p>`:''}
+   <details class="whyf"><summary>Razı deyiləm / təklifim var</summary><p class="lim">Səhv tapşırıq, yanlış tərcümə, səsin tanınmaması — nə olubsa yaz. Admin oxuyub düzəldəcək.</p>
+   <textarea id="whyTx" maxlength="1000" rows="3" placeholder="Məs: «Bu cavab da düzgündür, çünki…»"></textarea><button class="btn" id="whySend">Göndər</button></details>`,'<button class="btn ghost" id="shClose">Bağla</button>');
+  $('shClose').onclick=closeSheet;$('whySend').onclick=()=>sendFb({kind:o.kind,ref:o.ref,q:o.q,mine:o.mine,right:o.right,text:$('whyTx').value},$('whySend'))}
+async function sendFb(f,btn){const t=String(f.text||'').trim();if(t.length<3){toast('Bir neçə söz yaz, zəhmət olmasa');return}btn.disabled=true;btn.textContent='Göndərilir…';
+  try{const r=await fetch('/api/feedback',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({...f,text:t,uid:S.uid,lvl:S.lvl})});
+    if(r.ok){closeSheet();play('ok');toast('Təşəkkürlər! Yazdığın adminə çatdı 💛')}else{btn.disabled=false;btn.textContent='Göndər';toast(r.status===429?'Bu gün çox mesaj göndərdin, sabah yenə yaz':'Göndərilmədi, yenidən cəhd et')}}
+  catch(e){btn.disabled=false;btn.textContent='Göndər';toast('İnternet bağlantısını yoxla')}}
+function fbSheet(){sheet('Təklif və şikayət',`<p style="margin-top:0">Nəyisə bəyənmədin, səhv tapdın və ya fikrin var? Yaz — hər mesajı oxuyuruq.</p><textarea id="fbTx" maxlength="1000" rows="5" placeholder="Fikrini bura yaz…"></textarea>`,'<button class="btn sun" id="fbSend">Göndər</button><button class="btn ghost" id="shClose">Bağla</button>');
+  $('shClose').onclick=closeSheet;$('fbSend').onclick=()=>sendFb({kind:'general',text:$('fbTx').value},$('fbSend'))}
 /* ---------- speech recognition ---------- */
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 function nativeDictation(){const cb={p:()=>{},f:()=>{},s:()=>{}};let rec=null;
   return{onPartial:f=>cb.p=f,onFinal:f=>cb.f=f,onState:f=>cb.s=f,
-    start(){rec=new SR();rec.lang='en-US';rec.interimResults=true;rec.continuous=false;
-      rec.onresult=e=>{let part='';for(let i=e.resultIndex;i<e.results.length;i++){const r=e.results[i];if(r.isFinal)cb.f({text:r[0].transcript});else part+=r[0].transcript}if(part)cb.p({text:part})};
-      rec.onend=()=>cb.s({state:'idle',reason:'stopped'});
-      return new Promise((res,rej)=>{rec.onstart=()=>{cb.s({state:'listening'});res()};rec.onerror=e=>{cb.s({state:'idle',reason:e.error});rej({code:e.error==='not-allowed'?'not_granted':e.error})};rec.start()})},
+    start(){rec=new SR();rec.lang='en-US';rec.interimResults=true;rec.continuous=false;rec.maxAlternatives=5;let why='';
+      rec.onresult=e=>{let part='';for(let i=e.resultIndex;i<e.results.length;i++){const r=e.results[i];if(r.isFinal)cb.f({text:r[0].transcript,alts:Array.from(r).map(a=>a.transcript)});else part+=r[0].transcript}if(part)cb.p({text:part})};
+      rec.onend=()=>cb.s({state:'idle',reason:why||'stopped'});
+      return new Promise((res,rej)=>{rec.onstart=()=>{cb.s({state:'listening'});res()};rec.onerror=e=>{why=e.error;rej({code:e.error==='not-allowed'?'not_granted':e.error})};try{rec.start()}catch(x){rej({code:'start'})}})},
     stop(){if(rec)rec.stop();return Promise.resolve()}}}
 const SPK={partial:text=>{$('sOut').innerHTML=`<p class="note">${esc(heard+' '+text)}</p>`},final:text=>{heard=(heard+' '+text).trim()},
   state:state=>{const on=state==='listening';if(on)$('sMic').dataset.on='1';else delete $('sMic').dataset.on;$('sMic').textContent=on?'■ Dayandır':'● Danış';if(!on&&heard)grade()}};
 function wireDictation(d){DIC=d;
   d.onPartial(({text})=>(MT||SPK).partial(text));
-  d.onFinal(({text})=>(MT||SPK).final(text));
-  d.onState(({state})=>(MT||SPK).state(state));
+  d.onFinal(({text,alts})=>(MT||SPK).final(text,alts));
+  d.onState(({state,reason})=>(MT||SPK).state(state,reason));
 }
 if(SR)wireDictation(nativeDictation());
 if(window.claude&&claude.use){

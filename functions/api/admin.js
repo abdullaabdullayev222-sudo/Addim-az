@@ -3,6 +3,7 @@
 // POST /api/admin {key, action:'list'}                       -> { codes:[{code,days,note,created,redeemed_by,redeemed_at}], premiumUsers }
 // Açar Cloudflare-də ADMIN_KEY dəyişəni kimi saxlanılır (kodda yoxdur).
 import { json, ensureSchema, newCode, bakuDay } from '../_shared.js';
+import { FB_SCHEMA } from './feedback.js';
 
 function safeEqual(a, b) {
   a = String(a || ''); b = String(b || '');
@@ -35,6 +36,17 @@ export async function onRequest({ request, env }) {
     const codes = (await env.DB.prepare('SELECT code, days, note, created, redeemed_by, redeemed_at FROM codes ORDER BY created DESC LIMIT 200').all()).results;
     const premiumUsers = (await env.DB.prepare('SELECT COUNT(*) AS n FROM premium WHERE until > ?1').bind(Date.now()).first()).n;
     return json({ codes, premiumUsers });
+  }
+  if (b.action === 'feedback') {
+    await env.DB.prepare(FB_SCHEMA).run();
+    const items = (await env.DB.prepare('SELECT id, created, kind, ref, q, mine, right, text, lvl, ua, done FROM feedback ORDER BY done ASC, created DESC LIMIT 300').all()).results;
+    const open = (await env.DB.prepare('SELECT COUNT(*) AS n FROM feedback WHERE done = 0').first()).n;
+    return json({ items, open });
+  }
+  if (b.action === 'fbdone') {
+    await env.DB.prepare(FB_SCHEMA).run();
+    await env.DB.prepare('UPDATE feedback SET done = ?1 WHERE id = ?2').bind(b.done ? 1 : 0, Math.floor(Number(b.id) || 0)).run();
+    return json({ ok: true });
   }
   if (b.action === 'stats') {
     const db = env.DB, now = Date.now(), today = bakuDay();

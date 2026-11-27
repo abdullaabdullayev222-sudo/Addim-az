@@ -7,6 +7,11 @@
 <title>Addım — Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;800;900&display=swap" rel="stylesheet">
 <style>
+.fbn{color:#c2410c;font-size:16px}.fbf{display:flex;gap:8px;margin:8px 0}.fbf .on{background:#1e1b3a;color:#fff}
+.fb{border:1px solid #e6e3f0;border-radius:12px;padding:12px;margin:10px 0;background:#fff}.fb.done{opacity:.55}
+.fbh{display:flex;gap:6px;align-items:center;flex-wrap:wrap}.tag{font-size:12px;font-weight:700;border-radius:6px;padding:2px 7px;background:#f1eff8}.k-item{background:#fde8d7}.k-speech{background:#dbeafe}.k-general{background:#dcfce7}
+.when{margin-left:auto;font-size:12px;color:#6b6880}.fbt{font-size:16px;margin:8px 0;white-space:pre-wrap}.fbc{font-size:13px;color:#4b4864;background:#f8f7fc;border-radius:8px;padding:8px;margin-bottom:8px}.fbc .ref{color:#9a97ad;font-size:11px;margin-top:4px}
+
 /* VOICE: plain, calm control panel for one person
    IDEA: a cashier's code book — enter key, print codes, see which were used
    PICTURE: the freshly generated codes, large and copyable
@@ -69,6 +74,13 @@ h3{font-size:16px;margin:18px 0 6px}
     <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><h2 style="margin:0">Statistika</h2><button class="ghost" id="sload" style="margin:0">Yenilə</button></div>
     <p class="msg" id="smsg">Açarı yaz və «Yenilə» düyməsinə bas.</p>
     <div id="stats"></div>
+  </div>
+
+  <div class="card" id="fbCard">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><h2 style="margin:0">Təklif və şikayətlər <span class="fbn" id="fbn"></span></h2><button class="ghost" id="fbload" style="margin:0">Yenilə</button></div>
+    <p class="msg" id="fbmsg">İstifadəçilərin səhv tapşırıqlarla bağlı yazdıqları və ümumi təklifləri burada görünür.</p>
+    <div class="fbf"><button class="ghost on" data-f="open">Baxılmamış</button><button class="ghost" data-f="all">Hamısı</button></div>
+    <div id="fbList"></div>
   </div>
 
   <div class="card">
@@ -147,7 +159,18 @@ async function stats(){$('smsg').textContent='Yüklənir…';
     ${hbars(d.funnel,r=>TITLES[r.id]||r.id)}`}
   catch(e){$('smsg').textContent=e.message}}
 $('sload').onclick=stats;
-if($('key').value)stats();
+let FB=[],FBF='open';
+const KIND={item:'Tapşırıq',speech:'Danışıq (mikrofon)',general:'Ümumi təklif'};
+function fbDraw(){const L=FB.filter(x=>FBF==='all'||!x.done);
+  $('fbList').innerHTML=L.length?L.map(x=>`<div class="fb ${x.done?'done':''}"><div class="fbh"><span class="tag k-${esc(x.kind)}">${esc(KIND[x.kind]||x.kind)}</span>${x.lvl?`<span class="tag">${esc(x.lvl.toUpperCase())}</span>`:''}<span class="when">${fmt(x.created)}</span></div>
+    <p class="fbt">${esc(x.text)}</p>
+    ${x.q||x.right||x.mine?`<div class="fbc">${x.q?`<div><b>Tapşırıq:</b> ${esc(x.q)}</div>`:''}${x.right?`<div><b>Düzgün cavab:</b> ${esc(x.right)}</div>`:''}${x.mine?`<div><b>İstifadəçinin cavabı:</b> ${esc(x.mine)}</div>`:''}${x.ref?`<div class="ref">${esc(x.ref)}</div>`:''}</div>`:''}
+    <button class="ghost fbdone" data-id="${x.id}" data-d="${x.done?0:1}">${x.done?'Yenidən aç':'Baxıldı ✓'}</button></div>`).join(''):'<p class="msg">Burada hələ heç nə yoxdur.</p>';
+  document.querySelectorAll('.fbdone').forEach(b=>b.onclick=async()=>{b.disabled=true;try{await api({action:'fbdone',id:+b.dataset.id,done:+b.dataset.d});await fbLoad()}catch(e){$('fbmsg').textContent=e.message}})}
+async function fbLoad(){try{const d=await api({action:'feedback'});FB=d.items||[];$('fbn').textContent=d.open?`(${d.open} yeni)`:'';fbDraw()}catch(e){$('fbmsg').textContent=e.message}}
+document.querySelectorAll('.fbf button').forEach(b=>b.onclick=()=>{FBF=b.dataset.f;document.querySelectorAll('.fbf button').forEach(x=>x.classList.toggle('on',x===b));fbDraw()});
+$('fbload').onclick=fbLoad;
+if($('key').value){stats();fbLoad()}
 }
 </script>
 </body>

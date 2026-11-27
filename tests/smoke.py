@@ -205,6 +205,13 @@ with sync_playwright() as p:
     check('səhv admin açarı rədd olunur', post('/api/admin', {'key': 'wrong', 'action': 'list'}).get('error') == 'forbidden')
     m.evaluate("location.hash='league'"); m.wait_for_timeout(800)
     check('liqa cədvəli yükləndi', 'liqası' in m.locator('#boardM').inner_text())
+    check("danışıq yoxlaması: I am = I'm, 7 = seven, adlar sayılmır", m.evaluate("""speechScore("I'm Leyla. It's 7 o'clock.",['i am layla its seven oclock']).pct""") == 100)
+    check('danışıq yoxlaması: səhv cümlə keçmir', m.evaluate("speechScore('Good afternoon!',['but after']).pct") < 70)
+    fb = post('/api/feedback', {'uid': m.evaluate('S.uid'), 'kind': 'item', 'q': 'test', 'right': 'a', 'mine': 'b', 'text': 'Bu cavab da düzgündür'})
+    check('təklif / şikayət göndərilir', fb.get('ok') is True, str(fb))
+    fl = post('/api/admin', {'key': 'test-admin-key-123', 'action': 'feedback'})
+    check('admin təklifləri görür', any(x['text'] == 'Bu cavab da düzgündür' for x in fl.get('items', [])))
+    check('boş təklif qəbul olunmur', post('/api/feedback', {'uid': m.evaluate('S.uid'), 'kind': 'general', 'text': ' '}).get('error') == 'empty')
     check('gəzən şimşək: qol-ayaqlı element var', m.evaluate("!!document.querySelector('#walker .arm.ar') && !!document.querySelector('#bigBolt .leg.ll')"))
 
     pj0 = json.load(urllib.request.urlopen(BASE + '/__test/prevweek'))
