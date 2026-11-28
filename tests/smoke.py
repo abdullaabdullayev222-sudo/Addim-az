@@ -89,6 +89,7 @@ with sync_playwright() as p:
     check('nəticədə səviyyə qrafiki göstərilir', m.locator('.ptbars .ptb').count() == 5)
     check('test nəticəsi və tövsiyə', m.locator('.lvopt.rec').count() == 1)
     m.click('.lvopt[data-l="a1"]'); m.wait_for_timeout(500)
+    m.evaluate("S.nudgeDay=today();save()")  # qeydiyyat xatırlatması bu testə mane olmasın
     check('kurs səhifəsi açıldı', m.evaluate('location.hash') == '#course')
 
     print('3. Dərslər (A1 və B2)')
